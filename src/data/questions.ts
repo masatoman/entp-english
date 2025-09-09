@@ -1,0 +1,648 @@
+import { QuestionData } from "../components/Question";
+import { Category } from "../types";
+
+export const questionsByCategory: Record<Category, Record<'easy' | 'normal' | 'hard', QuestionData[]>> = {
+  'basic-grammar': {
+    easy: [
+      {
+        id: 1,
+        japanese: "私は学生です。",
+        correctAnswer: "I am a student.",
+        explanation: "「私は～です」は \"I am ~\" で表現します。",
+        choices: ["I am a student.", "I am student.", "I'm the student.", "I was a student."]
+      },
+      {
+        id: 2,
+        japanese: "彼は医者です。",
+        correctAnswer: "He is a doctor.",
+        explanation: "三人称単数の主語には \"is\" を使います。",
+        choices: ["He is a doctor.", "He are a doctor.", "He am a doctor.", "He was a doctor."]
+      },
+      {
+        id: 3,
+        japanese: "私たちは友達です。",
+        correctAnswer: "We are friends.",
+        explanation: "複数の主語には \"are\" を使います。",
+        choices: ["We are friends.", "We is friends.", "We am friends.", "We were friends."]
+      },
+      {
+        id: 4,
+        japanese: "彼女は忙しいです。",
+        correctAnswer: "She is busy.",
+        explanation: "形容詞を使った文では be動詞が必要です。",
+        choices: ["She is busy.", "She busy.", "She are busy.", "She has busy."]
+      },
+      {
+        id: 5,
+        japanese: "私は本を読みます。",
+        correctAnswer: "I read a book.",
+        explanation: "一般動詞の現在形では、一人称は動詞の原形を使います。",
+        choices: ["I read a book.", "I reads a book.", "I am read a book.", "I reading a book."]
+      },
+      {
+        id: 6,
+        japanese: "彼は音楽を聞きます。",
+        correctAnswer: "He listens to music.",
+        explanation: "三人称単数では動詞に -s をつけます。",
+        choices: ["He listens to music.", "He listen to music.", "He is listen to music.", "He listening to music."]
+      },
+      {
+        id: 7,
+        japanese: "私たちは学校に行きます。",
+        correctAnswer: "We go to school.",
+        explanation: "複数の主語では動詞の原形を使います。",
+        choices: ["We go to school.", "We goes to school.", "We are go to school.", "We going to school."]
+      },
+      {
+        id: 8,
+        japanese: "この花は美しいです。",
+        correctAnswer: "This flower is beautiful.",
+        explanation: "\"This\" は単数なので be動詞は \"is\" を使います。",
+        choices: ["This flower is beautiful.", "This flower are beautiful.", "This flowers is beautiful.", "This flower beautiful."]
+      },
+      {
+        id: 9,
+        japanese: "私は日本人です。",
+        correctAnswer: "I am Japanese.",
+        explanation: "国籍を表すときも be動詞を使います。",
+        choices: ["I am Japanese.", "I am a Japanese.", "I Japanese.", "I from Japanese."]
+      },
+      {
+        id: 10,
+        japanese: "猫は魚が好きです。",
+        correctAnswer: "Cats like fish.",
+        explanation: "一般的な事実を表すときは現在形を使います。",
+        choices: ["Cats like fish.", "Cats likes fish.", "Cats are like fish.", "Cat like fish."]
+      }
+    ],
+    normal: [
+      {
+        id: 11,
+        japanese: "私は毎日学校に歩いて行きます。",
+        correctAnswer: "I walk to school every day.",
+        explanation: "習慣を表す現在形では、副詞句で時間を表現します。",
+        hint: "walk, school, every day"
+      },
+      {
+        id: 12,
+        japanese: "彼女は先生になりたがっています。",
+        correctAnswer: "She wants to be a teacher.",
+        explanation: "\"want to + 動詞\" で「～したい」を表現します。",
+        hint: "wants, to be, teacher"
+      },
+      {
+        id: 13,
+        japanese: "私たちの学校にはたくさんの生徒がいます。",
+        correctAnswer: "There are many students in our school.",
+        explanation: "存在を表す \"There are\" を使い、複数形に注意します。",
+        hint: "There are, many students, our school"
+      },
+      {
+        id: 14,
+        japanese: "その問題はとても難しくありません。",
+        correctAnswer: "The problem is not very difficult.",
+        explanation: "be動詞の否定形は \"is not\" または \"isn't\" を使います。",
+        hint: "problem, is not, very difficult"
+      },
+      {
+        id: 15,
+        japanese: "彼は英語と数学を勉強しています。",
+        correctAnswer: "He studies English and math.",
+        explanation: "三人称単数の現在形では \"studies\" (y→ies) となります。",
+        hint: "studies, English, math"
+      },
+      {
+        id: 16,
+        japanese: "私の兄は大学で働いています。",
+        correctAnswer: "My brother works at a university.",
+        explanation: "場所を表すときは前置詞 \"at\" を使います。",
+        hint: "brother, works, university"
+      },
+      {
+        id: 17,
+        japanese: "この本は私のものではありません。",
+        correctAnswer: "This book is not mine.",
+        explanation: "所有代名詞 \"mine\" を使い、否定形で表現します。",
+        hint: "book, is not, mine"
+      },
+      {
+        id: 18,
+        japanese: "彼らは週末によく映画を見ます。",
+        correctAnswer: "They often watch movies on weekends.",
+        explanation: "頻度を表す副詞 \"often\" は動詞の前に置きます。",
+        hint: "often, watch movies, weekends"
+      },
+      {
+        id: 19,
+        japanese: "私の母は料理がとても上手です。",
+        correctAnswer: "My mother is very good at cooking.",
+        explanation: "\"be good at + 動名詞\" で「～が上手」を表現します。",
+        hint: "mother, very good at, cooking"
+      },
+      {
+        id: 20,
+        japanese: "その犬は公園を走り回っています。",
+        correctAnswer: "The dog runs around in the park.",
+        explanation: "現在の習慣的行動は現在形で表現します。",
+        hint: "dog, runs around, park"
+      }
+    ],
+    hard: [
+      {
+        id: 21,
+        japanese: "彼が成功する理由は、常に努力を怠らないことです。",
+        correctAnswer: "The reason why he succeeds is that he never stops making efforts.",
+        explanation: "\"The reason why ~ is that...\" で理由を強調する構文です。"
+      },
+      {
+        id: 22,
+        japanese: "私たちの町には古い伝統を大切にする人々がたくさんいます。",
+        correctAnswer: "There are many people in our town who cherish old traditions.",
+        explanation: "\"There are + 名詞 + 関係代名詞\" の構文で存在と修飾を同時に表現します。"
+      },
+      {
+        id: 23,
+        japanese: "彼女の笑顔は見る人すべてを幸せな気持ちにします。",
+        correctAnswer: "Her smile makes everyone who sees it feel happy.",
+        explanation: "\"make + 人 + 動詞\" で「人に～させる」を表現します。"
+      },
+      {
+        id: 24,
+        japanese: "この店で働くスタッフは皆親切で、お客様に丁寧に対応します。",
+        correctAnswer: "All the staff who work at this store are kind and treat customers politely.",
+        explanation: "関係代名詞と副詞を使って複雑な文を構成しています。"
+      },
+      {
+        id: 25,
+        japanese: "私が毎朝することは、新聞を読んで世界のニュースを知ることです。",
+        correctAnswer: "What I do every morning is read the newspaper and learn about world news.",
+        explanation: "\"What I do is ~\" という構文で行動の内容を強調します。"
+      },
+      {
+        id: 26,
+        japanese: "彼の話し方には、聞く人の心を動かす何かがあります。",
+        correctAnswer: "There is something in the way he speaks that moves listeners' hearts.",
+        explanation: "\"There is something ~ that...\" で抽象的な存在を表現します。"
+      },
+      {
+        id: 27,
+        japanese: "私たちが住んでいる地球は、宇宙の中でかけがえのない存在です。",
+        correctAnswer: "The Earth we live on is an irreplaceable existence in the universe.",
+        explanation: "関係代名詞の省略形と形容詞を使った表現です。"
+      },
+      {
+        id: 28,
+        japanese: "彼女が持っている才能は、多くの人々に影響を与える力があります。",
+        correctAnswer: "The talent she has has the power to influence many people.",
+        explanation: "関係代名詞の省略と \"have the power to\" の構文を使います。"
+      },
+      {
+        id: 29,
+        japanese: "この問題を解決する方法は、みんなで協力することしかありません。",
+        correctAnswer: "The only way to solve this problem is for everyone to cooperate.",
+        explanation: "\"The only way to ~ is for 人 to...\" という構文です。"
+      },
+      {
+        id: 30,
+        japanese: "人生において大切なことは、常に学び続ける姿勢を持つことだと思います。",
+        correctAnswer: "I think what is important in life is to always have an attitude of continuous learning.",
+        explanation: "\"What is important is to ~\" という主語節の構文を使います。"
+      }
+    ]
+  },
+  'tenses': {
+    easy: [
+      {
+        id: 31,
+        japanese: "私は昨日映画を見ました。",
+        correctAnswer: "I watched a movie yesterday.",
+        explanation: "過去のことは過去形を使います。\"watch\" の過去形は \"watched\" です。",
+        choices: ["I watched a movie yesterday.", "I watch a movie yesterday.", "I am watching a movie yesterday.", "I have watched a movie yesterday."]
+      },
+      {
+        id: 32,
+        japanese: "彼女は明日東京に行きます。",
+        correctAnswer: "She will go to Tokyo tomorrow.",
+        explanation: "未来のことは \"will + 動詞の原形\" で表現します。",
+        choices: ["She will go to Tokyo tomorrow.", "She goes to Tokyo tomorrow.", "She went to Tokyo tomorrow.", "She is going to Tokyo tomorrow."]
+      },
+      {
+        id: 33,
+        japanese: "私たちは今テレビを見ています。",
+        correctAnswer: "We are watching TV now.",
+        explanation: "現在進行形は \"be動詞 + 動詞のing形\" で表現します。",
+        choices: ["We are watching TV now.", "We watch TV now.", "We watched TV now.", "We will watch TV now."]
+      },
+      {
+        id: 34,
+        japanese: "彼は今朝早く起きました。",
+        correctAnswer: "He got up early this morning.",
+        explanation: "\"get up\" の過去形は \"got up\" です。",
+        choices: ["He got up early this morning.", "He gets up early this morning.", "He is getting up early this morning.", "He will get up early this morning."]
+      },
+      {
+        id: 35,
+        japanese: "私は来週友達に会う予定です。",
+        correctAnswer: "I will meet my friend next week.",
+        explanation: "未来の予定は \"will\" で表現できます。",
+        choices: ["I will meet my friend next week.", "I meet my friend next week.", "I met my friend next week.", "I am meeting my friend next week."]
+      },
+      {
+        id: 36,
+        japanese: "雨が降っています。",
+        correctAnswer: "It is raining.",
+        explanation: "現在の天候は現在進行形で表現します。",
+        choices: ["It is raining.", "It rains.", "It rained.", "It will rain."]
+      },
+      {
+        id: 37,
+        japanese: "私は毎日朝食を食べます。",
+        correctAnswer: "I eat breakfast every day.",
+        explanation: "習慣は現在形で表現します。",
+        choices: ["I eat breakfast every day.", "I ate breakfast every day.", "I am eating breakfast every day.", "I will eat breakfast every day."]
+      },
+      {
+        id: 38,
+        japanese: "彼らは昨日パーティーを楽しみました。",
+        correctAnswer: "They enjoyed the party yesterday.",
+        explanation: "過去の出来事は過去形を使います。",
+        choices: ["They enjoyed the party yesterday.", "They enjoy the party yesterday.", "They are enjoying the party yesterday.", "They will enjoy the party yesterday."]
+      },
+      {
+        id: 39,
+        japanese: "私は今宿題をしています。",
+        correctAnswer: "I am doing my homework now.",
+        explanation: "現在進行中のことは現在進行形を使います。",
+        choices: ["I am doing my homework now.", "I do my homework now.", "I did my homework now.", "I will do my homework now."]
+      },
+      {
+        id: 40,
+        japanese: "明日は日曜日です。",
+        correctAnswer: "Tomorrow is Sunday.",
+        explanation: "未来でも確定した事実は現在形を使います。",
+        choices: ["Tomorrow is Sunday.", "Tomorrow will be Sunday.", "Tomorrow was Sunday.", "Tomorrow being Sunday."]
+      }
+    ],
+    normal: [
+      {
+        id: 41,
+        japanese: "私は3年間英語を勉強しています。",
+        correctAnswer: "I have been studying English for three years.",
+        explanation: "継続を表す現在完了進行形を使います。期間は \"for\" で表現します。",
+        hint: "have been studying, English, three years"
+      },
+      {
+        id: 42,
+        japanese: "彼は先週からずっと忙しくしています。",
+        correctAnswer: "He has been busy since last week.",
+        explanation: "開始点からの継続は \"since\" を使います。",
+        hint: "has been busy, since, last week"
+      },
+      {
+        id: 43,
+        japanese: "私たちがそこに着いたとき、雨が降り始めました。",
+        correctAnswer: "When we arrived there, it started to rain.",
+        explanation: "時を表す副詞節では過去形を使います。",
+        hint: "when, arrived, started, rain"
+      },
+      {
+        id: 44,
+        japanese: "彼女は今までに多くの国を訪れたことがあります。",
+        correctAnswer: "She has visited many countries so far.",
+        explanation: "経験を表す現在完了形を使います。",
+        hint: "has visited, many countries, so far"
+      },
+      {
+        id: 45,
+        japanese: "私は明日の今頃、飛行機の中にいるでしょう。",
+        correctAnswer: "I will be on a plane at this time tomorrow.",
+        explanation: "未来のある時点での状態は未来進行形を使います。",
+        hint: "will be, plane, this time tomorrow"
+      },
+      {
+        id: 46,
+        japanese: "彼は昨日の夜、ずっと勉強していました。",
+        correctAnswer: "He was studying all night last night.",
+        explanation: "過去のある時点での継続は過去進行形を使います。",
+        hint: "was studying, all night, last night"
+      },
+      {
+        id: 47,
+        japanese: "私たちは来月までにこのプロジェクトを完成させる予定です。",
+        correctAnswer: "We will have finished this project by next month.",
+        explanation: "未来のある時点での完了は未来完了形を使います。",
+        hint: "will have finished, project, by next month"
+      },
+      {
+        id: 48,
+        japanese: "彼女は5歳のときから ピアノを弾いています。",
+        correctAnswer: "She has been playing the piano since she was five years old.",
+        explanation: "過去のある時点からの継続は現在完了進行形を使います。",
+        hint: "has been playing, piano, since, five years old"
+      },
+      {
+        id: 49,
+        japanese: "私は昨日その本を読み終えました。",
+        correctAnswer: "I finished reading the book yesterday.",
+        explanation: "過去の完了した行為は過去形を使います。",
+        hint: "finished reading, book, yesterday"
+      },
+      {
+        id: 50,
+        japanese: "彼らは来年結婚する予定です。",
+        correctAnswer: "They are going to get married next year.",
+        explanation: "予定を表すときは \"be going to\" も使えます。",
+        hint: "are going to, get married, next year"
+      }
+    ],
+    hard: [
+      {
+        id: 51,
+        japanese: "彼が到着するまでに、私たちはすべての準備を終えているでしょう。",
+        correctAnswer: "By the time he arrives, we will have finished all the preparations.",
+        explanation: "\"By the time\" は時を表す副詞節で、未来完了と組み合わせます。"
+      },
+      {
+        id: 52,
+        japanese: "もし昨日雨が降らなかったら、私たちはピクニックに行ったでしょう。",
+        correctAnswer: "If it had not rained yesterday, we would have gone on a picnic.",
+        explanation: "仮定法過去完了で、過去の事実と反対の仮定を表現します。"
+      },
+      {
+        id: 53,
+        japanese: "彼女は会議が始まる前に、すでに資料を準備していました。",
+        correctAnswer: "She had already prepared the materials before the meeting started.",
+        explanation: "過去完了形で、過去のある時点より前の完了を表現します。"
+      },
+      {
+        id: 54,
+        japanese: "私が子供の頃は、毎年夏に祖父母の家を訪れていました。",
+        correctAnswer: "When I was a child, I used to visit my grandparents' house every summer.",
+        explanation: "\"used to\" で過去の習慣を表現します。"
+      },
+      {
+        id: 55,
+        japanese: "来週の今頃、私たちは新しいオフィスで働いているでしょう。",
+        correctAnswer: "This time next week, we will be working in our new office.",
+        explanation: "未来進行形で、未来のある時点での進行中の動作を表現します。"
+      },
+      {
+        id: 56,
+        japanese: "彼は長年の間、その問題について考え続けてきました。",
+        correctAnswer: "He has been thinking about that problem for many years.",
+        explanation: "現在完了進行形で、過去から現在まで続く動作を表現します。"
+      },
+      {
+        id: 57,
+        japanese: "その時点で、私たちはすでに5時間も待っていたのです。",
+        correctAnswer: "At that point, we had already been waiting for five hours.",
+        explanation: "過去完了進行形で、過去のある時点までの継続を表現します。"
+      },
+      {
+        id: 58,
+        japanese: "彼が説明を終える頃には、みんな理解しているでしょう。",
+        correctAnswer: "By the time he finishes explaining, everyone will have understood.",
+        explanation: "時の副詞節と未来完了の組み合わせです。"
+      },
+      {
+        id: 59,
+        japanese: "もし私があの時もっと勉強していたら、今頃もっと良い仕事に就いていたでしょう。",
+        correctAnswer: "If I had studied harder at that time, I would have a better job now.",
+        explanation: "混合仮定法で、過去の仮定と現在の帰結を表現します。"
+      },
+      {
+        id: 60,
+        japanese: "彼女は卒業するまでに、すでに3年間そのプロジェクトに取り組んでいるでしょう。",
+        correctAnswer: "By the time she graduates, she will have been working on that project for three years.",
+        explanation: "未来完了進行形で、未来のある時点までの継続期間を表現します。"
+      }
+    ]
+  },
+  'modals': {
+    easy: [
+      {
+        id: 61,
+        japanese: "私は泳ぐことができます。",
+        correctAnswer: "I can swim.",
+        explanation: "能力を表すときは \"can\" を使います。",
+        choices: ["I can swim.", "I can to swim.", "I can swimming.", "I am can swim."]
+      }
+    ],
+    normal: [
+      {
+        id: 71,
+        japanese: "私は明日までにレポートを提出しなければなりません。",
+        correctAnswer: "I have to submit my report by tomorrow.",
+        explanation: "外部からの義務は \"have to\" を使うことが多いです。",
+        hint: "have to submit, report, by tomorrow"
+      }
+    ],
+    hard: [
+      {
+        id: 81,
+        japanese: "彼は約束を守ったはずなのに、来ませんでした。",
+        correctAnswer: "He should have kept his promise, but he didn't come.",
+        explanation: "\"should have + 過去分詞\" で過去にすべきだったことを表現します。"
+      }
+    ]
+  },
+  'passive': {
+    easy: [
+      {
+        id: 91,
+        japanese: "この本は多くの人に読まれています。",
+        correctAnswer: "This book is read by many people.",
+        explanation: "受動態は \"be動詞 + 過去分詞\" で作ります。",
+        choices: ["This book is read by many people.", "This book reads by many people.", "This book is reading by many people.", "This book was read by many people."]
+      }
+    ],
+    normal: [
+      {
+        id: 101,
+        japanese: "この建物は1950年に建てられました。",
+        correctAnswer: "This building was built in 1950.",
+        explanation: "過去の受動態で年を表すときは \"in\" を使います。",
+        hint: "building, was built, 1950"
+      }
+    ],
+    hard: [
+      {
+        id: 111,
+        japanese: "その決定が下される前に、すべての選択肢が検討されていました。",
+        correctAnswer: "All options had been considered before the decision was made.",
+        explanation: "過去完了の受動態で、時系列を明確にします。"
+      }
+    ]
+  },
+  'relative': {
+    easy: [
+      {
+        id: 121,
+        japanese: "私には英語を話す友達がいます。",
+        correctAnswer: "I have a friend who speaks English.",
+        explanation: "人を修飾するときは関係代名詞 \"who\" を使います。",
+        choices: ["I have a friend who speaks English.", "I have a friend which speaks English.", "I have a friend that speak English.", "I have a friend who speak English."]
+      }
+    ],
+    normal: [
+      {
+        id: 131,
+        japanese: "私が昨日会った人は有名な作家でした。",
+        correctAnswer: "The person whom I met yesterday was a famous writer.",
+        explanation: "目的格の関係代名詞は \"whom\" を使います（\"who\" でも可）。",
+        hint: "person, whom, met yesterday, famous writer"
+      }
+    ],
+    hard: [
+      {
+        id: 141,
+        japanese: "彼が言ったことは、私たちが予想していたことと全く異なっていました。",
+        correctAnswer: "What he said was completely different from what we had expected.",
+        explanation: "関係代名詞 \"what\" は「～すること」を表し、先行詞を含みます。"
+      }
+    ]
+  },
+  'subjunctive': {
+    easy: [
+      {
+        id: 151,
+        japanese: "もし明日雨が降ったら、家にいます。",
+        correctAnswer: "If it rains tomorrow, I will stay at home.",
+        explanation: "現在の仮定では、if節は現在形、主節は未来形を使います。",
+        choices: ["If it rains tomorrow, I will stay at home.", "If it will rain tomorrow, I stay at home.", "If it rained tomorrow, I will stay at home.", "If it rains tomorrow, I stayed at home."]
+      }
+    ],
+    normal: [
+      {
+        id: 161,
+        japanese: "もし昨日雨が降らなかったら、ピクニックに行ったでしょう。",
+        correctAnswer: "If it had not rained yesterday, we would have gone on a picnic.",
+        explanation: "仮定法過去完了では、if節は過去完了、主節は \"would have + 過去分詞\" を使います。",
+        hint: "had not rained, would have gone, picnic"
+      }
+    ],
+    hard: [
+      {
+        id: 171,
+        japanese: "もし彼があの時違う決断をしていたら、今頃は全く違う人生を送っていたでしょう。",
+        correctAnswer: "If he had made a different decision at that time, he would be living a completely different life now.",
+        explanation: "混合仮定法：過去の仮定の条件と現在の仮定の結果を組み合わせます。"
+      }
+    ]
+  },
+  'comparison': {
+    easy: [
+      {
+        id: 181,
+        japanese: "彼は私より背が高いです。",
+        correctAnswer: "He is taller than me.",
+        explanation: "比較級は \"形容詞 + er + than\" で表現します。",
+        choices: ["He is taller than me.", "He is more tall than me.", "He is tall than me.", "He is taller then me."]
+      }
+    ],
+    normal: [
+      {
+        id: 191,
+        japanese: "この課題は私が思っていたよりもずっと難しいです。",
+        correctAnswer: "This assignment is much more difficult than I thought.",
+        explanation: "比較級を強調するときは \"much\" を使います。",
+        hint: "much more difficult, than I thought"
+      }
+    ],
+    hard: [
+      {
+        id: 201,
+        japanese: "彼の成功は、才能よりもむしろ努力の結果です。",
+        correctAnswer: "His success is more a result of effort than of talent.",
+        explanation: "\"more A than B\" で「BというよりむしろA」を表現します。"
+      }
+    ]
+  },
+  'participle': {
+    easy: [
+      {
+        id: 211,
+        japanese: "私は走っている男の子を見ました。",
+        correctAnswer: "I saw a boy running.",
+        explanation: "現在分詞 (-ing) で進行中の動作を修飾します。",
+        choices: ["I saw a boy running.", "I saw a boy run.", "I saw a boy ran.", "I saw a boy to run."]
+      }
+    ],
+    normal: [
+      {
+        id: 221,
+        japanese: "駅に向かって走りながら、彼は時計を見ました。",
+        correctAnswer: "Running towards the station, he looked at his watch.",
+        explanation: "分詞構文で同時動作を表現します。",
+        hint: "Running towards, station, looked at watch"
+      }
+    ],
+    hard: [
+      {
+        id: 231,
+        japanese: "長年の経験を積んだ結果、彼は専門家として認められるようになりました。",
+        correctAnswer: "Having accumulated years of experience, he came to be recognized as an expert.",
+        explanation: "完了分詞構文と受動態の組み合わせです。"
+      }
+    ]
+  },
+  'infinitive': {
+    easy: [
+      {
+        id: 241,
+        japanese: "私は英語を勉強したいです。",
+        correctAnswer: "I want to study English.",
+        explanation: "\"want\" の後は不定詞 \"to + 動詞の原形\" を使います。",
+        choices: ["I want to study English.", "I want study English.", "I want studying English.", "I want studied English."]
+      }
+    ],
+    normal: [
+      {
+        id: 251,
+        japanese: "私は彼に英語を教えてもらいました。",
+        correctAnswer: "I had him teach me English.",
+        explanation: "使役動詞 \"have\" の後は原形不定詞（to なし）を使います。",
+        hint: "had him teach, English"
+      }
+    ],
+    hard: [
+      {
+        id: 261,
+        japanese: "彼は問題を解決したと言われています。",
+        correctAnswer: "He is said to have solved the problem.",
+        explanation: "\"be said to have + 過去分詞\" で完了の不定詞を使った伝聞表現です。"
+      }
+    ]
+  }
+};
+
+// Helper function to get questions by category and difficulty
+export function getQuestions(category: Category, difficulty: 'easy' | 'normal' | 'hard'): QuestionData[] {
+  console.log('=== getQuestions called ===');
+  console.log('category:', category);
+  console.log('difficulty:', difficulty);
+  console.log('questionsByCategory keys:', Object.keys(questionsByCategory));
+  console.log('category exists in data:', category in questionsByCategory);
+  
+  if (!(category in questionsByCategory)) {
+    console.error('Category not found:', category);
+    return [];
+  }
+  
+  const categoryData = questionsByCategory[category];
+  console.log('difficulty exists in category:', difficulty in categoryData);
+  
+  if (!(difficulty in categoryData)) {
+    console.error('Difficulty not found for category:', category, difficulty);
+    return [];
+  }
+  
+  const questions = categoryData[difficulty];
+  console.log('Found questions:', questions.length);
+  return questions || [];
+}
+
+// Helper function to get all categories
+export function getAllCategories(): Category[] {
+  return Object.keys(questionsByCategory) as Category[];
+}
