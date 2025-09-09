@@ -3,10 +3,11 @@ import { Card, CardContent, CardHeader } from "./ui/card";
 import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
-import { ArrowLeft, RefreshCw, Star } from "lucide-react";
+import { ArrowLeft, RefreshCw, Star, Volume2 } from "lucide-react";
 import { VocabularyWord, getVocabularyWords } from "../data/vocabulary";
 import { DataManager } from "../utils/dataManager";
 import { calculateVocabularyXP } from "../utils/xpCalculator";
+import { speakEnglishWord, isSpeechSynthesisSupported } from "../utils/speechSynthesis";
 
 interface VocabularyCardProps {
   onBack: () => void;
@@ -41,6 +42,7 @@ export function VocabularyCard({ onBack }: VocabularyCardProps) {
   });
   const [showMeaning, setShowMeaning] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   useEffect(() => {
     // 今日の学習用の単語をランダムに選択（デフォルト20個）
@@ -133,6 +135,19 @@ export function VocabularyCard({ onBack }: VocabularyCardProps) {
 
   const toggleMeaning = () => {
     setShowMeaning(!showMeaning);
+  };
+
+  const handleSpeak = async () => {
+    if (!currentWord || !isSpeechSynthesisSupported()) return;
+    
+    try {
+      setIsSpeaking(true);
+      await speakEnglishWord(currentWord.word);
+    } catch (error) {
+      console.error('音声再生エラー:', error);
+    } finally {
+      setIsSpeaking(false);
+    }
   };
 
   if (!currentWord) {
@@ -242,18 +257,36 @@ export function VocabularyCard({ onBack }: VocabularyCardProps) {
         </div>
 
         {/* Vocabulary Card */}
-        <Card 
-          className="mx-4 shadow-lg border-0 bg-white cursor-pointer transition-all duration-200 active:scale-95"
-          onClick={toggleMeaning}
-        >
+        <Card className="mx-4 shadow-lg border-0 bg-white">
           <CardHeader className="text-center pb-4">
-            <Badge 
-              variant="outline" 
-              className="mx-auto w-fit text-xs mb-2"
+            <div className="flex items-center justify-between mb-2">
+              <Badge 
+                variant="outline" 
+                className="text-xs"
+              >
+                {currentWord.partOfSpeech}
+              </Badge>
+              {isSpeechSynthesisSupported() && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSpeak();
+                  }}
+                  disabled={isSpeaking}
+                  className="p-2"
+                >
+                  <Volume2 className={`w-4 h-4 ${isSpeaking ? 'animate-pulse' : ''}`} />
+                </Button>
+              )}
+            </div>
+            <div 
+              className="text-4xl mb-2 font-normal cursor-pointer hover:text-blue-600 transition-colors"
+              onClick={toggleMeaning}
             >
-              {currentWord.partOfSpeech}
-            </Badge>
-            <div className="text-4xl mb-2 font-normal">{currentWord.word}</div>
+              {currentWord.word}
+            </div>
             {showMeaning && (
               <div className="text-xl text-muted-foreground">
                 {currentWord.meaning}
