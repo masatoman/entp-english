@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Progress } from "./ui/progress";
-import { 
-  BookOpen, 
-  PenTool, 
-  Trophy, 
+import {
+  BookOpen,
+  PenTool,
+  Trophy,
   Target,
   Flame,
-  Star
+  Star,
+  Settings
 } from "lucide-react";
 import { DataManager } from "../utils/dataManager";
 import { UserStats } from "../data/achievements";
@@ -20,9 +21,10 @@ interface HomeProps {
   onNavigateToEssay: () => void;
   onNavigateToCombinedTest: () => void;
   onNavigateToAchievements: () => void;
+  onNavigateToAppSettings: () => void;
 }
 
-export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateToGrammarQuiz, onNavigateToEssay, onNavigateToCombinedTest, onNavigateToAchievements }: HomeProps) {
+export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateToGrammarQuiz, onNavigateToEssay, onNavigateToCombinedTest, onNavigateToAchievements, onNavigateToAppSettings }: HomeProps) {
   const [userStats, setUserStats] = useState<UserStats>(DataManager.getUserStats());
   const [todayXP, setTodayXP] = useState(0);
   
@@ -61,7 +63,21 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
     };
   }, []);
 
-  const dailyXPGoal = 100; // 設定可能にする場合は、ユーザー設定やレベルに応じて変更
+  // 1日のXP目標を設定から読み込み
+  const getDailyXPGoal = () => {
+    try {
+      const saved = localStorage.getItem('app-settings');
+      if (saved) {
+        const settings = JSON.parse(saved);
+        return settings.dailyXPGoal || 100;
+      }
+    } catch (error) {
+      console.error('Error loading daily XP goal:', error);
+    }
+    return 100;
+  };
+  
+  const dailyXPGoal = getDailyXPGoal();
   const streak = userStats.currentStreak;
   const level = Math.floor(userStats.totalXP / 100) + 1; // 100XP毎にレベルアップ
   
@@ -118,6 +134,15 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
       color: 'from-purple-500 to-purple-600',
       available: true,
       onClick: onNavigateToAchievements
+    },
+    {
+      id: 'settings',
+      title: 'アプリ設定',
+      description: '全般設定・通知設定',
+      icon: Settings,
+      color: 'from-gray-500 to-gray-600',
+      available: true,
+      onClick: onNavigateToAppSettings
     }
   ];
 

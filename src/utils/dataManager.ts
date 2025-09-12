@@ -197,6 +197,23 @@ export class DataManager {
     stats.lastStudyDate = today;
 
     this.saveUserStats(stats);
+
+    // 通知を送信
+    this.sendNotifications(stats);
+  }
+
+  // 通知を送信
+  private static async sendNotifications(stats: UserStats): Promise<void> {
+    try {
+      const { notificationManager } = await import('./notificationManager');
+      
+      // 連続学習記録の通知
+      if (stats.currentStreak > 1) {
+        await notificationManager.showStreakReminder(stats.currentStreak);
+      }
+    } catch (error) {
+      console.error('Error sending notifications:', error);
+    }
   }
 
   // 語彙学習の記録

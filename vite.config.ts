@@ -10,6 +10,8 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      srcDir: 'public',
+      filename: 'sw-custom.js',
       manifest: {
         name: 'ENTP英語学習アプリ',
         short_name: 'ENTP英語',
