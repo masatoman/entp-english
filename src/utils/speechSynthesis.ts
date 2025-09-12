@@ -53,12 +53,46 @@ export function speakText(text: string, options: SpeechOptions = {}): Promise<vo
  * 英語の単語を発音する
  * @param word 発音する単語
  */
-export function speakEnglishWord(word: string): Promise<void> {
-  return speakText(word, {
-    lang: 'en-US',
-    rate: 0.7,  // 少しゆっくりめ
-    pitch: 1.0,
-    volume: 1.0
+export async function speakEnglishWord(word: string): Promise<void> {
+  // ブラウザがSpeech Synthesis APIをサポートしているかチェック
+  if (!('speechSynthesis' in window)) {
+    throw new Error('このブラウザは音声合成をサポートしていません');
+  }
+
+  // 音声の読み込みを待つ
+  await waitForVoices();
+
+  return new Promise((resolve, reject) => {
+    // 既存の音声を停止
+    speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(word);
+    
+    // 英語音声を強制的に選択
+    const englishVoice = getEnglishVoice();
+    if (englishVoice) {
+      utterance.voice = englishVoice;
+      console.log('使用する音声:', englishVoice.name, englishVoice.lang);
+    } else {
+      // 英語音声が見つからない場合は言語コードのみ指定
+      utterance.lang = 'en-US';
+      console.warn('英語音声が見つかりません。デフォルト音声を使用します。');
+    }
+
+    // 音声設定
+    utterance.rate = 0.7;  // 少しゆっくりめ
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+
+    // イベントハンドラー
+    utterance.onend = () => resolve();
+    utterance.onerror = (event) => {
+      console.error('音声合成エラー:', event.error);
+      reject(new Error(`音声合成エラー: ${event.error}`));
+    };
+
+    // 音声を開始
+    speechSynthesis.speak(utterance);
   });
 }
 
@@ -102,6 +136,31 @@ export function getAvailableVoices(): SpeechSynthesisVoice[] {
 }
 
 /**
+ * 音声の読み込みを待つ
+ */
+export function waitForVoices(): Promise<SpeechSynthesisVoice[]> {
+  return new Promise((resolve) => {
+    const voices = getAvailableVoices();
+    if (voices.length > 0) {
+      resolve(voices);
+      return;
+    }
+
+    // 音声が読み込まれるまで待機
+    const checkVoices = () => {
+      const availableVoices = getAvailableVoices();
+      if (availableVoices.length > 0) {
+        resolve(availableVoices);
+      } else {
+        setTimeout(checkVoices, 100);
+      }
+    };
+    
+    checkVoices();
+  });
+}
+
+/**
  * 英語の音声を取得（優先度順）
  */
 export function getEnglishVoice(): SpeechSynthesisVoice | null {
@@ -109,15 +168,29 @@ export function getEnglishVoice(): SpeechSynthesisVoice | null {
   
   // 英語の音声を優先度順で検索
   const englishVoices = voices.filter(voice => 
-    voice.lang.startsWith('en')
+    voice.lang.startsWith('en') && voice.localService !== false
   );
+
+  console.log('利用可能な英語音声:', englishVoices.map(v => `${v.name} (${v.lang})`));
 
   // 優先度: US > GB > その他の英語
   const usVoice = englishVoices.find(voice => voice.lang === 'en-US');
-  if (usVoice) return usVoice;
+  if (usVoice) {
+    console.log('選択された音声: US', usVoice.name);
+    return usVoice;
+  }
 
   const gbVoice = englishVoices.find(voice => voice.lang === 'en-GB');
-  if (gbVoice) return gbVoice;
+  if (gbVoice) {
+    console.log('選択された音声: GB', gbVoice.name);
+    return gbVoice;
+  }
 
-  return englishVoices[0] || null;
+  if (englishVoices.length > 0) {
+    console.log('選択された音声: その他', englishVoices[0].name);
+    return englishVoices[0];
+  }
+
+  console.warn('英語音声が見つかりません');
+  return null;
 }
