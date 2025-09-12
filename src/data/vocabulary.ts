@@ -6,6 +6,7 @@ export interface VocabularyWord {
   example: string;
   exampleTranslation: string;
   level: 'beginner' | 'intermediate' | 'advanced';
+  category?: 'toeic' | 'business' | 'daily' | 'academic';
 }
 
 export const vocabularyWords: VocabularyWord[] = [
@@ -471,7 +472,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "This discovery has significant implications.",
     exampleTranslation: "この発見は重要な意味を持っています。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 52,
@@ -480,7 +482,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "動詞",
     example: "We will implement the new policy next month.",
     exampleTranslation: "来月から新しい方針を実施します。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 53,
@@ -489,7 +492,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "動詞",
     example: "Teachers evaluate students' progress regularly.",
     exampleTranslation: "教師は定期的に生徒の進歩を評価します。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 54,
@@ -498,7 +502,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "Every action has a consequence.",
     exampleTranslation: "すべての行動には結果があります。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 55,
@@ -507,7 +512,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "This is a sophisticated system.",
     exampleTranslation: "これは洗練されたシステムです。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 56,
@@ -516,7 +522,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "We need a comprehensive solution.",
     exampleTranslation: "包括的な解決策が必要です。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 57,
@@ -525,7 +532,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "There has been substantial progress.",
     exampleTranslation: "実質的な進歩がありました。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 58,
@@ -534,7 +542,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "This is a fundamental principle.",
     exampleTranslation: "これは基本的な原則です。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 59,
@@ -543,7 +552,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "We need strategic planning.",
     exampleTranslation: "戦略的な計画が必要です。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 60,
@@ -552,7 +562,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "This is an innovative approach.",
     exampleTranslation: "これは革新的なアプローチです。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 61,
@@ -561,7 +572,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "動詞",
     example: "We must collaborate to succeed.",
     exampleTranslation: "成功するために協力しなければなりません。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 62,
@@ -570,7 +582,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "動詞",
     example: "This tool will facilitate learning.",
     exampleTranslation: "このツールは学習を促進します。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 63,
@@ -579,7 +592,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "動詞",
     example: "We need to optimize our processes.",
     exampleTranslation: "プロセスを最適化する必要があります。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 64,
@@ -588,7 +602,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "動詞",
     example: "We must prioritize urgent tasks.",
     exampleTranslation: "緊急のタスクを優先しなければなりません。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 65,
@@ -597,7 +612,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "動詞",
     example: "We need to synthesize all the information.",
     exampleTranslation: "すべての情報を統合する必要があります。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 66,
@@ -606,7 +622,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "Our methodology is scientifically sound.",
     exampleTranslation: "私たちの方法論は科学的に妥当です。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 67,
@@ -615,7 +632,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "We need better infrastructure.",
     exampleTranslation: "より良いインフラが必要です。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 68,
@@ -624,7 +642,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "Let's consider this from a different perspective.",
     exampleTranslation: "異なる視点からこれを考えてみましょう。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 69,
@@ -633,7 +652,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "This is an interesting phenomenon.",
     exampleTranslation: "これは興味深い現象です。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 70,
@@ -642,7 +662,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "We need a new paradigm for this problem.",
     exampleTranslation: "この問題には新しいパラダイムが必要です。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 71,
@@ -651,7 +672,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "What is the criterion for success?",
     exampleTranslation: "成功の基準は何ですか？",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 72,
@@ -660,7 +682,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "We need to test this hypothesis.",
     exampleTranslation: "この仮説を検証する必要があります。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 73,
@@ -669,7 +692,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "The synthesis of ideas was successful.",
     exampleTranslation: "アイデアの統合は成功しました。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 74,
@@ -678,7 +702,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "The analysis shows clear results.",
     exampleTranslation: "分析は明確な結果を示しています。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 75,
@@ -687,7 +712,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "The implementation was successful.",
     exampleTranslation: "実装は成功しました。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 76,
@@ -696,7 +722,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "The evaluation process is thorough.",
     exampleTranslation: "評価プロセスは徹底的です。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 77,
@@ -705,7 +732,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "Optimization is an ongoing process.",
     exampleTranslation: "最適化は継続的なプロセスです。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 78,
@@ -714,7 +742,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "Collaboration is key to success.",
     exampleTranslation: "協力が成功の鍵です。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 79,
@@ -723,7 +752,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "Innovation drives progress.",
     exampleTranslation: "革新が進歩を推進します。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
   {
     id: 80,
@@ -732,7 +762,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "Sustainability is our priority.",
     exampleTranslation: "持続可能性が私たちの優先事項です。",
-    level: "advanced"
+    level: "advanced",
+    category: "academic"
   },
 
   // TOEIC頻出語彙 (TOEIC Frequent Words)
@@ -743,7 +774,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "The company's revenue increased by 20%.",
     exampleTranslation: "会社の収益は20%増加しました。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "toeic"
   },
   {
     id: 82,
@@ -752,7 +784,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "We need to stay within our budget.",
     exampleTranslation: "予算内に収める必要があります。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "toeic"
   },
   {
     id: 83,
@@ -761,7 +794,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "The deadline for this project is Friday.",
     exampleTranslation: "このプロジェクトの締切は金曜日です。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "toeic"
   },
   {
     id: 84,
@@ -770,7 +804,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "Please check your schedule for next week.",
     exampleTranslation: "来週のスケジュールを確認してください。",
-    level: "beginner"
+    level: "beginner",
+    category: "toeic"
   },
   {
     id: 85,
@@ -779,7 +814,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "We have a meeting at 3 PM today.",
     exampleTranslation: "今日の午後3時に会議があります。",
-    level: "beginner"
+    level: "beginner",
+    category: "toeic"
   },
   {
     id: 86,
@@ -788,7 +824,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "She gave an excellent presentation.",
     exampleTranslation: "彼女は素晴らしいプレゼンテーションをしました。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "toeic"
   },
   {
     id: 87,
@@ -797,7 +834,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "Please sign the contract by tomorrow.",
     exampleTranslation: "明日までに契約書にサインしてください。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "toeic"
   },
   {
     id: 88,
@@ -806,7 +844,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "Customer satisfaction is our priority.",
     exampleTranslation: "顧客満足度が私たちの優先事項です。",
-    level: "beginner"
+    level: "beginner",
+    category: "toeic"
   },
   {
     id: 89,
@@ -815,7 +854,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "All employees must attend the training.",
     exampleTranslation: "すべての従業員が研修に参加する必要があります。",
-    level: "beginner"
+    level: "beginner",
+    category: "toeic"
   },
   {
     id: 90,
@@ -824,7 +864,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "Which department do you work in?",
     exampleTranslation: "どの部署で働いていますか？",
-    level: "beginner"
+    level: "beginner",
+    category: "toeic"
   },
   {
     id: 91,
@@ -833,7 +874,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "This product is very popular.",
     exampleTranslation: "この製品はとても人気があります。",
-    level: "beginner"
+    level: "beginner",
+    category: "toeic"
   },
   {
     id: 92,
@@ -842,7 +884,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "Our service is available 24/7.",
     exampleTranslation: "私たちのサービスは24時間365日利用可能です。",
-    level: "beginner"
+    level: "beginner",
+    category: "toeic"
   },
   {
     id: 93,
@@ -851,7 +894,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "The market is very competitive.",
     exampleTranslation: "市場は非常に競争が激しいです。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "toeic"
   },
   {
     id: 94,
@@ -860,7 +904,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "The company made a good profit this year.",
     exampleTranslation: "会社は今年良い利益を上げました。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "toeic"
   },
   {
     id: 95,
@@ -869,7 +914,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "This is a good investment opportunity.",
     exampleTranslation: "これは良い投資機会です。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "toeic"
   },
   {
     id: 96,
@@ -878,7 +924,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "We need a new marketing strategy.",
     exampleTranslation: "新しいマーケティング戦略が必要です。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "toeic"
   },
   {
     id: 97,
@@ -887,7 +934,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "His performance has improved significantly.",
     exampleTranslation: "彼の業績は大幅に改善されました。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "toeic"
   },
   {
     id: 98,
@@ -896,7 +944,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "We maintain high quality standards.",
     exampleTranslation: "高い品質基準を維持しています。",
-    level: "beginner"
+    level: "beginner",
+    category: "toeic"
   },
   {
     id: 99,
@@ -905,7 +954,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "We need to improve our efficiency.",
     exampleTranslation: "効率を改善する必要があります。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "toeic"
   },
   {
     id: 100,
@@ -914,7 +964,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "Productivity has increased this month.",
     exampleTranslation: "今月は生産性が向上しました。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "toeic"
   },
 
   // ビジネス英語 (Business English)
@@ -925,7 +976,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "動詞",
     example: "We need to negotiate the terms.",
     exampleTranslation: "条件を交渉する必要があります。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "business"
   },
   {
     id: 102,
@@ -934,7 +986,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "動詞",
     example: "We collaborate with many companies.",
     exampleTranslation: "多くの会社と協力しています。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "business"
   },
   {
     id: 103,
@@ -943,7 +996,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "動詞",
     example: "Please coordinate with the team.",
     exampleTranslation: "チームと調整してください。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "business"
   },
   {
     id: 104,
@@ -952,7 +1006,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "動詞",
     example: "She supervises the entire department.",
     exampleTranslation: "彼女は部署全体を監督しています。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "business"
   },
   {
     id: 105,
@@ -961,7 +1016,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "動詞",
     example: "You should delegate some tasks.",
     exampleTranslation: "いくつかのタスクを委任すべきです。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "business"
   },
   {
     id: 106,
@@ -970,7 +1026,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "動詞",
     example: "This will facilitate communication.",
     exampleTranslation: "これはコミュニケーションを促進します。",
-    level: "advanced"
+    level: "advanced",
+    category: "business"
   },
   {
     id: 107,
@@ -979,7 +1036,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "動詞",
     example: "We need to streamline our processes.",
     exampleTranslation: "プロセスを効率化する必要があります。",
-    level: "advanced"
+    level: "advanced",
+    category: "business"
   },
   {
     id: 108,
@@ -988,7 +1046,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "動詞",
     example: "We can leverage our resources better.",
     exampleTranslation: "リソースをより良く活用できます。",
-    level: "advanced"
+    level: "advanced",
+    category: "business"
   },
   {
     id: 109,
@@ -997,7 +1056,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "She took the initiative to solve the problem.",
     exampleTranslation: "彼女は問題解決の主導権を取りました。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "business"
   },
   {
     id: 110,
@@ -1006,7 +1066,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "We reached an important milestone.",
     exampleTranslation: "重要な節目に到達しました。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "business"
   },
   {
     id: 111,
@@ -1015,7 +1076,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "This is our benchmark for success.",
     exampleTranslation: "これが成功の基準です。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "business"
   },
   {
     id: 112,
@@ -1024,7 +1086,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "We need to consider all stakeholders.",
     exampleTranslation: "すべてのステークホルダーを考慮する必要があります。",
-    level: "advanced"
+    level: "advanced",
+    category: "business"
   },
   {
     id: 113,
@@ -1033,7 +1096,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "We reached a consensus on the issue.",
     exampleTranslation: "その問題について合意に達しました。",
-    level: "advanced"
+    level: "advanced",
+    category: "business"
   },
   {
     id: 114,
@@ -1042,7 +1106,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "We need to study the feasibility.",
     exampleTranslation: "実現可能性を研究する必要があります。",
-    level: "advanced"
+    level: "advanced",
+    category: "business"
   },
   {
     id: 115,
@@ -1051,7 +1116,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "名詞",
     example: "Scalability is important for growth.",
     exampleTranslation: "成長にはスケーラビリティが重要です。",
-    level: "advanced"
+    level: "advanced",
+    category: "business"
   },
 
   // 日常会話でよく使われる単語 (Daily Conversation)
@@ -1062,7 +1128,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "That movie was awesome!",
     exampleTranslation: "あの映画は素晴らしかった！",
-    level: "beginner"
+    level: "beginner",
+    category: "daily"
   },
   {
     id: 117,
@@ -1071,7 +1138,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "The view from here is amazing.",
     exampleTranslation: "ここからの景色は驚くほど美しいです。",
-    level: "beginner"
+    level: "beginner",
+    category: "daily"
   },
   {
     id: 118,
@@ -1080,7 +1148,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "You did a fantastic job!",
     exampleTranslation: "素晴らしい仕事をしましたね！",
-    level: "beginner"
+    level: "beginner",
+    category: "daily"
   },
   {
     id: 119,
@@ -1089,7 +1158,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "The technology is incredible.",
     exampleTranslation: "その技術は信じられないほどです。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "daily"
   },
   {
     id: 120,
@@ -1098,7 +1168,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "We had a wonderful time.",
     exampleTranslation: "素晴らしい時間を過ごしました。",
-    level: "beginner"
+    level: "beginner",
+    category: "daily"
   },
   {
     id: 121,
@@ -1107,7 +1178,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "The weather was terrible yesterday.",
     exampleTranslation: "昨日の天気はひどかったです。",
-    level: "beginner"
+    level: "beginner",
+    category: "daily"
   },
   {
     id: 122,
@@ -1116,7 +1188,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "That was a horrible accident.",
     exampleTranslation: "それは恐ろしい事故でした。",
-    level: "beginner"
+    level: "beginner",
+    category: "daily"
   },
   {
     id: 123,
@@ -1125,7 +1198,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "Your presentation was awesome!",
     exampleTranslation: "あなたのプレゼンテーションは素晴らしかった！",
-    level: "beginner"
+    level: "beginner",
+    category: "daily"
   },
   {
     id: 124,
@@ -1134,7 +1208,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "The food at this restaurant is excellent.",
     exampleTranslation: "このレストランの料理は素晴らしいです。",
-    level: "beginner"
+    level: "beginner",
+    category: "daily"
   },
   {
     id: 125,
@@ -1143,7 +1218,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "She has outstanding leadership skills.",
     exampleTranslation: "彼女は傑出したリーダーシップスキルを持っています。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "daily"
   },
   {
     id: 126,
@@ -1152,7 +1228,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "The progress has been remarkable.",
     exampleTranslation: "進歩は注目すべきものでした。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "daily"
   },
   {
     id: 127,
@@ -1161,7 +1238,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "Your work is very impressive.",
     exampleTranslation: "あなたの仕事はとても印象的です。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "daily"
   },
   {
     id: 128,
@@ -1170,7 +1248,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "She has extraordinary talent.",
     exampleTranslation: "彼女は並外れた才能を持っています。",
-    level: "advanced"
+    level: "advanced",
+    category: "daily"
   },
   {
     id: 129,
@@ -1179,7 +1258,8 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "This is an exceptional opportunity.",
     exampleTranslation: "これは例外的な機会です。",
-    level: "advanced"
+    level: "advanced",
+    category: "daily"
   },
   {
     id: 130,
@@ -1188,13 +1268,26 @@ export const vocabularyWords: VocabularyWord[] = [
     partOfSpeech: "形容詞",
     example: "The results were phenomenal.",
     exampleTranslation: "結果は驚異的でした。",
-    level: "advanced"
+    level: "advanced",
+    category: "daily"
   }
 ];
 
-export function getVocabularyWords(level?: 'beginner' | 'intermediate' | 'advanced'): VocabularyWord[] {
+export function getVocabularyWords(
+  level?: 'beginner' | 'intermediate' | 'advanced',
+  category?: 'all' | 'toeic' | 'business' | 'daily' | 'academic'
+): VocabularyWord[] {
+  let filteredWords = vocabularyWords;
+  
+  // レベルでフィルタリング
   if (level) {
-    return vocabularyWords.filter(word => word.level === level);
+    filteredWords = filteredWords.filter(word => word.level === level);
   }
-  return vocabularyWords;
+  
+  // カテゴリでフィルタリング
+  if (category && category !== 'all') {
+    filteredWords = filteredWords.filter(word => word.category === category);
+  }
+  
+  return filteredWords;
 }

@@ -22,7 +22,6 @@ interface DropZoneProps {
 
 interface DraggableWordProps {
   word: string;
-  isUsed: boolean;
 }
 
 // Detect if device supports touch
@@ -53,11 +52,11 @@ function DropZone({ blankId, droppedWord, onDrop }: DropZoneProps) {
   );
 }
 
-function DraggableWord({ word, isUsed }: DraggableWordProps) {
+function DraggableWord({ word }: DraggableWordProps) {
   const [{ isDragging }, drag] = useDrag({
     type: 'word',
     item: { word },
-    canDrag: !isUsed,
+    canDrag: true,
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -68,10 +67,7 @@ function DraggableWord({ word, isUsed }: DraggableWordProps) {
       ref={drag}
       className={`
         px-4 py-2 rounded-lg border cursor-move transition-all duration-200
-        ${isUsed 
-          ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed opacity-50' 
-          : 'bg-white border-blue-200 hover:bg-blue-50 hover:border-blue-400 shadow-sm'
-        }
+        bg-white border-blue-200 hover:bg-blue-50 hover:border-blue-400 shadow-sm
         ${isDragging ? 'opacity-50' : ''}
         select-none
       `}
@@ -194,7 +190,8 @@ export function GrammarQuiz({ onBack }: GrammarQuizProps) {
     droppedWords[blank.id] && droppedWords[blank.id].trim() !== ''
   );
 
-  const usedWords = Object.values(droppedWords);
+  // 同じ単語を複数回使えるように、使用済み判定を削除
+  const usedWords: string[] = [];
 
   if (!currentQuestion) {
     return (
@@ -264,7 +261,6 @@ export function GrammarQuiz({ onBack }: GrammarQuizProps) {
                     <DraggableWord
                       key={`${word}-${index}`}
                       word={word}
-                      isUsed={usedWords.includes(word)}
                     />
                   ))}
                 </div>

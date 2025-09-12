@@ -83,7 +83,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
       { id: "blank1", position: 2, correctAnswer: "as" },
       { id: "blank2", position: 4, correctAnswer: "as" }
     ],
-    options: ["as", "so", "more", "most", "than", "very"],
+    options: ["as", "as", "so", "more", "most", "than", "very"],
     explanation: "同等比較「as ... as」の構文が正解です。",
     level: "intermediate"
   },

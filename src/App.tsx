@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Home } from "./components/Home";
 import { VocabularyCard } from "./components/VocabularyCard";
+import { VocabularyDifficultySelection } from "./components/VocabularyDifficultySelection";
+import { VocabularyCategorySelection } from "./components/VocabularyCategorySelection";
 import { GrammarQuiz } from "./components/GrammarQuiz";
 import { CombinedTest } from "./components/CombinedTest";
 import { Achievements } from "./components/Achievements";
@@ -50,13 +52,17 @@ function checkAnswer(userAnswer: string, correctAnswer: string, difficulty: 'eas
   }
 }
 
-type Screen = 'home' | 'vocabulary' | 'grammar-quiz' | 'combined-test' | 'achievements' | 'category' | 'difficulty' | 'question' | 'results';
+type Screen = 'home' | 'vocabulary-difficulty' | 'vocabulary-category' | 'vocabulary' | 'grammar-quiz' | 'combined-test' | 'achievements' | 'category' | 'difficulty' | 'question' | 'results';
 type Difficulty = 'easy' | 'normal' | 'hard';
+type VocabularyDifficulty = 'beginner' | 'intermediate' | 'advanced';
+type VocabularyCategory = 'all' | 'toeic' | 'business' | 'daily' | 'academic';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('home');
   const [selectedCategory, setSelectedCategory] = useState<Category>('basic-grammar');
   const [difficulty, setDifficulty] = useState<Difficulty>('easy');
+  const [vocabularyDifficulty, setVocabularyDifficulty] = useState<VocabularyDifficulty>('intermediate');
+  const [vocabularyCategory, setVocabularyCategory] = useState<VocabularyCategory>('all');
   const [questions, setQuestions] = useState<QuestionData[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
@@ -67,6 +73,16 @@ export default function App() {
   };
 
   const handleNavigateToVocabulary = () => {
+    setCurrentScreen('vocabulary-difficulty');
+  };
+
+  const handleSelectVocabularyDifficulty = (selectedDifficulty: VocabularyDifficulty) => {
+    setVocabularyDifficulty(selectedDifficulty);
+    setCurrentScreen('vocabulary-category');
+  };
+
+  const handleSelectVocabularyCategory = (selectedCategory: VocabularyCategory) => {
+    setVocabularyCategory(selectedCategory);
     setCurrentScreen('vocabulary');
   };
 
@@ -212,8 +228,26 @@ export default function App() {
         />
       )}
       
+      {currentScreen === 'vocabulary-difficulty' && (
+        <VocabularyDifficultySelection 
+          onBack={handleBackToHome}
+          onSelectDifficulty={handleSelectVocabularyDifficulty}
+        />
+      )}
+      
+      {currentScreen === 'vocabulary-category' && (
+        <VocabularyCategorySelection 
+          onBack={() => setCurrentScreen('vocabulary-difficulty')}
+          onSelectCategory={handleSelectVocabularyCategory}
+        />
+      )}
+      
       {currentScreen === 'vocabulary' && (
-        <VocabularyCard onBack={handleBackToHome} />
+        <VocabularyCard 
+          onBack={() => setCurrentScreen('vocabulary-category')} 
+          difficulty={vocabularyDifficulty}
+          category={vocabularyCategory}
+        />
       )}
       
       {currentScreen === 'grammar-quiz' && (
@@ -251,6 +285,7 @@ export default function App() {
           difficulty={difficulty}
           category={selectedCategory}
           onAnswer={handleAnswer}
+          onBack={handleChangeDifficulty}
         />
       )}
       

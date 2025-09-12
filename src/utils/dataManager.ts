@@ -169,14 +169,25 @@ export class DataManager {
     }
 
     // ストリークの更新
-    if (stats.lastStudyDate === yesterday) {
+    console.log('Streak calculation:', {
+      lastStudyDate: stats.lastStudyDate,
+      today,
+      yesterday,
+      currentStreak: stats.currentStreak
+    });
+    
+    if (stats.lastStudyDate === today) {
+      // 今日既に学習している場合はストリークは変更しない
+      console.log('Already studied today, streak unchanged');
+    } else if (stats.lastStudyDate === yesterday) {
       // 昨日も学習していた場合、ストリークを継続
       stats.currentStreak += 1;
-    } else if (stats.lastStudyDate !== today) {
+      console.log('Streak continued:', stats.currentStreak);
+    } else {
       // 昨日学習していない場合、ストリークをリセット
       stats.currentStreak = 1;
+      console.log('Streak reset to 1');
     }
-    // 今日既に学習している場合はストリークは変更しない
 
     // 最長ストリークの更新
     if (stats.currentStreak > stats.longestStreak) {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
@@ -11,6 +11,8 @@ import { speakEnglishWord, isSpeechSynthesisSupported } from "../utils/speechSyn
 
 interface VocabularyCardProps {
   onBack: () => void;
+  difficulty?: 'beginner' | 'intermediate' | 'advanced';
+  category?: 'all' | 'toeic' | 'business' | 'daily' | 'academic';
 }
 
 interface StudySession {
@@ -30,7 +32,7 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
-export function VocabularyCard({ onBack }: VocabularyCardProps) {
+export function VocabularyCard({ onBack, difficulty = 'intermediate', category = 'all' }: VocabularyCardProps) {
   const [words, setWords] = useState<VocabularyWord[]>([]);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [session, setSession] = useState<StudySession>({
@@ -45,10 +47,31 @@ export function VocabularyCard({ onBack }: VocabularyCardProps) {
   const [isSpeaking, setIsSpeaking] = useState(false);
 
   useEffect(() => {
-    // 今日の学習用の単語をランダムに選択（デフォルト20個）
-    const allWords = getVocabularyWords();
+    // 選択された難易度とカテゴリの単語を取得
+    const filteredWords = getVocabularyWords(difficulty, category);
+    console.log('VocabularyCard - フィルタリング結果:', {
+      difficulty,
+      category,
+      filteredWordsCount: filteredWords.length,
+      filteredWords: filteredWords.slice(0, 5) // 最初の5個を表示
+    });
+    
+    if (filteredWords.length === 0) {
+      console.error('VocabularyCard - 該当する単語が見つかりません:', { difficulty, category });
+      // エラー状態を設定
+      setWords([]);
+      setSession({
+        totalWords: 0,
+        currentIndex: 0,
+        knownWords: 0,
+        unknownWords: 0,
+        studiedWords: new Set()
+      });
+      return;
+    }
+    
     const wordCount = 20; // 設定可能にする場合は、propsや設定から取得
-    const shuffledWords = shuffleArray(allWords).slice(0, wordCount);
+    const shuffledWords = shuffleArray(filteredWords).slice(0, wordCount);
     setWords(shuffledWords);
     setSession({
       totalWords: shuffledWords.length,
@@ -57,7 +80,7 @@ export function VocabularyCard({ onBack }: VocabularyCardProps) {
       unknownWords: 0,
       studiedWords: new Set()
     });
-  }, []);
+  }, [difficulty, category]);
 
   // 語彙学習セッション完了時の処理
   useEffect(() => {
@@ -117,9 +140,9 @@ export function VocabularyCard({ onBack }: VocabularyCardProps) {
   };
 
   const handleRestart = () => {
-    const allWords = getVocabularyWords();
+    const filteredWords = getVocabularyWords(difficulty, category);
     const wordCount = 20; // 設定可能にする場合は、propsや設定から取得
-    const shuffledWords = shuffleArray(allWords).slice(0, wordCount);
+    const shuffledWords = shuffleArray(filteredWords).slice(0, wordCount);
     setWords(shuffledWords);
     setCurrentWordIndex(0);
     setSession({
@@ -162,6 +185,47 @@ export function VocabularyCard({ onBack }: VocabularyCardProps) {
   }
 
   // 完了画面の表示
+  // 単語が0個の場合のエラー画面
+  if (words.length === 0 && !isCompleted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-red-50 to-white">
+        <div className="max-w-md mx-auto p-4 space-y-6">
+          {/* Header */}
+          <div className="flex items-center justify-between pt-8">
+            <Button variant="ghost" onClick={onBack} className="p-2">
+              <ArrowLeft className="w-5 h-5" />
+            </Button>
+            <h1 className="text-xl">エラー</h1>
+            <div className="w-10" />
+          </div>
+
+          {/* エラーメッセージ */}
+          <Card className="text-center border-0 shadow-lg bg-gradient-to-br from-red-50 to-pink-50">
+            <CardContent className="p-8">
+              <div className="text-6xl mb-4">⚠️</div>
+              <h2 className="text-2xl font-bold text-red-800 mb-2">単語が見つかりません</h2>
+              <p className="text-red-700 mb-6">
+                選択した条件（{difficulty === 'beginner' ? '初級' : 
+                 difficulty === 'intermediate' ? '中級' : '上級'} + 
+                {category === 'all' ? 'すべて' :
+                 category === 'toeic' ? 'TOEIC' :
+                 category === 'business' ? 'ビジネス' :
+                 category === 'daily' ? '日常' : '学術'}）に該当する単語がありません。
+              </p>
+              
+              {/* アクションボタン */}
+              <div className="space-y-3">
+                <Button onClick={onBack} className="w-full" size="lg">
+                  カテゴリ選択に戻る
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
   if (isCompleted) {
     const accuracy = session.totalWords > 0 ? Math.round((session.knownWords / session.totalWords) * 100) : 0;
     const xpEarned = calculateVocabularyXP(session.studiedWords.size, 'intermediate');
@@ -229,7 +293,21 @@ export function VocabularyCard({ onBack }: VocabularyCardProps) {
           <Button variant="ghost" onClick={onBack} className="p-2">
             <ArrowLeft className="w-5 h-5" />
           </Button>
-          <h1 className="text-xl">単語学習</h1>
+          <div className="text-center">
+            <h1 className="text-xl">単語学習</h1>
+            <div className="flex justify-center gap-2 mt-1">
+              <Badge variant="secondary" className="text-xs">
+                {difficulty === 'beginner' ? '初級' : 
+                 difficulty === 'intermediate' ? '中級' : '上級'}
+              </Badge>
+              <Badge variant="outline" className="text-xs">
+                {category === 'all' ? 'すべて' :
+                 category === 'toeic' ? 'TOEIC' :
+                 category === 'business' ? 'ビジネス' :
+                 category === 'daily' ? '日常' : '学術'}
+              </Badge>
+            </div>
+          </div>
           <Button variant="ghost" onClick={handleRestart} className="p-2">
             <RefreshCw className="w-5 h-5" />
           </Button>

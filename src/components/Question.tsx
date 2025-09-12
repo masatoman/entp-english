@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Textarea } from "./ui/textarea";
 import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
+import { ArrowLeft } from "lucide-react";
 import { Category } from "../types";
 
 export interface QuestionData {
@@ -22,6 +23,7 @@ interface QuestionProps {
   difficulty: 'easy' | 'normal' | 'hard';
   category: Category;
   onAnswer: (answer: string) => void;
+  onBack: () => void;
 }
 
 const categoryLabels: Record<Category, string> = {
@@ -48,7 +50,8 @@ export function Question({
   totalQuestions, 
   difficulty, 
   category,
-  onAnswer 
+  onAnswer,
+  onBack
 }: QuestionProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [userInput, setUserInput] = useState<string>("");
@@ -67,18 +70,25 @@ export function Question({
   return (
     <div className="min-h-screen p-4 flex flex-col">
       <div className="max-w-md mx-auto w-full flex-1 flex flex-col">
+        {/* Header with back button */}
+        <div className="flex items-center justify-between mb-4">
+          <Button variant="ghost" onClick={onBack} className="p-2">
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+          <div className="flex space-x-2">
+            <Badge variant="outline" className="text-xs">
+              {categoryLabels[category]}
+            </Badge>
+            <Badge variant="outline" className="text-xs">
+              {difficultyLabels[difficulty]}
+            </Badge>
+          </div>
+        </div>
+
         {/* Progress */}
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <span className="text-sm">問題 {questionNumber} / {totalQuestions}</span>
-            <div className="flex space-x-2">
-              <Badge variant="outline" className="text-xs">
-                {categoryLabels[category]}
-              </Badge>
-              <Badge variant="outline" className="text-xs">
-                {difficultyLabels[difficulty]}
-              </Badge>
-            </div>
           </div>
           <Progress value={(questionNumber / totalQuestions) * 100} />
         </div>

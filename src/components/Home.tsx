@@ -26,7 +26,7 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
   const [userStats, setUserStats] = useState<UserStats>(DataManager.getUserStats());
   const [todayXP, setTodayXP] = useState(0);
   
-  useEffect(() => {
+  const refreshData = () => {
     // データを読み込み
     const stats = DataManager.getUserStats();
     setUserStats(stats);
@@ -37,6 +37,28 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
     const todaySessions = history.filter(session => session.date === today);
     const todayXPTotal = todaySessions.reduce((sum, session) => sum + session.xpEarned, 0);
     setTodayXP(todayXPTotal);
+    
+    console.log('Home data refreshed:', {
+      currentStreak: stats.currentStreak,
+      lastStudyDate: stats.lastStudyDate,
+      today,
+      todayXP: todayXPTotal
+    });
+  };
+
+  useEffect(() => {
+    refreshData();
+    
+    // ページがフォーカスされた時にデータを更新
+    const handleFocus = () => {
+      refreshData();
+    };
+    
+    window.addEventListener('focus', handleFocus);
+    
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+    };
   }, []);
 
   const dailyXPGoal = 100; // 設定可能にする場合は、ユーザー設定やレベルに応じて変更
