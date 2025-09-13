@@ -16,7 +16,7 @@ export interface UnlockableFeature {
   color: string;
 }
 
-// アンロック可能な機能の定義
+  // アンロック可能な機能の定義
 export const UNLOCKABLE_FEATURES: UnlockableFeature[] = [
   // Level 1-5: 基礎編
   {
@@ -39,7 +39,7 @@ export const UNLOCKABLE_FEATURES: UnlockableFeature[] = [
     id: 'essay-beginner',
     name: '英作文（初級）',
     description: '基本的な英作文練習',
-    condition: { level: 3 },
+    condition: { level: 1 },
     icon: 'PenTool',
     color: 'from-purple-500 to-purple-600'
   },
@@ -47,7 +47,7 @@ export const UNLOCKABLE_FEATURES: UnlockableFeature[] = [
     id: 'combined-test',
     name: '総合テスト',
     description: '全スキルの総合テスト',
-    condition: { level: 5 },
+    condition: { level: 2 },
     icon: 'Target',
     color: 'from-orange-500 to-orange-600'
   },
@@ -105,7 +105,7 @@ export const UNLOCKABLE_FEATURES: UnlockableFeature[] = [
     id: 'time-attack',
     name: 'タイムアタック',
     description: '制限時間内での連続正解チャレンジ',
-    condition: { level: 8 },
+    condition: { level: 3 },
     icon: 'Clock',
     color: 'from-red-500 to-red-600'
   },
