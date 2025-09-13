@@ -335,7 +335,10 @@ export function VocabularyCard({ onBack, difficulty = 'intermediate', category =
         </div>
 
         {/* Vocabulary Card */}
-        <Card className="mx-4 shadow-lg border-0 bg-white">
+        <Card 
+          className="mx-4 shadow-lg border-0 bg-white cursor-pointer hover:shadow-xl transition-shadow"
+          onClick={toggleMeaning}
+        >
           <CardHeader className="text-center pb-4">
             <div className="flex items-center justify-between mb-2">
               <Badge 
@@ -359,14 +362,11 @@ export function VocabularyCard({ onBack, difficulty = 'intermediate', category =
                 </Button>
               )}
             </div>
-            <div 
-              className="text-4xl mb-2 font-normal cursor-pointer hover:text-blue-600 transition-colors"
-              onClick={toggleMeaning}
-            >
+            <div className="text-4xl mb-4 font-normal hover:text-blue-600 transition-colors">
               {currentWord.word}
             </div>
             {showMeaning && (
-              <div className="text-xl text-muted-foreground">
+              <div className="text-2xl text-blue-600 font-medium mb-4">
                 {currentWord.meaning}
               </div>
             )}
@@ -387,7 +387,7 @@ export function VocabularyCard({ onBack, difficulty = 'intermediate', category =
             {!showMeaning && (
               <div className="text-center">
                 <p className="text-sm text-muted-foreground">
-                  タップして意味を表示
+                  カードをタップして意味を表示
                 </p>
               </div>
             )}
@@ -413,10 +413,6 @@ export function VocabularyCard({ onBack, difficulty = 'intermediate', category =
           </Button>
         </div>
 
-        {/* Hint */}
-        <div className="text-center text-sm text-muted-foreground px-4">
-          親指で押しやすい位置に配置されています
-        </div>
 
         {/* Bottom padding for safe area */}
         <div className="h-8" />
