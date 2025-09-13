@@ -193,8 +193,8 @@ export function getNextUnlockableFeatures(userLevel: number, userXP: number, use
     // まだアンロックされていない
     if (isFeatureUnlocked(feature.id, userLevel, userXP, userStreak, userAchievements)) return false;
     
-    // 次のレベルでアンロック可能
-    return userLevel + 1 >= condition.level;
+    // 現在のレベルより高いレベルでアンロック可能（次の数レベルまで表示）
+    return condition.level > userLevel && condition.level <= userLevel + 5;
   });
 }
 
