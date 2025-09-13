@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { DataManager } from "../utils/dataManager";
 import { UserStats } from "../data/achievements";
-import { isFeatureUnlocked, getAvailableFeatures, getNextUnlockableFeatures } from "../utils/unlockSystem";
+import { isFeatureUnlocked, getAvailableFeatures, getNextUnlockableFeatures, getUnlockCondition } from "../utils/unlockSystem";
 
 interface HomeProps {
   onNavigateToGrammar: () => void;
@@ -272,6 +272,28 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
           </CardContent>
         </Card>
 
+        {/* Next Unlock Info */}
+        {nextUnlockableFeatures.length > 0 && (
+          <Card className="bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200">
+            <CardContent className="p-4">
+              <div className="text-center space-y-2">
+                <h3 className="font-medium text-yellow-800">🎯 次のアンロック予定</h3>
+                <div className="space-y-1">
+                  {nextUnlockableFeatures.slice(0, 3).map((feature) => (
+                    <div key={feature.id} className="text-sm text-yellow-700">
+                      <span className="font-medium">{feature.name}</span>
+                      <span className="text-yellow-600"> - Level {feature.condition.level}でアンロック</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-yellow-600">
+                  現在のレベル: {level} | 次のレベルまで: {xpToNextLevel}XP
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Menu Grid */}
         <div className="space-y-4">
           <h2 className="text-xl font-medium text-center">学習メニュー</h2>
@@ -304,16 +326,32 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
                         {item.description}
                       </p>
                     </div>
-                    {!item.available && (
-                      <div className="space-y-1">
-                        <Badge variant="outline" className="text-xs bg-gray-100 text-gray-600">
-                          🔒 ロック中
-                        </Badge>
-                        <p className="text-xs text-gray-500">
-                          {item.description}
-                        </p>
-                      </div>
-                    )}
+                    {!item.available && (() => {
+                      const unlockCondition = getUnlockCondition(item.id);
+                      return (
+                        <div className="space-y-2">
+                          <Badge variant="outline" className="text-xs bg-gray-100 text-gray-600 border-gray-300">
+                            🔒 ロック中
+                          </Badge>
+                          <div className="text-xs text-gray-500 space-y-1">
+                            <p className="font-medium">{item.description}</p>
+                            <p className="text-gray-400">
+                              Level {unlockCondition?.level || '?'}でアンロック
+                            </p>
+                            {unlockCondition?.xpRequired && (
+                              <p className="text-gray-400">
+                                {unlockCondition.xpRequired}XP必要
+                              </p>
+                            )}
+                            {unlockCondition?.streakRequired && (
+                              <p className="text-gray-400">
+                                {unlockCondition.streakRequired}日連続必要
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })()}
                   </CardContent>
                 </Card>
               );
