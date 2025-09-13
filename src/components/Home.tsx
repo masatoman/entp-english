@@ -97,6 +97,16 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
   // アンロックシステムを適用
   const availableFeatures = getAvailableFeatures(level, userStats.totalXP, streak, userStats.unlockedAchievements || []);
   const nextUnlockableFeatures = getNextUnlockableFeatures(level, userStats.totalXP, streak, userStats.unlockedAchievements || []);
+  
+  // デバッグ情報をコンソールに出力
+  console.log('Home Debug Info:', {
+    level,
+    totalXP: userStats.totalXP,
+    streak,
+    availableFeatures: availableFeatures.length,
+    nextUnlockableFeatures: nextUnlockableFeatures.length,
+    nextUnlockableFeatures
+  });
 
   const menuItems = [
     // 基本機能（常に利用可能）
@@ -269,30 +279,26 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
                 />
               )}
             </div>
+            
+            {/* Next Unlock Info */}
+            {nextUnlockableFeatures.length > 0 && (
+              <div className="mt-4 pt-4 border-t border-blue-400">
+                <div className="text-center space-y-2">
+                  <h4 className="text-sm font-medium text-blue-100">🎯 次のアンロック予定</h4>
+                  <div className="space-y-1">
+                    {nextUnlockableFeatures.slice(0, 2).map((feature) => (
+                      <div key={feature.id} className="text-xs text-blue-200">
+                        <span className="font-medium">{feature.name}</span>
+                        <span className="text-blue-300"> - Level {feature.condition.level}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
 
-        {/* Next Unlock Info */}
-        {nextUnlockableFeatures.length > 0 && (
-          <Card className="bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200">
-            <CardContent className="p-4">
-              <div className="text-center space-y-2">
-                <h3 className="font-medium text-yellow-800">🎯 次のアンロック予定</h3>
-                <div className="space-y-1">
-                  {nextUnlockableFeatures.slice(0, 3).map((feature) => (
-                    <div key={feature.id} className="text-sm text-yellow-700">
-                      <span className="font-medium">{feature.name}</span>
-                      <span className="text-yellow-600"> - Level {feature.condition.level}でアンロック</span>
-                    </div>
-                  ))}
-                </div>
-                <p className="text-xs text-yellow-600">
-                  現在のレベル: {level} | 次のレベルまで: {xpToNextLevel}XP
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        )}
 
         {/* Menu Grid */}
         <div className="space-y-4">
