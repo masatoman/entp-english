@@ -9,10 +9,14 @@ import {
   Target,
   Flame,
   Star,
-  Settings
+  Settings,
+  Clock,
+  Zap,
+  AlertTriangle
 } from "lucide-react";
 import { DataManager } from "../utils/dataManager";
 import { UserStats } from "../data/achievements";
+import { isFeatureUnlocked, getAvailableFeatures, getNextUnlockableFeatures } from "../utils/unlockSystem";
 
 interface HomeProps {
   onNavigateToGrammar: () => void;
@@ -22,9 +26,10 @@ interface HomeProps {
   onNavigateToCombinedTest: () => void;
   onNavigateToAchievements: () => void;
   onNavigateToAppSettings: () => void;
+  onNavigateToTimeAttack: () => void;
 }
 
-export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateToGrammarQuiz, onNavigateToEssay, onNavigateToCombinedTest, onNavigateToAchievements, onNavigateToAppSettings }: HomeProps) {
+export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateToGrammarQuiz, onNavigateToEssay, onNavigateToCombinedTest, onNavigateToAchievements, onNavigateToAppSettings, onNavigateToTimeAttack }: HomeProps) {
   const [userStats, setUserStats] = useState<UserStats>(DataManager.getUserStats());
   const [todayXP, setTodayXP] = useState(0);
   
@@ -89,43 +94,12 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
   const nextLevelXP = level * 100; // 次のレベルで必要なXP
   const xpToNextLevel = nextLevelXP - userStats.totalXP; // 次のレベルまでに必要なXP
 
+  // アンロックシステムを適用
+  const availableFeatures = getAvailableFeatures(level, userStats.totalXP, streak, userStats.unlockedAchievements || []);
+  const nextUnlockableFeatures = getNextUnlockableFeatures(level, userStats.totalXP, streak, userStats.unlockedAchievements || []);
+
   const menuItems = [
-    {
-      id: 'vocabulary',
-      title: '単語',
-      description: '語彙力を鍛える',
-      icon: BookOpen,
-      color: 'from-blue-500 to-blue-600',
-      available: true,
-      onClick: onNavigateToVocabulary
-    },
-    {
-      id: 'grammar',
-      title: '文法',
-      description: '文法クイズ',
-      icon: PenTool,
-      color: 'from-emerald-500 to-emerald-600',
-      available: true,
-      onClick: onNavigateToGrammarQuiz
-    },
-    {
-      id: 'essay',
-      title: '英作文',
-      description: '英作文練習',
-      icon: PenTool,
-      color: 'from-purple-500 to-purple-600',
-      available: true,
-      onClick: onNavigateToEssay
-    },
-    {
-      id: 'test',
-      title: 'テスト',
-      description: '総合テスト',
-      icon: Target,
-      color: 'from-orange-500 to-orange-600',
-      available: true,
-      onClick: onNavigateToCombinedTest
-    },
+    // 基本機能（常に利用可能）
     {
       id: 'achievements',
       title: '実績',
@@ -145,6 +119,91 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
       onClick: onNavigateToAppSettings
     }
   ];
+
+  // アンロックされた機能を追加
+  if (isFeatureUnlocked('vocabulary-beginner', level, userStats.totalXP, streak, userStats.unlockedAchievements || [])) {
+    menuItems.unshift({
+      id: 'vocabulary',
+      title: '単語学習',
+      description: '語彙力を鍛える',
+      icon: BookOpen,
+      color: 'from-blue-500 to-blue-600',
+      available: true,
+      onClick: onNavigateToVocabulary
+    });
+  }
+
+  if (isFeatureUnlocked('grammar-easy', level, userStats.totalXP, streak, userStats.unlockedAchievements || [])) {
+    menuItems.unshift({
+      id: 'grammar',
+      title: '文法クイズ',
+      description: '文法問題に挑戦',
+      icon: PenTool,
+      color: 'from-emerald-500 to-emerald-600',
+      available: true,
+      onClick: onNavigateToGrammarQuiz
+    });
+  }
+
+  if (isFeatureUnlocked('essay-beginner', level, userStats.totalXP, streak, userStats.unlockedAchievements || [])) {
+    menuItems.unshift({
+      id: 'essay',
+      title: '英作文',
+      description: '英作文練習',
+      icon: PenTool,
+      color: 'from-purple-500 to-purple-600',
+      available: true,
+      onClick: onNavigateToEssay
+    });
+  }
+
+  if (isFeatureUnlocked('combined-test', level, userStats.totalXP, streak, userStats.unlockedAchievements || [])) {
+    menuItems.unshift({
+      id: 'test',
+      title: '総合テスト',
+      description: '全スキルのテスト',
+      icon: Target,
+      color: 'from-orange-500 to-orange-600',
+      available: true,
+      onClick: onNavigateToCombinedTest
+    });
+  }
+
+  if (isFeatureUnlocked('time-attack', level, userStats.totalXP, streak, userStats.unlockedAchievements || [])) {
+    menuItems.unshift({
+      id: 'time-attack',
+      title: 'タイムアタック',
+      description: '制限時間内で連続正解',
+      icon: Clock,
+      color: 'from-red-500 to-red-600',
+      available: true,
+      onClick: onNavigateToTimeAttack
+    });
+  }
+
+  // 次のアンロック予定の機能を追加（ロック状態で表示）
+  nextUnlockableFeatures.forEach(feature => {
+    const iconMap: { [key: string]: any } = {
+      'BookOpen': BookOpen,
+      'PenTool': PenTool,
+      'Target': Target,
+      'Clock': Clock,
+      'Zap': Zap,
+      'AlertTriangle': AlertTriangle,
+      'Flame': Flame,
+      'Trophy': Trophy
+    };
+
+    menuItems.push({
+      id: feature.id,
+      title: feature.name,
+      description: `Level ${feature.condition.level}でアンロック`,
+      icon: iconMap[feature.icon] || BookOpen,
+      color: 'from-gray-400 to-gray-500',
+      available: false,
+      onClick: () => {}
+    });
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
@@ -246,9 +305,14 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
                       </p>
                     </div>
                     {!item.available && (
-                      <Badge variant="outline" className="text-xs">
-                        準備中
-                      </Badge>
+                      <div className="space-y-1">
+                        <Badge variant="outline" className="text-xs bg-gray-100 text-gray-600">
+                          🔒 ロック中
+                        </Badge>
+                        <p className="text-xs text-gray-500">
+                          {item.description}
+                        </p>
+                      </div>
                     )}
                   </CardContent>
                 </Card>

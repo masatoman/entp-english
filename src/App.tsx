@@ -13,6 +13,7 @@ import { Results } from "./components/Results";
 import { PWAInstallPrompt } from "./components/PWAInstallPrompt";
 import { PWAUpdatePrompt } from "./components/PWAUpdatePrompt";
 import { AppSettings } from "./components/AppSettings";
+import { TimeAttackMode } from "./components/TimeAttackMode";
 import { getQuestions } from "./data/questions";
 import { Category, UserAnswer } from "./types";
 import { DataManager } from "./utils/dataManager";
@@ -53,7 +54,7 @@ function checkAnswer(userAnswer: string, correctAnswer: string, difficulty: 'eas
   }
 }
 
-type Screen = 'home' | 'vocabulary-difficulty' | 'vocabulary-category' | 'vocabulary' | 'grammar-quiz' | 'combined-test' | 'achievements' | 'notification-settings' | 'app-settings' | 'category' | 'difficulty' | 'question' | 'results';
+type Screen = 'home' | 'vocabulary-difficulty' | 'vocabulary-category' | 'vocabulary' | 'grammar-quiz' | 'combined-test' | 'achievements' | 'notification-settings' | 'app-settings' | 'time-attack' | 'category' | 'difficulty' | 'question' | 'results';
 type Difficulty = 'easy' | 'normal' | 'hard';
 type VocabularyDifficulty = 'beginner' | 'intermediate' | 'advanced';
 type VocabularyCategory = 'all' | 'toeic' | 'business' | 'daily' | 'academic';
@@ -106,6 +107,10 @@ export default function App() {
 
   const handleNavigateToAppSettings = () => {
     setCurrentScreen('app-settings');
+  };
+
+  const handleNavigateToTimeAttack = () => {
+    setCurrentScreen('time-attack');
   };
 
   const handleBackToHome = () => {
@@ -232,6 +237,7 @@ export default function App() {
           onNavigateToCombinedTest={handleNavigateToCombinedTest}
           onNavigateToAchievements={handleNavigateToAchievements}
           onNavigateToAppSettings={handleNavigateToAppSettings}
+          onNavigateToTimeAttack={handleNavigateToTimeAttack}
         />
       )}
       
@@ -272,6 +278,10 @@ export default function App() {
       
       {currentScreen === 'app-settings' && (
         <AppSettings onBack={handleBackToHome} />
+      )}
+      
+      {currentScreen === 'time-attack' && (
+        <TimeAttackMode onBack={handleBackToHome} />
       )}
       
       {currentScreen === 'category' && (
