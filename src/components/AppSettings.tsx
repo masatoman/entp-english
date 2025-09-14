@@ -17,19 +17,19 @@ import {
   Target
 } from 'lucide-react';
 import { notificationManager, NotificationSettings } from '../utils/notificationManager';
-import { DataManager } from '../utils/dataManager';
+import { DataManager, AppSettings as AppSettingsType } from '../utils/dataManager';
 
 interface AppSettingsProps {
   onBack: () => void;
 }
 
-interface AppSettings {
-  dailyXPGoal: number;
-}
+// AppSettingsTypeをDataManagerから使用
 
 export function AppSettings({ onBack }: AppSettingsProps) {
-  const [settings, setSettings] = useState<AppSettings>({
-    dailyXPGoal: 100
+  const [settings, setSettings] = useState<AppSettingsType>({
+    dailyXPGoal: 100,
+    grammarQuizQuestionCount: 10,
+    vocabularyQuestionCount: 10
   });
   
   const [notificationSettings, setNotificationSettings] = useState<NotificationSettings>(notificationManager.getSettings());
@@ -44,27 +44,17 @@ export function AppSettings({ onBack }: AppSettingsProps) {
   }, []);
 
   const loadSettings = () => {
-    try {
-      const saved = localStorage.getItem('app-settings');
-      if (saved) {
-        setSettings({ ...settings, ...JSON.parse(saved) });
-      }
-    } catch (error) {
-      console.error('Error loading app settings:', error);
-    }
+    const savedSettings = DataManager.getAppSettings();
+    setSettings(savedSettings);
   };
 
-  const saveSettings = (newSettings: Partial<AppSettings>) => {
+  const saveSettings = (newSettings: Partial<AppSettingsType>) => {
     const updatedSettings = { ...settings, ...newSettings };
     setSettings(updatedSettings);
-    try {
-      localStorage.setItem('app-settings', JSON.stringify(updatedSettings));
-    } catch (error) {
-      console.error('Error saving app settings:', error);
-    }
+    DataManager.saveAppSettings(updatedSettings);
   };
 
-  const handleSettingChange = (key: keyof AppSettings, value: any) => {
+  const handleSettingChange = (key: keyof AppSettingsType, value: any) => {
     saveSettings({ [key]: value });
   };
 
@@ -192,6 +182,46 @@ export function AppSettings({ onBack }: AppSettingsProps) {
               </Select>
               <p className="text-xs text-muted-foreground">
                 ホーム画面の進捗バーに反映されます
+              </p>
+            </div>
+
+            {/* Grammar Quiz Question Count */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">文法クイズの問題数</label>
+              <Select value={settings.grammarQuizQuestionCount.toString()} onValueChange={(value) => handleSettingChange('grammarQuizQuestionCount', parseInt(value))}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="5">5問</SelectItem>
+                  <SelectItem value="10">10問</SelectItem>
+                  <SelectItem value="15">15問</SelectItem>
+                  <SelectItem value="20">20問</SelectItem>
+                  <SelectItem value="25">25問</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                文法クイズで出題される問題数を設定します
+              </p>
+            </div>
+
+            {/* Vocabulary Question Count */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">語彙学習の問題数</label>
+              <Select value={settings.vocabularyQuestionCount.toString()} onValueChange={(value) => handleSettingChange('vocabularyQuestionCount', parseInt(value))}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="5">5問</SelectItem>
+                  <SelectItem value="10">10問</SelectItem>
+                  <SelectItem value="15">15問</SelectItem>
+                  <SelectItem value="20">20問</SelectItem>
+                  <SelectItem value="25">25問</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                語彙学習で出題される問題数を設定します
               </p>
             </div>
           </CardContent>

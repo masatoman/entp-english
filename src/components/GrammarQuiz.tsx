@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { ArrowLeft, RotateCcw } from "lucide-react";
 import { GrammarQuizQuestion, getGrammarQuizQuestions } from "../data/grammarQuiz";
 import { Badge } from "./ui/badge";
+import { DataManager } from "../utils/dataManager";
 
 interface GrammarQuizProps {
   onBack: () => void;
@@ -98,7 +99,12 @@ export function GrammarQuiz({ onBack, difficulty = 'intermediate' }: GrammarQuiz
 
   useEffect(() => {
     const allQuestions = getGrammarQuizQuestions(difficulty);
-    const selectedQuestions = shuffleArray(allQuestions).slice(0, 10);
+    const shuffled = shuffleArray(allQuestions);
+    
+    // 設定された問題数に制限
+    const appSettings = DataManager.getAppSettings();
+    const selectedQuestions = shuffled.slice(0, appSettings.grammarQuizQuestionCount);
+    
     setQuestions(selectedQuestions);
   }, [difficulty]);
 

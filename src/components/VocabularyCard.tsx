@@ -70,7 +70,9 @@ export function VocabularyCard({ onBack, difficulty = 'intermediate', category =
       return;
     }
     
-    const wordCount = 20; // 設定可能にする場合は、propsや設定から取得
+    // 設定された問題数を使用
+    const appSettings = DataManager.getAppSettings();
+    const wordCount = appSettings.vocabularyQuestionCount;
     const shuffledWords = shuffleArray(filteredWords).slice(0, wordCount);
     setWords(shuffledWords);
     setSession({

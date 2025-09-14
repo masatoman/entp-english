@@ -7,6 +7,7 @@ const STORAGE_KEYS = {
   ACHIEVEMENTS: 'entp-english-achievements',
   LEARNING_HISTORY: 'entp-english-learning-history',
   VOCABULARY_PROGRESS: 'entp-english-vocabulary-progress',
+  APP_SETTINGS: 'entp-english-app-settings',
 } as const;
 
 // デフォルトのユーザー統計
@@ -20,6 +21,20 @@ const DEFAULT_USER_STATS: UserStats = {
   correctAnswers: 0,
   averageScore: 0,
   lastStudyDate: new Date().toISOString().split('T')[0],
+};
+
+// アプリ設定の型定義
+export interface AppSettings {
+  dailyXPGoal: number;
+  grammarQuizQuestionCount: number;
+  vocabularyQuestionCount: number;
+}
+
+// デフォルトのアプリ設定
+const DEFAULT_APP_SETTINGS: AppSettings = {
+  dailyXPGoal: 100,
+  grammarQuizQuestionCount: 10,
+  vocabularyQuestionCount: 10,
 };
 
 // 学習履歴の型定義
@@ -469,6 +484,7 @@ export class DataManager {
     localStorage.removeItem(STORAGE_KEYS.ACHIEVEMENTS);
     localStorage.removeItem(STORAGE_KEYS.LEARNING_HISTORY);
     localStorage.removeItem(STORAGE_KEYS.VOCABULARY_PROGRESS);
+    localStorage.removeItem(STORAGE_KEYS.APP_SETTINGS);
   }
 
   // データのエクスポート
@@ -478,6 +494,7 @@ export class DataManager {
       achievements: this.getAchievements(),
       learningHistory: this.getLearningHistory(),
       vocabularyProgress: this.getVocabularyProgress(),
+      appSettings: this.getAppSettings(),
       exportDate: new Date().toISOString(),
     };
     return JSON.stringify(data, null, 2);
@@ -492,11 +509,37 @@ export class DataManager {
       if (data.achievements) this.saveAchievements(data.achievements);
       if (data.learningHistory) this.saveLearningHistory(data.learningHistory);
       if (data.vocabularyProgress) this.saveVocabularyProgress(data.vocabularyProgress);
+      if (data.appSettings) this.saveAppSettings(data.appSettings);
       
       return true;
     } catch (error) {
       console.error('Failed to import data:', error);
       return false;
+    }
+  }
+
+  // アプリ設定の取得
+  static getAppSettings(): AppSettings {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.APP_SETTINGS);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return { ...DEFAULT_APP_SETTINGS, ...parsed };
+      }
+    } catch (error) {
+      console.error('Error loading app settings:', error);
+    }
+    return DEFAULT_APP_SETTINGS;
+  }
+
+  // アプリ設定の保存
+  static saveAppSettings(settings: Partial<AppSettings>): void {
+    try {
+      const currentSettings = this.getAppSettings();
+      const updatedSettings = { ...currentSettings, ...settings };
+      localStorage.setItem(STORAGE_KEYS.APP_SETTINGS, JSON.stringify(updatedSettings));
+    } catch (error) {
+      console.error('Error saving app settings:', error);
     }
   }
 }
