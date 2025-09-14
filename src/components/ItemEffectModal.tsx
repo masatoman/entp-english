@@ -89,14 +89,14 @@ export function ItemEffectModal({ effect, onClose }: ItemEffectModalProps) {
             <div className="text-3xl sm:text-4xl mb-2">
               {getEffectIcon(effect.type)}
             </div>
-            <div className="text-white font-bold text-sm sm:text-lg mb-1">
+            <div className="text-foreground font-bold text-sm sm:text-lg mb-1">
               {getEffectName(effect.type)} 獲得！
             </div>
-            <div className="text-white text-lg sm:text-xl font-bold mb-2">
+            <div className="text-foreground text-lg sm:text-xl font-bold mb-2">
               {formatValue(effect.value, effect.isPercentage)}
             </div>
             <Badge 
-              className={`${getRarityColor(effect.rarity)} text-white font-bold text-xs`}
+              className={`${getRarityColor(effect.rarity)} text-foreground font-bold text-xs`}
             >
               {getRarityText(effect.rarity)}
             </Badge>

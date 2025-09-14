@@ -96,7 +96,7 @@ function StatCard({ icon: Icon, label, value, color }: {
     <Card className="bg-gradient-to-br from-white to-gray-50 border-0 shadow-md">
       <CardContent className="p-4 text-center">
         <div className={`inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br ${color} mb-3`}>
-          <Icon className="w-6 h-6 text-white" />
+          <Icon className="w-6 h-6 text-foreground" />
         </div>
         <div className="text-2xl font-semibold mb-1">{value}</div>
         <div className="text-sm text-muted-foreground">{label}</div>
@@ -134,7 +134,7 @@ export function Achievements({ onBack }: AchievementsProps) {
         </div>
 
         {/* Total XP Display */}
-        <Card className="bg-gradient-to-br from-blue-600 to-purple-600 text-white border-0 shadow-xl">
+        <Card className="bg-gradient-to-br from-blue-600 to-purple-600 text-foreground border-0 shadow-xl">
           <CardContent className="p-6 text-center">
             <div className="flex items-center justify-center mb-3">
               <Trophy className="w-8 h-8 mr-2" />
@@ -146,7 +146,7 @@ export function Achievements({ onBack }: AchievementsProps) {
         </Card>
 
         {/* Current Streak */}
-        <Card className="bg-gradient-to-br from-orange-500 to-red-500 text-white border-0 shadow-lg">
+        <Card className="bg-gradient-to-br from-orange-500 to-red-500 text-foreground border-0 shadow-lg">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">

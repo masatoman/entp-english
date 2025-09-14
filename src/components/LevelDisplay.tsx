@@ -58,7 +58,7 @@ export const LevelDisplay: React.FC<LevelDisplayProps> = ({
     return (
       <div className="flex items-center space-x-3">
         <div className="flex items-center space-x-2">
-          <div className={`w-8 h-8 rounded-full ${getChapterColor(userLevel.chapter)} text-white flex items-center justify-center text-sm font-bold`}>
+          <div className={`w-8 h-8 rounded-full ${getChapterColor(userLevel.chapter)} text-foreground flex items-center justify-center text-sm font-bold`}>
             {userLevel.chapter}
           </div>
           <div>
@@ -90,7 +90,7 @@ export const LevelDisplay: React.FC<LevelDisplayProps> = ({
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-semibold text-gray-800">レベル情報</h3>
         <div className="flex items-center space-x-2">
-          <div className={`w-10 h-10 rounded-full ${getChapterColor(userLevel.chapter)} text-white flex items-center justify-center text-lg font-bold`}>
+          <div className={`w-10 h-10 rounded-full ${getChapterColor(userLevel.chapter)} text-foreground flex items-center justify-center text-lg font-bold`}>
             {userLevel.chapter}
           </div>
           <div>
@@ -181,7 +181,7 @@ export const LevelDisplay: React.FC<LevelDisplayProps> = ({
                       alert(`レベルアップ！ Level ${result.newLevel?.level} に上がりました！`);
                     }
                   }}
-                  className="px-3 py-1 rounded-md text-xs font-medium bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+                  className="px-3 py-1 rounded-md text-xs font-medium bg-blue-500 text-foreground hover:bg-blue-600 transition-colors"
                   title="テスト用: 100XP追加"
                 >
                   +100XP
@@ -196,7 +196,7 @@ export const LevelDisplay: React.FC<LevelDisplayProps> = ({
                       alert(`レベルアップ！ Level ${result.newLevel?.level} に上がりました！`);
                     }
                   }}
-                  className="px-3 py-1 rounded-md text-xs font-medium bg-purple-500 text-white hover:bg-purple-600 transition-colors"
+                  className="px-3 py-1 rounded-md text-xs font-medium bg-purple-500 text-foreground hover:bg-purple-600 transition-colors"
                   title="テスト用: 500XP追加"
                 >
                   +500XP
@@ -209,7 +209,7 @@ export const LevelDisplay: React.FC<LevelDisplayProps> = ({
                     saveLevelManager();
                     alert('1000XP追加しました！');
                   }}
-                  className="px-3 py-1 rounded-md text-xs font-medium bg-orange-500 text-white hover:bg-orange-600 transition-colors"
+                  className="px-3 py-1 rounded-md text-xs font-medium bg-orange-500 text-foreground hover:bg-orange-600 transition-colors"
                   title="テスト用: 1000XP追加"
                 >
                   +1000XP
@@ -275,7 +275,7 @@ export const LevelProgress: React.FC<LevelProgressProps> = ({
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center space-x-3">
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white ${
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-foreground ${
                       isCompleted
                         ? 'bg-green-500'
                         : isCurrentChapter

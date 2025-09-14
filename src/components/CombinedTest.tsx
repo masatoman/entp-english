@@ -36,7 +36,7 @@ function XPAnimation({ show, xp, onComplete }: XPAnimationProps) {
           exit={{ opacity: 0, scale: 0.5, y: -50 }}
           className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none"
         >
-          <div className="bg-emerald-500 text-white px-6 py-4 rounded-full shadow-xl flex items-center space-x-2">
+          <div className="bg-emerald-500 text-foreground px-6 py-4 rounded-full shadow-xl flex items-center space-x-2">
             <Zap className="w-6 h-6" />
             <span className="text-lg font-semibold">+{xp} XP</span>
           </div>

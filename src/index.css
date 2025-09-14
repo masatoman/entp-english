@@ -311,9 +311,9 @@
     font-feature-settings: inherit;
     font-variation-settings: inherit;
     letter-spacing: inherit;
-    color: inherit;
+    color: var(--foreground) !important;
     opacity: 1;
-    background-color: var(--color-background);
+    background-color: var(--background) !important;
     border-radius: 0;
   }
 

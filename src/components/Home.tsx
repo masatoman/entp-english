@@ -274,10 +274,10 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
         </div>
 
         {/* Today's Progress */}
-        <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white border-0">
+        <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-foreground border-0">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-white">今日の進捗</CardTitle>
+              <CardTitle className="text-foreground">今日の進捗</CardTitle>
               <div className="flex items-center space-x-1">
                 <Flame className="w-5 h-5 text-orange-300" />
                 <span className="font-bold">{streak}日連続</span>
@@ -369,7 +369,7 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
                       w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br ${item.color} 
                       flex items-center justify-center shadow-lg
                     `}>
-                      <IconComponent className="w-8 h-8 text-white" />
+                      <IconComponent className="w-8 h-8 text-foreground" />
                     </div>
                     <div className="space-y-1">
                       <h3 className={`font-medium ${item.available ? 'text-foreground' : 'text-gray-700'}`}>{item.title}</h3>

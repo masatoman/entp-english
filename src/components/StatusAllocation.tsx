@@ -218,7 +218,7 @@ export const StatusAllocationComponent: React.FC<StatusAllocationProps> = ({
           disabled={!isValid}
           className={`w-full py-2 px-4 rounded-md text-sm font-medium transition-colors ${
             isValid
-              ? 'bg-blue-500 text-white hover:bg-blue-600'
+              ? 'bg-blue-500 text-foreground hover:bg-blue-600'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
         >

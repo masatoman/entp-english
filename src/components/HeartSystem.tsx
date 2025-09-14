@@ -76,7 +76,7 @@ export const HeartSystemDisplay: React.FC<HeartSystemDisplayProps> = ({
               key={i}
               className={`w-4 h-4 rounded-full ${
                 i < heartSystem.current
-                  ? 'bg-red-500 text-white'
+                  ? 'bg-red-500 text-foreground'
                   : 'bg-gray-200 text-gray-400'
               }`}
             >
@@ -103,7 +103,7 @@ export const HeartSystemDisplay: React.FC<HeartSystemDisplayProps> = ({
                 key={i}
                 className={`w-6 h-6 rounded-full flex items-center justify-center text-sm ${
                   i < heartSystem.current
-                    ? 'bg-red-500 text-white'
+                    ? 'bg-red-500 text-foreground'
                     : 'bg-gray-200 text-gray-400'
                 }`}
               >
@@ -146,7 +146,7 @@ export const HeartSystemDisplay: React.FC<HeartSystemDisplayProps> = ({
             disabled={!canConsumeHeart}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
               canConsumeHeart
-                ? 'bg-red-500 text-white hover:bg-red-600'
+                ? 'bg-red-500 text-foreground hover:bg-red-600'
                 : 'bg-gray-300 text-gray-500 cursor-not-allowed'
             }`}
           >
@@ -166,7 +166,7 @@ export const HeartSystemDisplay: React.FC<HeartSystemDisplayProps> = ({
               setHeartSystem(newHeartSystem);
               onHeartChange?.(newHeartSystem);
             }}
-            className="px-3 py-2 rounded-md text-sm font-medium bg-green-500 text-white hover:bg-green-600 transition-colors"
+            className="px-3 py-2 rounded-md text-sm font-medium bg-green-500 text-foreground hover:bg-green-600 transition-colors"
             title="テスト用: 体力を全回復"
           >
             ♥回復
