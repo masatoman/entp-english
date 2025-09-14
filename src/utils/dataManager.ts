@@ -28,6 +28,7 @@ export interface AppSettings {
   dailyXPGoal: number;
   grammarQuizQuestionCount: number;
   vocabularyQuestionCount: number;
+  essayQuestionCount: number;
 }
 
 // デフォルトのアプリ設定
@@ -35,6 +36,7 @@ const DEFAULT_APP_SETTINGS: AppSettings = {
   dailyXPGoal: 100,
   grammarQuizQuestionCount: 10,
   vocabularyQuestionCount: 10,
+  essayQuestionCount: 10,
 };
 
 // 学習履歴の型定義

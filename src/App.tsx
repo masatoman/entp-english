@@ -154,7 +154,10 @@ export default function App() {
       }
       
       console.log('About to shuffle questions...');
-      const shuffledQuestions = shuffleArray(categoryQuestions).slice(0, 10);
+      // 設定された問題数を使用
+      const appSettings = DataManager.getAppSettings();
+      const questionCount = appSettings.essayQuestionCount;
+      const shuffledQuestions = shuffleArray(categoryQuestions).slice(0, questionCount);
       console.log('Shuffled questions:', shuffledQuestions.length);
       
       console.log('Setting questions state...');
@@ -214,7 +217,10 @@ export default function App() {
 
   const handleRestart = () => {
     const categoryQuestions = getQuestions(selectedCategory, difficulty);
-    const shuffledQuestions = shuffleArray(categoryQuestions).slice(0, 10);
+    // 設定された問題数を使用
+    const appSettings = DataManager.getAppSettings();
+    const questionCount = appSettings.essayQuestionCount;
+    const shuffledQuestions = shuffleArray(categoryQuestions).slice(0, questionCount);
     setQuestions(shuffledQuestions);
     setCurrentQuestionIndex(0);
     setUserAnswers([]);

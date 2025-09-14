@@ -30,7 +30,8 @@ export function AppSettings({ onBack }: AppSettingsProps) {
   const [settings, setSettings] = useState<AppSettingsType>({
     dailyXPGoal: 100,
     grammarQuizQuestionCount: 10,
-    vocabularyQuestionCount: 10
+    vocabularyQuestionCount: 10,
+    essayQuestionCount: 10
   });
   
   const [notificationSettings, setNotificationSettings] = useState<NotificationSettings>(notificationManager.getSettings());
@@ -232,6 +233,26 @@ export function AppSettings({ onBack }: AppSettingsProps) {
               </Select>
               <p className="text-xs text-muted-foreground">
                 語彙学習で出題される問題数を設定します
+              </p>
+            </div>
+
+            {/* Essay Question Count */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">英作文の問題数</label>
+              <Select value={settings.essayQuestionCount.toString()} onValueChange={(value) => handleSettingChange('essayQuestionCount', parseInt(value))}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="5">5問</SelectItem>
+                  <SelectItem value="10">10問</SelectItem>
+                  <SelectItem value="15">15問</SelectItem>
+                  <SelectItem value="20">20問</SelectItem>
+                  <SelectItem value="25">25問</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                英作文で出題される問題数を設定します
               </p>
             </div>
 
