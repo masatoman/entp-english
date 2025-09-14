@@ -213,14 +213,14 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
                   <Button 
                     onClick={startGame} 
                     disabled={isGameOver}
-                    className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg"
+                    className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg border-2 border-green-700"
                   >
                     ゲーム開始
                   </Button>
                 ) : (
                   <Button 
                     onClick={stopGame}
-                    className="bg-red-600 hover:bg-red-700 text-white font-semibold shadow-lg"
+                    className="bg-red-600 hover:bg-red-700 text-white font-semibold shadow-lg border-2 border-red-700"
                   >
                     一時停止
                   </Button>
@@ -266,7 +266,7 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
                     handleSpeedChange(nextSpeed as 1 | 2 | 3);
                   }}
                   size="sm"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-lg min-w-[60px]"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-lg min-w-[60px] border-2 border-blue-700"
                 >
                   {gameState.gameSpeed}x
                 </Button>
@@ -376,8 +376,8 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
                   onClick={() => selectTowerType('basic')}
                   className={`w-full ${
                     gameState.selectedTowerType === 'basic'
-                      ? 'bg-green-600 text-white'
-                      : 'bg-green-100 text-green-700 hover:bg-green-200'
+                      ? 'bg-green-600 text-white border-2 border-green-700'
+                      : 'bg-green-100 text-green-700 hover:bg-green-200 border border-green-300'
                   }`}
                   disabled={gameState.gold < getTowerCost('basic')}
                 >
@@ -395,8 +395,8 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
                   onClick={() => selectTowerType('sniper')}
                   className={`w-full ${
                     gameState.selectedTowerType === 'sniper'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                      ? 'bg-blue-600 text-white border-2 border-blue-700'
+                      : 'bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-300'
                   }`}
                   disabled={gameState.gold < getTowerCost('sniper')}
                 >
@@ -414,8 +414,8 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
                   onClick={() => selectTowerType('rapid')}
                   className={`w-full ${
                     gameState.selectedTowerType === 'rapid'
-                      ? 'bg-orange-600 text-white'
-                      : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
+                      ? 'bg-orange-600 text-white border-2 border-orange-700'
+                      : 'bg-orange-100 text-orange-700 hover:bg-orange-200 border border-orange-300'
                   }`}
                   disabled={gameState.gold < getTowerCost('rapid')}
                 >
@@ -445,7 +445,7 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
                 <Button 
                   onClick={addEnemy}
                   size="sm"
-                  className="w-full bg-orange-600 hover:bg-orange-700 text-white"
+                  className="w-full bg-orange-600 hover:bg-orange-700 text-white border-2 border-orange-700"
                 >
                   敵を追加
                 </Button>
