@@ -140,17 +140,38 @@ export const HeartSystemDisplay: React.FC<HeartSystemDisplayProps> = ({
           <p>1時間で1体力回復</p>
         </div>
         
-        <button
-          onClick={handleConsumeHeart}
-          disabled={!canConsumeHeart}
-          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            canConsumeHeart
-              ? 'bg-red-500 text-white hover:bg-red-600'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          }`}
-        >
-          {canConsumeHeart ? '体力を消費' : '体力不足'}
-        </button>
+        <div className="flex space-x-2">
+          <button
+            onClick={handleConsumeHeart}
+            disabled={!canConsumeHeart}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              canConsumeHeart
+                ? 'bg-red-500 text-white hover:bg-red-600'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
+          >
+            {canConsumeHeart ? '体力を消費' : '体力不足'}
+          </button>
+          
+          {/* テスト用体力回復ボタン */}
+          <button
+            onClick={() => {
+              const manager = getLevelManager();
+              const newHeartSystem = {
+                ...heartSystem,
+                current: heartSystem.max,
+                lastRecovery: Date.now(),
+                nextRecovery: Date.now() + 60 * 60 * 1000,
+              };
+              setHeartSystem(newHeartSystem);
+              onHeartChange?.(newHeartSystem);
+            }}
+            className="px-3 py-2 rounded-md text-sm font-medium bg-green-500 text-white hover:bg-green-600 transition-colors"
+            title="テスト用: 体力を全回復"
+          >
+            ♥回復
+          </button>
+        </div>
       </div>
 
       {heartSystem.current === 0 && (

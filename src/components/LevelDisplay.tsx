@@ -167,6 +167,56 @@ export const LevelDisplay: React.FC<LevelDisplayProps> = ({
                 <div className="font-medium">{CHAPTER_INFO[userLevel.chapter].maxHearts}個</div>
               </div>
             </div>
+            
+            {/* テスト用ボタン */}
+            <div className="mt-4 pt-3 border-t border-gray-200">
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => {
+                    const manager = getLevelManager();
+                    const result = manager.addXP(100);
+                    setUserLevel(manager.getLevel());
+                    saveLevelManager();
+                    if (result.leveledUp) {
+                      alert(`レベルアップ！ Level ${result.newLevel?.level} に上がりました！`);
+                    }
+                  }}
+                  className="px-3 py-1 rounded-md text-xs font-medium bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+                  title="テスト用: 100XP追加"
+                >
+                  +100XP
+                </button>
+                <button
+                  onClick={() => {
+                    const manager = getLevelManager();
+                    const result = manager.addXP(500);
+                    setUserLevel(manager.getLevel());
+                    saveLevelManager();
+                    if (result.leveledUp) {
+                      alert(`レベルアップ！ Level ${result.newLevel?.level} に上がりました！`);
+                    }
+                  }}
+                  className="px-3 py-1 rounded-md text-xs font-medium bg-purple-500 text-white hover:bg-purple-600 transition-colors"
+                  title="テスト用: 500XP追加"
+                >
+                  +500XP
+                </button>
+                <button
+                  onClick={() => {
+                    const manager = getLevelManager();
+                    manager.addXP(1000);
+                    setUserLevel(manager.getLevel());
+                    saveLevelManager();
+                    alert('1000XP追加しました！');
+                  }}
+                  className="px-3 py-1 rounded-md text-xs font-medium bg-orange-500 text-white hover:bg-orange-600 transition-colors"
+                  title="テスト用: 1000XP追加"
+                >
+                  +1000XP
+                </button>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">※ テスト用ボタンです</p>
+            </div>
           </div>
         )}
       </div>
