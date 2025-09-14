@@ -9,8 +9,72 @@ export type Category =
   | 'participle'
   | 'infinitive';
 
+// 新仕様の型定義
+export type Chapter = 1 | 2 | 3 | 4 | 5;
+
+export type QuestionRank = 'normal' | 'rare' | 'epic' | 'legendary';
+
+export type SkillField = 
+  | 'listening'
+  | 'reading'
+  | 'writing'
+  | 'grammar'
+  | 'idioms'
+  | 'vocabulary';
+
 export interface UserAnswer {
   questionId: number;
   answer: string;
   isCorrect: boolean;
+}
+
+// 新仕様のインターフェース
+export interface UserLevel {
+  level: number;
+  chapter: Chapter;
+  xp: number;
+  xpToNext: number;
+  progress: number;
+}
+
+export interface HeartSystem {
+  current: number;
+  max: number;
+  lastRecovery: number;
+  nextRecovery: number;
+}
+
+export interface StatusAllocation {
+  listening: number;
+  reading: number;
+  writing: number;
+  grammar: number;
+  idioms: number;
+  vocabulary: number;
+}
+
+export interface QuestionWithRank {
+  id: number;
+  question: string;
+  options: string[];
+  correctAnswer: string;
+  explanation: string;
+  category: Category;
+  difficulty: 'easy' | 'normal' | 'hard';
+  rank: QuestionRank;
+  skillField: SkillField;
+  xpReward: number;
+}
+
+export interface LevelConfig {
+  level: number;
+  chapter: Chapter;
+  requiredXP: number;
+  maxHearts: number;
+  rankProbabilities: {
+    normal: number;
+    rare: number;
+    epic: number;
+    legendary: number;
+  };
 }

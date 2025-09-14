@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Home } from "./components/Home";
+import { NewHome } from "./components/NewHome";
 import { VocabularyCard } from "./components/VocabularyCard";
 import { VocabularyDifficultySelection } from "./components/VocabularyDifficultySelection";
 import { VocabularyCategorySelection } from "./components/VocabularyCategorySelection";
@@ -248,7 +249,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-background">
       {currentScreen === 'home' && (
-        <Home
+        <NewHome
           onNavigateToGrammar={handleNavigateToGrammar}
           onNavigateToVocabulary={handleNavigateToVocabulary}
           onNavigateToGrammarQuiz={handleNavigateToGrammarQuiz}
