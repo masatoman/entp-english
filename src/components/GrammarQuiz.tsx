@@ -166,15 +166,19 @@ export function GrammarQuiz({ onBack, difficulty = 'intermediate' }: GrammarQuiz
   const renderSentenceWithBlanks = () => {
     if (!currentQuestion) return null;
 
+    // 文を単語に分割し、___を特別に処理
     const words = currentQuestion.sentence.split(' ');
+    let blankIndex = 0;
+    
     return (
       <div className="text-center text-lg leading-relaxed">
         {words.map((word, index) => {
-          const blank = currentQuestion.blanks.find(b => b.position === index);
-          if (blank) {
+          if (word === '___') {
+            const blank = currentQuestion.blanks[blankIndex];
+            blankIndex++;
             return (
               <DropZone
-                key={blank.id}
+                key={`blank-${blank.id}`}
                 blankId={blank.id}
                 droppedWord={droppedWords[blank.id] || null}
                 onDrop={handleDrop}

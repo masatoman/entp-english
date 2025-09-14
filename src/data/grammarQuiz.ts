@@ -123,8 +123,8 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     id: 11,
     sentence: "I ___ my homework before I ___ to bed.",
     blanks: [
-      { id: "blank1", position: 2, correctAnswer: "finished" },
-      { id: "blank2", position: 6, correctAnswer: "went" }
+      { id: "blank1", position: 1, correctAnswer: "finished" },
+      { id: "blank2", position: 5, correctAnswer: "went" }
     ],
     options: ["finished", "finish", "went", "go", "will finish", "will go", "finished", "went"],
     explanation: "過去の順序を表すため過去形「finished」と「went」が正解です。",
