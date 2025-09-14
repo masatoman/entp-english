@@ -186,7 +186,7 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
   const isGameOver = gameState.health <= 0;
 
   return (
-    <div className="min-h-screen p-2 sm:p-4 bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen p-2 sm:p-4 bg-gradient-to-br from-gray-900 to-gray-800">
       <div className="max-w-6xl mx-auto">
         {/* ヘッダー */}
         <div className="flex items-center justify-between mb-4">
@@ -283,7 +283,7 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
               <p className="mb-4 text-yellow-200 text-sm">
                 ⚠️ タワー強化とXPがリセットされました
               </p>
-              <Button onClick={handleGameOver} className="bg-white text-red-600 hover:bg-gray-100">
+              <Button onClick={handleGameOver} className="bg-gray-700 text-red-400 hover:bg-gray-600">
                 もう一度プレイ
               </Button>
             </CardContent>
@@ -345,7 +345,7 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
               <CardHeader className="pb-2">
                 <CardTitle className="text-gray-200 text-center">戦場</CardTitle>
                 {gameState.selectedTowerType && (
-                  <div className="text-center text-blue-600 text-sm font-medium">
+                  <div className="text-center text-blue-400 text-sm font-medium">
                     選択中: {gameState.selectedTowerType === 'basic' ? '基本タワー' : 
                             gameState.selectedTowerType === 'sniper' ? 'スナイパータワー' : 'ラピッドタワー'}
                   </div>
