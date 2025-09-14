@@ -29,9 +29,21 @@
 - **Lucide React**: アイコンライブラリ
 - **Motion**: アニメーションライブラリ
 
+#### PWA機能
+- **Vite PWA Plugin**: PWA機能の自動生成
+- **Workbox**: Service Workerの管理
+- **Web App Manifest**: アプリのメタデータ
+- **オフライン対応**: ネットワーク不要での学習継続
+
+#### ゲーム機能
+- **タワーディフェンス**: ゲーミフィケーション要素
+- **クリッカー要素**: 即座の達成感
+- **XPシステム**: 学習進捗の可視化
+
 #### 状態管理
 - **React Hooks**: useState, useEffect等の標準フック
 - **Local State**: コンポーネント内での状態管理
+- **DataManager**: 学習データの永続化
 
 ## 2. プロジェクト構造
 
@@ -43,19 +55,29 @@ src/
 │   ├── VocabularyCard.tsx # 語彙学習
 │   ├── GrammarQuiz.tsx  # 文法クイズ
 │   ├── CombinedTest.tsx # 総合テスト
+│   ├── TimeAttackMode.tsx # タイムアタックモード
+│   ├── SimpleTowerDefense.tsx # タワーディフェンスゲーム
 │   ├── Achievements.tsx # 実績画面
+│   ├── PWAInstallPrompt.tsx # PWAインストールプロンプト
+│   ├── PWAUpdatePrompt.tsx # PWA更新プロンプト
 │   └── ...
 ├── data/                # データファイル
 │   ├── questions.ts     # 問題データ
 │   ├── vocabulary.ts    # 語彙データ
 │   ├── achievements.ts  # 実績データ
+│   ├── combinedTest.ts  # 総合テストデータ
+│   ├── xpShop.ts        # XPショップデータ
 │   └── ...
 ├── types/               # TypeScript型定義
-│   └── index.ts
+│   ├── index.ts         # 基本型定義
+│   └── simple-game.ts   # ゲーム関連型定義
 ├── constants/           # 定数定義
 │   └── index.ts
 ├── utils/               # ユーティリティ関数
-│   └── index.ts
+│   ├── dataManager.ts   # データ管理
+│   ├── xpCalculator.ts  # XP計算
+│   ├── tower-defense-data.ts # ゲームデータ
+│   └── ...
 ├── styles/              # スタイルファイル
 │   └── globals.css
 ├── App.tsx              # メインアプリケーション
@@ -101,6 +123,7 @@ export interface VocabularyWord {
   example: string;
   exampleTranslation: string;
   level: 'beginner' | 'intermediate' | 'advanced';
+  category: 'all' | 'toeic' | 'business' | 'daily' | 'academic';
 }
 
 // 実績データ
@@ -116,6 +139,36 @@ export interface Achievement {
   isUnlocked: boolean;
   progress: number;
   maxProgress: number;
+}
+
+// ゲーム関連型定義
+export interface GameState {
+  level: number;
+  xp: number;
+  coins: number;
+  towers: Tower[];
+  enemies: Enemy[];
+  wave: number;
+  score: number;
+}
+
+export interface Tower {
+  id: string;
+  type: 'basic' | 'advanced' | 'special';
+  level: number;
+  damage: number;
+  range: number;
+  cost: number;
+  position: { x: number; y: number };
+}
+
+export interface Enemy {
+  id: string;
+  type: 'basic' | 'fast' | 'tank' | 'boss';
+  health: number;
+  speed: number;
+  reward: number;
+  position: { x: number; y: number };
 }
 ```
 
@@ -178,6 +231,26 @@ const [currentScreen, setCurrentScreen] = useState<Screen>('home');
 - 正答率と詳細分析
 - 復習機能への導線
 
+#### SimpleTowerDefense.tsx
+- タワーディフェンスゲーム
+- ゲーミフィケーション要素
+- XPシステムとの連携
+
+#### TimeAttackMode.tsx
+- 制限時間内での集中学習
+- タイマー機能
+- スコア表示
+
+#### PWAInstallPrompt.tsx
+- PWAインストールプロンプト
+- ブラウザ対応チェック
+- インストール誘導
+
+#### PWAUpdatePrompt.tsx
+- PWA更新通知
+- 新バージョンの案内
+- 更新実行
+
 ### 4.3 UIコンポーネント
 
 #### Radix UIベースのコンポーネント
@@ -220,12 +293,18 @@ export default defineConfig({
     "react-dom": "^18.3.1",
     "@radix-ui/react-*": "^1.x.x",
     "lucide-react": "^0.487.0",
-    "tailwind-merge": "*",
-    "clsx": "*"
+    "tailwind-merge": "^3.3.1",
+    "clsx": "^2.1.1",
+    "motion": "*",
+    "next-themes": "^0.4.6",
+    "recharts": "^2.15.2",
+    "sonner": "^2.0.3"
   },
   "devDependencies": {
     "@vitejs/plugin-react-swc": "^3.10.2",
     "vite": "6.3.5",
+    "vite-plugin-pwa": "^1.0.3",
+    "workbox-window": "^7.3.0",
     "@types/node": "^20.10.0"
   }
 }

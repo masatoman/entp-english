@@ -1,11 +1,51 @@
 
-  # 英作文学習アプリ
+# ENTP英語学習アプリ
 
-  This is a code bundle for 英作文学習アプリ. The original project is available at https://www.figma.com/design/vbs5uli6YbI8j8UOg6F3UJ/%E8%8B%B1%E4%BD%9C%E6%96%87%E5%AD%A6%E7%BF%92%E3%82%A2%E3%83%97%E3%83%AA.
+ENTP（外向的直感思考知覚）タイプの学習者が飽きずに楽しく英語学習を継続できるProgressive Web App (PWA)。
 
-  ## Running the code
+## 特徴
 
-  Run `npm i` to install the dependencies.
+- **多様な学習モード**: 語彙学習、文法クイズ、総合テスト、タイムアタック、タワーディフェンスゲーム
+- **PWA対応**: インストール可能、オフライン学習対応
+- **ゲーミフィケーション**: XPシステム、アチーブメント、タワーディフェンスゲーム
+- **ENTP特化設計**: 多様性、即効性、自由度を重視した学習体験
 
-  Run `npm run dev` to start the development server.
+## 技術スタック
+
+- **フロントエンド**: React 18, TypeScript, Vite
+- **スタイリング**: Tailwind CSS, Radix UI
+- **PWA**: Vite PWA Plugin, Workbox
+- **ゲーム**: タワーディフェンス、クリッカー要素
+
+## 開発開始
+
+```bash
+# 依存関係のインストール
+npm install
+
+# 開発サーバーの起動
+npm run dev
+
+# 本番ビルド
+npm run build
+```
+
+## ドキュメント
+
+- [プロジェクト概要](./docs/overview.md)
+- [技術仕様](./docs/tech-specs.md)
+- [開発フロー・ベストプラクティス](./docs/development-workflow.md)
+- [プロジェクト状況スナップショット](./docs/project-snapshot.md)
+
+## 新チャット開始時の確認事項
+
+新しいチャットセッションを開始する際は、以下を確認してください：
+
+1. **プロジェクト状況の確認**: [project-snapshot.md](./docs/project-snapshot.md)
+2. **開発フローの確認**: [development-workflow.md](./docs/development-workflow.md)
+3. **技術スタックの確認**: [tech-specs.md](./docs/tech-specs.md)
+
+## ライセンス
+
+Private
   
