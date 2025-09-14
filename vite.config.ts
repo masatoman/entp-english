@@ -41,6 +41,23 @@ export default defineConfig({
   build: {
     target: 'esnext',
     outDir: 'build',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // ベンダーライブラリを分離
+          vendor: ['react', 'react-dom'],
+          // UIライブラリを分離
+          ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-progress'],
+          // ゲーム関連を分離
+          game: ['./src/components/SimpleTowerDefense.tsx', './src/utils/tower-defense-data.ts'],
+          // 学習機能を分離
+          learning: ['./src/components/VocabularyCard.tsx', './src/components/GrammarQuiz.tsx', './src/components/CombinedTest.tsx'],
+          // 実績・進捗管理を分離
+          progress: ['./src/components/Achievements.tsx', './src/utils/dataManager.ts', './src/utils/xpCalculator.ts']
+        }
+      }
+    },
+    chunkSizeWarningLimit: 1000
   },
   server: {
     port: 3000,

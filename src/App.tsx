@@ -1,24 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { Home } from "./components/Home";
 import { NewHome } from "./components/NewHome";
-import { VocabularyCard } from "./components/VocabularyCard";
-import { EnhancedVocabularyCard } from "./components/EnhancedVocabularyCard";
-import { VocabularyDifficultySelection } from "./components/VocabularyDifficultySelection";
-import { VocabularyCategorySelection } from "./components/VocabularyCategorySelection";
-import { GrammarQuiz } from "./components/GrammarQuiz";
-import { EnhancedGrammarQuiz } from "./components/EnhancedGrammarQuiz";
-import { GrammarQuizDifficultySelection } from "./components/GrammarQuizDifficultySelection";
-import { CombinedTest } from "./components/CombinedTest";
-import { Achievements } from "./components/Achievements";
-import { CategorySelection } from "./components/CategorySelection";
-import { DifficultySelection } from "./components/DifficultySelection";
-import { Question, QuestionData } from "./components/Question";
-import { Results } from "./components/Results";
 import { PWAInstallPrompt } from "./components/PWAInstallPrompt";
 import { PWAUpdatePrompt } from "./components/PWAUpdatePrompt";
-import { AppSettings } from "./components/AppSettings";
-import { TimeAttackMode } from "./components/TimeAttackMode";
-import { SimpleTowerDefense } from "./components/SimpleTowerDefense";
+import { QuestionData } from "./components/Question";
+
+// 動的インポートでコンポーネントを遅延読み込み
+const VocabularyCard = lazy(() => import("./components/VocabularyCard").then(m => ({ default: m.VocabularyCard })));
+const EnhancedVocabularyCard = lazy(() => import("./components/EnhancedVocabularyCard").then(m => ({ default: m.EnhancedVocabularyCard })));
+const VocabularyDifficultySelection = lazy(() => import("./components/VocabularyDifficultySelection").then(m => ({ default: m.VocabularyDifficultySelection })));
+const VocabularyCategorySelection = lazy(() => import("./components/VocabularyCategorySelection").then(m => ({ default: m.VocabularyCategorySelection })));
+const GrammarQuiz = lazy(() => import("./components/GrammarQuiz").then(m => ({ default: m.GrammarQuiz })));
+const EnhancedGrammarQuiz = lazy(() => import("./components/EnhancedGrammarQuiz").then(m => ({ default: m.EnhancedGrammarQuiz })));
+const GrammarQuizDifficultySelection = lazy(() => import("./components/GrammarQuizDifficultySelection").then(m => ({ default: m.GrammarQuizDifficultySelection })));
+const CombinedTest = lazy(() => import("./components/CombinedTest").then(m => ({ default: m.CombinedTest })));
+const Achievements = lazy(() => import("./components/Achievements").then(m => ({ default: m.Achievements })));
+const CategorySelection = lazy(() => import("./components/CategorySelection").then(m => ({ default: m.CategorySelection })));
+const DifficultySelection = lazy(() => import("./components/DifficultySelection").then(m => ({ default: m.DifficultySelection })));
+const Question = lazy(() => import("./components/Question").then(m => ({ default: m.Question })));
+const Results = lazy(() => import("./components/Results").then(m => ({ default: m.Results })));
+const AppSettings = lazy(() => import("./components/AppSettings").then(m => ({ default: m.AppSettings })));
+const TimeAttackMode = lazy(() => import("./components/TimeAttackMode").then(m => ({ default: m.TimeAttackMode })));
+const SimpleTowerDefense = lazy(() => import("./components/SimpleTowerDefense").then(m => ({ default: m.SimpleTowerDefense })));
 import { getQuestions } from "./data/questions";
 import { Category, UserAnswer } from "./types";
 import { DataManager } from "./utils/dataManager";
@@ -248,6 +251,17 @@ export default function App() {
     console.log('difficulty:', difficulty);
   }
 
+  // ローディングコンポーネント
+  const LoadingSpinner = () => (
+    <div className="min-h-screen p-4 flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <h2 className="text-xl mb-2">読み込み中...</h2>
+        <p className="text-muted-foreground">コンポーネントを読み込んでいます</p>
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-background">
       {currentScreen === 'home' && (
@@ -265,88 +279,114 @@ export default function App() {
       )}
       
       {currentScreen === 'vocabulary-difficulty' && (
-        <VocabularyDifficultySelection 
-          onBack={handleBackToHome}
-          onSelectDifficulty={handleSelectVocabularyDifficulty}
-        />
+        <Suspense fallback={<LoadingSpinner />}>
+          <VocabularyDifficultySelection 
+            onBack={handleBackToHome}
+            onSelectDifficulty={handleSelectVocabularyDifficulty}
+          />
+        </Suspense>
       )}
       
       {currentScreen === 'vocabulary-category' && (
-        <VocabularyCategorySelection 
-          onBack={() => setCurrentScreen('vocabulary-difficulty')}
-          onSelectCategory={handleSelectVocabularyCategory}
-        />
+        <Suspense fallback={<LoadingSpinner />}>
+          <VocabularyCategorySelection 
+            onBack={() => setCurrentScreen('vocabulary-difficulty')}
+            onSelectCategory={handleSelectVocabularyCategory}
+          />
+        </Suspense>
       )}
       
       {currentScreen === 'vocabulary' && (
-        <EnhancedVocabularyCard 
-          onBack={() => setCurrentScreen('vocabulary-category')} 
-          difficulty={vocabularyDifficulty}
-          category={vocabularyCategory}
-        />
+        <Suspense fallback={<LoadingSpinner />}>
+          <EnhancedVocabularyCard 
+            onBack={() => setCurrentScreen('vocabulary-category')} 
+            difficulty={vocabularyDifficulty}
+            category={vocabularyCategory}
+          />
+        </Suspense>
       )}
       
       {currentScreen === 'grammar-quiz-difficulty' && (
-        <GrammarQuizDifficultySelection 
-          onBack={handleBackToHome}
-          onSelectDifficulty={handleSelectGrammarQuizDifficulty}
-        />
+        <Suspense fallback={<LoadingSpinner />}>
+          <GrammarQuizDifficultySelection 
+            onBack={handleBackToHome}
+            onSelectDifficulty={handleSelectGrammarQuizDifficulty}
+          />
+        </Suspense>
       )}
       
       {currentScreen === 'grammar-quiz' && (
-        <EnhancedGrammarQuiz 
-          onBack={() => setCurrentScreen('grammar-quiz-difficulty')} 
-          difficulty={grammarQuizDifficulty}
-        />
+        <Suspense fallback={<LoadingSpinner />}>
+          <EnhancedGrammarQuiz 
+            onBack={() => setCurrentScreen('grammar-quiz-difficulty')} 
+            difficulty={grammarQuizDifficulty}
+          />
+        </Suspense>
       )}
       
       {currentScreen === 'combined-test' && (
-        <CombinedTest onBack={handleBackToHome} />
+        <Suspense fallback={<LoadingSpinner />}>
+          <CombinedTest onBack={handleBackToHome} />
+        </Suspense>
       )}
       
       {currentScreen === 'achievements' && (
-        <Achievements onBack={handleBackToHome} />
+        <Suspense fallback={<LoadingSpinner />}>
+          <Achievements onBack={handleBackToHome} />
+        </Suspense>
       )}
       
       
       {currentScreen === 'app-settings' && (
-        <AppSettings onBack={handleBackToHome} />
+        <Suspense fallback={<LoadingSpinner />}>
+          <AppSettings onBack={handleBackToHome} />
+        </Suspense>
       )}
       
       {currentScreen === 'time-attack' && (
-        <TimeAttackMode onBack={handleBackToHome} />
+        <Suspense fallback={<LoadingSpinner />}>
+          <TimeAttackMode onBack={handleBackToHome} />
+        </Suspense>
       )}
       
       {currentScreen === 'simple-tower-defense' && (
-        <SimpleTowerDefense onBack={handleBackToHome} />
+        <Suspense fallback={<LoadingSpinner />}>
+          <SimpleTowerDefense onBack={handleBackToHome} />
+        </Suspense>
       )}
       
       
       {currentScreen === 'category' && (
-        <CategorySelection 
-          onSelectCategory={handleSelectCategory} 
-          onBack={handleBackToHome}
-        />
+        <Suspense fallback={<LoadingSpinner />}>
+          <CategorySelection 
+            onSelectCategory={handleSelectCategory} 
+            onBack={handleBackToHome}
+          />
+        </Suspense>
       )}
       
       {currentScreen === 'difficulty' && (
-        <DifficultySelection
-          category={selectedCategory}
-          onSelectDifficulty={handleSelectDifficulty}
-          onBack={handleChangeCategory}
-        />
+        <Suspense fallback={<LoadingSpinner />}>
+          <DifficultySelection
+            category={selectedCategory}
+            onSelectDifficulty={handleSelectDifficulty}
+            onBack={handleChangeCategory}
+          />
+        </Suspense>
       )}
       
       {currentScreen === 'question' && questions.length > 0 && (
-        <Question
-          question={questions[currentQuestionIndex]}
-          questionNumber={currentQuestionIndex + 1}
-          totalQuestions={questions.length}
-          difficulty={difficulty}
-          category={selectedCategory}
-          onAnswer={handleAnswer}
-          onBack={handleChangeDifficulty}
-        />
+        <Suspense fallback={<LoadingSpinner />}>
+          <Question
+            question={questions[currentQuestionIndex]}
+            questionNumber={currentQuestionIndex + 1}
+            totalQuestions={questions.length}
+            difficulty={difficulty}
+            category={selectedCategory}
+            onAnswer={handleAnswer}
+            onBack={handleChangeDifficulty}
+          />
+        </Suspense>
       )}
       
       {currentScreen === 'question' && questions.length === 0 && (
@@ -362,17 +402,19 @@ export default function App() {
       )}
       
       {currentScreen === 'results' && (
-        <Results
-          questions={questions}
-          userAnswers={userAnswers}
-          difficulty={difficulty}
-          category={selectedCategory}
-          sessionDuration={Math.round((Date.now() - sessionStartTime) / 1000)}
-          onRestart={handleRestart}
-          onChangeDifficulty={handleChangeDifficulty}
-          onChangeCategory={handleChangeCategory}
-          onBack={handleBackToHome}
-        />
+        <Suspense fallback={<LoadingSpinner />}>
+          <Results
+            questions={questions}
+            userAnswers={userAnswers}
+            difficulty={difficulty}
+            category={selectedCategory}
+            sessionDuration={Math.round((Date.now() - sessionStartTime) / 1000)}
+            onRestart={handleRestart}
+            onChangeDifficulty={handleChangeDifficulty}
+            onChangeCategory={handleChangeCategory}
+            onBack={handleBackToHome}
+          />
+        </Suspense>
       )}
       
       {/* PWA Components */}
