@@ -14,6 +14,7 @@ import { PWAInstallPrompt } from "./components/PWAInstallPrompt";
 import { PWAUpdatePrompt } from "./components/PWAUpdatePrompt";
 import { AppSettings } from "./components/AppSettings";
 import { TimeAttackMode } from "./components/TimeAttackMode";
+import { SimpleTowerDefense } from "./components/SimpleTowerDefense";
 import { getQuestions } from "./data/questions";
 import { Category, UserAnswer } from "./types";
 import { DataManager } from "./utils/dataManager";
@@ -54,7 +55,7 @@ function checkAnswer(userAnswer: string, correctAnswer: string, difficulty: 'eas
   }
 }
 
-type Screen = 'home' | 'vocabulary-difficulty' | 'vocabulary-category' | 'vocabulary' | 'grammar-quiz' | 'combined-test' | 'achievements' | 'notification-settings' | 'app-settings' | 'time-attack' | 'category' | 'difficulty' | 'question' | 'results';
+type Screen = 'home' | 'vocabulary-difficulty' | 'vocabulary-category' | 'vocabulary' | 'grammar-quiz' | 'combined-test' | 'achievements' | 'notification-settings' | 'app-settings' | 'time-attack' | 'simple-tower-defense' | 'category' | 'difficulty' | 'question' | 'results';
 type Difficulty = 'easy' | 'normal' | 'hard';
 type VocabularyDifficulty = 'beginner' | 'intermediate' | 'advanced';
 type VocabularyCategory = 'all' | 'toeic' | 'business' | 'daily' | 'academic';
@@ -112,6 +113,11 @@ export default function App() {
   const handleNavigateToTimeAttack = () => {
     setCurrentScreen('time-attack');
   };
+
+  const handleNavigateToSimpleTowerDefense = () => {
+    setCurrentScreen('simple-tower-defense');
+  };
+
 
   const handleBackToHome = () => {
     setCurrentScreen('home');
@@ -238,6 +244,7 @@ export default function App() {
           onNavigateToAchievements={handleNavigateToAchievements}
           onNavigateToAppSettings={handleNavigateToAppSettings}
           onNavigateToTimeAttack={handleNavigateToTimeAttack}
+          onNavigateToSimpleTowerDefense={handleNavigateToSimpleTowerDefense}
         />
       )}
       
@@ -283,6 +290,11 @@ export default function App() {
       {currentScreen === 'time-attack' && (
         <TimeAttackMode onBack={handleBackToHome} />
       )}
+      
+      {currentScreen === 'simple-tower-defense' && (
+        <SimpleTowerDefense onBack={handleBackToHome} />
+      )}
+      
       
       {currentScreen === 'category' && (
         <CategorySelection 

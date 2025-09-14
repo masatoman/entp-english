@@ -27,9 +27,10 @@ interface HomeProps {
   onNavigateToAchievements: () => void;
   onNavigateToAppSettings: () => void;
   onNavigateToTimeAttack: () => void;
+  onNavigateToSimpleTowerDefense: () => void;
 }
 
-export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateToGrammarQuiz, onNavigateToEssay, onNavigateToCombinedTest, onNavigateToAchievements, onNavigateToAppSettings, onNavigateToTimeAttack }: HomeProps) {
+export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateToGrammarQuiz, onNavigateToEssay, onNavigateToCombinedTest, onNavigateToAchievements, onNavigateToAppSettings, onNavigateToTimeAttack, onNavigateToSimpleTowerDefense }: HomeProps) {
   const [userStats, setUserStats] = useState<UserStats>(DataManager.getUserStats());
   const [todayXP, setTodayXP] = useState(0);
   
@@ -105,7 +106,7 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
     streak,
     availableFeatures: availableFeatures.length,
     nextUnlockableFeatures: nextUnlockableFeatures.length,
-    nextUnlockableFeatures
+    nextUnlockableFeaturesList: nextUnlockableFeatures
   });
 
   const menuItems = [
@@ -127,6 +128,15 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
       color: 'from-gray-500 to-gray-600',
       available: true,
       onClick: onNavigateToAppSettings
+    },
+    {
+      id: 'simple-tower-defense',
+      title: 'タワーディフェンス',
+      description: 'シンプルなゲーム学習',
+      icon: Target,
+      color: 'from-blue-500 to-blue-600',
+      available: true,
+      onClick: onNavigateToSimpleTowerDefense
     }
   ];
 
@@ -209,7 +219,7 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
       title: feature.name,
       description: `Level ${feature.condition.level}でアンロック`,
       icon: iconMap[feature.icon] || BookOpen,
-      color: 'from-gray-400 to-gray-500',
+      color: 'from-gray-500 to-gray-600',
       available: false,
       onClick: () => {}
     });
@@ -327,8 +337,8 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
                       <IconComponent className="w-8 h-8 text-white" />
                     </div>
                     <div className="space-y-1">
-                      <h3 className="font-medium">{item.title}</h3>
-                      <p className="text-sm text-muted-foreground">
+                      <h3 className={`font-medium ${item.available ? 'text-foreground' : 'text-gray-700'}`}>{item.title}</h3>
+                      <p className={`text-sm ${item.available ? 'text-muted-foreground' : 'text-gray-600'}`}>
                         {item.description}
                       </p>
                     </div>
