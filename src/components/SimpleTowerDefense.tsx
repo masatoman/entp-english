@@ -190,21 +190,21 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
       <div className="max-w-6xl mx-auto">
         {/* ヘッダー */}
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-lg sm:text-2xl font-bold text-gray-800">
+          <h1 className="text-lg sm:text-2xl font-bold text-gray-200">
             シンプル タワーディフェンス
           </h1>
           <Button 
             onClick={onBack} 
             variant="outline" 
             size="sm" 
-            className="bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+            className="bg-gray-700 text-gray-200 border-gray-600 hover:bg-gray-600"
           >
             戻る
           </Button>
         </div>
 
         {/* コンパクトなゲーム制御と統計 */}
-        <Card className="mb-4 border-gray-300 border-2 bg-white shadow-lg">
+        <Card className="mb-4 border-gray-600 border-2 bg-gray-800 shadow-lg">
           <CardContent className="p-3">
             <div className="flex items-center justify-between gap-4 flex-wrap">
               {/* ゲーム開始/停止 */}
@@ -213,14 +213,14 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
                   <Button 
                     onClick={startGame} 
                     disabled={isGameOver}
-                    className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg border-2 border-green-700"
+                    className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg"
                   >
                     ゲーム開始
                   </Button>
                 ) : (
                   <Button 
                     onClick={stopGame}
-                    className="bg-red-600 hover:bg-red-700 text-white font-semibold shadow-lg border-2 border-red-700"
+                    className="bg-red-600 hover:bg-red-700 text-white font-semibold shadow-lg"
                   >
                     一時停止
                   </Button>
@@ -229,7 +229,7 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
                 <Button 
                   onClick={resetGame}
                   variant="outline"
-                  className="bg-gray-200 hover:bg-gray-300 text-gray-700 border-gray-400 font-semibold shadow-lg"
+                  className="bg-gray-600 hover:bg-gray-500 text-gray-200 border-gray-500 font-semibold shadow-lg"
                 >
                   リセット
                 </Button>
@@ -259,14 +259,14 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
 
               {/* 速度切り替え（1つのボタン） */}
               <div className="flex items-center gap-2">
-                <span className="text-gray-700 text-sm font-medium">速度:</span>
+                <span className="text-gray-300 text-sm font-medium">速度:</span>
                 <Button 
                   onClick={() => {
                     const nextSpeed = gameState.gameSpeed === 3 ? 1 : gameState.gameSpeed + 1;
                     handleSpeedChange(nextSpeed as 1 | 2 | 3);
                   }}
                   size="sm"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-lg min-w-[60px] border-2 border-blue-700"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-lg min-w-[60px]"
                 >
                   {gameState.gameSpeed}x
                 </Button>
@@ -294,12 +294,12 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
           {/* メインゲームエリア */}
           <div className="lg:col-span-2 space-y-4">
             {/* 進捗表示（コンパクト） */}
-            <Card className="border-gray-300 border-2 bg-white shadow-lg">
+            <Card className="border-gray-600 border-2 bg-gray-800 shadow-lg">
               <CardContent className="p-3">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {/* レベル進捗 */}
                   <div>
-                    <div className="flex justify-between text-gray-700 text-sm mb-1">
+                    <div className="flex justify-between text-gray-300 text-sm mb-1">
                       <span>{getLevelName(profile.currentLevel)}</span>
                       <span className="text-purple-600 font-bold">Lv{profile.currentLevel}</span>
                     </div>
@@ -314,7 +314,7 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
                   {/* ウェーブ進捗 */}
                   {gameState.isRunning && (
                     <div>
-                      <div className="flex justify-between text-gray-700 text-sm mb-1">
+                      <div className="flex justify-between text-gray-300 text-sm mb-1">
                         <span>ウェーブ {gameState.currentWave}</span>
                         <span className="text-yellow-600">{Math.max(0, Math.floor(20 - (gameState.timeElapsed - gameState.waveStartTime)))}秒</span>
                       </div>
@@ -327,7 +327,7 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
                   
                   {/* 体力バー */}
                   <div>
-                    <div className="flex justify-between text-gray-700 text-sm mb-1">
+                    <div className="flex justify-between text-gray-300 text-sm mb-1">
                       <span>体力</span>
                       <span className="text-red-600">{gameState.health}/{gameState.maxHealth}</span>
                     </div>
@@ -341,9 +341,9 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
             </Card>
 
             {/* ゲームフィールド */}
-            <Card className="border-gray-300 border-2 bg-white shadow-lg">
+            <Card className="border-gray-600 border-2 bg-gray-800 shadow-lg">
               <CardHeader className="pb-2">
-                <CardTitle className="text-gray-800 text-center">戦場</CardTitle>
+                <CardTitle className="text-gray-200 text-center">戦場</CardTitle>
                 {gameState.selectedTowerType && (
                   <div className="text-center text-blue-600 text-sm font-medium">
                     選択中: {gameState.selectedTowerType === 'basic' ? '基本タワー' : 
@@ -365,10 +365,10 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
           <div className="space-y-4">
 
             {/* タワー選択 */}
-            <Card className="border-gray-300 border-2 bg-white shadow-lg">
+            <Card className="border-gray-600 border-2 bg-gray-800 shadow-lg">
               <CardHeader className="pb-2">
-                <CardTitle className="text-gray-800">タワー選択</CardTitle>
-                <p className="text-xs text-gray-600">タワーを選択してフィールドに配置</p>
+                <CardTitle className="text-gray-200">タワー選択</CardTitle>
+                <p className="text-xs text-gray-400">タワーを選択してフィールドに配置</p>
               </CardHeader>
               <CardContent className="space-y-3">
                 {/* 基本タワー */}
@@ -376,8 +376,8 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
                   onClick={() => selectTowerType('basic')}
                   className={`w-full ${
                     gameState.selectedTowerType === 'basic'
-                      ? 'bg-green-600 text-white border-2 border-green-700'
-                      : 'bg-green-100 text-green-700 hover:bg-green-200 border border-green-300'
+                      ? 'bg-green-600 text-white shadow-lg'
+                      : 'bg-green-100 text-green-700 hover:bg-green-200'
                   }`}
                   disabled={gameState.gold < getTowerCost('basic')}
                 >
@@ -395,8 +395,8 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
                   onClick={() => selectTowerType('sniper')}
                   className={`w-full ${
                     gameState.selectedTowerType === 'sniper'
-                      ? 'bg-blue-600 text-white border-2 border-blue-700'
-                      : 'bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-300'
+                      ? 'bg-blue-600 text-white shadow-lg'
+                      : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
                   }`}
                   disabled={gameState.gold < getTowerCost('sniper')}
                 >
@@ -414,8 +414,8 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
                   onClick={() => selectTowerType('rapid')}
                   className={`w-full ${
                     gameState.selectedTowerType === 'rapid'
-                      ? 'bg-orange-600 text-white border-2 border-orange-700'
-                      : 'bg-orange-100 text-orange-700 hover:bg-orange-200 border border-orange-300'
+                      ? 'bg-orange-600 text-white shadow-lg'
+                      : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
                   }`}
                   disabled={gameState.gold < getTowerCost('rapid')}
                 >
@@ -437,15 +437,15 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
             />
 
             {/* テスト機能 */}
-            <Card className="border-gray-300 border-2 bg-white shadow-lg">
+            <Card className="border-gray-600 border-2 bg-gray-800 shadow-lg">
               <CardHeader className="pb-2">
-                <CardTitle className="text-gray-800">テスト機能</CardTitle>
+                <CardTitle className="text-gray-200">テスト機能</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 <Button 
                   onClick={addEnemy}
                   size="sm"
-                  className="w-full bg-orange-600 hover:bg-orange-700 text-white border-2 border-orange-700"
+                  className="w-full bg-orange-600 hover:bg-orange-700 text-white"
                 >
                   敵を追加
                 </Button>
@@ -453,11 +453,11 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
             </Card>
 
             {/* 説明 */}
-            <Card className="border-gray-300 border-2 bg-white shadow-lg">
+            <Card className="border-gray-600 border-2 bg-gray-800 shadow-lg">
               <CardHeader className="pb-2">
-                <CardTitle className="text-gray-800">遊び方</CardTitle>
+                <CardTitle className="text-gray-200">遊び方</CardTitle>
               </CardHeader>
-              <CardContent className="text-gray-600 text-sm space-y-2">
+              <CardContent className="text-gray-300 text-sm space-y-2">
                 <p>1. ゲーム開始ボタンを押す</p>
                 <p>2. タワーを選択してフィールドに配置</p>
                 <p>3. 敵を倒してスコア・ゴールド・XPを獲得</p>
