@@ -12,6 +12,7 @@ import { Badge } from "./ui/badge";
 
 interface GrammarQuizProps {
   onBack: () => void;
+  difficulty?: 'beginner' | 'intermediate' | 'advanced';
 }
 
 interface DropZoneProps {
@@ -86,7 +87,7 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
-export function GrammarQuiz({ onBack }: GrammarQuizProps) {
+export function GrammarQuiz({ onBack, difficulty = 'intermediate' }: GrammarQuizProps) {
   const [questions, setQuestions] = useState<GrammarQuizQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [droppedWords, setDroppedWords] = useState<Record<string, string>>({});
@@ -96,10 +97,10 @@ export function GrammarQuiz({ onBack }: GrammarQuizProps) {
   const [shuffledOptions, setShuffledOptions] = useState<string[]>([]);
 
   useEffect(() => {
-    const allQuestions = getGrammarQuizQuestions();
+    const allQuestions = getGrammarQuizQuestions(difficulty);
     const selectedQuestions = shuffleArray(allQuestions).slice(0, 10);
     setQuestions(selectedQuestions);
-  }, []);
+  }, [difficulty]);
 
   useEffect(() => {
     if (questions.length > 0 && currentQuestionIndex < questions.length) {
@@ -153,7 +154,7 @@ export function GrammarQuiz({ onBack }: GrammarQuizProps) {
   };
 
   const handleRestart = () => {
-    const allQuestions = getGrammarQuizQuestions();
+    const allQuestions = getGrammarQuizQuestions(difficulty);
     const selectedQuestions = shuffleArray(allQuestions).slice(0, 10);
     setQuestions(selectedQuestions);
     setCurrentQuestionIndex(0);

@@ -29,7 +29,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
       { id: "blank1", position: 2, correctAnswer: "has" },
       { id: "blank2", position: 6, correctAnswer: "for" }
     ],
-    options: ["has", "have", "for", "since", "is", "was"],
+    options: ["has", "have", "for", "since", "is", "was", "has", "for"],
     explanation: "現在完了形「has been studying」と期間を表す「for」が正解です。",
     level: "intermediate"
   },
@@ -40,7 +40,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
       { id: "blank1", position: 2, correctAnswer: "were" },
       { id: "blank2", position: 5, correctAnswer: "would" }
     ],
-    options: ["were", "was", "would", "will", "am", "could"],
+    options: ["were", "was", "would", "will", "am", "could", "were", "would"],
     explanation: "仮定法過去「If I were rich, I would travel」が正解です。",
     level: "advanced"
   },
@@ -51,7 +51,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
       { id: "blank1", position: 3, correctAnswer: "lying" },
       { id: "blank2", position: 7, correctAnswer: "is" }
     ],
-    options: ["lying", "laying", "is", "are", "was", "were"],
+    options: ["lying", "laying", "is", "are", "was", "were", "lying", "is"],
     explanation: "「lying」（横たわっている）と単数形の「is」が正解です。",
     level: "intermediate"
   },
@@ -62,7 +62,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
       { id: "blank1", position: 2, correctAnswer: "were" },
       { id: "blank2", position: 7, correctAnswer: "started" }
     ],
-    options: ["were", "was", "started", "start", "are", "have"],
+    options: ["were", "was", "started", "start", "are", "have", "were", "started"],
     explanation: "過去進行形「were playing」と過去形「started」が正解です。",
     level: "beginner"
   },
@@ -83,7 +83,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
       { id: "blank1", position: 2, correctAnswer: "as" },
       { id: "blank2", position: 4, correctAnswer: "as" }
     ],
-    options: ["as", "as", "so", "more", "most", "than", "very"],
+    options: ["as", "as", "so", "more", "most", "than", "very", "as", "as"],
     explanation: "同等比較「as ... as」の構文が正解です。",
     level: "intermediate"
   },
@@ -104,7 +104,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
       { id: "blank1", position: 2, correctAnswer: "that" },
       { id: "blank2", position: 7, correctAnswer: "was" }
     ],
-    options: ["that", "which", "who", "was", "were", "is"],
+    options: ["that", "which", "who", "was", "were", "is", "that", "was"],
     explanation: "関係代名詞「that」と過去形「was」が正解です。",
     level: "intermediate"
   },
@@ -116,6 +116,117 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     ],
     options: ["appeared", "seems", "looks", "appears"],
     explanation: "過去の状況を表すため過去形「appeared」が正解です。",
+    level: "intermediate"
+  },
+  // 追加の問題
+  {
+    id: 11,
+    sentence: "I ___ my homework before I ___ to bed.",
+    blanks: [
+      { id: "blank1", position: 2, correctAnswer: "finished" },
+      { id: "blank2", position: 6, correctAnswer: "went" }
+    ],
+    options: ["finished", "finish", "went", "go", "will finish", "will go", "finished", "went"],
+    explanation: "過去の順序を表すため過去形「finished」と「went」が正解です。",
+    level: "beginner"
+  },
+  {
+    id: 12,
+    sentence: "She ___ English for five years ___ she started working.",
+    blanks: [
+      { id: "blank1", position: 2, correctAnswer: "had been studying" },
+      { id: "blank2", position: 7, correctAnswer: "when" }
+    ],
+    options: ["had been studying", "has been studying", "when", "before", "after", "while", "had been studying", "when"],
+    explanation: "過去完了進行形「had been studying」と時を表す「when」が正解です。",
+    level: "advanced"
+  },
+  {
+    id: 13,
+    sentence: "The children ___ playing in the park ___ it started raining.",
+    blanks: [
+      { id: "blank1", position: 3, correctAnswer: "were" },
+      { id: "blank2", position: 7, correctAnswer: "when" }
+    ],
+    options: ["were", "was", "when", "while", "before", "after", "were", "when"],
+    explanation: "過去進行形「were playing」と時を表す「when」が正解です。",
+    level: "beginner"
+  },
+  {
+    id: 14,
+    sentence: "I ___ you ___ call me if you need help.",
+    blanks: [
+      { id: "blank1", position: 2, correctAnswer: "suggest" },
+      { id: "blank2", position: 4, correctAnswer: "should" }
+    ],
+    options: ["suggest", "suggested", "should", "would", "could", "might", "suggest", "should"],
+    explanation: "提案を表す「suggest」と助動詞「should」が正解です。",
+    level: "intermediate"
+  },
+  {
+    id: 15,
+    sentence: "The book ___ I read yesterday ___ very interesting.",
+    blanks: [
+      { id: "blank1", position: 2, correctAnswer: "which" },
+      { id: "blank2", position: 6, correctAnswer: "was" }
+    ],
+    options: ["which", "that", "who", "was", "were", "is", "which", "was"],
+    explanation: "関係代名詞「which」と過去形「was」が正解です。",
+    level: "intermediate"
+  },
+  {
+    id: 16,
+    sentence: "He ___ to the store ___ some milk.",
+    blanks: [
+      { id: "blank1", position: 2, correctAnswer: "went" },
+      { id: "blank2", position: 5, correctAnswer: "to buy" }
+    ],
+    options: ["went", "goes", "to buy", "buying", "bought", "will buy", "went", "to buy"],
+    explanation: "過去形「went」と目的を表す不定詞「to buy」が正解です。",
+    level: "beginner"
+  },
+  {
+    id: 17,
+    sentence: "If I ___ you, I ___ study harder.",
+    blanks: [
+      { id: "blank1", position: 2, correctAnswer: "were" },
+      { id: "blank2", position: 5, correctAnswer: "would" }
+    ],
+    options: ["were", "was", "would", "will", "should", "could", "were", "would"],
+    explanation: "仮定法過去「If I were you, I would study」が正解です。",
+    level: "advanced"
+  },
+  {
+    id: 18,
+    sentence: "The students ___ their homework ___ the teacher arrived.",
+    blanks: [
+      { id: "blank1", position: 3, correctAnswer: "had finished" },
+      { id: "blank2", position: 6, correctAnswer: "when" }
+    ],
+    options: ["had finished", "finished", "when", "before", "after", "while", "had finished", "when"],
+    explanation: "過去完了形「had finished」と時を表す「when」が正解です。",
+    level: "advanced"
+  },
+  {
+    id: 19,
+    sentence: "She ___ her keys ___ she left the house.",
+    blanks: [
+      { id: "blank1", position: 2, correctAnswer: "forgot" },
+      { id: "blank2", position: 5, correctAnswer: "when" }
+    ],
+    options: ["forgot", "forgets", "when", "while", "before", "after", "forgot", "when"],
+    explanation: "過去形「forgot」と時を表す「when」が正解です。",
+    level: "beginner"
+  },
+  {
+    id: 20,
+    sentence: "I ___ you ___ come to the party tomorrow.",
+    blanks: [
+      { id: "blank1", position: 2, correctAnswer: "hope" },
+      { id: "blank2", position: 4, correctAnswer: "will" }
+    ],
+    options: ["hope", "hoped", "will", "would", "can", "could", "hope", "will"],
+    explanation: "現在形「hope」と未来形「will」が正解です。",
     level: "intermediate"
   }
 ];

@@ -4,6 +4,7 @@ import { VocabularyCard } from "./components/VocabularyCard";
 import { VocabularyDifficultySelection } from "./components/VocabularyDifficultySelection";
 import { VocabularyCategorySelection } from "./components/VocabularyCategorySelection";
 import { GrammarQuiz } from "./components/GrammarQuiz";
+import { GrammarQuizDifficultySelection } from "./components/GrammarQuizDifficultySelection";
 import { CombinedTest } from "./components/CombinedTest";
 import { Achievements } from "./components/Achievements";
 import { CategorySelection } from "./components/CategorySelection";
@@ -55,7 +56,7 @@ function checkAnswer(userAnswer: string, correctAnswer: string, difficulty: 'eas
   }
 }
 
-type Screen = 'home' | 'vocabulary-difficulty' | 'vocabulary-category' | 'vocabulary' | 'grammar-quiz' | 'combined-test' | 'achievements' | 'notification-settings' | 'app-settings' | 'time-attack' | 'simple-tower-defense' | 'category' | 'difficulty' | 'question' | 'results';
+type Screen = 'home' | 'vocabulary-difficulty' | 'vocabulary-category' | 'vocabulary' | 'grammar-quiz-difficulty' | 'grammar-quiz' | 'combined-test' | 'achievements' | 'notification-settings' | 'app-settings' | 'time-attack' | 'simple-tower-defense' | 'category' | 'difficulty' | 'question' | 'results';
 type Difficulty = 'easy' | 'normal' | 'hard';
 type VocabularyDifficulty = 'beginner' | 'intermediate' | 'advanced';
 type VocabularyCategory = 'all' | 'toeic' | 'business' | 'daily' | 'academic';
@@ -66,6 +67,7 @@ export default function App() {
   const [difficulty, setDifficulty] = useState<Difficulty>('easy');
   const [vocabularyDifficulty, setVocabularyDifficulty] = useState<VocabularyDifficulty>('intermediate');
   const [vocabularyCategory, setVocabularyCategory] = useState<VocabularyCategory>('all');
+  const [grammarQuizDifficulty, setGrammarQuizDifficulty] = useState<'beginner' | 'intermediate' | 'advanced'>('intermediate');
   const [questions, setQuestions] = useState<QuestionData[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
@@ -90,6 +92,11 @@ export default function App() {
   };
 
   const handleNavigateToGrammarQuiz = () => {
+    setCurrentScreen('grammar-quiz-difficulty');
+  };
+
+  const handleSelectGrammarQuizDifficulty = (selectedDifficulty: 'beginner' | 'intermediate' | 'advanced') => {
+    setGrammarQuizDifficulty(selectedDifficulty);
     setCurrentScreen('grammar-quiz');
   };
 
@@ -270,8 +277,18 @@ export default function App() {
         />
       )}
       
+      {currentScreen === 'grammar-quiz-difficulty' && (
+        <GrammarQuizDifficultySelection 
+          onBack={handleBackToHome}
+          onSelectDifficulty={handleSelectGrammarQuizDifficulty}
+        />
+      )}
+      
       {currentScreen === 'grammar-quiz' && (
-        <GrammarQuiz onBack={handleBackToHome} />
+        <GrammarQuiz 
+          onBack={() => setCurrentScreen('grammar-quiz-difficulty')} 
+          difficulty={grammarQuizDifficulty}
+        />
       )}
       
       {currentScreen === 'combined-test' && (
