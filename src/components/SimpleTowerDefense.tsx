@@ -213,14 +213,14 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
                   <Button 
                     onClick={startGame} 
                     disabled={isGameOver}
-                    className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg"
+                    className="bg-green-600 hover:bg-green-700 text-gray-200 font-semibold shadow-lg"
                   >
                     ゲーム開始
                   </Button>
                 ) : (
                   <Button 
                     onClick={stopGame}
-                    className="bg-red-600 hover:bg-red-700 text-white font-semibold shadow-lg"
+                    className="bg-red-600 hover:bg-red-700 text-gray-200 font-semibold shadow-lg"
                   >
                     一時停止
                   </Button>
@@ -266,7 +266,7 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
                     handleSpeedChange(nextSpeed as 1 | 2 | 3);
                   }}
                   size="sm"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-lg min-w-[60px]"
+                  className="bg-blue-600 hover:bg-blue-700 text-gray-200 font-bold shadow-lg min-w-[60px]"
                 >
                   {gameState.gameSpeed}x
                 </Button>
@@ -276,7 +276,7 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
         </Card>
 
         {isGameOver && (
-          <Card className="mb-4 bg-red-600 border-red-500 text-white">
+          <Card className="mb-4 bg-red-600 border-red-500 text-gray-200">
             <CardContent className="p-4 text-center">
               <h2 className="text-xl font-bold mb-2">ゲームオーバー！</h2>
               <p className="mb-2">最終スコア: {gameState.score}</p>
@@ -376,7 +376,7 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
                   onClick={() => selectTowerType('basic')}
                   className={`w-full ${
                     gameState.selectedTowerType === 'basic'
-                      ? 'bg-green-600 text-white shadow-lg'
+                      ? 'bg-green-600 text-gray-200 shadow-lg'
                       : 'bg-green-100 text-green-700 hover:bg-green-200'
                   }`}
                   disabled={gameState.gold < getTowerCost('basic')}
@@ -395,7 +395,7 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
                   onClick={() => selectTowerType('sniper')}
                   className={`w-full ${
                     gameState.selectedTowerType === 'sniper'
-                      ? 'bg-blue-600 text-white shadow-lg'
+                      ? 'bg-blue-600 text-gray-200 shadow-lg'
                       : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
                   }`}
                   disabled={gameState.gold < getTowerCost('sniper')}
@@ -414,7 +414,7 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
                   onClick={() => selectTowerType('rapid')}
                   className={`w-full ${
                     gameState.selectedTowerType === 'rapid'
-                      ? 'bg-orange-600 text-white shadow-lg'
+                      ? 'bg-orange-600 text-gray-200 shadow-lg'
                       : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
                   }`}
                   disabled={gameState.gold < getTowerCost('rapid')}
@@ -445,7 +445,7 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
                 <Button 
                   onClick={addEnemy}
                   size="sm"
-                  className="w-full bg-orange-600 hover:bg-orange-700 text-white"
+                  className="w-full bg-orange-600 hover:bg-orange-700 text-gray-200"
                 >
                   敵を追加
                 </Button>
