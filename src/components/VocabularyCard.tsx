@@ -8,6 +8,7 @@ import { VocabularyWord, getVocabularyWords } from "../data/vocabulary";
 import { DataManager } from "../utils/dataManager";
 import { calculateVocabularyXP } from "../utils/xpCalculator";
 import { speakEnglishWord, isSpeechSynthesisSupported } from "../utils/speechSynthesis";
+import { SoundManager } from "../utils/soundManager";
 
 interface VocabularyCardProps {
   onBack: () => void;
@@ -160,6 +161,7 @@ export function VocabularyCard({ onBack, difficulty = 'intermediate', category =
 
   const toggleMeaning = () => {
     setShowMeaning(!showMeaning);
+    SoundManager.sounds.click();
   };
 
   const handleSpeak = async () => {
@@ -401,14 +403,20 @@ export function VocabularyCard({ onBack, difficulty = 'intermediate', category =
           <Button
             variant="outline"
             size="lg"
-            onClick={() => handleAnswer(false)}
+            onClick={() => {
+              handleAnswer(false);
+              SoundManager.sounds.incorrect();
+            }}
             className="h-14 text-base border-orange-200 text-orange-700 hover:bg-orange-50"
           >
             まだ
           </Button>
           <Button
             size="lg"
-            onClick={() => handleAnswer(true)}
+            onClick={() => {
+              handleAnswer(true);
+              SoundManager.sounds.correct();
+            }}
             className="h-14 text-base bg-emerald-600 hover:bg-emerald-700"
           >
             知ってる

@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { notificationManager, NotificationSettings } from '../utils/notificationManager';
 import { DataManager, AppSettings as AppSettingsType } from '../utils/dataManager';
+import { SoundManager } from '../utils/soundManager';
 
 interface AppSettingsProps {
   onBack: () => void;
@@ -36,6 +37,7 @@ export function AppSettings({ onBack }: AppSettingsProps) {
   const [permission, setPermission] = useState<NotificationPermission>(notificationManager.getPermissionStatus());
   const [isSupported, setIsSupported] = useState(false);
   const [isTesting, setIsTesting] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(SoundManager.getEnabled());
 
   useEffect(() => {
     loadSettings();
@@ -62,6 +64,14 @@ export function AppSettings({ onBack }: AppSettingsProps) {
     const newSettings = { ...notificationSettings, [key]: value };
     setNotificationSettings(newSettings);
     notificationManager.updateSettings(newSettings);
+  };
+
+  const handleSoundToggle = (enabled: boolean) => {
+    setSoundEnabled(enabled);
+    SoundManager.setEnabled(enabled);
+    if (enabled) {
+      SoundManager.sounds.click();
+    }
   };
 
   const handlePermissionRequest = async () => {
@@ -223,6 +233,21 @@ export function AppSettings({ onBack }: AppSettingsProps) {
               <p className="text-xs text-muted-foreground">
                 語彙学習で出題される問題数を設定します
               </p>
+            </div>
+
+            {/* Sound Settings */}
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <Label htmlFor="sound-enabled">効果音を有効にする</Label>
+                <p className="text-sm text-muted-foreground">
+                  操作時の効果音を有効/無効にします
+                </p>
+              </div>
+              <Switch
+                id="sound-enabled"
+                checked={soundEnabled}
+                onCheckedChange={handleSoundToggle}
+              />
             </div>
           </CardContent>
         </Card>

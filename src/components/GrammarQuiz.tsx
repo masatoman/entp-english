@@ -10,6 +10,7 @@ import { ArrowLeft, RotateCcw } from "lucide-react";
 import { GrammarQuizQuestion, getGrammarQuizQuestions } from "../data/grammarQuiz";
 import { Badge } from "./ui/badge";
 import { DataManager } from "../utils/dataManager";
+import { SoundManager } from "../utils/soundManager";
 
 interface GrammarQuizProps {
   onBack: () => void;
@@ -124,6 +125,8 @@ export function GrammarQuiz({ onBack, difficulty = 'intermediate' }: GrammarQuiz
       ...prev,
       [blankId]: word
     }));
+    // 単語をはめた時の効果音
+    SoundManager.sounds.drop();
   };
 
   const handleCheckAnswer = () => {
@@ -144,6 +147,9 @@ export function GrammarQuiz({ onBack, difficulty = 'intermediate' }: GrammarQuiz
     setIsCorrect(correct);
     if (correct) {
       setScore(prev => prev + 1);
+      SoundManager.sounds.correct();
+    } else {
+      SoundManager.sounds.incorrect();
     }
     setShowResult(true);
   };
@@ -154,6 +160,7 @@ export function GrammarQuiz({ onBack, difficulty = 'intermediate' }: GrammarQuiz
       setCurrentQuestionIndex(prev => prev + 1);
     } else {
       // クイズ完了
+      SoundManager.sounds.complete();
       alert(`クイズ完了！スコア: ${score}/${questions.length}`);
       onBack();
     }

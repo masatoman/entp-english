@@ -17,6 +17,7 @@ import {
 import { DataManager } from "../utils/dataManager";
 import { UserStats } from "../data/achievements";
 import { isFeatureUnlocked, getAvailableFeatures, getNextUnlockableFeatures, getUnlockCondition } from "../utils/unlockSystem";
+import { SoundManager } from "../utils/soundManager";
 
 interface HomeProps {
   onNavigateToGrammar: () => void;
@@ -118,7 +119,10 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
       icon: Trophy,
       color: 'from-purple-500 to-purple-600',
       available: true,
-      onClick: onNavigateToAchievements
+      onClick: () => {
+        SoundManager.sounds.click();
+        onNavigateToAchievements();
+      }
     },
     {
       id: 'settings',
@@ -127,7 +131,10 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
       icon: Settings,
       color: 'from-gray-500 to-gray-600',
       available: true,
-      onClick: onNavigateToAppSettings
+      onClick: () => {
+        SoundManager.sounds.click();
+        onNavigateToAppSettings();
+      }
     },
     {
       id: 'simple-tower-defense',
@@ -136,7 +143,10 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
       icon: Target,
       color: 'from-blue-500 to-blue-600',
       available: true,
-      onClick: onNavigateToSimpleTowerDefense
+      onClick: () => {
+        SoundManager.sounds.click();
+        onNavigateToSimpleTowerDefense();
+      }
     }
   ];
 
@@ -149,7 +159,10 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
       icon: BookOpen,
       color: 'from-blue-500 to-blue-600',
       available: true,
-      onClick: onNavigateToVocabulary
+      onClick: () => {
+        SoundManager.sounds.click();
+        onNavigateToVocabulary();
+      }
     });
   }
 
@@ -161,7 +174,10 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
       icon: PenTool,
       color: 'from-emerald-500 to-emerald-600',
       available: true,
-      onClick: onNavigateToGrammarQuiz
+      onClick: () => {
+        SoundManager.sounds.click();
+        onNavigateToGrammarQuiz();
+      }
     });
   }
 
@@ -173,7 +189,10 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
       icon: PenTool,
       color: 'from-purple-500 to-purple-600',
       available: true,
-      onClick: onNavigateToEssay
+      onClick: () => {
+        SoundManager.sounds.click();
+        onNavigateToEssay();
+      }
     });
   }
 
@@ -185,7 +204,10 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
       icon: Target,
       color: 'from-orange-500 to-orange-600',
       available: true,
-      onClick: onNavigateToCombinedTest
+      onClick: () => {
+        SoundManager.sounds.click();
+        onNavigateToCombinedTest();
+      }
     });
   }
 
@@ -197,7 +219,10 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
       icon: Clock,
       color: 'from-red-500 to-red-600',
       available: true,
-      onClick: onNavigateToTimeAttack
+      onClick: () => {
+        SoundManager.sounds.click();
+        onNavigateToTimeAttack();
+      }
     });
   }
 
