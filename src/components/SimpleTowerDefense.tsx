@@ -125,10 +125,6 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
     }));
   }, []);
 
-  // 手動で敵を追加
-  const addEnemy = useCallback(() => {
-    setGameState(prevState => spawnEnemy(prevState));
-  }, []);
 
   // ゲーム速度変更
   const handleSpeedChange = useCallback((speed: 1 | 2 | 3) => {
@@ -436,21 +432,6 @@ export function SimpleTowerDefense({ onBack }: SimpleTowerDefenseProps) {
               onPurchaseItem={handlePurchaseItem}
             />
 
-            {/* テスト機能 */}
-            <Card className="border-gray-600 border-2 bg-gray-800 shadow-lg">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-gray-200">テスト機能</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <Button 
-                  onClick={addEnemy}
-                  size="sm"
-                  className="w-full bg-orange-600 hover:bg-orange-700 text-gray-200"
-                >
-                  敵を追加
-                </Button>
-              </CardContent>
-            </Card>
 
             {/* 説明 */}
             <Card className="border-gray-600 border-2 bg-gray-800 shadow-lg">
