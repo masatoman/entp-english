@@ -80,7 +80,7 @@ export function calculateHeartSystem(level: number): HeartSystem {
     current: maxHearts, // 初期値は最大値
     max: maxHearts,
     lastRecovery: now,
-    nextRecovery: now + 60 * 60 * 1000, // 1時間後
+    nextRecovery: now + 5 * 60 * 1000, // 5分後
   };
 }
 
@@ -200,22 +200,22 @@ export function calculateNewXP(
 export function processHeartRecovery(heartSystem: HeartSystem): HeartSystem {
   const now = Date.now();
   const timeSinceLastRecovery = now - heartSystem.lastRecovery;
-  const hoursElapsed = timeSinceLastRecovery / (60 * 60 * 1000);
+  const minutesElapsed = timeSinceLastRecovery / (5 * 60 * 1000);
   
   if (heartSystem.current >= heartSystem.max) {
     // 既に満タンなら次回回復時間を更新
     return {
       ...heartSystem,
       lastRecovery: now,
-      nextRecovery: now + (60 * 60 * 1000),
+      nextRecovery: now + (5 * 60 * 1000),
     };
   }
   
-  if (hoursElapsed >= 1) {
-    const heartsToAdd = Math.floor(hoursElapsed);
+  if (minutesElapsed >= 1) {
+    const heartsToAdd = Math.floor(minutesElapsed);
     const newCurrent = Math.min(heartSystem.current + heartsToAdd, heartSystem.max);
-    const remainingTime = (hoursElapsed - Math.floor(hoursElapsed)) * (60 * 60 * 1000);
-    const nextRecovery = now + (60 * 60 * 1000) - remainingTime;
+    const remainingTime = (minutesElapsed - Math.floor(minutesElapsed)) * (5 * 60 * 1000);
+    const nextRecovery = now + (5 * 60 * 1000) - remainingTime;
     
     return {
       ...heartSystem,

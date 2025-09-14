@@ -3,6 +3,7 @@ import { StatusAllocation, SkillField } from '../types';
 import { getLevelManager, saveLevelManager } from '../utils/levelManager';
 import { STATUS_TEMPLATES, validateStatusAllocation } from '../utils/newXpCalculator';
 import { SKILL_FIELD_INFO } from '../data/levelConfig';
+import { useStatusAllocation } from '../hooks/useStatusAllocation';
 
 interface StatusAllocationProps {
   onAllocationChange?: (allocation: StatusAllocation) => void;
@@ -14,8 +15,20 @@ export const StatusAllocationComponent: React.FC<StatusAllocationProps> = ({
   readOnly = false,
 }) => {
   const [allocation, setAllocation] = useState<StatusAllocation>(() => {
-    const manager = getLevelManager();
-    return manager.getStatusAllocation();
+    try {
+      const manager = getLevelManager();
+      return manager.getStatusAllocation();
+    } catch (error) {
+      console.error('Failed to get status allocation:', error);
+      return {
+        listening: 5,
+        reading: 5,
+        writing: 5,
+        grammar: 5,
+        idioms: 5,
+        vocabulary: 5
+      };
+    }
   });
   const [isValid, setIsValid] = useState(true);
   const [selectedTemplate, setSelectedTemplate] = useState<string>('');
@@ -229,43 +242,4 @@ export const StatusAllocationComponent: React.FC<StatusAllocationProps> = ({
   );
 };
 
-// ステータス配分の管理フック
-export const useStatusAllocation = () => {
-  const [allocation, setAllocation] = useState<StatusAllocation>(() => {
-    const manager = getLevelManager();
-    return manager.getStatusAllocation();
-  });
-
-  const updateAllocation = (newAllocation: StatusAllocation): boolean => {
-    const manager = getLevelManager();
-    const success = manager.updateStatusAllocation(newAllocation);
-    
-    if (success) {
-      setAllocation(newAllocation);
-      saveLevelManager();
-      return true;
-    }
-    
-    return false;
-  };
-
-  const applyTemplate = (templateName: keyof typeof STATUS_TEMPLATES): boolean => {
-    const manager = getLevelManager();
-    const success = manager.applyStatusTemplate(templateName);
-    
-    if (success) {
-      const newAllocation = manager.getStatusAllocation();
-      setAllocation(newAllocation);
-      saveLevelManager();
-      return true;
-    }
-    
-    return false;
-  };
-
-  return {
-    allocation,
-    updateAllocation,
-    applyTemplate,
-  };
-};
+// フックは別ファイルに移動しました

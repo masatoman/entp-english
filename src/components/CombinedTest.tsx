@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { ArrowLeft, Clock, Star, Zap, CheckCircle, XCircle } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { CombinedTestQuestion, getCombinedTestQuestions, shuffleArray } from "../data/combinedTest";
+import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 
 interface CombinedTestProps {
   onBack: () => void;
@@ -102,9 +103,18 @@ export function CombinedTest({ onBack }: CombinedTestProps) {
   const [timeUp, setTimeUp] = useState(false);
 
   useEffect(() => {
+    // ハートを消費して学習を開始
+    const levelManager = getLevelManager();
+    if (!levelManager.consumeHeart()) {
+      alert('体力が不足しています。回復を待ってから再試行してください。');
+      onBack();
+      return;
+    }
+
     const allQuestions = getCombinedTestQuestions();
     const selectedQuestions = shuffleArray(allQuestions).slice(0, 8); // 8問に設定
     setQuestions(selectedQuestions);
+    saveLevelManager();
   }, []);
 
   const currentQuestion = questions[currentQuestionIndex];

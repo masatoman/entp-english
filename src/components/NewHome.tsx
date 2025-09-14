@@ -21,9 +21,12 @@ import {
   TrendingUp,
   ChevronRight,
 } from 'lucide-react';
-import { LevelDisplay, useLevelSystem } from './LevelDisplay';
-import { HeartSystemDisplay, useHeartSystem } from './HeartSystem';
-import { StatusAllocationComponent, useStatusAllocation } from './StatusAllocation';
+import { LevelDisplay } from './LevelDisplay';
+import { HeartSystemDisplay } from './HeartSystem';
+import { StatusAllocationComponent } from './StatusAllocation';
+import { useLevelSystem } from '../hooks/useLevelSystem';
+import { useHeartSystem } from '../hooks/useHeartSystem';
+import { useStatusAllocation } from '../hooks/useStatusAllocation';
 import { QuestionRankDisplay, RankProgress } from './QuestionRankDisplay';
 import { getLevelManager, saveLevelManager } from '../utils/levelManager';
 import { DataManager } from '../utils/dataManager';
@@ -53,8 +56,13 @@ export function NewHome({
   onNavigateToSimpleTowerDefense,
 }: NewHomeProps) {
   const { userLevel, addXP, refreshLevel } = useLevelSystem();
-  const { heartSystem, consumeHeart, processRecovery } = useHeartSystem();
+  const { heartSystem, consumeHeart, processRecovery, refreshHearts } = useHeartSystem();
   const { allocation } = useStatusAllocation();
+  
+  // ハートシステムの状態を強制的に更新
+  const forceRefreshHearts = () => {
+    refreshHearts();
+  };
   const [userStats, setUserStats] = useState<UserStats>(DataManager.getUserStats());
   const [showDetailedView, setShowDetailedView] = useState(false);
   const [showStatusAllocation, setShowStatusAllocation] = useState(false);
@@ -77,28 +85,35 @@ export function NewHome({
   }, []); // 初回のみ実行
 
   const handleStartLearning = (type: string) => {
-    // ハートを消費して学習を開始
-    if (consumeHeart()) {
-      switch (type) {
-        case 'grammar':
-          onNavigateToGrammarQuiz();
-          break;
-        case 'vocabulary':
-          onNavigateToVocabulary();
-          break;
-        case 'combined':
-          onNavigateToCombinedTest();
-          break;
-        case 'timeattack':
-          onNavigateToTimeAttack();
-          break;
-        default:
-          break;
-      }
+    // 学習を開始（ハート消費は各学習コンポーネントで行う）
+    switch (type) {
+      case 'grammar':
+        onNavigateToGrammarQuiz();
+        break;
+      case 'vocabulary':
+        onNavigateToVocabulary();
+        break;
+      case 'combined':
+        onNavigateToCombinedTest();
+        break;
+      case 'timeattack':
+        onNavigateToTimeAttack();
+        break;
+      default:
+        break;
     }
   };
 
   const canStartLearning = heartSystem.current > 0;
+  
+  // ハートシステムの状態を定期的に更新
+  useEffect(() => {
+    const interval = setInterval(() => {
+      forceRefreshHearts();
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []); // 依存関係を空にして、マウント時に一度だけ実行
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
@@ -143,6 +158,7 @@ export function NewHome({
           <div>
             <HeartSystemDisplay
               showRecoveryTime={true}
+              onHeartChange={forceRefreshHearts}
             />
           </div>
         </div>
@@ -161,7 +177,10 @@ export function NewHome({
         {/* 学習モード選択 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* 文法クイズ */}
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+          <Card 
+            className={`hover:shadow-lg transition-shadow cursor-pointer ${!canStartLearning ? 'opacity-50 cursor-not-allowed' : ''}`}
+            onClick={() => canStartLearning && handleStartLearning('grammar')}
+          >
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg flex items-center">
@@ -179,20 +198,19 @@ export function NewHome({
                 <div className="text-sm text-gray-500">
                   必要体力: 1 ♥
                 </div>
-                <Button
-                  onClick={() => handleStartLearning('grammar')}
-                  disabled={!canStartLearning}
-                  className="flex items-center"
-                >
-                  開始
+                <div className="flex items-center text-sm font-medium">
+                  {canStartLearning ? 'クリックして開始' : '体力不足'}
                   <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
 
           {/* 語彙学習 */}
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+          <Card 
+            className={`hover:shadow-lg transition-shadow cursor-pointer ${!canStartLearning ? 'opacity-50 cursor-not-allowed' : ''}`}
+            onClick={() => canStartLearning && handleStartLearning('vocabulary')}
+          >
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg flex items-center">
@@ -210,20 +228,19 @@ export function NewHome({
                 <div className="text-sm text-gray-500">
                   必要体力: 1 ♥
                 </div>
-                <Button
-                  onClick={() => handleStartLearning('vocabulary')}
-                  disabled={!canStartLearning}
-                  className="flex items-center"
-                >
-                  開始
+                <div className="flex items-center text-sm font-medium">
+                  {canStartLearning ? 'クリックして開始' : '体力不足'}
                   <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
 
           {/* 総合テスト */}
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+          <Card 
+            className={`hover:shadow-lg transition-shadow cursor-pointer ${!canStartLearning ? 'opacity-50 cursor-not-allowed' : ''}`}
+            onClick={() => canStartLearning && handleStartLearning('combined')}
+          >
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg flex items-center">
@@ -241,20 +258,19 @@ export function NewHome({
                 <div className="text-sm text-gray-500">
                   必要体力: 1 ♥
                 </div>
-                <Button
-                  onClick={() => handleStartLearning('combined')}
-                  disabled={!canStartLearning}
-                  className="flex items-center"
-                >
-                  開始
+                <div className="flex items-center text-sm font-medium">
+                  {canStartLearning ? 'クリックして開始' : '体力不足'}
                   <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
 
           {/* タイムアタック */}
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+          <Card 
+            className={`hover:shadow-lg transition-shadow cursor-pointer ${!canStartLearning ? 'opacity-50 cursor-not-allowed' : ''}`}
+            onClick={() => canStartLearning && handleStartLearning('timeattack')}
+          >
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg flex items-center">
@@ -272,14 +288,10 @@ export function NewHome({
                 <div className="text-sm text-gray-500">
                   必要体力: 1 ♥
                 </div>
-                <Button
-                  onClick={() => handleStartLearning('timeattack')}
-                  disabled={!canStartLearning}
-                  className="flex items-center"
-                >
-                  開始
+                <div className="flex items-center text-sm font-medium">
+                  {canStartLearning ? 'クリックして開始' : '体力不足'}
                   <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
+                </div>
               </div>
             </CardContent>
           </Card>

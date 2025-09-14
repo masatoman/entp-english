@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { UserLevel, Chapter } from '../types';
 import { getLevelManager, saveLevelManager } from '../utils/levelManager';
 import { CHAPTER_INFO } from '../data/levelConfig';
+import { useLevelSystem } from '../hooks/useLevelSystem';
 
 interface LevelDisplayProps {
   showDetailed?: boolean;
@@ -331,29 +332,4 @@ export const LevelProgress: React.FC<LevelProgressProps> = ({
   );
 };
 
-// レベル管理フック
-export const useLevelSystem = () => {
-  const [userLevel, setUserLevel] = useState<UserLevel>(() => {
-    const manager = getLevelManager();
-    return manager.getLevel();
-  });
-
-  const addXP = (xp: number) => {
-    const manager = getLevelManager();
-    const result = manager.addXP(xp);
-    setUserLevel(manager.getLevel());
-    saveLevelManager();
-    return result;
-  };
-
-  const refreshLevel = () => {
-    const manager = getLevelManager();
-    setUserLevel(manager.getLevel());
-  };
-
-  return {
-    userLevel,
-    addXP,
-    refreshLevel,
-  };
-};
+// フックは別ファイルに移動しました

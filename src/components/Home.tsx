@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Progress } from './ui/progress';
+import { Button } from './ui/button';
 import { 
   BookOpen, 
   PenTool, 
@@ -14,16 +14,16 @@ import {
   Zap,
   AlertTriangle
 } from 'lucide-react';
-import { DataManager } from '@/utils/dataManager';
-import { SoundManager } from '@/utils/soundManager';
+import { DataManager } from '../utils/dataManager';
+import { SoundManager } from '../utils/soundManager';
 import { 
   getAvailableFeatures, 
   getNextUnlockableFeatures, 
   isFeatureUnlocked 
-} from '@/utils/featureUnlockSystem';
-// import { StatusAllocationComponent } from './StatusAllocationComponent';
-// import { HeartSystemDisplay } from './HeartSystemDisplay';
-import type { UserStats } from '@/types';
+} from '../utils/featureUnlockSystem';
+import { StatusAllocationComponent } from './StatusAllocation';
+import { HeartSystemDisplay } from './HeartSystem';
+import type { UserStats } from '../types';
 
 interface HomeProps {
   onNavigateToGrammar: () => void;
@@ -358,16 +358,8 @@ export const Home = React.memo(function Home({
 
         {/* ステータス振り分けとハートシステム */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* <StatusAllocationComponent readOnly={true} />
-          <HeartSystemDisplay compact={false} /> */}
-          <Card className="p-4">
-            <h3 className="text-lg font-semibold mb-2">ステータス振り分け</h3>
-            <p className="text-sm text-muted-foreground">機能実装予定</p>
-          </Card>
-          <Card className="p-4">
-            <h3 className="text-lg font-semibold mb-2">ハートシステム</h3>
-            <p className="text-sm text-muted-foreground">機能実装予定</p>
-          </Card>
+          <StatusAllocationComponent readOnly={true} />
+          <HeartSystemDisplay compact={false} />
         </div>
 
         {/* Menu Grid */}

@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader } from "./ui/card";
 import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
-import { ArrowLeft, RotateCcw, Heart, Star } from "lucide-react";
+import { ArrowLeft, RotateCcw, Heart, Star, CheckCircle, XCircle } from "lucide-react";
 import { GrammarQuizQuestion, getGrammarQuizQuestions } from "../data/grammarQuiz";
 import { Badge } from "./ui/badge";
 import { DataManager } from "../utils/dataManager";
@@ -16,6 +16,9 @@ import { QuestionRankDisplay } from "./QuestionRankDisplay";
 import { QuestionWithRank } from "../types";
 import { convertQuestionToEnhanced, selectWeightedQuestion, filterQuestionsByLevel } from "../utils/questionAdapter";
 import { calculateNewXP } from "../utils/newXpCalculator";
+import { getRandomEnglishTip } from "../data/englishTips";
+import { determineQuestionRank, calculateXPReward } from "../data/enhancedQuestions";
+import { Category } from "../types";
 
 interface EnhancedGrammarQuizProps {
   onBack: () => void;
@@ -90,13 +93,17 @@ export function EnhancedGrammarQuiz({ onBack, difficulty = 'intermediate' }: Enh
   const [score, setScore] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const [sessionStartTime, setSessionStartTime] = useState<number>(0);
+  const [shuffledOptions, setShuffledOptions] = useState<string[]>([]);
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [currentAnswerCorrect, setCurrentAnswerCorrect] = useState<boolean | null>(null);
+  const [currentTip, setCurrentTip] = useState<any>(null);
   const [levelManager] = useState(() => getLevelManager());
   const [heartSystem, setHeartSystem] = useState(levelManager.getHeartSystem());
   const [userLevel, setUserLevel] = useState(levelManager.getLevel());
   const [statusAllocation] = useState(levelManager.getStatusAllocation());
 
   useEffect(() => {
-    // ハートを消費
+    // ハートを消費して学習を開始
     if (!levelManager.consumeHeart()) {
       alert('体力が不足しています。回復を待ってから再試行してください。');
       onBack();
@@ -111,17 +118,42 @@ export function EnhancedGrammarQuiz({ onBack, difficulty = 'intermediate' }: Enh
   }, []);
 
   const generateQuestions = () => {
+    console.log('Generating questions for difficulty:', difficulty);
     const originalQuestions = getGrammarQuizQuestions(difficulty);
+    console.log('Original questions:', originalQuestions);
+    
     if (!originalQuestions || originalQuestions.length === 0) {
       console.error('No grammar questions found for difficulty:', difficulty);
-      return [];
+      setQuestions([]);
+      return;
     }
-    const enhancedQuestions = originalQuestions.map((q, index) => 
-      convertQuestionToEnhanced(q, 'basic-grammar', 'normal', userLevel.level)
-    );
+    
+    const enhancedQuestions = originalQuestions.map((q, index) => {
+      // 文法クイズ用の変換
+      const rank = determineQuestionRank(userLevel.level);
+      const skillField = 'grammar';
+      const xpReward = calculateXPReward(rank);
+      
+      return {
+        id: q.id,
+        question: q.sentence,
+        options: q.options,
+        correctAnswer: q.blanks.map(b => b.correctAnswer).join(' '),
+        explanation: q.explanation,
+        category: 'basic-grammar' as Category,
+        difficulty: 'normal' as const,
+        rank,
+        skillField,
+        xpReward,
+        blanks: q.blanks, // 文法クイズ特有のblanks情報を保持
+      } as QuestionWithRank & { blanks: any[] };
+    });
+    
+    console.log('Enhanced questions:', enhancedQuestions);
     
     // レベルに応じてフィルタリング
     const filteredQuestions = filterQuestionsByLevel(enhancedQuestions, userLevel.level);
+    console.log('Filtered questions:', filteredQuestions);
     
     // ステータス配分に基づいて問題を選択
     const selectedQuestions: QuestionWithRank[] = [];
@@ -140,11 +172,24 @@ export function EnhancedGrammarQuiz({ onBack, difficulty = 'intermediate' }: Enh
       }
     }
     
+    console.log('Selected questions:', selectedQuestions);
     setQuestions(selectedQuestions);
   };
 
   const currentQuestion = questions[currentQuestionIndex] || null;
   const progress = questions.length > 0 ? ((currentQuestionIndex + 1) / questions.length) * 100 : 0;
+
+  // 問題が変わった時に選択肢をシャッフル
+  useEffect(() => {
+    if (currentQuestion && currentQuestion.options) {
+      const shuffled = [...currentQuestion.options].sort(() => Math.random() - 0.5);
+      setShuffledOptions(shuffled);
+      setUserAnswers({});
+      setShowFeedback(false); // Reset feedback display
+      setCurrentAnswerCorrect(null); // Reset answer status
+      setCurrentTip(null); // Reset tip
+    }
+  }, [currentQuestionIndex, currentQuestion]);
 
   const handleDrop = (blankId: string, word: string) => {
     setUserAnswers(prev => ({
@@ -153,7 +198,40 @@ export function EnhancedGrammarQuiz({ onBack, difficulty = 'intermediate' }: Enh
     }));
   };
 
+  const checkCurrentAnswer = () => {
+    if (!currentQuestion || !currentQuestion.blanks) return false;
+    
+    let isCorrect = true;
+    for (const blank of currentQuestion.blanks) {
+      const userAnswer = userAnswers[blank.id];
+      if (!userAnswer || userAnswer !== blank.correctAnswer) {
+        isCorrect = false;
+        break;
+      }
+    }
+    return isCorrect;
+  };
+
   const handleNext = () => {
+    // 現在の問題の正解をチェック
+    const isCorrect = checkCurrentAnswer();
+    setCurrentAnswerCorrect(isCorrect);
+    
+    if (isCorrect) {
+      setScore(prev => prev + 1);
+    }
+    
+    // 豆知識を設定
+    setCurrentTip(getRandomEnglishTip('grammar'));
+    
+    // 解説を表示
+    setShowFeedback(true);
+  };
+
+  const handleContinue = () => {
+    setShowFeedback(false);
+    setCurrentAnswerCorrect(null);
+    
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(prev => prev + 1);
     } else {
@@ -162,22 +240,6 @@ export function EnhancedGrammarQuiz({ onBack, difficulty = 'intermediate' }: Enh
   };
 
   const handleSubmit = () => {
-    let correctCount = 0;
-    
-    questions.forEach(question => {
-      const questionAnswers = userAnswers;
-      let isCorrect = true;
-      
-      // 正解チェック（簡略化）
-      if (question.correctAnswer) {
-        // 実際の正解チェックロジックをここに実装
-        isCorrect = Math.random() > 0.3; // 仮の実装
-      }
-      
-      if (isCorrect) correctCount++;
-    });
-    
-    setScore(correctCount);
     setShowResults(true);
     
     // XP計算とレベルアップ処理
@@ -186,7 +248,7 @@ export function EnhancedGrammarQuiz({ onBack, difficulty = 'intermediate' }: Enh
       questions.length > 0 ? questions.map((q, index) => ({
         questionId: q.id,
         answer: userAnswers[`blank_${index}`] || '',
-        isCorrect: Math.random() > 0.3 // 仮の実装
+        isCorrect: score > 0 // スコアが0より大きければ正解
       })) : [],
       currentQuestion?.rank || 'normal',
       true
@@ -198,10 +260,48 @@ export function EnhancedGrammarQuiz({ onBack, difficulty = 'intermediate' }: Enh
     
     // 音声フィードバック
     if (levelUpResult.leveledUp) {
-      SoundManager.playLevelUpSound();
+      SoundManager.sounds.levelUp();
     } else {
-      SoundManager.playCompletionSound();
+      SoundManager.sounds.complete();
     }
+  };
+
+  const renderSentenceWithBlanks = () => {
+    if (!currentQuestion || !currentQuestion.blanks) return null;
+    
+    const sentence = currentQuestion.question;
+    const blanks = currentQuestion.blanks;
+    
+    // 文を単語に分割
+    const words = sentence.split(' ');
+    const result = [];
+    
+    let blankIndex = 0;
+    for (let i = 0; i < words.length; i++) {
+      const word = words[i];
+      
+      // 空欄の位置をチェック
+      const blank = blanks.find(b => b.position === i + 1);
+      if (blank) {
+        result.push(
+          <DropZone
+            key={`blank_${blankIndex}`}
+            blankId={blank.id}
+            droppedWord={userAnswers[blank.id] || null}
+            onDrop={handleDrop}
+          />
+        );
+        blankIndex++;
+      } else {
+        result.push(
+          <span key={i} className="mx-1">
+            {word}
+          </span>
+        );
+      }
+    }
+    
+    return result;
   };
 
   const handleRestart = () => {
@@ -212,6 +312,43 @@ export function EnhancedGrammarQuiz({ onBack, difficulty = 'intermediate' }: Enh
     generateQuestions();
     setSessionStartTime(Date.now());
   };
+
+  // 問題が読み込まれていない場合の表示
+  if (questions.length === 0) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+        <div className="max-w-4xl mx-auto">
+          <Card className="mb-6">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <Button onClick={onBack} variant="outline" size="sm">
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    戻る
+                  </Button>
+                  <h1 className="text-2xl font-bold text-gray-800">文法クイズ</h1>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center space-y-4">
+                <div className="text-lg text-gray-600">
+                  問題を読み込み中...
+                </div>
+                <div className="text-sm text-gray-500">
+                  しばらくお待ちください
+                </div>
+                <Button onClick={handleRestart} variant="outline">
+                  <RotateCcw className="w-4 h-4 mr-2" />
+                  再読み込み
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   if (showResults) {
     return (
@@ -240,6 +377,22 @@ export function EnhancedGrammarQuiz({ onBack, difficulty = 'intermediate' }: Enh
                 <div className="text-sm text-gray-500">
                   獲得XP: {questions.reduce((sum, q) => sum + q.xpReward, 0)}
                 </div>
+                
+                {/* 問題ごとの解説 */}
+                <div className="mt-6 space-y-4">
+                  <h3 className="text-lg font-semibold text-gray-800">問題解説</h3>
+                  {questions.map((question, index) => (
+                    <div key={question.id} className="text-left p-4 bg-gray-50 rounded-lg">
+                      <div className="font-medium text-gray-800 mb-2">
+                        問題 {index + 1}: {question.question}
+                      </div>
+                      <div className="text-sm text-gray-600">
+                        <strong>解説:</strong> {question.explanation}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
                 <div className="flex justify-center space-x-4">
                   <Button onClick={handleRestart} className="flex items-center">
                     <RotateCcw className="w-4 h-4 mr-2" />
@@ -331,47 +484,126 @@ export function EnhancedGrammarQuiz({ onBack, difficulty = 'intermediate' }: Enh
           {/* 問題 */}
           <Card className="mb-6">
             <CardContent className="p-6">
-              <div className="space-y-6">
-                <div className="text-center">
-                  <h2 className="text-lg font-medium text-gray-800 mb-2">
-                    {currentQuestion.question}
-                  </h2>
-                  <p className="text-sm text-gray-600">
-                    空欄に適切な単語をドラッグして文を完成させてください
-                  </p>
+              {!currentQuestion ? (
+                <div className="text-center space-y-4">
+                  <div className="text-lg text-gray-600">
+                    問題を読み込み中...
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    しばらくお待ちください
+                  </div>
+                  <Button onClick={handleRestart} variant="outline">
+                    <RotateCcw className="w-4 h-4 mr-2" />
+                    再読み込み
+                  </Button>
                 </div>
+              ) : (
+                <div className="space-y-6">
+                  <div className="text-center">
+                    <h2 className="text-lg font-medium text-gray-800 mb-2">
+                      {currentQuestion.question}
+                    </h2>
+                    <p className="text-sm text-gray-600">
+                      空欄に適切な単語をドラッグして文を完成させてください
+                    </p>
+                  </div>
 
-                <div className="text-center text-lg">
-                  {currentQuestion?.options?.map((option, index) => (
-                    <span key={index}>
-                      {index > 0 && ' '}
-                      <DropZone
-                        blankId={`blank_${index}`}
-                        droppedWord={userAnswers[`blank_${index}`] || null}
-                        onDrop={handleDrop}
-                      />
-                    </span>
-                  )) || []}
-                </div>
+                  <div className="text-center text-lg">
+                    {renderSentenceWithBlanks()}
+                  </div>
 
-                <div className="text-center">
-                  <p className="text-sm text-gray-600 mb-3">単語を選んでください</p>
-                  <div className="flex flex-wrap justify-center gap-2">
-                    {currentQuestion?.options?.map((option, index) => (
-                      <DraggableWord key={index} word={option} />
-                    )) || []}
+                  <div className="text-center">
+                    <p className="text-sm text-gray-600 mb-3">単語を選んでください</p>
+                    <div className="flex flex-wrap justify-center gap-2">
+                      {shuffledOptions.map((option, index) => (
+                        <DraggableWord key={index} word={option} />
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </CardContent>
           </Card>
 
+          {/* 解説表示 */}
+          {showFeedback && currentQuestion && (
+            <Card className="mb-6 border-2 border-blue-200 bg-blue-50">
+              <CardContent className="p-6">
+                <div className="text-center space-y-4">
+                  {/* 正解/不正解の表示 */}
+                  <div className="flex items-center justify-center space-x-2">
+                    {currentAnswerCorrect ? (
+                      <>
+                        <CheckCircle className="w-6 h-6 text-green-500" />
+                        <span className="text-xl font-bold text-green-600">正解！</span>
+                      </>
+                    ) : (
+                      <>
+                        <XCircle className="w-6 h-6 text-red-500" />
+                        <span className="text-xl font-bold text-red-600">不正解</span>
+                      </>
+                    )}
+                  </div>
+
+                  {/* 正解の表示 */}
+                  <div className="bg-white p-4 rounded-lg border">
+                    <div className="text-sm text-gray-600 mb-2">正解:</div>
+                    <div className="text-lg font-semibold text-gray-800">
+                      {currentQuestion.blanks?.map(blank => blank.correctAnswer).join(' ')}
+                    </div>
+                  </div>
+
+                  {/* 解説 */}
+                  <div className="bg-white p-4 rounded-lg border">
+                    <div className="text-sm text-gray-600 mb-2">解説:</div>
+                    <div className="text-gray-800">
+                      {currentQuestion.explanation}
+                    </div>
+                  </div>
+
+                  {/* 英語の豆知識・格言表示 */}
+                  {currentTip && (
+                    <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg border border-purple-200">
+                      <div className="text-sm text-purple-700 mb-2 font-medium">
+                        {currentTip.type === 'quote' ? '💭 英語の格言' : '💡 英語の豆知識'}
+                      </div>
+                      <div className="text-purple-800 mb-2 font-semibold">
+                        "{currentTip.content}"
+                      </div>
+                      <div className="text-sm text-purple-600 mb-1">
+                        {currentTip.translation}
+                      </div>
+                      {currentTip.explanation && (
+                        <div className="text-xs text-purple-500 italic">
+                          {currentTip.explanation}
+                        </div>
+                      )}
+                      <div className="mt-2 text-xs text-purple-600">
+                        {currentAnswerCorrect 
+                          ? `+${currentQuestion.xpReward}XP 獲得！` 
+                          : '正解を覚えて次回に活かしましょう！'
+                        }
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 続行ボタン */}
+                  <Button onClick={handleContinue} size="lg" className="mt-4">
+                    {currentQuestionIndex < questions.length - 1 ? '次の問題へ' : '結果を見る'}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           {/* ナビゲーション */}
-          <div className="flex justify-center">
-            <Button onClick={handleNext} size="lg">
-              {currentQuestionIndex < questions.length - 1 ? '次の問題' : '答え合わせ'}
-            </Button>
-          </div>
+          {!showFeedback && (
+            <div className="flex justify-center">
+              <Button onClick={handleNext} size="lg">
+                {currentQuestionIndex < questions.length - 1 ? '次の問題' : '答え合わせ'}
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </DndProvider>

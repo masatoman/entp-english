@@ -8,6 +8,7 @@ import { getQuestions } from '../data/questions';
 import { getVocabularyWords } from '../data/vocabulary';
 import { DataManager } from '../utils/dataManager';
 import { calculateTotalSessionXP } from '../utils/xpCalculator';
+import { getLevelManager, saveLevelManager } from '../utils/levelManager';
 
 interface TimeAttackModeProps {
   onBack: () => void;
@@ -78,6 +79,14 @@ export function TimeAttackMode({ onBack }: TimeAttackModeProps) {
 
   // ゲーム開始
   const startGame = () => {
+    // ハートを消費して学習を開始
+    const levelManager = getLevelManager();
+    if (!levelManager.consumeHeart()) {
+      alert('体力が不足しています。回復を待ってから再試行してください。');
+      onBack();
+      return;
+    }
+
     const newQuestions = generateTimeAttackQuestions();
     setQuestions(newQuestions);
     setCurrentQuestionIndex(0);
@@ -91,6 +100,7 @@ export function TimeAttackMode({ onBack }: TimeAttackModeProps) {
     if (newQuestions.length > 0) {
       setTimeLeft(newQuestions[0].timeLimit);
     }
+    saveLevelManager();
   };
 
   // タイマー

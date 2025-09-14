@@ -181,10 +181,18 @@ export class LevelManager {
     heartSystem: HeartSystem;
     statusAllocation: StatusAllocation;
   }) {
-    const manager = new LevelManager(data.userLevel.xp);
-    manager.userLevel = data.userLevel;
-    manager.heartSystem = data.heartSystem;
-    manager.statusAllocation = data.statusAllocation;
+    const xp = data.userLevel?.xp || 0;
+    const manager = new LevelManager(xp);
+    manager.userLevel = data.userLevel || { level: 1, xp: 0, totalXP: 0 };
+    manager.heartSystem = data.heartSystem || { current: 5, max: 5, lastRecoveryTime: Date.now() };
+    manager.statusAllocation = data.statusAllocation || {
+      listening: 5,
+      reading: 5,
+      writing: 5,
+      grammar: 5,
+      idioms: 5,
+      vocabulary: 5
+    };
     return manager;
   }
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { HeartSystem } from '../types';
 import { getLevelManager, saveLevelManager } from '../utils/levelManager';
+import { useHeartSystem } from '../hooks/useHeartSystem';
 
 interface HeartSystemDisplayProps {
   onHeartChange?: (hearts: HeartSystem) => void;
@@ -142,7 +143,7 @@ export const HeartSystemDisplay: React.FC<HeartSystemDisplayProps> = ({
             <div
               className="bg-red-500 h-2 rounded-full transition-all duration-1000"
               style={{
-                width: `${((60 * 60 * 1000 - timeUntilRecovery) / (60 * 60 * 1000)) * 100}%`,
+                width: `${((5 * 60 * 1000 - timeUntilRecovery) / (5 * 60 * 1000)) * 100}%`,
               }}
             />
           </div>
@@ -152,7 +153,7 @@ export const HeartSystemDisplay: React.FC<HeartSystemDisplayProps> = ({
       <div className="flex items-center justify-between">
         <div className="text-sm text-gray-600">
           <p>1問題につき1体力消費</p>
-          <p>1時間で1体力回復</p>
+          <p>5分で1体力回復</p>
         </div>
         
         <div className="flex space-x-2">
@@ -175,9 +176,11 @@ export const HeartSystemDisplay: React.FC<HeartSystemDisplayProps> = ({
               const newHeartSystem = {
                 ...heartSystem,
                 current: heartSystem.max,
-                lastRecovery: Date.now(),
-                nextRecovery: Date.now() + 60 * 60 * 1000,
+                lastRecoveryTime: Date.now(),
+                nextRecovery: Date.now() + 5 * 60 * 1000,
               };
+              manager.heartSystem = newHeartSystem;
+              saveLevelManager(manager);
               setHeartSystem(newHeartSystem);
               onHeartChange?.(newHeartSystem);
             }}
@@ -203,45 +206,4 @@ export const HeartSystemDisplay: React.FC<HeartSystemDisplayProps> = ({
   );
 };
 
-// ハートシステムの管理フック
-export const useHeartSystem = () => {
-  const [heartSystem, setHeartSystem] = useState<HeartSystem>(() => {
-    const manager = getLevelManager();
-    return manager.getHeartSystem();
-  });
-
-  const consumeHeart = (): boolean => {
-    const manager = getLevelManager();
-    const success = manager.consumeHeart();
-    
-    if (success) {
-      const updatedHearts = manager.getHeartSystem();
-      setHeartSystem(updatedHearts);
-      saveLevelManager();
-      return true;
-    }
-    
-    return false;
-  };
-
-  const processRecovery = (): HeartSystem => {
-    const manager = getLevelManager();
-    const updatedHearts = manager.processHeartRecovery();
-    setHeartSystem(updatedHearts);
-    saveLevelManager();
-    return updatedHearts;
-  };
-
-  const refreshHearts = () => {
-    const manager = getLevelManager();
-    const updatedHearts = manager.processHeartRecovery();
-    setHeartSystem(updatedHearts);
-  };
-
-  return {
-    heartSystem,
-    consumeHeart,
-    processRecovery,
-    refreshHearts,
-  };
-};
+// フックは別ファイルに移動しました

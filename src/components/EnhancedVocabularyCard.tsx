@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
+import { Badge } from "./ui/badge";
 import { ArrowLeft, RotateCcw, Heart, Star, CheckCircle, XCircle } from "lucide-react";
 import { getVocabularyByDifficulty, VocabularyItem } from "../data/vocabulary";
 import { DataManager } from "../utils/dataManager";
@@ -42,7 +43,7 @@ export function EnhancedVocabularyCard({
   const [statusAllocation] = useState(levelManager.getStatusAllocation());
 
   useEffect(() => {
-    // ハートを消費
+    // ハートを消費して学習を開始
     if (!levelManager.consumeHeart()) {
       alert('体力が不足しています。回復を待ってから再試行してください。');
       onBack();
@@ -154,9 +155,9 @@ export function EnhancedVocabularyCard({
     
     // 音声フィードバック
     if (levelUpResult.leveledUp) {
-      SoundManager.playLevelUpSound();
+      SoundManager.sounds.levelUp();
     } else {
-      SoundManager.playCompletionSound();
+      SoundManager.sounds.complete();
     }
   };
 
