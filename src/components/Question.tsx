@@ -5,7 +5,8 @@ import { Textarea } from "./ui/textarea";
 import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
 import { ArrowLeft } from "lucide-react";
-import { Category } from "../types";
+import { Category, QuestionRank } from "../types";
+import { RANK_STYLES } from "../data/levelConfig";
 
 export interface QuestionData {
   id: number;
@@ -22,6 +23,8 @@ interface QuestionProps {
   totalQuestions: number;
   difficulty: 'easy' | 'normal' | 'hard';
   category: Category;
+  rank?: QuestionRank;
+  xpReward?: number;
   onAnswer: (answer: string) => void;
   onBack: () => void;
 }
@@ -49,9 +52,11 @@ export function Question({
   questionNumber, 
   totalQuestions, 
   difficulty, 
-  category,
-  onAnswer,
-  onBack
+  category, 
+  rank,
+  xpReward,
+  onAnswer, 
+  onBack 
 }: QuestionProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [userInput, setUserInput] = useState<string>("");
@@ -82,6 +87,18 @@ export function Question({
             <Badge variant="outline" className="text-xs">
               {difficultyLabels[difficulty]}
             </Badge>
+            {rank && (
+              <Badge 
+                className={`text-xs ${RANK_STYLES[rank].bgColor} ${RANK_STYLES[rank].color}`}
+              >
+                {RANK_STYLES[rank].icon} {RANK_STYLES[rank].name}
+              </Badge>
+            )}
+            {xpReward && (
+              <Badge variant="secondary" className="text-xs">
+                +{xpReward} XP
+              </Badge>
+            )}
           </div>
         </div>
 

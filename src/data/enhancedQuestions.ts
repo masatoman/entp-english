@@ -56,9 +56,38 @@ export function determineQuestionRank(level: number): QuestionRank {
 }
 
 // XP報酬を計算する関数
-export function calculateXPReward(rank: QuestionRank): number {
+export function calculateXPReward(rank: QuestionRank, hasBonus: boolean = false): number {
   const range = RANK_XP_RANGES[rank];
-  return Math.floor(Math.random() * (range.max - range.min + 1)) + range.min;
+  const baseXP = Math.floor(Math.random() * (range.max - range.min + 1)) + range.min;
+  
+  if (hasBonus) {
+    // ボーナス時は1.5倍
+    return Math.floor(baseXP * 1.5);
+  }
+  
+  return baseXP;
+}
+
+// ボーナス条件のチェック
+export function checkBonusConditions(
+  isCorrect: boolean,
+  isFirstAttempt: boolean,
+  streakCount: number,
+  accuracy: number
+): boolean {
+  // 初回正解ボーナス
+  if (isCorrect && isFirstAttempt) return true;
+  
+  // 連続正解ボーナス（3回以上）
+  if (isCorrect && streakCount >= 3) return true;
+  
+  // 高正解率ボーナス（80%以上）
+  if (accuracy >= 0.8) return true;
+  
+  // 満点ボーナス
+  if (accuracy === 1.0) return true;
+  
+  return false;
 }
 
 // 既存の問題データを新しい形式に変換する関数

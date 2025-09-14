@@ -202,15 +202,25 @@ export function processHeartRecovery(heartSystem: HeartSystem): HeartSystem {
   const timeSinceLastRecovery = now - heartSystem.lastRecovery;
   const hoursElapsed = timeSinceLastRecovery / (60 * 60 * 1000);
   
-  if (hoursElapsed >= 1 && heartSystem.current < heartSystem.max) {
+  if (heartSystem.current >= heartSystem.max) {
+    // 既に満タンなら次回回復時間を更新
+    return {
+      ...heartSystem,
+      lastRecovery: now,
+      nextRecovery: now + (60 * 60 * 1000),
+    };
+  }
+  
+  if (hoursElapsed >= 1) {
     const heartsToAdd = Math.floor(hoursElapsed);
     const newCurrent = Math.min(heartSystem.current + heartsToAdd, heartSystem.max);
-    const nextRecovery = now + (60 * 60 * 1000); // 次の回復は1時間後
+    const remainingTime = (hoursElapsed - Math.floor(hoursElapsed)) * (60 * 60 * 1000);
+    const nextRecovery = now + (60 * 60 * 1000) - remainingTime;
     
     return {
       ...heartSystem,
       current: newCurrent,
-      lastRecovery: now,
+      lastRecovery: now - remainingTime,
       nextRecovery,
     };
   }

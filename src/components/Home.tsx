@@ -18,6 +18,9 @@ import { DataManager } from "../utils/dataManager";
 import { UserStats } from "../data/achievements";
 import { isFeatureUnlocked, getAvailableFeatures, getNextUnlockableFeatures, getUnlockCondition } from "../utils/unlockSystem";
 import { SoundManager } from "../utils/soundManager";
+import { StatusAllocationComponent } from "./StatusAllocation";
+import { HeartSystemDisplay } from "./HeartSystem";
+import { getLevelManager } from "../utils/levelManager";
 
 interface HomeProps {
   onNavigateToGrammar: () => void;
@@ -344,6 +347,11 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
           </CardContent>
         </Card>
 
+        {/* ステータス振り分けとハートシステム */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <StatusAllocationComponent readOnly={true} />
+          <HeartSystemDisplay compact={false} />
+        </div>
 
         {/* Menu Grid */}
         <div className="space-y-4">
