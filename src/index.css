@@ -1738,7 +1738,7 @@
 
   @supports (color: color-mix(in lab, red, red)) {
     .bg-black\/50 {
-      background-color: color-mix(in oklab, var(--color-black) 50%, transparent);
+      background-color: color-mix(in oklab, var(--color-black) 50%, var(--color-white));
     }
   }
 
@@ -1812,7 +1812,7 @@
 
   @supports (color: color-mix(in lab, red, red)) {
     .bg-muted\/50 {
-      background-color: color-mix(in oklab, var(--muted) 50%, transparent);
+      background-color: color-mix(in oklab, var(--muted) 50%, var(--color-white));
     }
   }
 
@@ -1838,7 +1838,7 @@
 
   @supports (color: color-mix(in lab, red, red)) {
     .bg-primary\/20 {
-      background-color: color-mix(in oklab, var(--primary) 20%, transparent);
+      background-color: color-mix(in oklab, var(--primary) 20%, var(--color-white));
     }
   }
 
@@ -1880,7 +1880,7 @@
 
   @supports (color: color-mix(in lab, red, red)) {
     .bg-white\/20 {
-      background-color: color-mix(in oklab, var(--color-white) 20%, transparent);
+      background-color: color-mix(in oklab, var(--color-white) 20%, var(--color-black));
     }
   }
 
@@ -3127,7 +3127,7 @@
 
     @supports (color: color-mix(in lab, red, red)) {
       .hover\:bg-destructive\/90:hover {
-        background-color: color-mix(in oklab, var(--destructive) 90%, transparent);
+        background-color: color-mix(in oklab, var(--destructive) 90%, var(--color-white));
       }
     }
   }
@@ -3157,7 +3157,7 @@
 
     @supports (color: color-mix(in lab, red, red)) {
       .hover\:bg-muted\/50:hover {
-        background-color: color-mix(in oklab, var(--muted) 50%, transparent);
+        background-color: color-mix(in oklab, var(--muted) 50%, var(--color-white));
       }
     }
   }
@@ -3181,7 +3181,7 @@
 
     @supports (color: color-mix(in lab, red, red)) {
       .hover\:bg-primary\/90:hover {
-        background-color: color-mix(in oklab, var(--primary) 90%, transparent);
+        background-color: color-mix(in oklab, var(--primary) 90%, var(--color-white));
       }
     }
   }
@@ -3193,7 +3193,7 @@
 
     @supports (color: color-mix(in lab, red, red)) {
       .hover\:bg-secondary\/80:hover {
-        background-color: color-mix(in oklab, var(--secondary) 80%, transparent);
+        background-color: color-mix(in oklab, var(--secondary) 80%, var(--color-white));
       }
     }
   }
@@ -3528,7 +3528,7 @@
 
   @supports (color: color-mix(in lab, red, red)) {
     .data-\[active\=true\]\:bg-accent\/50[data-active="true"] {
-      background-color: color-mix(in oklab, var(--accent) 50%, transparent);
+      background-color: color-mix(in oklab, var(--accent) 50%, var(--color-white));
     }
   }
 
@@ -3930,7 +3930,7 @@
 
   @supports (color: color-mix(in lab, red, red)) {
     .data-\[state\=open\]\:bg-accent\/50[data-state="open"] {
-      background-color: color-mix(in oklab, var(--accent) 50%, transparent);
+      background-color: color-mix(in oklab, var(--accent) 50%, var(--color-white));
     }
   }
 
@@ -4048,7 +4048,7 @@
 
   @supports (color: color-mix(in lab, red, red)) {
     .data-\[variant\=destructive\]\:focus\:bg-destructive\/10[data-variant="destructive"]:focus {
-      background-color: color-mix(in oklab, var(--destructive) 10%, transparent);
+      background-color: color-mix(in oklab, var(--destructive) 10%, var(--color-white));
     }
   }
 
@@ -4320,7 +4320,7 @@
 
   @supports (color: color-mix(in lab, red, red)) {
     .dark\:bg-destructive\/60:is(.dark *) {
-      background-color: color-mix(in oklab, var(--destructive) 60%, transparent);
+      background-color: color-mix(in oklab, var(--destructive) 60%, var(--color-black));
     }
   }
 
@@ -4330,7 +4330,7 @@
 
   @supports (color: color-mix(in lab, red, red)) {
     .dark\:bg-input\/30:is(.dark *) {
-      background-color: color-mix(in oklab, var(--input) 30%, transparent);
+      background-color: color-mix(in oklab, var(--input) 30%, var(--color-black));
     }
   }
 
@@ -4345,7 +4345,7 @@
 
     @supports (color: color-mix(in lab, red, red)) {
       .dark\:hover\:bg-accent\/50:is(.dark *):hover {
-        background-color: color-mix(in oklab, var(--accent) 50%, transparent);
+        background-color: color-mix(in oklab, var(--accent) 50%, var(--color-black));
       }
     }
   }
@@ -4357,7 +4357,7 @@
 
     @supports (color: color-mix(in lab, red, red)) {
       .dark\:hover\:bg-input\/50:is(.dark *):hover {
-        background-color: color-mix(in oklab, var(--input) 50%, transparent);
+        background-color: color-mix(in oklab, var(--input) 50%, var(--color-black));
       }
     }
   }
@@ -4402,7 +4402,7 @@
 
   @supports (color: color-mix(in lab, red, red)) {
     .dark\:data-\[state\=active\]\:bg-input\/30:is(.dark *)[data-state="active"] {
-      background-color: color-mix(in oklab, var(--input) 30%, transparent);
+      background-color: color-mix(in oklab, var(--input) 30%, var(--color-black));
     }
   }
 
@@ -4428,7 +4428,7 @@
 
   @supports (color: color-mix(in lab, red, red)) {
     .dark\:data-\[state\=unchecked\]\:bg-input\/80:is(.dark *)[data-state="unchecked"] {
-      background-color: color-mix(in oklab, var(--input) 80%, transparent);
+      background-color: color-mix(in oklab, var(--input) 80%, var(--color-black));
     }
   }
 
@@ -4438,7 +4438,7 @@
 
   @supports (color: color-mix(in lab, red, red)) {
     .dark\:data-\[variant\=destructive\]\:focus\:bg-destructive\/20:is(.dark *)[data-variant="destructive"]:focus {
-      background-color: color-mix(in oklab, var(--destructive) 20%, transparent);
+      background-color: color-mix(in oklab, var(--destructive) 20%, var(--color-black));
     }
   }
 
@@ -4796,7 +4796,7 @@
 
     @supports (color: color-mix(in lab, red, red)) {
       a.\[a\&\]\:hover\:bg-destructive\/90:hover {
-        background-color: color-mix(in oklab, var(--destructive) 90%, transparent);
+        background-color: color-mix(in oklab, var(--destructive) 90%, var(--color-white));
       }
     }
   }
@@ -4808,7 +4808,7 @@
 
     @supports (color: color-mix(in lab, red, red)) {
       a.\[a\&\]\:hover\:bg-primary\/90:hover {
-        background-color: color-mix(in oklab, var(--primary) 90%, transparent);
+        background-color: color-mix(in oklab, var(--primary) 90%, var(--color-white));
       }
     }
   }
@@ -4820,7 +4820,7 @@
 
     @supports (color: color-mix(in lab, red, red)) {
       a.\[a\&\]\:hover\:bg-secondary\/90:hover {
-        background-color: color-mix(in oklab, var(--secondary) 90%, transparent);
+        background-color: color-mix(in oklab, var(--secondary) 90%, var(--color-white));
       }
     }
   }

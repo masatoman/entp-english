@@ -112,6 +112,10 @@ export function EnhancedGrammarQuiz({ onBack, difficulty = 'intermediate' }: Enh
 
   const generateQuestions = () => {
     const originalQuestions = getGrammarQuizQuestions(difficulty);
+    if (!originalQuestions || originalQuestions.length === 0) {
+      console.error('No grammar questions found for difficulty:', difficulty);
+      return [];
+    }
     const enhancedQuestions = originalQuestions.map((q, index) => 
       convertQuestionToEnhanced(q, 'basic-grammar', 'normal', userLevel.level)
     );
@@ -139,8 +143,8 @@ export function EnhancedGrammarQuiz({ onBack, difficulty = 'intermediate' }: Enh
     setQuestions(selectedQuestions);
   };
 
-  const currentQuestion = questions[currentQuestionIndex];
-  const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+  const currentQuestion = questions[currentQuestionIndex] || null;
+  const progress = questions.length > 0 ? ((currentQuestionIndex + 1) / questions.length) * 100 : 0;
 
   const handleDrop = (blankId: string, word: string) => {
     setUserAnswers(prev => ({
@@ -179,11 +183,11 @@ export function EnhancedGrammarQuiz({ onBack, difficulty = 'intermediate' }: Enh
     // XP計算とレベルアップ処理
     const sessionDuration = Math.round((Date.now() - sessionStartTime) / 1000);
     const xpGained = calculateNewXP(
-      questions.map((q, index) => ({
+      questions.length > 0 ? questions.map((q, index) => ({
         questionId: q.id,
         answer: userAnswers[`blank_${index}`] || '',
         isCorrect: Math.random() > 0.3 // 仮の実装
-      })),
+      })) : [],
       currentQuestion?.rank || 'normal',
       true
     );
@@ -254,13 +258,19 @@ export function EnhancedGrammarQuiz({ onBack, difficulty = 'intermediate' }: Enh
     );
   }
 
-  if (!currentQuestion) {
+  if (!currentQuestion || questions.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
         <div className="max-w-4xl mx-auto">
           <Card>
             <CardContent className="p-8 text-center">
-              <div className="text-lg text-gray-600">問題を読み込み中...</div>
+              <div className="text-lg text-gray-600">
+                {questions.length === 0 ? '問題が見つかりませんでした' : '問題を読み込み中...'}
+              </div>
+              <Button onClick={onBack} className="mt-4">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                戻る
+              </Button>
             </CardContent>
           </Card>
         </div>
@@ -332,7 +342,7 @@ export function EnhancedGrammarQuiz({ onBack, difficulty = 'intermediate' }: Enh
                 </div>
 
                 <div className="text-center text-lg">
-                  {currentQuestion.options.map((option, index) => (
+                  {currentQuestion?.options?.map((option, index) => (
                     <span key={index}>
                       {index > 0 && ' '}
                       <DropZone
@@ -341,15 +351,15 @@ export function EnhancedGrammarQuiz({ onBack, difficulty = 'intermediate' }: Enh
                         onDrop={handleDrop}
                       />
                     </span>
-                  ))}
+                  )) || []}
                 </div>
 
                 <div className="text-center">
                   <p className="text-sm text-gray-600 mb-3">単語を選んでください</p>
                   <div className="flex flex-wrap justify-center gap-2">
-                    {currentQuestion.options.map((option, index) => (
+                    {currentQuestion?.options?.map((option, index) => (
                       <DraggableWord key={index} word={option} />
-                    ))}
+                    )) || []}
                   </div>
                 </div>
               </div>
