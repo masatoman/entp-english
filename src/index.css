@@ -313,7 +313,7 @@
     letter-spacing: inherit;
     color: inherit;
     opacity: 1;
-    background-color: #0000;
+    background-color: var(--color-background);
     border-radius: 0;
   }
 
