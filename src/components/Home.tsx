@@ -86,7 +86,7 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
   
   const dailyXPGoal = getDailyXPGoal();
   const streak = userStats.currentStreak;
-  const level = Math.floor(userStats.totalXP / 100) + 1; // 100XP毎にレベルアップ
+  const level = Math.max(1, Math.floor(userStats.totalXP / 100) + 1); // 最低レベル1、100XP毎にレベルアップ
   
   // 今日のXP進捗（日次目標に対する進捗）
   const xpProgress = Math.min((todayXP / dailyXPGoal) * 100, 100);
@@ -107,7 +107,17 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
     streak,
     availableFeatures: availableFeatures.length,
     nextUnlockableFeatures: nextUnlockableFeatures.length,
-    nextUnlockableFeaturesList: nextUnlockableFeatures
+    nextUnlockableFeaturesList: nextUnlockableFeatures,
+    unlockedAchievements: userStats.unlockedAchievements || []
+  });
+
+  // 各機能のアンロック状況をデバッグ
+  console.log('Feature Unlock Status:', {
+    vocabulary: isFeatureUnlocked('vocabulary-beginner', level, userStats.totalXP, streak, userStats.unlockedAchievements || []),
+    grammar: isFeatureUnlocked('grammar-easy', level, userStats.totalXP, streak, userStats.unlockedAchievements || []),
+    essay: isFeatureUnlocked('essay-beginner', level, userStats.totalXP, streak, userStats.unlockedAchievements || []),
+    combined: isFeatureUnlocked('combined-test', level, userStats.totalXP, streak, userStats.unlockedAchievements || []),
+    timeAttack: isFeatureUnlocked('time-attack', level, userStats.totalXP, streak, userStats.unlockedAchievements || [])
   });
 
   const menuItems = [
@@ -150,8 +160,8 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
     }
   ];
 
-  // アンロックされた機能を追加
-  if (isFeatureUnlocked('vocabulary-beginner', level, userStats.totalXP, streak, userStats.unlockedAchievements || [])) {
+  // アンロックされた機能を追加（デバッグ用に常に表示）
+  if (isFeatureUnlocked('vocabulary-beginner', level, userStats.totalXP, streak, userStats.unlockedAchievements || []) || userStats.totalXP === 0) {
     menuItems.unshift({
       id: 'vocabulary',
       title: '単語学習',
@@ -166,7 +176,7 @@ export function Home({ onNavigateToGrammar, onNavigateToVocabulary, onNavigateTo
     });
   }
 
-  if (isFeatureUnlocked('grammar-easy', level, userStats.totalXP, streak, userStats.unlockedAchievements || [])) {
+  if (isFeatureUnlocked('grammar-easy', level, userStats.totalXP, streak, userStats.unlockedAchievements || []) || userStats.totalXP === 0) {
     menuItems.unshift({
       id: 'grammar',
       title: '文法クイズ',
