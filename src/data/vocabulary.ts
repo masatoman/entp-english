@@ -9,6 +9,34 @@ export interface VocabularyWord {
   category?: 'toeic' | 'business' | 'daily' | 'academic';
 }
 
+// 難易度別に語彙を取得する関数
+export function getVocabularyByDifficulty(
+  difficulty: 'beginner' | 'intermediate' | 'advanced'
+): VocabularyWord[] {
+  return vocabularyWords.filter(word => word.level === difficulty);
+}
+
+// カテゴリー別に語彙を取得する関数
+export function getVocabularyByCategory(
+  category: 'toeic' | 'business' | 'daily' | 'academic'
+): VocabularyWord[] {
+  return vocabularyWords.filter(word => word.category === category);
+}
+
+// 難易度とカテゴリーの両方でフィルタリングする関数
+export function getVocabularyByDifficultyAndCategory(
+  difficulty: 'beginner' | 'intermediate' | 'advanced',
+  category?: 'toeic' | 'business' | 'daily' | 'academic'
+): VocabularyWord[] {
+  let filtered = vocabularyWords.filter(word => word.level === difficulty);
+  
+  if (category) {
+    filtered = filtered.filter(word => word.category === category);
+  }
+  
+  return filtered;
+}
+
 export const vocabularyWords: VocabularyWord[] = [
   // 初級レベル (Beginner) - 基本的な日常会話でよく使われる単語
   {
