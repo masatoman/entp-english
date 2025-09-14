@@ -74,7 +74,7 @@ export function NewHome({
     }, 60000); // 1分ごと
 
     return () => clearInterval(interval);
-  }, [refreshLevel, processRecovery]);
+  }, []); // 初回のみ実行
 
   const handleStartLearning = (type: string) => {
     // ハートを消費して学習を開始
@@ -142,9 +142,6 @@ export function NewHome({
           {/* ハートシステム */}
           <div>
             <HeartSystemDisplay
-              onHeartChange={(hearts) => {
-                // ハートが変更された時の処理
-              }}
               showRecoveryTime={true}
             />
           </div>
@@ -153,11 +150,7 @@ export function NewHome({
         {/* ステータス配分 */}
         {showStatusAllocation && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <StatusAllocationComponent
-              onAllocationChange={(allocation) => {
-                // ステータス配分が変更された時の処理
-              }}
-            />
+            <StatusAllocationComponent />
             <RankProgress
               currentLevel={userLevel.level}
               showProbabilities={true}

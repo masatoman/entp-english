@@ -24,7 +24,9 @@ export const HeartSystemDisplay: React.FC<HeartSystemDisplayProps> = ({
     const updatedHearts = manager.processHeartRecovery();
     setHeartSystem(updatedHearts);
     onHeartChange?.(updatedHearts);
+  }, []); // 初回のみ実行
 
+  useEffect(() => {
     // 回復時間の計算
     const updateRecoveryTime = () => {
       const now = Date.now();
@@ -36,7 +38,7 @@ export const HeartSystemDisplay: React.FC<HeartSystemDisplayProps> = ({
     const interval = setInterval(updateRecoveryTime, 1000);
 
     return () => clearInterval(interval);
-  }, [heartSystem.nextRecovery, onHeartChange]);
+  }, [heartSystem.nextRecovery]); // heartSystem.nextRecoveryのみを依存配列に
 
   const formatTime = (milliseconds: number): string => {
     const totalSeconds = Math.floor(milliseconds / 1000);

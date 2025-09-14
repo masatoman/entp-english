@@ -24,7 +24,7 @@ export const StatusAllocationComponent: React.FC<StatusAllocationProps> = ({
     const valid = validateStatusAllocation(allocation);
     setIsValid(valid);
     onAllocationChange?.(allocation);
-  }, [allocation, onAllocationChange]);
+  }, [allocation]); // onAllocationChangeを依存配列から削除
 
   const handleFieldChange = (field: SkillField, value: number) => {
     const newAllocation = {
