@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { Home } from "./components/Home";
 import { NewHome } from "./components/NewHome";
 import { VocabularyCard } from "./components/VocabularyCard";
+import { EnhancedVocabularyCard } from "./components/EnhancedVocabularyCard";
 import { VocabularyDifficultySelection } from "./components/VocabularyDifficultySelection";
 import { VocabularyCategorySelection } from "./components/VocabularyCategorySelection";
 import { GrammarQuiz } from "./components/GrammarQuiz";
+import { EnhancedGrammarQuiz } from "./components/EnhancedGrammarQuiz";
 import { GrammarQuizDifficultySelection } from "./components/GrammarQuizDifficultySelection";
 import { CombinedTest } from "./components/CombinedTest";
 import { Achievements } from "./components/Achievements";
@@ -277,7 +279,7 @@ export default function App() {
       )}
       
       {currentScreen === 'vocabulary' && (
-        <VocabularyCard 
+        <EnhancedVocabularyCard 
           onBack={() => setCurrentScreen('vocabulary-category')} 
           difficulty={vocabularyDifficulty}
           category={vocabularyCategory}
@@ -292,7 +294,7 @@ export default function App() {
       )}
       
       {currentScreen === 'grammar-quiz' && (
-        <GrammarQuiz 
+        <EnhancedGrammarQuiz 
           onBack={() => setCurrentScreen('grammar-quiz-difficulty')} 
           difficulty={grammarQuizDifficulty}
         />
