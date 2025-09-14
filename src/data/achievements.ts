@@ -22,6 +22,11 @@ export interface UserStats {
   correctAnswers: number;
   averageScore: number;
   lastStudyDate: string;
+  // 新システム用の追加プロパティ
+  todayXP: number;
+  totalStudyTime: number; // 秒単位
+  accuracy: number; // パーセンテージ
+  streakDays: number;
 }
 
 

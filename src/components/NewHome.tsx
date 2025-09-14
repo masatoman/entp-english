@@ -116,7 +116,7 @@ export function NewHome({
               onClick={() => setShowDetailedView(!showDetailedView)}
             >
               <BarChart3 className="w-4 h-4 mr-2" />
-              {showDetailedView ? '簡易表示' : '詳細表示'}
+              {showDetailedView ? '統計を隠す' : '統計を表示'}
             </Button>
             <Button
               variant="outline"
@@ -353,7 +353,9 @@ export function NewHome({
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-600">今日のXP</p>
-                    <p className="text-2xl font-bold text-blue-600">{userStats.todayXP}</p>
+                    <p className="text-2xl font-bold text-blue-600">
+                      {userStats.todayXP || 0}
+                    </p>
                   </div>
                   <TrendingUp className="w-8 h-8 text-blue-600" />
                 </div>
@@ -366,7 +368,7 @@ export function NewHome({
                   <div>
                     <p className="text-sm text-gray-600">総学習時間</p>
                     <p className="text-2xl font-bold text-green-600">
-                      {Math.floor(userStats.totalStudyTime / 60)}分
+                      {Math.floor((userStats.totalStudyTime || 0) / 60)}分
                     </p>
                   </div>
                   <Clock className="w-8 h-8 text-green-600" />
@@ -380,7 +382,10 @@ export function NewHome({
                   <div>
                     <p className="text-sm text-gray-600">正解率</p>
                     <p className="text-2xl font-bold text-purple-600">
-                      {userStats.accuracy.toFixed(1)}%
+                      {userStats.totalQuestionsAnswered > 0 
+                        ? ((userStats.correctAnswers / userStats.totalQuestionsAnswered) * 100).toFixed(1)
+                        : '0.0'
+                      }%
                     </p>
                   </div>
                   <Target className="w-8 h-8 text-purple-600" />
@@ -394,7 +399,7 @@ export function NewHome({
                   <div>
                     <p className="text-sm text-gray-600">連続学習日数</p>
                     <p className="text-2xl font-bold text-orange-600">
-                      {userStats.streakDays}日
+                      {userStats.currentStreak || 0}日
                     </p>
                   </div>
                   <Flame className="w-8 h-8 text-orange-600" />

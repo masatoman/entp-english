@@ -21,6 +21,11 @@ const DEFAULT_USER_STATS: UserStats = {
   correctAnswers: 0,
   averageScore: 0,
   lastStudyDate: new Date().toISOString().split('T')[0],
+  // 新システム用の追加プロパティ
+  todayXP: 0,
+  totalStudyTime: 0,
+  accuracy: 0,
+  streakDays: 0,
 };
 
 // アプリ設定の型定義
