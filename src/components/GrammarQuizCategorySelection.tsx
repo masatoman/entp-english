@@ -14,24 +14,24 @@ export function GrammarQuizCategorySelection({ onSelectCategory, onBack }: Gramm
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-4xl mx-auto">
         {/* ヘッダー */}
-        <div className="flex items-center justify-between mb-6">
-          <Button
-            variant="outline"
-            onClick={onBack}
-            className="flex items-center"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            戻る
-          </Button>
-          <h1 className="text-2xl font-bold text-gray-800">文法カテゴリー選択</h1>
-          <div className="w-24"></div>
-        </div>
-
-        {/* 説明 */}
         <div className="mb-6">
-          <p className="text-gray-600 text-center">
-            学習したい文法カテゴリーを選択してください
-          </p>
+          <div className="flex items-center justify-between mb-4">
+            <Button
+              variant="outline"
+              onClick={onBack}
+              className="flex items-center"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              戻る
+            </Button>
+            <div className="w-24"></div>
+          </div>
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-gray-800 mb-2">文法カテゴリー選択</h1>
+            <p className="text-gray-600">
+              学習したい文法カテゴリーを選択してください
+            </p>
+          </div>
         </div>
 
         {/* カテゴリー一覧 */}
