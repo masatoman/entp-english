@@ -262,7 +262,7 @@ export function EnhancedVocabularyCard({
           <CardContent>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">進捗</span>
+                <span className="text-sm text-gray-600">問題 {currentQuestionIndex + 1}/{questions.length}</span>
                 <span className="text-sm text-gray-600">
                   {currentQuestionIndex + 1} / {questions.length}
                 </span>

@@ -24,6 +24,7 @@ import {
 import { LevelDisplay } from './LevelDisplay';
 import { HeartSystemDisplay } from './HeartSystem';
 import { StatusAllocationComponent } from './StatusAllocation';
+import { LearningFeedbackForm } from './LearningFeedbackForm';
 import { useLevelSystem } from '../hooks/useLevelSystem';
 import { useHeartSystem } from '../hooks/useHeartSystem';
 import { useStatusAllocation } from '../hooks/useStatusAllocation';
@@ -74,6 +75,7 @@ export function NewHome({
   const [showGrammarQuiz, setShowGrammarQuiz] = useState(false);
   const [selectedGrammarCategory, setSelectedGrammarCategory] = useState<string>('');
   const [selectedGrammarDifficulty, setSelectedGrammarDifficulty] = useState<'beginner' | 'intermediate' | 'advanced'>('beginner');
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
 
   useEffect(() => {
     const refreshData = () => {
@@ -129,7 +131,8 @@ export function NewHome({
 
   const handleGrammarQuizBack = () => {
     setShowGrammarQuiz(false);
-    setShowGrammarQuizDifficulty(true);
+    setShowGrammarQuizDifficulty(false);
+    setShowGrammarQuizCategory(false);
   };
 
   const handleGrammarDifficultyBack = () => {
@@ -454,6 +457,18 @@ export function NewHome({
           </Card>
         </div>
 
+        {/* フィードバックボタン */}
+        <div className="flex justify-center mt-6">
+          <Button 
+            variant="outline" 
+            onClick={() => setShowFeedbackForm(true)}
+            className="flex items-center space-x-2"
+          >
+            <Star className="w-4 h-4" />
+            <span>学習フィードバック</span>
+          </Button>
+        </div>
+
         {/* 統計情報 */}
         {showDetailedView && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -535,6 +550,14 @@ export function NewHome({
           </Card>
         )}
 
+        {/* フィードバックフォームモーダル */}
+        {showFeedbackForm && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="w-full max-w-md">
+              <LearningFeedbackForm onClose={() => setShowFeedbackForm(false)} />
+            </div>
+          </div>
+        )}
 
       </div>
     </div>

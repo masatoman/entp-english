@@ -88,20 +88,18 @@ export const HeartSystemDisplay: React.FC<HeartSystemDisplayProps> = ({
       <div className="flex items-center space-x-1">
         <div className="flex space-x-1">
           {Array.from({ length: heartSystem.max }, (_, i) => (
-            <div
+            <span
               key={i}
-              className={`w-4 h-4 rounded-full ${
-                i < heartSystem.current
-                  ? 'bg-red-500 text-foreground'
-                  : 'bg-gray-200 text-gray-400'
+              className={`text-lg ${
+                i < heartSystem.current ? 'text-red-500' : 'text-gray-300'
               }`}
             >
-              ♥
-            </div>
+              {i < heartSystem.current ? '♥' : '♡'}
+            </span>
           ))}
         </div>
         <span className="text-sm text-gray-600">
-          {heartSystem.current}/{heartSystem.max}
+          ({heartSystem.current}/{heartSystem.max})
         </span>
       </div>
     );
@@ -115,20 +113,18 @@ export const HeartSystemDisplay: React.FC<HeartSystemDisplayProps> = ({
           <span className="text-sm text-gray-600">体力</span>
           <div className="flex space-x-1">
             {Array.from({ length: heartSystem.max }, (_, i) => (
-              <div
+              <span
                 key={i}
-                className={`w-6 h-6 rounded-full flex items-center justify-center text-sm ${
-                  i < heartSystem.current
-                    ? 'bg-red-500 text-foreground'
-                    : 'bg-gray-200 text-gray-400'
+                className={`text-2xl ${
+                  i < heartSystem.current ? 'text-red-500' : 'text-gray-300'
                 }`}
               >
-                ♥
-              </div>
+                {i < heartSystem.current ? '♥' : '♡'}
+              </span>
             ))}
           </div>
           <span className="text-sm font-medium text-gray-700">
-            {heartSystem.current}/{heartSystem.max}
+            ({heartSystem.current}/{heartSystem.max})
           </span>
         </div>
       </div>
@@ -136,8 +132,10 @@ export const HeartSystemDisplay: React.FC<HeartSystemDisplayProps> = ({
       {showRecoveryTime && heartSystem.current < heartSystem.max && (
         <div className="mb-3">
           <div className="flex items-center justify-between text-sm text-gray-600 mb-1">
-            <span>次の回復まで</span>
-            <span className="font-mono">{formatTime(timeUntilRecovery)}</span>
+            <span>次回復:</span>
+            <span className="font-mono">
+              {timeUntilRecovery > 0 ? formatTime(timeUntilRecovery) + '後' : '満タン'}
+            </span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div

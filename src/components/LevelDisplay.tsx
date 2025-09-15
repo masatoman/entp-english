@@ -72,14 +72,24 @@ export const LevelDisplay: React.FC<LevelDisplayProps> = ({
           </div>
         </div>
         <div className="flex-1">
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div
-              className={`h-2 rounded-full bg-gradient-to-r ${getChapterGradient(userLevel.chapter)}`}
-              style={{ width: `${userLevel.progress}%` }}
-            />
-          </div>
-          <div className="text-xs text-gray-500 mt-1">
-            {userLevel.xpToNext}XP to next level
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">
+                Level {userLevel.level}
+              </span>
+              <span className="text-sm text-gray-600">
+                ({userLevel.xp - (userLevel.level - 1) * 50}/50 XP)
+              </span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-3">
+              <div
+                className={`h-3 rounded-full bg-gradient-to-r ${getChapterGradient(userLevel.chapter)}`}
+                style={{ width: `${((userLevel.xp - (userLevel.level - 1) * 50) / 50) * 100}%` }}
+              />
+            </div>
+            <div className="text-xs text-gray-500 text-center">
+              次レベルまで: {50 - (userLevel.xp - (userLevel.level - 1) * 50)}XP
+            </div>
           </div>
         </div>
       </div>

@@ -23,7 +23,9 @@ import {
 } from '../utils/featureUnlockSystem';
 import { StatusAllocationComponent } from './StatusAllocation';
 import { HeartSystemDisplay } from './HeartSystem';
-import type { UserStats } from '../types';
+import { LearningFeedbackForm } from './LearningFeedbackForm';
+import { analyzeLearningData, getLearningSessions, sendLearningDataToNetlify } from '../utils/learningAnalytics';
+import type { UserStats } from '../data/achievements';
 
 interface HomeProps {
   onNavigateToGrammar: () => void;
@@ -50,6 +52,8 @@ export const Home = React.memo(function Home({
 }: HomeProps) {
   const [userStats, setUserStats] = useState<UserStats>(DataManager.getUserStats());
   const [todayXP, setTodayXP] = useState(0);
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+  const [learningAnalytics, setLearningAnalytics] = useState<any>(null);
   
   // メモ化された日次XP目標の取得
   const dailyXPGoal = useMemo(() => {
@@ -90,17 +94,31 @@ export const Home = React.memo(function Home({
       calculatedValues.level, 
       userStats.totalXP, 
       calculatedValues.streak, 
-      userStats.unlockedAchievements || []
+[]
     );
     const nextUnlockableFeatures = getNextUnlockableFeatures(
       calculatedValues.level, 
       userStats.totalXP, 
       calculatedValues.streak, 
-      userStats.unlockedAchievements || []
+[]
     );
     
     return { availableFeatures, nextUnlockableFeatures };
-  }, [calculatedValues.level, userStats.totalXP, calculatedValues.streak, userStats.unlockedAchievements]);
+  }, [calculatedValues.level, userStats.totalXP, calculatedValues.streak, []]);
+
+  // 学習データ分析の初期化
+  useEffect(() => {
+    const sessions = getLearningSessions();
+    if (sessions.length > 0) {
+      const analytics = analyzeLearningData(sessions);
+      setLearningAnalytics(analytics);
+      
+      // Netlify Functionsにデータを送信（開発環境では無効）
+      if (process.env.NODE_ENV === 'production') {
+        sendLearningDataToNetlify(analytics).catch(console.error);
+      }
+    }
+  }, []);
 
   // メモ化されたデータ更新関数
   const refreshData = useCallback(() => {
@@ -170,7 +188,7 @@ export const Home = React.memo(function Home({
     ];
 
     // アンロックされた機能を追加
-    if (isFeatureUnlocked('vocabulary-beginner', calculatedValues.level, userStats.totalXP, calculatedValues.streak, userStats.unlockedAchievements || []) || userStats.totalXP === 0) {
+    if (true) {
       items.unshift({
         id: 'vocabulary',
         title: '単語学習',
@@ -185,7 +203,7 @@ export const Home = React.memo(function Home({
       });
     }
 
-    if (isFeatureUnlocked('grammar-easy', calculatedValues.level, userStats.totalXP, calculatedValues.streak, userStats.unlockedAchievements || []) || userStats.totalXP === 0) {
+    if (true) {
       items.unshift({
         id: 'grammar',
         title: '文法クイズ',
@@ -200,7 +218,7 @@ export const Home = React.memo(function Home({
       });
     }
 
-    if (isFeatureUnlocked('essay-beginner', calculatedValues.level, userStats.totalXP, calculatedValues.streak, userStats.unlockedAchievements || [])) {
+    if (true) {
       items.unshift({
         id: 'essay',
         title: '英作文',
@@ -215,7 +233,7 @@ export const Home = React.memo(function Home({
       });
     }
 
-    if (isFeatureUnlocked('combined-test', calculatedValues.level, userStats.totalXP, calculatedValues.streak, userStats.unlockedAchievements || [])) {
+    if (true) {
       items.unshift({
         id: 'test',
         title: '総合テスト',
@@ -230,7 +248,7 @@ export const Home = React.memo(function Home({
       });
     }
 
-    if (isFeatureUnlocked('time-attack', calculatedValues.level, userStats.totalXP, calculatedValues.streak, userStats.unlockedAchievements || [])) {
+    if (true) {
       items.unshift({
         id: 'time-attack',
         title: 'タイムアタック',
@@ -270,7 +288,7 @@ export const Home = React.memo(function Home({
     });
 
     return items;
-  }, [calculatedValues.level, userStats.totalXP, calculatedValues.streak, userStats.unlockedAchievements, unlockFeatures.nextUnlockableFeatures, onNavigateToAchievements, onNavigateToAppSettings, onNavigateToSimpleTowerDefense, onNavigateToVocabulary, onNavigateToGrammarQuiz, onNavigateToEssay, onNavigateToCombinedTest, onNavigateToTimeAttack]);
+  }, [calculatedValues.level, userStats.totalXP, calculatedValues.streak, [], unlockFeatures.nextUnlockableFeatures, onNavigateToAchievements, onNavigateToAppSettings, onNavigateToSimpleTowerDefense, onNavigateToVocabulary, onNavigateToGrammarQuiz, onNavigateToEssay, onNavigateToCombinedTest, onNavigateToTimeAttack]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
@@ -362,6 +380,18 @@ export const Home = React.memo(function Home({
           <HeartSystemDisplay compact={false} />
         </div>
 
+        {/* フィードバックボタン */}
+        <div className="flex justify-center">
+          <Button 
+            variant="outline" 
+            onClick={() => setShowFeedbackForm(true)}
+            className="flex items-center space-x-2"
+          >
+            <Star className="w-4 h-4" />
+            <span>学習フィードバック</span>
+          </Button>
+        </div>
+
         {/* Menu Grid */}
         <div className="space-y-4">
           <h2 className="text-xl font-medium text-center">学習メニュー</h2>
@@ -400,6 +430,15 @@ export const Home = React.memo(function Home({
             })}
           </div>
         </div>
+
+        {/* フィードバックフォームモーダル */}
+        {showFeedbackForm && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="w-full max-w-md">
+              <LearningFeedbackForm onClose={() => setShowFeedbackForm(false)} />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

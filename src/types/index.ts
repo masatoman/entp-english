@@ -44,6 +44,15 @@ export interface HeartSystem {
   nextRecovery: number;
 }
 
+export interface UserStats {
+  totalXP: number;
+  currentStreak: number;
+  unlockedAchievements: string[];
+  totalProblemsAnswered: number;
+  correctAnswers: number;
+  level: number;
+}
+
 export interface StatusAllocation {
   listening: number;
   reading: number;
