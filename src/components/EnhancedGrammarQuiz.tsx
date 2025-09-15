@@ -87,7 +87,7 @@ function DraggableWord({ word }: DraggableWordProps) {
   );
 }
 
-export function EnhancedGrammarQuiz({ onBack, difficulty = 'intermediate' }: EnhancedGrammarQuizProps) {
+export function EnhancedGrammarQuiz({ onBack, category, difficulty = 'intermediate' }: EnhancedGrammarQuizProps) {
   const [questions, setQuestions] = useState<QuestionWithRank[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
