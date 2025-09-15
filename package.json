@@ -70,16 +70,29 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:host": "vite --host",
+    "dev:debug": "vite --debug",
     "build": "vite build",
+    "build:analyze": "vite build --mode analyze",
+    "preview": "vite preview",
     "generate-icons": "node scripts/generate-icons.js",
     "prebuild": "npm run generate-icons",
     "test": "vitest --run",
+    "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage --run",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:mcp": "playwright test --project=chromium-mcp",
     "test:e2e:mcp:all": "playwright test --project=chromium-mcp --project=firefox-mcp --project=webkit-mcp",
-    "test:all": "npm run test && npm run test:e2e:mcp"
+    "test:all": "npm run test && npm run test:e2e:mcp",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf build dist node_modules/.vite",
+    "clean:all": "rm -rf build dist node_modules/.vite node_modules/.cache",
+    "dev:reset": "npm run clean && npm install && npm run dev",
+    "check": "npm run type-check && npm run lint && npm run test",
+    "precommit": "npm run check && npm run build"
   }
 }

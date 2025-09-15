@@ -1,0 +1,68 @@
+{
+  // TypeScript設定
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+
+  // エディター設定
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // ファイル関連
+  "files.autoSave": "onFocusChange",
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/build": true,
+    "**/dist": true,
+    "**/.git": true,
+    "**/.DS_Store": true
+  },
+
+  // 検索設定
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/build": true,
+    "**/dist": true,
+    "**/coverage": true
+  },
+
+  // Emmet設定
+  "emmet.includeLanguages": {
+    "typescript": "html",
+    "typescriptreact": "html"
+  },
+
+  // ファイル関連付け
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+
+  // Tailwind CSS設定
+  "tailwindCSS.includeLanguages": {
+    "typescript": "html",
+    "typescriptreact": "html"
+  },
+  "tailwindCSS.experimental.classRegex": [
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+  ],
+
+  // テスト設定
+  "vitest.enable": true,
+  "vitest.commandLine": "npm run test:watch",
+
+  // プレビュー設定
+  "liveServer.settings.donotShowInfoMsg": true,
+
+  // 自動補完設定
+  "typescript.suggest.completeFunctionCalls": true,
+  "typescript.suggest.includeCompletionsForModuleExports": true,
+
+  // インポート設定
+  "typescript.preferences.includePackageJsonAutoImports": "auto",
+  "typescript.suggest.includeAutomaticOptionalChainCompletions": true
+}

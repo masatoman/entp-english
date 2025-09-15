@@ -1,0 +1,40 @@
+{
+  "recommendations": [
+    // 必須拡張機能
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "ms-vscode.vscode-typescript-next",
+
+    // React開発
+    "ms-vscode.vscode-react-native",
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense",
+
+    // テスト関連
+    "vitest.explorer",
+    "ms-playwright.playwright",
+
+    // Git関連
+    "eamodio.gitlens",
+    "mhutchie.git-graph",
+
+    // その他の便利な拡張機能
+    "ms-vscode.vscode-json",
+    "redhat.vscode-yaml",
+    "ms-vscode.vscode-markdown",
+    "ms-vscode.vscode-css-peek",
+    "ms-vscode.vscode-html-css-support",
+
+    // デバッグ・パフォーマンス
+    "ms-vscode.vscode-chrome-debug",
+    "ms-vscode.vscode-firefox-debug",
+
+    // コード品質
+    "ms-vscode.vscode-eslint",
+    "ms-vscode.vscode-typescript-next",
+
+    // プロジェクト管理
+    "ms-vscode.vscode-npm-scripts",
+    "ms-vscode.vscode-npm-intellisense"
+  ]
+}
