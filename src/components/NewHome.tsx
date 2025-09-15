@@ -31,6 +31,9 @@ import { QuestionRankDisplay, RankProgress } from './QuestionRankDisplay';
 import { getLevelManager, saveLevelManager } from '../utils/levelManager';
 import { DataManager } from '../utils/dataManager';
 import { UserStats } from '../data/achievements';
+import { GrammarQuizCategorySelection } from './GrammarQuizCategorySelection';
+import { GrammarQuizDifficultySelection } from './GrammarQuizDifficultySelection';
+import { EnhancedGrammarQuiz } from './EnhancedGrammarQuiz';
 
 interface NewHomeProps {
   onNavigateToGrammar: () => void;
@@ -66,6 +69,11 @@ export function NewHome({
   const [userStats, setUserStats] = useState<UserStats>(DataManager.getUserStats());
   const [showDetailedView, setShowDetailedView] = useState(false);
   const [showStatusAllocation, setShowStatusAllocation] = useState(false);
+  const [showGrammarQuizCategory, setShowGrammarQuizCategory] = useState(false);
+  const [showGrammarQuizDifficulty, setShowGrammarQuizDifficulty] = useState(false);
+  const [showGrammarQuiz, setShowGrammarQuiz] = useState(false);
+  const [selectedGrammarCategory, setSelectedGrammarCategory] = useState<string>('');
+  const [selectedGrammarDifficulty, setSelectedGrammarDifficulty] = useState<'beginner' | 'intermediate' | 'advanced'>('beginner');
 
   useEffect(() => {
     const refreshData = () => {
@@ -88,10 +96,13 @@ export function NewHome({
     // 学習を開始（ハート消費は各学習コンポーネントで行う）
     switch (type) {
       case 'grammar':
-        onNavigateToGrammarQuiz();
+        setShowGrammarQuizCategory(true);
         break;
       case 'vocabulary':
         onNavigateToVocabulary();
+        break;
+      case 'writing':
+        onNavigateToEssay();
         break;
       case 'combined':
         onNavigateToCombinedTest();
@@ -102,6 +113,32 @@ export function NewHome({
       default:
         break;
     }
+  };
+
+  const handleGrammarCategorySelect = (category: string) => {
+    setSelectedGrammarCategory(category);
+    setShowGrammarQuizCategory(false);
+    setShowGrammarQuizDifficulty(true);
+  };
+
+  const handleGrammarDifficultySelect = (difficulty: 'beginner' | 'intermediate' | 'advanced') => {
+    setSelectedGrammarDifficulty(difficulty);
+    setShowGrammarQuizDifficulty(false);
+    setShowGrammarQuiz(true);
+  };
+
+  const handleGrammarQuizBack = () => {
+    setShowGrammarQuiz(false);
+    setShowGrammarQuizDifficulty(true);
+  };
+
+  const handleGrammarDifficultyBack = () => {
+    setShowGrammarQuizDifficulty(false);
+    setShowGrammarQuizCategory(true);
+  };
+
+  const handleGrammarCategoryBack = () => {
+    setShowGrammarQuizCategory(false);
   };
 
   const canStartLearning = heartSystem.current > 0;
@@ -296,6 +333,36 @@ export function NewHome({
             </CardContent>
           </Card>
 
+          {/* 英作文 */}
+          <Card 
+            className={`hover:shadow-lg transition-shadow cursor-pointer ${!canStartLearning ? 'opacity-50 cursor-not-allowed' : ''}`}
+            onClick={() => canStartLearning && handleStartLearning('writing')}
+          >
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg flex items-center">
+                  <PenTool className="w-5 h-5 mr-2 text-indigo-600" />
+                  英作文
+                </CardTitle>
+                <Badge variant="secondary">ライティング</Badge>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-600 mb-4">
+                文法カテゴリー別の4択英作文問題
+              </p>
+              <div className="flex items-center justify-between">
+                <div className="text-sm text-gray-500">
+                  必要体力: 1 ♥
+                </div>
+                <div className="flex items-center text-sm font-medium">
+                  {canStartLearning ? 'クリックして開始' : '体力不足'}
+                  <ChevronRight className="w-4 h-4 ml-1" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* タワーディフェンス */}
           <Card className="hover:shadow-lg transition-shadow cursor-pointer">
             <CardHeader className="pb-3">
@@ -437,6 +504,33 @@ export function NewHome({
             </CardContent>
           </Card>
         )}
+
+        {/* 文法クイズカテゴリー選択 */}
+        {showGrammarQuizCategory && (
+          <GrammarQuizCategorySelection
+            onSelectCategory={handleGrammarCategorySelect}
+            onBack={handleGrammarCategoryBack}
+          />
+        )}
+
+        {/* 文法クイズ難易度選択 */}
+        {showGrammarQuizDifficulty && (
+          <GrammarQuizDifficultySelection
+            categoryName={selectedGrammarCategory}
+            onSelectDifficulty={handleGrammarDifficultySelect}
+            onBack={handleGrammarDifficultyBack}
+          />
+        )}
+
+        {/* 文法クイズ */}
+        {showGrammarQuiz && (
+          <EnhancedGrammarQuiz
+            category={selectedGrammarCategory}
+            difficulty={selectedGrammarDifficulty}
+            onBack={handleGrammarQuizBack}
+          />
+        )}
+
       </div>
     </div>
   );

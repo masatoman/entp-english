@@ -7,7 +7,7 @@ import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { ArrowLeft, RotateCcw, Heart, Star, CheckCircle, XCircle } from "lucide-react";
-import { GrammarQuizQuestion, getGrammarQuizQuestions } from "../data/grammarQuiz";
+import { GrammarQuizQuestion, getGrammarQuizQuestions } from "../data/grammarQuizCategorized";
 import { Badge } from "./ui/badge";
 import { DataManager } from "../utils/dataManager";
 import { SoundManager } from "../utils/soundManager";
@@ -22,6 +22,7 @@ import { Category } from "../types";
 
 interface EnhancedGrammarQuizProps {
   onBack: () => void;
+  category?: string;
   difficulty?: 'beginner' | 'intermediate' | 'advanced';
 }
 
@@ -118,8 +119,8 @@ export function EnhancedGrammarQuiz({ onBack, difficulty = 'intermediate' }: Enh
   }, []);
 
   const generateQuestions = () => {
-    console.log('Generating questions for difficulty:', difficulty);
-    const originalQuestions = getGrammarQuizQuestions(difficulty);
+    console.log('Generating questions for category:', category, 'difficulty:', difficulty);
+    const originalQuestions = getGrammarQuizQuestions(difficulty, category);
     console.log('Original questions:', originalQuestions);
     
     if (!originalQuestions || originalQuestions.length === 0) {

@@ -86,28 +86,28 @@ const categories = [
 
 export function CategorySelection({ onSelectCategory, onBack }: CategorySelectionProps) {
   return (
-    <div className="min-h-screen p-4">
-      {/* Header with back button */}
-      <div className="flex items-center justify-between mb-6">
-        <Button variant="ghost" onClick={onBack} className="p-2">
-          <ArrowLeft className="w-5 h-5" />
-        </Button>
-        <h1 className="text-2xl font-bold">カテゴリ選択</h1>
-        <div className="w-10" />
-      </div>
-      <div className="max-w-md mx-auto w-full space-y-6">
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl">英作文アプリ</h1>
-          <p className="text-muted-foreground">
-            学習したい文法カテゴリーを選択してください
-          </p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <Button variant="outline" onClick={onBack} className="flex items-center">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            戻る
+          </Button>
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-gray-800">カテゴリー選択</h1>
+            <p className="text-gray-600 mt-2">
+              学習したい文法カテゴリーを選択してください
+            </p>
+          </div>
+          <div className="w-24" />
         </div>
         
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {categories.map((category) => (
             <Card 
               key={category.id}
-              className="cursor-pointer hover:bg-accent transition-colors active:scale-[0.98]"
+              className={`cursor-pointer hover:shadow-lg transition-all duration-200 active:scale-[0.98] ${category.color} border-2`}
               onClick={() => {
                 console.log('Category clicked:', category.id);
                 onSelectCategory(category.id);
@@ -123,7 +123,7 @@ export function CategorySelection({ onSelectCategory, onBack }: CategorySelectio
                 <CardDescription>{category.description}</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-600">
                   {category.detail}
                 </p>
               </CardContent>

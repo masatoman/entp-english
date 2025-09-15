@@ -73,59 +73,61 @@ export function Question({
   const canSubmit = difficulty === 'easy' ? selectedAnswer : userInput.trim();
 
   return (
-    <div className="min-h-screen p-4 flex flex-col">
-      <div className="max-w-md mx-auto w-full flex-1 flex flex-col">
-        {/* Header with back button */}
-        <div className="flex items-center justify-between mb-4">
-          <Button variant="ghost" onClick={onBack} className="p-2">
-            <ArrowLeft className="w-5 h-5" />
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <Button variant="outline" onClick={onBack} className="flex items-center">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            戻る
           </Button>
-          <div className="flex space-x-2">
-            <Badge variant="outline" className="text-xs">
-              {categoryLabels[category]}
-            </Badge>
-            <Badge variant="outline" className="text-xs">
-              {difficultyLabels[difficulty]}
-            </Badge>
-            {rank && (
-              <Badge 
-                className={`text-xs ${RANK_STYLES[rank].bgColor} ${RANK_STYLES[rank].color}`}
-              >
-                {RANK_STYLES[rank].icon} {RANK_STYLES[rank].name}
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-gray-800">英作文練習</h1>
+            <div className="flex items-center justify-center space-x-2 mt-2">
+              <Badge variant="outline" className="text-xs">
+                {categoryLabels[category]}
               </Badge>
-            )}
-            {xpReward && (
-              <Badge variant="secondary" className="text-xs">
-                +{xpReward} XP
+              <Badge variant="outline" className="text-xs">
+                {difficultyLabels[difficulty]}
               </Badge>
-            )}
+              {rank && (
+                <Badge 
+                  className={`text-xs ${RANK_STYLES[rank].bgColor} ${RANK_STYLES[rank].color}`}
+                >
+                  {RANK_STYLES[rank].icon} {RANK_STYLES[rank].name}
+                </Badge>
+              )}
+              {xpReward && (
+                <Badge variant="secondary" className="text-xs">
+                  +{xpReward} XP
+                </Badge>
+              )}
+            </div>
           </div>
+          <div className="w-24" />
         </div>
 
         {/* Progress */}
-        <div className="space-y-2">
-          <div className="flex justify-between items-center">
-            <span className="text-sm">問題 {questionNumber} / {totalQuestions}</span>
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-gray-700">問題 {questionNumber} / {totalQuestions}</span>
           </div>
-          <Progress value={(questionNumber / totalQuestions) * 100} />
+          <Progress value={(questionNumber / totalQuestions) * 100} className="h-2" />
         </div>
 
-        {/* Spacer to center content */}
-        <div className="flex-1" />
-
         {/* Question */}
-        <Card className="flex-shrink-0">
-          <CardHeader>
-            <CardTitle>次の日本語を英語にしてください</CardTitle>
+        <Card className="mb-6 shadow-lg">
+          <CardHeader className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
+            <CardTitle className="text-xl">次の日本語を英語にしてください</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="p-4 bg-muted rounded-lg">
-              <p className="text-center">{question.japanese}</p>
+          <CardContent className="p-6 space-y-6">
+            <div className="p-6 bg-gray-50 rounded-lg border-2 border-gray-200">
+              <p className="text-center text-lg font-medium text-gray-800">{question.japanese}</p>
             </div>
 
             {/* Hint for normal difficulty */}
             {difficulty === 'normal' && question.hint && (
-              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
                 <p className="text-sm text-blue-800">
                   <span className="font-medium">ヒント：</span>{question.hint}
                 </p>
@@ -133,18 +135,21 @@ export function Question({
             )}
 
             {/* Input area */}
-            <div className="space-y-3">
+            <div className="space-y-4">
               {difficulty === 'easy' && question.choices ? (
                 // Multiple choice for easy
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {question.choices.map((choice, index) => (
                     <Button
                       key={index}
                       variant={selectedAnswer === choice ? "default" : "outline"}
-                      className="w-full justify-start h-auto p-3 text-left whitespace-pre-wrap"
+                      className="w-full justify-start h-auto p-4 text-left whitespace-pre-wrap hover:shadow-md transition-shadow"
                       onClick={() => setSelectedAnswer(choice)}
                     >
-                      {String.fromCharCode(65 + index)}. {choice}
+                      <span className="font-medium text-blue-600 mr-3">
+                        {String.fromCharCode(65 + index)}.
+                      </span>
+                      {choice}
                     </Button>
                   ))}
                 </div>
@@ -154,25 +159,24 @@ export function Question({
                   placeholder="英文を入力してください..."
                   value={userInput}
                   onChange={(e) => setUserInput(e.target.value)}
-                  className="min-h-[120px] resize-none"
+                  className="min-h-[120px] resize-none border-2 border-gray-300 focus:border-blue-500"
                 />
               )}
             </div>
           </CardContent>
         </Card>
 
-        {/* Spacer to center content */}
-        <div className="flex-1" />
-
         {/* Submit button */}
-        <Button 
-          onClick={handleSubmit} 
-          disabled={!canSubmit}
-          className="w-full flex-shrink-0"
-          size="lg"
-        >
-          {questionNumber === totalQuestions ? '結果を見る' : '次の問題'}
-        </Button>
+        <div className="flex justify-center">
+          <Button 
+            onClick={handleSubmit} 
+            disabled={!canSubmit}
+            className="px-8 py-3 text-lg font-medium"
+            size="lg"
+          >
+            {questionNumber === totalQuestions ? '結果を見る' : '次の問題'}
+          </Button>
+        </div>
       </div>
     </div>
   );

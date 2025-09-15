@@ -9,9 +9,11 @@ export interface GrammarQuizQuestion {
   options: string[];
   explanation: string;
   level: 'beginner' | 'intermediate' | 'advanced';
+  category: 'basic-sentence-patterns' | 'tenses' | 'auxiliaries' | 'passive-voice' | 'relative-clauses' | 'subjunctive' | 'comparison' | 'participles-gerunds' | 'infinitives';
 }
 
 export const grammarQuizQuestions: GrammarQuizQuestion[] = [
+  // 基本文型 (basic-sentence-patterns)
   {
     id: 1,
     sentence: "I ___ to the store yesterday.",
@@ -20,7 +22,8 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     ],
     options: ["go", "went", "going", "goes"],
     explanation: "過去の時点での行動を表すため、過去形「went」が正解です。",
-    level: "beginner"
+    level: "beginner",
+    category: "basic-sentence-patterns"
   },
   {
     id: 2,
@@ -31,7 +34,8 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     ],
     options: ["has", "have", "for", "since", "is", "was", "has", "for"],
     explanation: "現在完了形「has been studying」と期間を表す「for」が正解です。",
-    level: "intermediate"
+    level: "intermediate",
+    category: "tenses"
   },
   {
     id: 3,

@@ -1,159 +1,105 @@
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Button } from "./ui/button";
-import { ArrowLeft, BookOpen, Star, Zap } from "lucide-react";
-import { Badge } from "./ui/badge";
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
+import { ArrowLeft, Star, Zap, Crown } from 'lucide-react';
 
 interface GrammarQuizDifficultySelectionProps {
-  onBack: () => void;
+  categoryName: string;
   onSelectDifficulty: (difficulty: 'beginner' | 'intermediate' | 'advanced') => void;
+  onBack: () => void;
 }
 
-const difficultyOptions = [
-  {
-    id: 'beginner' as const,
-    title: '初級',
-    description: '基本的な文法から始めましょう',
-    icon: BookOpen,
-    color: 'text-green-600',
-    bgColor: 'bg-green-50',
-    borderColor: 'border-green-200',
-    features: [
-      '基本的な文型',
-      '簡単な時制',
-      '基本的な語彙'
-    ]
-  },
-  {
-    id: 'intermediate' as const,
-    title: '中級',
-    description: 'より複雑な文法に挑戦しましょう',
-    icon: Star,
-    color: 'text-blue-600',
-    bgColor: 'bg-blue-50',
-    borderColor: 'border-blue-200',
-    features: [
-      '複雑な文型',
-      '時制の使い分け',
-      '中級レベルの語彙'
-    ]
-  },
-  {
-    id: 'advanced' as const,
-    title: '上級',
-    description: '高度な文法をマスターしましょう',
-    icon: Zap,
-    color: 'text-purple-600',
-    bgColor: 'bg-purple-50',
-    borderColor: 'border-purple-200',
-    features: [
-      '高度な文型',
-      '複雑な時制',
-      '上級レベルの語彙'
-    ]
-  }
-];
-
 export function GrammarQuizDifficultySelection({ 
-  onBack, 
-  onSelectDifficulty 
+  categoryName, 
+  onSelectDifficulty, 
+  onBack 
 }: GrammarQuizDifficultySelectionProps) {
+  const difficulties = [
+    {
+      id: 'beginner' as const,
+      name: '簡単',
+      description: '基本的な文法問題',
+      icon: Star,
+      color: 'text-green-600',
+      bgColor: 'bg-green-50',
+      borderColor: 'border-green-200'
+    },
+    {
+      id: 'intermediate' as const,
+      name: '普通',
+      description: '中級レベルの文法問題',
+      icon: Zap,
+      color: 'text-yellow-600',
+      bgColor: 'bg-yellow-50',
+      borderColor: 'border-yellow-200'
+    },
+    {
+      id: 'advanced' as const,
+      name: '難しい',
+      description: '上級レベルの文法問題',
+      icon: Crown,
+      color: 'text-red-600',
+      bgColor: 'bg-red-50',
+      borderColor: 'border-red-200'
+    }
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <div className="max-w-4xl mx-auto p-4">
-        {/* Header */}
-        <div className="flex items-center justify-between pt-8 pb-6">
-          <Button variant="ghost" onClick={onBack} className="p-2">
-            <ArrowLeft className="w-5 h-5" />
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="max-w-2xl mx-auto">
+        {/* ヘッダー */}
+        <div className="flex items-center justify-between mb-6">
+          <Button
+            variant="outline"
+            onClick={onBack}
+            className="flex items-center"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            戻る
           </Button>
-          <h1 className="text-2xl font-bold text-center flex-1">文法クイズ</h1>
-          <div className="w-10" /> {/* Spacer for centering */}
+          <h1 className="text-2xl font-bold text-gray-800">難易度選択</h1>
+          <div className="w-24"></div>
         </div>
 
-        {/* Title and Description */}
-        <div className="text-center mb-8">
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">
-            難易度を選択してください
+        {/* カテゴリー名 */}
+        <div className="mb-6 text-center">
+          <h2 className="text-xl font-semibold text-gray-700 mb-2">
+            {categoryName}
           </h2>
           <p className="text-gray-600">
-            あなたのレベルに合った文法クイズを提供します
+            学習したい難易度を選択してください
           </p>
         </div>
 
-        {/* Difficulty Options */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {difficultyOptions.map((option) => {
-            const IconComponent = option.icon;
+        {/* 難易度一覧 */}
+        <div className="space-y-4">
+          {difficulties.map((difficulty) => {
+            const IconComponent = difficulty.icon;
             return (
-              <Card 
-                key={option.id}
-                className={`
-                  cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-105
-                  ${option.borderColor} border-2
-                `}
-                onClick={() => onSelectDifficulty(option.id)}
+              <Card
+                key={difficulty.id}
+                className={`hover:shadow-lg transition-shadow cursor-pointer ${difficulty.bgColor} ${difficulty.borderColor} border-2`}
+                onClick={() => onSelectDifficulty(difficulty.id)}
               >
-                <CardHeader className="text-center pb-4">
-                  <div className={`
-                    w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center
-                    ${option.bgColor}
-                  `}>
-                    <IconComponent className={`w-8 h-8 ${option.color}`} />
-                  </div>
-                  <CardTitle className={`text-xl ${option.color}`}>
-                    {option.title}
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg flex items-center">
+                    <IconComponent className={`w-5 h-5 mr-2 ${difficulty.color}`} />
+                    {difficulty.name}
                   </CardTitle>
-                  <p className="text-gray-600 text-sm">
-                    {option.description}
-                  </p>
                 </CardHeader>
-                
-                <CardContent className="pt-0">
-                  <div className="space-y-2">
-                    <h4 className="font-medium text-sm text-gray-700 mb-2">
-                      学習内容:
-                    </h4>
-                    {option.features.map((feature, index) => (
-                      <div key={index} className="flex items-center text-sm text-gray-600">
-                        <div className={`w-2 h-2 rounded-full ${option.bgColor} mr-2`} />
-                        {feature}
-                      </div>
-                    ))}
+                <CardContent>
+                  <p className="text-sm text-gray-600 mb-4">
+                    {difficulty.description}
+                  </p>
+                  <div className="flex items-center text-sm text-blue-600">
+                    クリックして開始
+                    <ArrowLeft className="w-4 h-4 ml-1 rotate-180" />
                   </div>
-                  
-                  <Button 
-                    className={`w-full mt-4 ${option.bgColor} ${option.color} hover:opacity-90`}
-                    variant="outline"
-                  >
-                    このレベルで開始
-                  </Button>
                 </CardContent>
               </Card>
             );
           })}
         </div>
-
-        {/* Additional Info */}
-        <Card className="bg-gray-50 border-gray-200">
-          <CardContent className="pt-6">
-            <div className="text-center">
-              <h3 className="font-semibold text-gray-800 mb-2">
-                文法クイズについて
-              </h3>
-              <p className="text-sm text-gray-600 mb-4">
-                ドラッグ&ドロップ形式で空欄を埋める文法クイズです。
-                各問題には詳しい解説が付いているので、間違えても学習効果があります。
-              </p>
-              <div className="flex justify-center gap-4 text-xs text-gray-500">
-                <Badge variant="outline">10問出題</Badge>
-                <Badge variant="outline">ドラッグ&ドロップ</Badge>
-                <Badge variant="outline">詳細解説</Badge>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Bottom padding */}
-        <div className="h-8" />
       </div>
     </div>
   );
