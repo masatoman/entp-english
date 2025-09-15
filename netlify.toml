@@ -6,35 +6,21 @@
   NODE_VERSION = "18"
   NETLIFY_ANALYTICS = "true"
 
-# 基本プラグイン（段階的導入用）
-[[plugins]]
-package = "@netlify/plugin-cache"
-  [plugins.inputs]
-  paths = ["node_modules/.cache", ".vite"]
+# Netlify Functions設定
+[functions]
+  directory = "netlify/functions"
 
-[[plugins]]
-package = "@netlify/plugin-headers"
-  [plugins.inputs]
+# セキュリティヘッダー
+[[headers]]
   for = "/*"
-  [plugins.inputs.values]
+  [headers.values]
   X-Frame-Options = "DENY"
   X-XSS-Protection = "1; mode=block"
   X-Content-Type-Options = "nosniff"
+  Referrer-Policy = "strict-origin-when-cross-origin"
 
 # SPAリダイレクト設定
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-
-# Netlify Functions設定
-[functions]
-  directory = "netlify/functions"
-
-# Netlify Forms設定
-[[headers]]
-  for = "/"
-  [headers.values]
-  X-Frame-Options = "DENY"
-  X-XSS-Protection = "1; mode=block"
-  X-Content-Type-Options = "nosniff"

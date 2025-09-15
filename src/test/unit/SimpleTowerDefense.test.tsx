@@ -1,4 +1,3 @@
-import React from 'react'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
@@ -36,7 +35,7 @@ vi.mock('../../utils/tower-defense-data', () => ({
   })),
   collectDropItem: vi.fn((state, itemId) => ({
     ...state,
-    dropItems: state.dropItems.filter(item => item.id !== itemId)
+    dropItems: state.dropItems.filter((item: any) => item.id !== itemId)
   })),
   endGame: vi.fn(),
   resetProfile: vi.fn(() => ({
@@ -48,7 +47,7 @@ vi.mock('../../utils/tower-defense-data', () => ({
     towerUpgrades: {}
   })),
   addXP: vi.fn(),
-  applyShopItemEffect: vi.fn((item, state) => state),
+  applyShopItemEffect: vi.fn((_item: any, state: any) => state),
 }))
 
 describe('SimpleTowerDefense Component', () => {

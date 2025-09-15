@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
-import { Progress } from './ui/progress';
 import { Button } from './ui/button';
 import {
   BookOpen,
@@ -12,12 +11,9 @@ import {
   Star,
   Settings,
   Clock,
-  Zap,
   Heart,
   BarChart3,
   Gamepad2,
-  Brain,
-  Award,
   TrendingUp,
   ChevronRight,
 } from 'lucide-react';
@@ -28,7 +24,6 @@ import { LearningFeedbackForm } from './LearningFeedbackForm';
 import { useLevelSystem } from '../hooks/useLevelSystem';
 import { useHeartSystem } from '../hooks/useHeartSystem';
 import { useStatusAllocation } from '../hooks/useStatusAllocation';
-import { QuestionRankDisplay, RankProgress } from './QuestionRankDisplay';
 import { getLevelManager, saveLevelManager } from '../utils/levelManager';
 import { DataManager } from '../utils/dataManager';
 import { UserStats } from '../data/achievements';
@@ -49,19 +44,15 @@ interface NewHomeProps {
 }
 
 export function NewHome({
-  onNavigateToGrammar,
   onNavigateToVocabulary,
-  onNavigateToGrammarQuiz,
   onNavigateToEssay,
   onNavigateToCombinedTest,
   onNavigateToAchievements,
-  onNavigateToAppSettings,
   onNavigateToTimeAttack,
   onNavigateToSimpleTowerDefense,
 }: NewHomeProps) {
-  const { userLevel, addXP, refreshLevel } = useLevelSystem();
-  const { heartSystem, consumeHeart, processRecovery, refreshHearts } = useHeartSystem();
-  const { allocation } = useStatusAllocation();
+  const { userLevel, refreshLevel } = useLevelSystem();
+  const { heartSystem, processRecovery, refreshHearts } = useHeartSystem();
   
   // ハートシステムの状態を強制的に更新
   const forceRefreshHearts = () => {

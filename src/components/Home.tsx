@@ -18,8 +18,7 @@ import { DataManager } from '../utils/dataManager';
 import { SoundManager } from '../utils/soundManager';
 import { 
   getAvailableFeatures, 
-  getNextUnlockableFeatures, 
-  isFeatureUnlocked 
+  getNextUnlockableFeatures
 } from '../utils/featureUnlockSystem';
 import { StatusAllocationComponent } from './StatusAllocation';
 import { HeartSystemDisplay } from './HeartSystem';
@@ -40,20 +39,16 @@ interface HomeProps {
 }
 
 export const Home = React.memo(function Home({ 
-  onNavigateToGrammar, 
   onNavigateToVocabulary, 
-  onNavigateToGrammarQuiz, 
   onNavigateToEssay, 
   onNavigateToCombinedTest, 
   onNavigateToAchievements, 
-  onNavigateToAppSettings, 
   onNavigateToTimeAttack, 
   onNavigateToSimpleTowerDefense 
 }: HomeProps) {
   const [userStats, setUserStats] = useState<UserStats>(DataManager.getUserStats());
   const [todayXP, setTodayXP] = useState(0);
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
-  const [learningAnalytics, setLearningAnalytics] = useState<any>(null);
   
   // メモ化された日次XP目標の取得
   const dailyXPGoal = useMemo(() => {

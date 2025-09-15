@@ -132,8 +132,7 @@ export const usePerformanceOptimization = () => {
    */
   const useInfiniteScroll = (
     callback: () => void,
-    hasMore: boolean,
-    threshold: number = 100
+    hasMore: boolean
   ) => {
     const observerRef = useRef<IntersectionObserver>()
     const lastElementRef = useRef<HTMLElement>()
