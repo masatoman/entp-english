@@ -1,35 +1,33 @@
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Badge } from './ui/badge';
-import { Button } from './ui/button';
 import {
-  BookOpen,
-  PenTool,
-  Trophy,
-  Target,
-  Flame,
-  Star,
-  Settings,
-  Clock,
-  Heart,
   BarChart3,
-  Gamepad2,
-  TrendingUp,
+  BookOpen,
   ChevronRight,
-} from 'lucide-react';
-import { LevelDisplay } from './LevelDisplay';
-import { HeartSystemDisplay } from './HeartSystem';
-import { StatusAllocationComponent } from './StatusAllocation';
-import { LearningFeedbackForm } from './LearningFeedbackForm';
-import { useLevelSystem } from '../hooks/useLevelSystem';
-import { useHeartSystem } from '../hooks/useHeartSystem';
-import { useStatusAllocation } from '../hooks/useStatusAllocation';
-import { getLevelManager, saveLevelManager } from '../utils/levelManager';
-import { DataManager } from '../utils/dataManager';
-import { UserStats } from '../data/achievements';
-import { GrammarQuizCategorySelection } from './GrammarQuizCategorySelection';
-import { GrammarQuizDifficultySelection } from './GrammarQuizDifficultySelection';
-import { EnhancedGrammarQuiz } from './EnhancedGrammarQuiz';
+  Clock,
+  Flame,
+  Gamepad2,
+  Heart,
+  PenTool,
+  Settings,
+  Star,
+  Target,
+  TrendingUp,
+  Trophy,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { UserStats } from "../data/achievements";
+import { useHeartSystem } from "../hooks/useHeartSystem";
+import { useLevelSystem } from "../hooks/useLevelSystem";
+import { DataManager } from "../utils/dataManager";
+import { EnhancedGrammarQuiz } from "./EnhancedGrammarQuiz";
+import { GrammarQuizCategorySelection } from "./GrammarQuizCategorySelection";
+import { GrammarQuizDifficultySelection } from "./GrammarQuizDifficultySelection";
+import { HeartSystemDisplay } from "./HeartSystem";
+import { LearningFeedbackForm } from "./LearningFeedbackForm";
+import { LevelDisplay } from "./LevelDisplay";
+import { StatusAllocationComponent } from "./StatusAllocation";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 interface NewHomeProps {
   onNavigateToGrammar: () => void;
@@ -53,19 +51,25 @@ export function NewHome({
 }: NewHomeProps) {
   const { userLevel, refreshLevel } = useLevelSystem();
   const { heartSystem, processRecovery, refreshHearts } = useHeartSystem();
-  
+
   // ハートシステムの状態を強制的に更新
   const forceRefreshHearts = () => {
     refreshHearts();
   };
-  const [userStats, setUserStats] = useState<UserStats>(DataManager.getUserStats());
+  const [userStats, setUserStats] = useState<UserStats>(
+    DataManager.getUserStats()
+  );
   const [showDetailedView, setShowDetailedView] = useState(false);
   const [showStatusAllocation, setShowStatusAllocation] = useState(false);
   const [showGrammarQuizCategory, setShowGrammarQuizCategory] = useState(false);
-  const [showGrammarQuizDifficulty, setShowGrammarQuizDifficulty] = useState(false);
+  const [showGrammarQuizDifficulty, setShowGrammarQuizDifficulty] =
+    useState(false);
   const [showGrammarQuiz, setShowGrammarQuiz] = useState(false);
-  const [selectedGrammarCategory, setSelectedGrammarCategory] = useState<string>('');
-  const [selectedGrammarDifficulty, setSelectedGrammarDifficulty] = useState<'beginner' | 'intermediate' | 'advanced'>('beginner');
+  const [selectedGrammarCategory, setSelectedGrammarCategory] =
+    useState<string>("");
+  const [selectedGrammarDifficulty, setSelectedGrammarDifficulty] = useState<
+    "beginner" | "intermediate" | "advanced"
+  >("beginner");
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
 
   useEffect(() => {
@@ -76,7 +80,7 @@ export function NewHome({
     };
 
     refreshData();
-    
+
     // ハートの回復を定期的に処理
     const interval = setInterval(() => {
       processRecovery();
@@ -88,19 +92,19 @@ export function NewHome({
   const handleStartLearning = (type: string) => {
     // 学習を開始（ハート消費は各学習コンポーネントで行う）
     switch (type) {
-      case 'grammar':
+      case "grammar":
         setShowGrammarQuizCategory(true);
         break;
-      case 'vocabulary':
+      case "vocabulary":
         onNavigateToVocabulary();
         break;
-      case 'writing':
+      case "writing":
         onNavigateToEssay();
         break;
-      case 'combined':
+      case "combined":
         onNavigateToCombinedTest();
         break;
-      case 'timeattack':
+      case "timeattack":
         onNavigateToTimeAttack();
         break;
       default:
@@ -114,7 +118,9 @@ export function NewHome({
     setShowGrammarQuizDifficulty(true);
   };
 
-  const handleGrammarDifficultySelect = (difficulty: 'beginner' | 'intermediate' | 'advanced') => {
+  const handleGrammarDifficultySelect = (
+    difficulty: "beginner" | "intermediate" | "advanced"
+  ) => {
     setSelectedGrammarDifficulty(difficulty);
     setShowGrammarQuizDifficulty(false);
     setShowGrammarQuiz(true);
@@ -136,7 +142,7 @@ export function NewHome({
   };
 
   const canStartLearning = heartSystem.current > 0;
-  
+
   // ハートシステムの状態を定期的に更新
   useEffect(() => {
     const interval = setInterval(() => {
@@ -182,8 +188,12 @@ export function NewHome({
         {/* ヘッダー */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800">ENTP英語学習アプリ</h1>
-            <p className="text-gray-600 mt-1">あなたの英語学習をサポートします</p>
+            <h1 className="text-3xl font-bold text-gray-800">
+              ENTP英語学習アプリ
+            </h1>
+            <p className="text-gray-600 mt-1">
+              あなたの英語学習をサポートします
+            </p>
           </div>
           <div className="flex items-center space-x-4">
             <Button
@@ -192,7 +202,7 @@ export function NewHome({
               onClick={() => setShowDetailedView(!showDetailedView)}
             >
               <BarChart3 className="w-4 h-4 mr-2" />
-              {showDetailedView ? '統計を隠す' : '統計を表示'}
+              {showDetailedView ? "統計を隠す" : "統計を表示"}
             </Button>
             <Button
               variant="outline"
@@ -238,9 +248,11 @@ export function NewHome({
         {/* 学習モード選択 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* 文法クイズ */}
-          <Card 
-            className={`hover:shadow-lg transition-shadow cursor-pointer ${!canStartLearning ? 'opacity-50 cursor-not-allowed' : ''}`}
-            onClick={() => canStartLearning && handleStartLearning('grammar')}
+          <Card
+            className={`hover:shadow-lg transition-shadow cursor-pointer ${
+              !canStartLearning ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            onClick={() => canStartLearning && handleStartLearning("grammar")}
           >
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
@@ -256,11 +268,9 @@ export function NewHome({
                 9つのカテゴリーから文法問題に挑戦
               </p>
               <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500">
-                  必要体力: 1 ♥
-                </div>
+                <div className="text-sm text-gray-500">必要体力: 1 ♥</div>
                 <div className="flex items-center text-sm font-medium">
-                  {canStartLearning ? 'クリックして開始' : '体力不足'}
+                  {canStartLearning ? "クリックして開始" : "体力不足"}
                   <ChevronRight className="w-4 h-4 ml-1" />
                 </div>
               </div>
@@ -268,9 +278,13 @@ export function NewHome({
           </Card>
 
           {/* 語彙学習 */}
-          <Card 
-            className={`hover:shadow-lg transition-shadow cursor-pointer ${!canStartLearning ? 'opacity-50 cursor-not-allowed' : ''}`}
-            onClick={() => canStartLearning && handleStartLearning('vocabulary')}
+          <Card
+            className={`hover:shadow-lg transition-shadow cursor-pointer ${
+              !canStartLearning ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            onClick={() =>
+              canStartLearning && handleStartLearning("vocabulary")
+            }
           >
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
@@ -286,11 +300,9 @@ export function NewHome({
                 レベル別・カテゴリー別の単語学習
               </p>
               <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500">
-                  必要体力: 1 ♥
-                </div>
+                <div className="text-sm text-gray-500">必要体力: 1 ♥</div>
                 <div className="flex items-center text-sm font-medium">
-                  {canStartLearning ? 'クリックして開始' : '体力不足'}
+                  {canStartLearning ? "クリックして開始" : "体力不足"}
                   <ChevronRight className="w-4 h-4 ml-1" />
                 </div>
               </div>
@@ -298,9 +310,11 @@ export function NewHome({
           </Card>
 
           {/* 総合テスト */}
-          <Card 
-            className={`hover:shadow-lg transition-shadow cursor-pointer ${!canStartLearning ? 'opacity-50 cursor-not-allowed' : ''}`}
-            onClick={() => canStartLearning && handleStartLearning('combined')}
+          <Card
+            className={`hover:shadow-lg transition-shadow cursor-pointer ${
+              !canStartLearning ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            onClick={() => canStartLearning && handleStartLearning("combined")}
           >
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
@@ -316,11 +330,9 @@ export function NewHome({
                 全分野から出題される総合テスト
               </p>
               <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500">
-                  必要体力: 1 ♥
-                </div>
+                <div className="text-sm text-gray-500">必要体力: 1 ♥</div>
                 <div className="flex items-center text-sm font-medium">
-                  {canStartLearning ? 'クリックして開始' : '体力不足'}
+                  {canStartLearning ? "クリックして開始" : "体力不足"}
                   <ChevronRight className="w-4 h-4 ml-1" />
                 </div>
               </div>
@@ -328,9 +340,13 @@ export function NewHome({
           </Card>
 
           {/* タイムアタック */}
-          <Card 
-            className={`hover:shadow-lg transition-shadow cursor-pointer ${!canStartLearning ? 'opacity-50 cursor-not-allowed' : ''}`}
-            onClick={() => canStartLearning && handleStartLearning('timeattack')}
+          <Card
+            className={`hover:shadow-lg transition-shadow cursor-pointer ${
+              !canStartLearning ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            onClick={() =>
+              canStartLearning && handleStartLearning("timeattack")
+            }
           >
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
@@ -346,11 +362,9 @@ export function NewHome({
                 制限時間内で問題を解くスピード重視モード
               </p>
               <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500">
-                  必要体力: 1 ♥
-                </div>
+                <div className="text-sm text-gray-500">必要体力: 1 ♥</div>
                 <div className="flex items-center text-sm font-medium">
-                  {canStartLearning ? 'クリックして開始' : '体力不足'}
+                  {canStartLearning ? "クリックして開始" : "体力不足"}
                   <ChevronRight className="w-4 h-4 ml-1" />
                 </div>
               </div>
@@ -358,9 +372,11 @@ export function NewHome({
           </Card>
 
           {/* 英作文 */}
-          <Card 
-            className={`hover:shadow-lg transition-shadow cursor-pointer ${!canStartLearning ? 'opacity-50 cursor-not-allowed' : ''}`}
-            onClick={() => canStartLearning && handleStartLearning('writing')}
+          <Card
+            className={`hover:shadow-lg transition-shadow cursor-pointer ${
+              !canStartLearning ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            onClick={() => canStartLearning && handleStartLearning("writing")}
           >
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
@@ -376,11 +392,9 @@ export function NewHome({
                 文法カテゴリー別の4択英作文問題
               </p>
               <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500">
-                  必要体力: 1 ♥
-                </div>
+                <div className="text-sm text-gray-500">必要体力: 1 ♥</div>
                 <div className="flex items-center text-sm font-medium">
-                  {canStartLearning ? 'クリックして開始' : '体力不足'}
+                  {canStartLearning ? "クリックして開始" : "体力不足"}
                   <ChevronRight className="w-4 h-4 ml-1" />
                 </div>
               </div>
@@ -403,9 +417,7 @@ export function NewHome({
                 英語学習要素を含むタワーディフェンスゲーム
               </p>
               <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500">
-                  体力不要
-                </div>
+                <div className="text-sm text-gray-500">体力不要</div>
                 <Button
                   onClick={onNavigateToSimpleTowerDefense}
                   className="flex items-center"
@@ -433,9 +445,7 @@ export function NewHome({
                 学習の進捗とアチーブメントを確認
               </p>
               <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500">
-                  体力不要
-                </div>
+                <div className="text-sm text-gray-500">体力不要</div>
                 <Button
                   onClick={onNavigateToAchievements}
                   className="flex items-center"
@@ -450,8 +460,8 @@ export function NewHome({
 
         {/* フィードバックボタン */}
         <div className="flex justify-center mt-6">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={() => setShowFeedbackForm(true)}
             className="flex items-center space-x-2"
           >
@@ -497,10 +507,14 @@ export function NewHome({
                   <div>
                     <p className="text-sm text-gray-600">正解率</p>
                     <p className="text-2xl font-bold text-purple-600">
-                      {userStats.totalQuestionsAnswered > 0 
-                        ? ((userStats.correctAnswers / userStats.totalQuestionsAnswered) * 100).toFixed(1)
-                        : '0.0'
-                      }%
+                      {userStats.totalQuestionsAnswered > 0
+                        ? (
+                            (userStats.correctAnswers /
+                              userStats.totalQuestionsAnswered) *
+                            100
+                          ).toFixed(1)
+                        : "0.0"}
+                      %
                     </p>
                   </div>
                   <Target className="w-8 h-8 text-purple-600" />
@@ -531,7 +545,9 @@ export function NewHome({
               <div className="flex items-center">
                 <Heart className="w-5 h-5 text-yellow-600 mr-3" />
                 <div>
-                  <h3 className="font-medium text-yellow-800">体力が不足しています</h3>
+                  <h3 className="font-medium text-yellow-800">
+                    体力が不足しています
+                  </h3>
                   <p className="text-sm text-yellow-700">
                     体力が回復するまで待つか、他の機能を利用してください。
                   </p>
@@ -545,11 +561,12 @@ export function NewHome({
         {showFeedbackForm && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
             <div className="w-full max-w-md">
-              <LearningFeedbackForm onClose={() => setShowFeedbackForm(false)} />
+              <LearningFeedbackForm
+                onClose={() => setShowFeedbackForm(false)}
+              />
             </div>
           </div>
         )}
-
       </div>
     </div>
   );

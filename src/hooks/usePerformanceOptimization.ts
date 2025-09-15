@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 /**
  * パフォーマンス最適化のためのカスタムフック
@@ -11,18 +11,21 @@ export const usePerformanceOptimization = () => {
     callback: T,
     delay: number
   ): T => {
-    const timeoutRef = useRef<NodeJS.Timeout>()
-    
-    return useCallback((...args: Parameters<T>) => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-      }
-      
-      timeoutRef.current = setTimeout(() => {
-        callback(...args)
-      }, delay)
-    }, [callback, delay]) as T
-  }
+    const timeoutRef = useRef<NodeJS.Timeout>();
+
+    return useCallback(
+      (...args: Parameters<T>) => {
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
+
+        timeoutRef.current = setTimeout(() => {
+          callback(...args);
+        }, delay);
+      },
+      [callback, delay]
+    ) as T;
+  };
 
   /**
    * スロットルされたコールバック
@@ -31,16 +34,19 @@ export const usePerformanceOptimization = () => {
     callback: T,
     delay: number
   ): T => {
-    const lastCallRef = useRef<number>(0)
-    
-    return useCallback((...args: Parameters<T>) => {
-      const now = Date.now()
-      if (now - lastCallRef.current >= delay) {
-        lastCallRef.current = now
-        callback(...args)
-      }
-    }, [callback, delay]) as T
-  }
+    const lastCallRef = useRef<number>(0);
+
+    return useCallback(
+      (...args: Parameters<T>) => {
+        const now = Date.now();
+        if (now - lastCallRef.current >= delay) {
+          lastCallRef.current = now;
+          callback(...args);
+        }
+      },
+      [callback, delay]
+    ) as T;
+  };
 
   /**
    * メモ化された値の計算
@@ -49,8 +55,8 @@ export const usePerformanceOptimization = () => {
     factory: () => T,
     deps: React.DependencyList
   ): T => {
-    return useMemo(factory, deps)
-  }
+    return useMemo(factory, deps);
+  };
 
   /**
    * メモ化されたコールバック
@@ -59,40 +65,46 @@ export const usePerformanceOptimization = () => {
     callback: T,
     deps: React.DependencyList
   ): T => {
-    return useCallback(callback, deps)
-  }
+    return useCallback(callback, deps);
+  };
 
   /**
    * パフォーマンス監視
    */
   const usePerformanceMonitor = (componentName: string) => {
-    const renderCountRef = useRef(0)
-    const startTimeRef = useRef<number>(0)
-    
+    const renderCountRef = useRef(0);
+    const startTimeRef = useRef<number>(0);
+
     useEffect(() => {
-      renderCountRef.current += 1
-      startTimeRef.current = performance.now()
-      
+      renderCountRef.current += 1;
+      startTimeRef.current = performance.now();
+
       return () => {
-        const endTime = performance.now()
-        const renderTime = endTime - startTimeRef.current
-        
-        if (process.env.NODE_ENV === 'development') {
-          console.log(`${componentName} render #${renderCountRef.current}: ${renderTime.toFixed(2)}ms`)
+        const endTime = performance.now();
+        const renderTime = endTime - startTimeRef.current;
+
+        if (process.env.NODE_ENV === "development") {
+          console.log(
+            `${componentName} render #${
+              renderCountRef.current
+            }: ${renderTime.toFixed(2)}ms`
+          );
         }
-      }
-    })
-    
+      };
+    });
+
     return {
       renderCount: renderCountRef.current,
       measureRender: (fn: () => void) => {
-        const start = performance.now()
-        fn()
-        const end = performance.now()
-        console.log(`${componentName} operation: ${(end - start).toFixed(2)}ms`)
-      }
-    }
-  }
+        const start = performance.now();
+        fn();
+        const end = performance.now();
+        console.log(
+          `${componentName} operation: ${(end - start).toFixed(2)}ms`
+        );
+      },
+    };
+  };
 
   /**
    * 仮想スクロール用のフック
@@ -102,62 +114,62 @@ export const usePerformanceOptimization = () => {
     itemHeight: number,
     containerHeight: number
   ) => {
-    const [scrollTop, setScrollTop] = useState(0)
-    
+    const [scrollTop, setScrollTop] = useState(0);
+
     const visibleItems = useMemo(() => {
-      const startIndex = Math.floor(scrollTop / itemHeight)
+      const startIndex = Math.floor(scrollTop / itemHeight);
       const endIndex = Math.min(
         startIndex + Math.ceil(containerHeight / itemHeight) + 1,
         items.length
-      )
-      
+      );
+
       return items.slice(startIndex, endIndex).map((item, index) => ({
         item,
         index: startIndex + index,
-        top: (startIndex + index) * itemHeight
-      }))
-    }, [items, itemHeight, containerHeight, scrollTop])
-    
-    const totalHeight = items.length * itemHeight
-    
+        top: (startIndex + index) * itemHeight,
+      }));
+    }, [items, itemHeight, containerHeight, scrollTop]);
+
+    const totalHeight = items.length * itemHeight;
+
     return {
       visibleItems,
       totalHeight,
-      setScrollTop
-    }
-  }
+      setScrollTop,
+    };
+  };
 
   /**
    * 無限スクロール用のフック
    */
-  const useInfiniteScroll = (
-    callback: () => void,
-    hasMore: boolean
-  ) => {
-    const observerRef = useRef<IntersectionObserver>()
-    const lastElementRef = useRef<HTMLElement>()
-    
-    const lastElementCallback = useCallback((node: HTMLElement) => {
-      if (observerRef.current) observerRef.current.disconnect()
-      
-      observerRef.current = new IntersectionObserver(entries => {
-        if (entries[0].isIntersecting && hasMore) {
-          callback()
-        }
-      })
-      
-      if (node) observerRef.current.observe(node)
-      lastElementRef.current = node
-    }, [callback, hasMore])
-    
+  const useInfiniteScroll = (callback: () => void, hasMore: boolean) => {
+    const observerRef = useRef<IntersectionObserver>();
+    const lastElementRef = useRef<HTMLElement>();
+
+    const lastElementCallback = useCallback(
+      (node: HTMLElement) => {
+        if (observerRef.current) observerRef.current.disconnect();
+
+        observerRef.current = new IntersectionObserver((entries) => {
+          if (entries[0].isIntersecting && hasMore) {
+            callback();
+          }
+        });
+
+        if (node) observerRef.current.observe(node);
+        lastElementRef.current = node;
+      },
+      [callback, hasMore]
+    );
+
     useEffect(() => {
       return () => {
-        if (observerRef.current) observerRef.current.disconnect()
-      }
-    }, [])
-    
-    return lastElementCallback
-  }
+        if (observerRef.current) observerRef.current.disconnect();
+      };
+    }, []);
+
+    return lastElementCallback;
+  };
 
   /**
    * パフォーマンス最適化されたイベントハンドラー
@@ -165,59 +177,59 @@ export const usePerformanceOptimization = () => {
   const useOptimizedEventHandler = <T extends (...args: any[]) => any>(
     handler: T,
     options: {
-      debounce?: number
-      throttle?: number
-      passive?: boolean
+      debounce?: number;
+      throttle?: number;
+      passive?: boolean;
     } = {}
   ) => {
-    const { debounce, throttle, passive = true } = options
-    
+    const { debounce, throttle, passive = true } = options;
+
     const optimizedHandler = useMemo(() => {
       if (debounce) {
-        return useDebouncedCallback(handler, debounce)
+        return useDebouncedCallback(handler, debounce);
       }
       if (throttle) {
-        return useThrottledCallback(handler, throttle)
+        return useThrottledCallback(handler, throttle);
       }
-      return handler
-    }, [handler, debounce, throttle])
-    
+      return handler;
+    }, [handler, debounce, throttle]);
+
     return {
       handler: optimizedHandler,
-      options: { passive }
-    }
-  }
+      options: { passive },
+    };
+  };
 
   /**
    * メモリ使用量の監視
    */
   const useMemoryMonitor = () => {
     const [memoryInfo, setMemoryInfo] = useState<{
-      usedJSHeapSize: number
-      totalJSHeapSize: number
-      jsHeapSizeLimit: number
-    } | null>(null)
-    
+      usedJSHeapSize: number;
+      totalJSHeapSize: number;
+      jsHeapSizeLimit: number;
+    } | null>(null);
+
     useEffect(() => {
       const updateMemoryInfo = () => {
-        if ('memory' in performance) {
-          const memory = (performance as any).memory
+        if ("memory" in performance) {
+          const memory = (performance as any).memory;
           setMemoryInfo({
             usedJSHeapSize: memory.usedJSHeapSize,
             totalJSHeapSize: memory.totalJSHeapSize,
-            jsHeapSizeLimit: memory.jsHeapSizeLimit
-          })
+            jsHeapSizeLimit: memory.jsHeapSizeLimit,
+          });
         }
-      }
-      
-      updateMemoryInfo()
-      const interval = setInterval(updateMemoryInfo, 5000)
-      
-      return () => clearInterval(interval)
-    }, [])
-    
-    return memoryInfo
-  }
+      };
+
+      updateMemoryInfo();
+      const interval = setInterval(updateMemoryInfo, 5000);
+
+      return () => clearInterval(interval);
+    }, []);
+
+    return memoryInfo;
+  };
 
   /**
    * パフォーマンス最適化された状態管理
@@ -225,37 +237,43 @@ export const usePerformanceOptimization = () => {
   const useOptimizedState = <T>(
     initialState: T,
     options: {
-      deepCompare?: boolean
-      customCompare?: (prev: T, next: T) => boolean
+      deepCompare?: boolean;
+      customCompare?: (prev: T, next: T) => boolean;
     } = {}
   ) => {
-    const { deepCompare = false, customCompare } = options
-    const [state, setState] = useState(initialState)
-    const prevStateRef = useRef<T>(initialState)
-    
-    const setOptimizedState = useCallback((newState: T | ((prev: T) => T)) => {
-      setState(prevState => {
-        const nextState = typeof newState === 'function' ? (newState as (prev: T) => T)(prevState) : newState
-        
-        if (customCompare) {
-          if (customCompare(prevState, nextState)) {
-            return prevState
+    const { deepCompare = false, customCompare } = options;
+    const [state, setState] = useState(initialState);
+    const prevStateRef = useRef<T>(initialState);
+
+    const setOptimizedState = useCallback(
+      (newState: T | ((prev: T) => T)) => {
+        setState((prevState) => {
+          const nextState =
+            typeof newState === "function"
+              ? (newState as (prev: T) => T)(prevState)
+              : newState;
+
+          if (customCompare) {
+            if (customCompare(prevState, nextState)) {
+              return prevState;
+            }
+          } else if (deepCompare) {
+            if (JSON.stringify(prevState) === JSON.stringify(nextState)) {
+              return prevState;
+            }
+          } else if (prevState === nextState) {
+            return prevState;
           }
-        } else if (deepCompare) {
-          if (JSON.stringify(prevState) === JSON.stringify(nextState)) {
-            return prevState
-          }
-        } else if (prevState === nextState) {
-          return prevState
-        }
-        
-        prevStateRef.current = nextState
-        return nextState
-      })
-    }, [deepCompare, customCompare])
-    
-    return [state, setOptimizedState] as const
-  }
+
+          prevStateRef.current = nextState;
+          return nextState;
+        });
+      },
+      [deepCompare, customCompare]
+    );
+
+    return [state, setOptimizedState] as const;
+  };
 
   return {
     useDebouncedCallback,
@@ -267,6 +285,6 @@ export const usePerformanceOptimization = () => {
     useInfiniteScroll,
     useOptimizedEventHandler,
     useMemoryMonitor,
-    useOptimizedState
-  }
-}
+    useOptimizedState,
+  };
+};
