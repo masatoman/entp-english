@@ -152,6 +152,36 @@ export function NewHome({
     return () => clearInterval(interval);
   }, []); // 依存関係を空にして、マウント時に一度だけ実行
 
+  // 文法クイズのコンポーネントが表示されている場合は、それらを優先表示
+  if (showGrammarQuizCategory) {
+    return (
+      <GrammarQuizCategorySelection
+        onSelectCategory={handleGrammarCategorySelect}
+        onBack={handleGrammarCategoryBack}
+      />
+    );
+  }
+
+  if (showGrammarQuizDifficulty) {
+    return (
+      <GrammarQuizDifficultySelection
+        categoryName={selectedGrammarCategory}
+        onSelectDifficulty={handleGrammarDifficultySelect}
+        onBack={handleGrammarDifficultyBack}
+      />
+    );
+  }
+
+  if (showGrammarQuiz) {
+    return (
+      <EnhancedGrammarQuiz
+        category={selectedGrammarCategory}
+        difficulty={selectedGrammarDifficulty}
+        onBack={handleGrammarQuizBack}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-6xl mx-auto space-y-6">
@@ -505,31 +535,6 @@ export function NewHome({
           </Card>
         )}
 
-        {/* 文法クイズカテゴリー選択 */}
-        {showGrammarQuizCategory && (
-          <GrammarQuizCategorySelection
-            onSelectCategory={handleGrammarCategorySelect}
-            onBack={handleGrammarCategoryBack}
-          />
-        )}
-
-        {/* 文法クイズ難易度選択 */}
-        {showGrammarQuizDifficulty && (
-          <GrammarQuizDifficultySelection
-            categoryName={selectedGrammarCategory}
-            onSelectDifficulty={handleGrammarDifficultySelect}
-            onBack={handleGrammarDifficultyBack}
-          />
-        )}
-
-        {/* 文法クイズ */}
-        {showGrammarQuiz && (
-          <EnhancedGrammarQuiz
-            category={selectedGrammarCategory}
-            difficulty={selectedGrammarDifficulty}
-            onBack={handleGrammarQuizBack}
-          />
-        )}
 
       </div>
     </div>
