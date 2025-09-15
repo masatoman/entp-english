@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useEffect } from 'react'
+import { useCallback, useMemo, useRef, useEffect, useState } from 'react'
 
 /**
  * パフォーマンス最適化のためのカスタムフック
@@ -236,7 +236,7 @@ export const usePerformanceOptimization = () => {
     
     const setOptimizedState = useCallback((newState: T | ((prev: T) => T)) => {
       setState(prevState => {
-        const nextState = typeof newState === 'function' ? newState(prevState) : newState
+        const nextState = typeof newState === 'function' ? (newState as (prev: T) => T)(prevState) : newState
         
         if (customCompare) {
           if (customCompare(prevState, nextState)) {
