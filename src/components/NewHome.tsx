@@ -18,6 +18,9 @@ import { UserStats } from "../data/achievements";
 import { useHeartSystem } from "../hooks/useHeartSystem";
 import { useLevelSystem } from "../hooks/useLevelSystem";
 import { DataManager } from "../utils/dataManager";
+import { StarData, PreStudyContent, PreStudyProgress, PreStudySession } from "../types/starSystem";
+import { getPreStudyContentsForLevel } from "../data/preStudyContents";
+import { initializeStarSystem, calculateRecoveredStars, canUseStars, consumeStar } from "../utils/starUtils";
 import { EnhancedGrammarQuiz } from "./EnhancedGrammarQuiz";
 import { GrammarQuizCategorySelection } from "./GrammarQuizCategorySelection";
 import { GrammarQuizDifficultySelection } from "./GrammarQuizDifficultySelection";
@@ -25,6 +28,9 @@ import { HeartSystemDisplay } from "./HeartSystem";
 import { LearningFeedbackForm } from "./LearningFeedbackForm";
 import { LevelDisplay } from "./LevelDisplay";
 import { StatusAllocationComponent } from "./StatusAllocation";
+import { StarDisplay } from "./starSystem/StarDisplay";
+import { PreStudyMenu } from "./starSystem/PreStudyMenu";
+import { PreStudyContentViewer } from "./starSystem/PreStudyContentViewer";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
@@ -71,19 +77,88 @@ export function NewHome({
     "beginner" | "intermediate" | "advanced"
   >("beginner");
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+  
+  // ⭐️スターシステムの状態
+  const [starSystem, setStarSystem] = useState<StarData>(() => {
+    const stats = DataManager.getUserStats();
+    if (stats.stars) {
+      return {
+        current: calculateRecoveredStars(stats.stars),
+        max: stats.stars.max,
+        lastRecoveryTime: stats.stars.lastRecoveryTime
+      };
+    }
+    return initializeStarSystem(userLevel.level);
+  });
+  
+  const [preStudyProgress, setPreStudyProgress] = useState<PreStudyProgress>(() => {
+    const stats = DataManager.getUserStats();
+    return stats.preStudyProgress || {
+      totalContentsStudied: 0,
+      contentsByCategory: {},
+      averageComprehension: 0,
+      totalTimeSpent: 0,
+      completedContents: []
+    };
+  });
+  
+  const [preStudySessions, setPreStudySessions] = useState<PreStudySession[]>(() => {
+    const stats = DataManager.getUserStats();
+    return stats.preStudySessions || [];
+  });
+  
+  // 事前学習の状態
+  const [showPreStudyMenu, setShowPreStudyMenu] = useState(false);
+  const [showPreStudyContent, setShowPreStudyContent] = useState(false);
+  const [currentPreStudyContent, setCurrentPreStudyContent] = useState<PreStudyContent | null>(null);
 
   useEffect(() => {
     const refreshData = () => {
       const stats = DataManager.getUserStats();
       setUserStats(stats);
       refreshLevel();
+      
+      // スターシステムの更新
+      if (stats.stars) {
+        setStarSystem({
+          current: calculateRecoveredStars(stats.stars),
+          max: stats.stars.max,
+          lastRecoveryTime: stats.stars.lastRecoveryTime
+        });
+      }
+      
+      if (stats.preStudyProgress) {
+        setPreStudyProgress(stats.preStudyProgress);
+      }
+      
+      if (stats.preStudySessions) {
+        setPreStudySessions(stats.preStudySessions);
+      }
     };
 
     refreshData();
 
-    // ハートの回復を定期的に処理
+    // ハートとスターの回復を定期的に処理
     const interval = setInterval(() => {
       processRecovery();
+      
+      // スターの回復処理
+      const currentStats = DataManager.getUserStats();
+      if (currentStats.stars) {
+        const recoveredStars = calculateRecoveredStars(currentStats.stars);
+        if (recoveredStars > currentStats.stars.current) {
+          const updatedStats = {
+            ...currentStats,
+            stars: {
+              ...currentStats.stars,
+              current: recoveredStars,
+              lastRecoveryTime: Date.now()
+            }
+          };
+          DataManager.saveUserStats(updatedStats);
+          setStarSystem(updatedStats.stars);
+        }
+      }
     }, 60000); // 1分ごと
 
     return () => clearInterval(interval);
@@ -142,6 +217,88 @@ export function NewHome({
   };
 
   const canStartLearning = heartSystem.current > 0;
+  
+  // ⭐️スターシステムのハンドラー
+  const handlePreStudyMenuOpen = () => {
+    setShowPreStudyMenu(true);
+  };
+  
+  const handlePreStudyMenuClose = () => {
+    setShowPreStudyMenu(false);
+  };
+  
+  const handlePreStudyContentSelect = (contentId: string) => {
+    if (!canUseStars(starSystem)) {
+      alert('スターが不足しています。回復をお待ちください。');
+      return;
+    }
+    
+    const content = getPreStudyContentsForLevel(userLevel.level).find(c => c.id === contentId);
+    if (content) {
+      // スターを消費
+      const newStarSystem = consumeStar(starSystem);
+      setStarSystem(newStarSystem);
+      
+      // データを保存
+      const updatedStats = {
+        ...userStats,
+        stars: newStarSystem
+      };
+      DataManager.saveUserStats(updatedStats);
+      
+      // コンテンツを表示
+      setCurrentPreStudyContent(content);
+      setShowPreStudyContent(true);
+    }
+  };
+  
+  const handlePreStudyContentComplete = (contentId: string, comprehensionRating: number) => {
+    const session: PreStudySession = {
+      contentId,
+      startTime: Date.now() - 180000, // 3分前と仮定
+      endTime: Date.now(),
+      completed: true,
+      comprehensionRating
+    };
+    
+    const newProgress: PreStudyProgress = {
+      ...preStudyProgress,
+      totalContentsStudied: preStudyProgress.totalContentsStudied + 1,
+      completedContents: [...preStudyProgress.completedContents, contentId],
+      averageComprehension: (
+        (preStudyProgress.averageComprehension * preStudyProgress.totalContentsStudied + comprehensionRating) /
+        (preStudyProgress.totalContentsStudied + 1)
+      ),
+      totalTimeSpent: preStudyProgress.totalTimeSpent + 3, // 3分と仮定
+      lastStudiedContentId: contentId
+    };
+    
+    const newSessions = [...preStudySessions, session];
+    
+    setPreStudyProgress(newProgress);
+    setPreStudySessions(newSessions);
+    
+    // データを保存
+    const updatedStats = {
+      ...userStats,
+      preStudyProgress: newProgress,
+      preStudySessions: newSessions
+    };
+    DataManager.saveUserStats(updatedStats);
+    
+    // 画面を閉じる
+    setShowPreStudyContent(false);
+    setCurrentPreStudyContent(null);
+    setShowPreStudyMenu(false);
+    
+    // 問題演習への誘導
+    alert('事前学習完了！関連する問題演習に進みましょう。');
+  };
+  
+  const handlePreStudyContentBack = () => {
+    setShowPreStudyContent(false);
+    setCurrentPreStudyContent(null);
+  };
 
   // ハートシステムの状態を定期的に更新
   useEffect(() => {
@@ -151,6 +308,29 @@ export function NewHome({
 
     return () => clearInterval(interval);
   }, []); // 依存関係を空にして、マウント時に一度だけ実行
+
+  // 事前学習のコンポーネントが表示されている場合は、それらを優先表示
+  if (showPreStudyContent && currentPreStudyContent) {
+    return (
+      <PreStudyContentViewer
+        content={currentPreStudyContent}
+        onComplete={handlePreStudyContentComplete}
+        onBack={handlePreStudyContentBack}
+      />
+    );
+  }
+
+  if (showPreStudyMenu) {
+    return (
+      <PreStudyMenu
+        availableContents={getPreStudyContentsForLevel(userLevel.level)}
+        completedContents={preStudyProgress.completedContents}
+        userLevel={userLevel.level}
+        onSelectContent={handlePreStudyContentSelect}
+        onBack={handlePreStudyMenuClose}
+      />
+    );
+  }
 
   // 文法クイズのコンポーネントが表示されている場合は、それらを優先表示
   if (showGrammarQuizCategory) {
@@ -232,21 +412,55 @@ export function NewHome({
               onHeartChange={forceRefreshHearts}
             />
           </div>
+
+          {/* ⭐️スターシステム */}
+          <div>
+            <StarDisplay
+              stars={starSystem}
+              showRecoveryTime={true}
+              size="medium"
+            />
+          </div>
         </div>
 
         {/* ステータス配分 */}
         {showStatusAllocation && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <StatusAllocationComponent />
-            <RankProgress
-              currentLevel={userLevel.level}
-              showProbabilities={true}
-            />
           </div>
         )}
 
         {/* 学習モード選択 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* ⭐️事前学習 */}
+          <Card
+            className={`hover:shadow-lg transition-shadow cursor-pointer ${
+              !canUseStars(starSystem) ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            onClick={() => canUseStars(starSystem) && handlePreStudyMenuOpen()}
+          >
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg flex items-center">
+                  <Star className="w-5 h-5 mr-2 text-purple-600" />
+                  事前学習
+                </CardTitle>
+                <Badge variant="secondary">理論</Badge>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-600 mb-4">
+                理論を理解してから実践へ
+              </p>
+              <div className="flex items-center justify-between">
+                <div className="text-sm text-gray-500">必要スター: 1 ⭐️</div>
+                <div className="flex items-center text-sm font-medium">
+                  {canUseStars(starSystem) ? "クリックして開始" : "スター不足"}
+                  <ChevronRight className="w-4 h-4 ml-1" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
           {/* 文法クイズ */}
           <Card
             className={`hover:shadow-lg transition-shadow cursor-pointer ${

@@ -27,6 +27,27 @@ export interface UserStats {
   totalStudyTime: number; // 秒単位
   accuracy: number; // パーセンテージ
   streakDays: number;
+  // ⭐️スターシステム用の追加プロパティ
+  stars?: {
+    current: number;
+    max: number;
+    lastRecoveryTime: number;
+  };
+  preStudyProgress?: {
+    totalContentsStudied: number;
+    contentsByCategory: Record<string, number>;
+    averageComprehension: number;
+    totalTimeSpent: number;
+    lastStudiedContentId?: string;
+    completedContents: string[];
+  };
+  preStudySessions?: Array<{
+    contentId: string;
+    startTime: number;
+    endTime?: number;
+    completed: boolean;
+    comprehensionRating?: number;
+  }>;
 }
 
 
