@@ -5,12 +5,14 @@ interface PreStudyContentViewerProps {
   content: PreStudyContent;
   onComplete: (contentId: string, comprehensionRating: number) => void;
   onBack: () => void;
+  onNavigateToPractice?: (category: string) => void;
 }
 
 export const PreStudyContentViewer: React.FC<PreStudyContentViewerProps> = ({
   content,
   onComplete,
-  onBack
+  onBack,
+  onNavigateToPractice
 }) => {
   const [comprehensionRating, setComprehensionRating] = useState<number>(0);
   const [showCompletion, setShowCompletion] = useState(false);
@@ -22,6 +24,16 @@ export const PreStudyContentViewer: React.FC<PreStudyContentViewerProps> = ({
   const handleFinalComplete = () => {
     if (comprehensionRating > 0) {
       onComplete(content.id, comprehensionRating);
+    }
+  };
+
+  const handleNavigateToPractice = () => {
+    if (comprehensionRating > 0) {
+      onComplete(content.id, comprehensionRating);
+      // カテゴリに基づいて適切な問題演習に遷移
+      if (onNavigateToPractice) {
+        onNavigateToPractice(content.category);
+      }
     }
   };
 
@@ -82,7 +94,7 @@ export const PreStudyContentViewer: React.FC<PreStudyContentViewerProps> = ({
 
         <div className="flex gap-3">
           <button
-            onClick={handleFinalComplete}
+            onClick={handleNavigateToPractice}
             disabled={comprehensionRating === 0}
             className={`
               flex-1 py-3 px-4 rounded-lg font-semibold transition-colors
