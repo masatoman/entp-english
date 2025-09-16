@@ -5,6 +5,7 @@ import {
   Clock,
   Flame,
   Gamepad2,
+  Gift,
   Heart,
   PenTool,
   Settings,
@@ -34,6 +35,7 @@ import {
 import { EnhancedGrammarQuiz } from "./EnhancedGrammarQuiz";
 import { GrammarQuizCategorySelection } from "./GrammarQuizCategorySelection";
 import { GrammarQuizDifficultySelection } from "./GrammarQuizDifficultySelection";
+import { GrowthDashboard } from "./GrowthDashboard";
 import { HeartSystemDisplay } from "./HeartSystem";
 import { LearningFeedbackForm } from "./LearningFeedbackForm";
 import { LevelDisplay } from "./LevelDisplay";
@@ -55,6 +57,7 @@ interface NewHomeProps {
   onNavigateToAppSettings: () => void;
   onNavigateToTimeAttack: () => void;
   onNavigateToSimpleTowerDefense: () => void;
+  onNavigateToGacha: () => void;
 }
 
 export function NewHome({
@@ -64,6 +67,7 @@ export function NewHome({
   onNavigateToAchievements,
   onNavigateToTimeAttack,
   onNavigateToSimpleTowerDefense,
+  onNavigateToGacha,
 }: NewHomeProps) {
   const { userLevel, refreshLevel } = useLevelSystem();
   const { heartSystem, processRecovery, refreshHearts } = useHeartSystem();
@@ -87,6 +91,7 @@ export function NewHome({
     "beginner" | "intermediate" | "advanced"
   >("beginner");
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+  const [showGrowthDashboard, setShowGrowthDashboard] = useState(false);
 
   // ⭐️スターシステムの状態
   const [starSystem, setStarSystem] = useState<StarData>(() => {
@@ -323,21 +328,21 @@ export function NewHome({
   const handleNavigateToPractice = (category: string) => {
     // 事前学習完了後、カテゴリに基づいて適切な問題演習に遷移
     switch (category) {
-      case 'grammar':
+      case "grammar":
         setShowGrammarQuizCategory(true);
         break;
-      case 'vocabulary':
+      case "vocabulary":
         onNavigateToVocabulary();
         break;
-      case 'listening':
+      case "listening":
         // リスニング問題演習（現在は語彙学習にリダイレクト）
         onNavigateToVocabulary();
         break;
-      case 'reading':
+      case "reading":
         // リーディング問題演習（現在は語彙学習にリダイレクト）
         onNavigateToVocabulary();
         break;
-      case 'writing':
+      case "writing":
         // ライティング問題演習（現在は語彙学習にリダイレクト）
         onNavigateToVocabulary();
         break;
@@ -348,6 +353,14 @@ export function NewHome({
     }
   };
 
+  const handleShowGrowthDashboard = () => {
+    setShowGrowthDashboard(true);
+  };
+
+  const handleHideGrowthDashboard = () => {
+    setShowGrowthDashboard(false);
+  };
+
   // ハートシステムの状態を定期的に更新
   useEffect(() => {
     const interval = setInterval(() => {
@@ -356,6 +369,16 @@ export function NewHome({
 
     return () => clearInterval(interval);
   }, []); // 依存関係を空にして、マウント時に一度だけ実行
+
+  // 成長ダッシュボードが表示されている場合は、それらを優先表示
+  if (showGrowthDashboard) {
+    return (
+      <GrowthDashboard
+        userStats={userStats}
+        onBack={handleHideGrowthDashboard}
+      />
+    );
+  }
 
   // 事前学習のコンポーネントが表示されている場合は、それらを優先表示
   if (showPreStudyContent && currentPreStudyContent) {
@@ -692,6 +715,34 @@ export function NewHome({
             </CardContent>
           </Card>
 
+          {/* TOEIC単語ガチャ */}
+          <Card
+            className="hover:shadow-lg transition-shadow cursor-pointer"
+            onClick={onNavigateToGacha}
+          >
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg flex items-center">
+                  <Gift className="w-5 h-5 mr-2 text-purple-600" />
+                  TOEIC単語ガチャ
+                </CardTitle>
+                <Badge variant="secondary">ガチャ</Badge>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-600 mb-4">
+                新しい単語をゲット！レアカードを集めよう
+              </p>
+              <div className="flex items-center justify-between">
+                <div className="text-sm text-gray-500">XP消費</div>
+                <div className="flex items-center text-sm font-medium text-purple-600">
+                  クリックして開始
+                  <ChevronRight className="w-4 h-4 ml-1" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* 実績 */}
           <Card className="hover:shadow-lg transition-shadow cursor-pointer">
             <CardHeader className="pb-3">
@@ -714,6 +765,34 @@ export function NewHome({
                   className="flex items-center"
                 >
                   確認
+                  <ChevronRight className="w-4 h-4 ml-1" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* 成長ダッシュボード */}
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg flex items-center">
+                  <TrendingUp className="w-5 h-5 mr-2 text-green-600" />
+                  成長ダッシュボード
+                </CardTitle>
+                <Badge variant="secondary">分析</Badge>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-600 mb-4">
+                あなたの学習成長を可視化
+              </p>
+              <div className="flex items-center justify-between">
+                <div className="text-sm text-gray-500">体力不要</div>
+                <Button
+                  onClick={handleShowGrowthDashboard}
+                  className="flex items-center"
+                >
+                  成長を確認
                   <ChevronRight className="w-4 h-4 ml-1" />
                 </Button>
               </div>

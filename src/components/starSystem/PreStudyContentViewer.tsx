@@ -28,12 +28,12 @@ export const PreStudyContentViewer: React.FC<PreStudyContentViewerProps> = ({
   };
 
   const handleNavigateToPractice = () => {
-    if (comprehensionRating > 0) {
-      onComplete(content.id, comprehensionRating);
-      // カテゴリに基づいて適切な問題演習に遷移
-      if (onNavigateToPractice) {
-        onNavigateToPractice(content.category);
-      }
+    // 理解度評価が0の場合は3（普通）として扱う
+    const finalRating = comprehensionRating > 0 ? comprehensionRating : 3;
+    onComplete(content.id, finalRating);
+    // カテゴリに基づいて適切な問題演習に遷移
+    if (onNavigateToPractice) {
+      onNavigateToPractice(content.category);
     }
   };
 
@@ -72,10 +72,11 @@ export const PreStudyContentViewer: React.FC<PreStudyContentViewerProps> = ({
         </div>
 
         <div className="mb-6">
-          <h4 className="text-lg font-semibold mb-4 text-center">🧠 理解度を評価してください</h4>
+          <h4 className="text-lg font-semibold mb-4 text-center">🧠 理解度を評価してください（任意）</h4>
           <div className="flex flex-col items-center gap-4">
             {renderStars(comprehensionRating, setComprehensionRating)}
             <div className="text-sm text-gray-600 text-center">
+              {comprehensionRating === 0 && "評価なしでも問題演習に進めます"}
               {comprehensionRating === 5 && "完全に理解できました！"}
               {comprehensionRating === 4 && "ほぼ理解できました"}
               {comprehensionRating === 3 && "何となく理解できました"}
@@ -95,14 +96,7 @@ export const PreStudyContentViewer: React.FC<PreStudyContentViewerProps> = ({
         <div className="flex gap-3">
           <button
             onClick={handleNavigateToPractice}
-            disabled={comprehensionRating === 0}
-            className={`
-              flex-1 py-3 px-4 rounded-lg font-semibold transition-colors
-              ${comprehensionRating > 0 
-                ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              }
-            `}
+            className="flex-1 py-3 px-4 rounded-lg font-semibold transition-colors bg-blue-600 text-white hover:bg-blue-700"
           >
             ♥ 問題演習へ
           </button>
