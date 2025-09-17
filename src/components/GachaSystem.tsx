@@ -475,8 +475,8 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
       {/* 開封結果 */}
       {drawnCards.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">開封結果</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+          <h2 className="text-xl font-semibold mb-4">開封結果 - 8枚のカード</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
             {drawnCards.map((card, index) => {
               const rarityInfo = getRarityInfo(card.rarity);
               const RarityIcon = rarityInfo.icon;
@@ -484,31 +484,35 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
               return (
                 <Card
                   key={`${card.id}-${index}`}
-                  className={`p-3 text-center transition-all hover:scale-105 cursor-pointer ${rarityInfo.bgColor} ${rarityInfo.borderColor} border-2`}
+                  className={`p-2 text-center transition-all hover:scale-105 cursor-pointer ${rarityInfo.bgColor} ${rarityInfo.borderColor} border-2`}
                   onClick={() => {
                     setSelectedCard(card);
                     setShowCardDetail(true);
                   }}
                 >
-                  <div className="flex items-center justify-center mb-2">
-                    <RarityIcon className={`w-5 h-5 ${rarityInfo.color}`} />
+                  <div className="flex items-center justify-center mb-1">
+                    <RarityIcon className={`w-4 h-4 ${rarityInfo.color}`} />
                   </div>
 
-                  <h4 className="font-bold text-sm mb-1">{card.word}</h4>
-                  <p className="text-xs text-gray-600 mb-2">{card.meaning}</p>
+                  <h4 className="font-bold text-xs mb-1 line-clamp-1">
+                    {card.word}
+                  </h4>
+                  <p className="text-xs text-gray-600 mb-1 line-clamp-2">
+                    {card.meaning}
+                  </p>
 
                   <div
-                    className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${rarityInfo.bgColor} ${rarityInfo.color}`}
+                    className={`inline-block px-1 py-0.5 rounded-full text-xs font-medium ${rarityInfo.bgColor} ${rarityInfo.color}`}
                   >
-                    {card.rarity.toUpperCase()}
+                    {card.rarity.charAt(0).toUpperCase()}
                   </div>
 
                   <div className="text-xs text-gray-500 mt-1">
                     {card.partOfSpeech}
                   </div>
 
-                  <div className="text-xs text-blue-600 mt-2 font-medium">
-                    クリックで詳細
+                  <div className="text-xs text-blue-600 mt-1 font-medium">
+                    詳細
                   </div>
                 </Card>
               );

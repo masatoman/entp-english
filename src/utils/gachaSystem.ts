@@ -40,7 +40,7 @@ export class GachaSystem {
   }
 
   /**
-   * パックを開封して8枚のカードを取得
+   * パックを開封して8枚の重複なしカードを取得
    */
   static openPack(packId: string): WordCard[] {
     const pack = gachaPacks.find((p) => p.id === packId);
@@ -49,33 +49,47 @@ export class GachaSystem {
     }
 
     const cards: WordCard[] = [];
+    const usedCardIds = new Set<number>();
 
     // パックのテーマに応じてカードを調整
     for (let i = 0; i < 8; i++) {
-      let card = this.drawRandomCard();
+      let card: WordCard;
+      let attempts = 0;
+      const maxAttempts = 100; // 無限ループ防止
 
-      // パックのテーマに応じてカードを調整（簡単な実装）
-      if (pack.theme !== "mixed") {
-        const themeCards = toeicWordCards.filter((card) =>
-          card.toeicSpecific.parts.some((part) =>
-            pack.theme === "part1_2"
-              ? ["Part1", "Part2"].includes(part)
-              : pack.theme === "part3_4"
-              ? ["Part3", "Part4"].includes(part)
-              : pack.theme === "part5_6"
-              ? ["Part5", "Part6"].includes(part)
-              : pack.theme === "part7"
-              ? part === "Part7"
-              : true
-          )
-        );
+      do {
+        card = this.drawRandomCard();
+        attempts++;
 
-        if (themeCards.length > 0) {
-          card = themeCards[Math.floor(Math.random() * themeCards.length)];
+        // パックのテーマに応じてカードを調整
+        if (pack.theme !== "mixed") {
+          const themeCards = toeicWordCards.filter((c) =>
+            c.toeicSpecific.parts.some((part) =>
+              pack.theme === "part1_2"
+                ? ["Part1", "Part2"].includes(part)
+                : pack.theme === "part3_4"
+                ? ["Part3", "Part4"].includes(part)
+                : pack.theme === "part5_6"
+                ? ["Part5", "Part6"].includes(part)
+                : pack.theme === "part7"
+                ? part === "Part7"
+                : true
+            )
+          );
+
+          if (themeCards.length > 0) {
+            card = themeCards[Math.floor(Math.random() * themeCards.length)];
+          }
         }
-      }
+
+        // 無限ループ防止：最大試行回数に達した場合は重複を許可
+        if (attempts >= maxAttempts) {
+          break;
+        }
+      } while (usedCardIds.has(card.id));
 
       cards.push(card);
+      usedCardIds.add(card.id);
     }
 
     return cards;
@@ -111,7 +125,7 @@ export class GachaSystem {
   }
 
   /**
-   * 新しいカードをコレクションに追加
+   * 新しいカードをコレクションに追加（重複カードも含む）
    */
   static addCardsToCollection(cards: WordCard[]): void {
     const userData = this.getUserGachaData();
@@ -123,17 +137,17 @@ export class GachaSystem {
       userData.lastPackDate = today;
     }
 
-    // カードを追加（重複チェック）
+    // カードを追加（重複カードも含む）
     cards.forEach((card) => {
-      const existingCard = userData.ownedCards.find((c) => c.id === card.id);
-      if (!existingCard) {
-        userData.ownedCards.push(card);
-      }
+      userData.ownedCards.push(card);
     });
 
     // 統計を更新
     userData.collection.totalCards = userData.ownedCards.length;
-    userData.collection.uniqueCards = userData.ownedCards.length;
+
+    // ユニークカード数を計算
+    const uniqueCardIds = new Set(userData.ownedCards.map((card) => card.id));
+    userData.collection.uniqueCards = uniqueCardIds.size;
 
     // レアリティ統計を更新
     userData.collection.rarityStats = {};

@@ -350,6 +350,733 @@ export const toeicWordCards: WordCard[] = [
       businessContext: "最高級ビジネス概念",
     },
   },
+  // 追加のCommon Cards
+  {
+    id: 10,
+    word: "project",
+    meaning: "プロジェクト、計画",
+    partOfSpeech: "名詞",
+    phonetic: "/ˈprɑːdʒekt/",
+    rarity: "common",
+    examples: [
+      {
+        sentence: "The project deadline is next month.",
+        translation: "プロジェクトの締切は来月です。",
+        situation: "TOEIC Part2 (プロジェクト管理)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "work on a project",
+        meaning: "プロジェクトに取り組む",
+        example: "We are working on a new project.",
+        translation: "新しいプロジェクトに取り組んでいます。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "project management",
+        explanation: "プロジェクト管理",
+        example: "Project management skills are important.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part1", "Part2", "Part3"],
+      frequency: "very_high",
+      scoreBand: "400-500",
+      synonyms: ["plan", "task"],
+      businessContext: "ビジネス基本語彙",
+    },
+  },
+  {
+    id: 11,
+    word: "budget",
+    meaning: "予算、経費",
+    partOfSpeech: "名詞",
+    phonetic: "/ˈbʌdʒɪt/",
+    rarity: "common",
+    examples: [
+      {
+        sentence: "We need to stay within budget.",
+        translation: "予算内に収める必要があります。",
+        situation: "TOEIC Part2 (予算管理)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "over budget",
+        meaning: "予算オーバー",
+        example: "The project went over budget.",
+        translation: "プロジェクトは予算オーバーしました。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "budget for something",
+        explanation: "何かの予算を組む",
+        example: "We need to budget for training.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part1", "Part2", "Part3"],
+      frequency: "very_high",
+      scoreBand: "400-500",
+      synonyms: ["allocation", "funds"],
+      businessContext: "財務管理の基本語彙",
+    },
+  },
+  {
+    id: 12,
+    word: "client",
+    meaning: "顧客、クライアント",
+    partOfSpeech: "名詞",
+    phonetic: "/ˈklaɪənt/",
+    rarity: "common",
+    examples: [
+      {
+        sentence: "The client is satisfied with our service.",
+        translation: "顧客は私たちのサービスに満足しています。",
+        situation: "TOEIC Part2 (顧客対応)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "client satisfaction",
+        meaning: "顧客満足度",
+        example: "Client satisfaction is our priority.",
+        translation: "顧客満足度が私たちの優先事項です。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "meet with a client",
+        explanation: "顧客と会う",
+        example: "I need to meet with a client today.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part1", "Part2", "Part3"],
+      frequency: "very_high",
+      scoreBand: "400-500",
+      synonyms: ["customer", "buyer"],
+      businessContext: "営業・サービス基本語彙",
+    },
+  },
+  {
+    id: 13,
+    word: "report",
+    meaning: "報告書、レポート",
+    partOfSpeech: "名詞",
+    phonetic: "/rɪˈpɔːrt/",
+    rarity: "common",
+    examples: [
+      {
+        sentence: "Please submit the report by Friday.",
+        translation: "金曜日までにレポートを提出してください。",
+        situation: "TOEIC Part2 (文書提出)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "write a report",
+        meaning: "レポートを書く",
+        example: "I need to write a monthly report.",
+        translation: "月次レポートを書く必要があります。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "annual report",
+        explanation: "年次報告書",
+        example: "The annual report will be published soon.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part1", "Part2", "Part3"],
+      frequency: "very_high",
+      scoreBand: "400-500",
+      synonyms: ["document", "summary"],
+      businessContext: "文書管理の基本語彙",
+    },
+  },
+  {
+    id: 14,
+    word: "office",
+    meaning: "オフィス、事務所",
+    partOfSpeech: "名詞",
+    phonetic: "/ˈɔːfɪs/",
+    rarity: "common",
+    examples: [
+      {
+        sentence: "The office is located downtown.",
+        translation: "オフィスはダウンタウンにあります。",
+        situation: "TOEIC Part1 (場所の説明)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "office building",
+        meaning: "オフィスビル",
+        example: "The new office building is modern.",
+        translation: "新しいオフィスビルは現代的です。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "at the office",
+        explanation: "オフィスで",
+        example: "I work at the office every day.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part1", "Part2", "Part3"],
+      frequency: "very_high",
+      scoreBand: "400-500",
+      synonyms: ["workplace", "building"],
+      businessContext: "職場環境の基本語彙",
+    },
+  },
+  // 追加のUncommon Cards
+  {
+    id: 15,
+    word: "strategy",
+    meaning: "戦略、方針",
+    partOfSpeech: "名詞",
+    phonetic: "/ˈstrætədʒi/",
+    rarity: "uncommon",
+    examples: [
+      {
+        sentence: "We need a new marketing strategy.",
+        translation: "新しいマーケティング戦略が必要です。",
+        situation: "TOEIC Part3 (戦略会議)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "develop a strategy",
+        meaning: "戦略を立てる",
+        example: "The team developed a winning strategy.",
+        translation: "チームは勝利の戦略を立てました。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "business strategy",
+        explanation: "ビジネス戦略",
+        example: "Our business strategy focuses on innovation.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part3", "Part4", "Part7"],
+      frequency: "high",
+      scoreBand: "500-600",
+      synonyms: ["plan", "approach"],
+      businessContext: "経営戦略の重要語彙",
+    },
+  },
+  {
+    id: 16,
+    word: "evaluate",
+    meaning: "評価する、査定する",
+    partOfSpeech: "動詞",
+    phonetic: "/ɪˈvæljueɪt/",
+    rarity: "uncommon",
+    examples: [
+      {
+        sentence: "We need to evaluate the results.",
+        translation: "結果を評価する必要があります。",
+        situation: "TOEIC Part3 (結果分析)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "evaluate performance",
+        meaning: "業績を評価する",
+        example: "The manager evaluated employee performance.",
+        translation: "マネージャーは従業員の業績を評価しました。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "evaluate the situation",
+        explanation: "状況を評価する",
+        example: "Let's evaluate the current situation.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part3", "Part4", "Part7"],
+      frequency: "high",
+      scoreBand: "500-600",
+      synonyms: ["assess", "analyze"],
+      businessContext: "分析・評価の重要語彙",
+    },
+  },
+  {
+    id: 17,
+    word: "efficient",
+    meaning: "効率的な、能率的な",
+    partOfSpeech: "形容詞",
+    phonetic: "/ɪˈfɪʃənt/",
+    rarity: "uncommon",
+    examples: [
+      {
+        sentence: "We need a more efficient system.",
+        translation: "より効率的なシステムが必要です。",
+        situation: "TOEIC Part3 (システム改善)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "efficient operation",
+        meaning: "効率的な運営",
+        example: "The company focuses on efficient operation.",
+        translation: "会社は効率的な運営に焦点を当てています。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "cost-efficient",
+        explanation: "コスト効率の良い",
+        example: "We need cost-efficient solutions.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part3", "Part4", "Part7"],
+      frequency: "high",
+      scoreBand: "500-600",
+      synonyms: ["productive", "effective"],
+      businessContext: "効率性の重要語彙",
+    },
+  },
+  {
+    id: 18,
+    word: "analyze",
+    meaning: "分析する、検討する",
+    partOfSpeech: "動詞",
+    phonetic: "/ˈænəlaɪz/",
+    rarity: "uncommon",
+    examples: [
+      {
+        sentence: "We need to analyze the market data.",
+        translation: "市場データを分析する必要があります。",
+        situation: "TOEIC Part3 (データ分析)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "analyze trends",
+        meaning: "トレンドを分析する",
+        example: "The team analyzed market trends.",
+        translation: "チームは市場トレンドを分析しました。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "analyze the situation",
+        explanation: "状況を分析する",
+        example: "Let's analyze the current situation.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part3", "Part4", "Part7"],
+      frequency: "high",
+      scoreBand: "500-600",
+      synonyms: ["examine", "study"],
+      businessContext: "分析業務の重要語彙",
+    },
+  },
+  {
+    id: 19,
+    word: "collaborate",
+    meaning: "協力する、共同作業する",
+    partOfSpeech: "動詞",
+    phonetic: "/kəˈlæbəreɪt/",
+    rarity: "uncommon",
+    examples: [
+      {
+        sentence: "We need to collaborate with other departments.",
+        translation: "他の部署と協力する必要があります。",
+        situation: "TOEIC Part3 (部門間協力)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "collaborate on a project",
+        meaning: "プロジェクトで協力する",
+        example: "The teams collaborated on the project.",
+        translation: "チームはプロジェクトで協力しました。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "collaborate with someone",
+        explanation: "誰かと協力する",
+        example: "We collaborate with external partners.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part3", "Part4", "Part7"],
+      frequency: "high",
+      scoreBand: "500-600",
+      synonyms: ["cooperate", "work together"],
+      businessContext: "チームワークの重要語彙",
+    },
+  },
+  // 追加のRare Cards
+  {
+    id: 20,
+    word: "innovative",
+    meaning: "革新的な、独創的な",
+    partOfSpeech: "形容詞",
+    phonetic: "/ˈɪnəveɪtɪv/",
+    rarity: "rare",
+    examples: [
+      {
+        sentence: "We need innovative solutions for this problem.",
+        translation: "この問題に対して革新的な解決策が必要です。",
+        situation: "TOEIC Part4 (技術革新)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "innovative approach",
+        meaning: "革新的なアプローチ",
+        example: "The company took an innovative approach.",
+        translation: "会社は革新的なアプローチを取りました。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "innovative technology",
+        explanation: "革新的な技術",
+        example: "We develop innovative technology.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part4", "Part7"],
+      frequency: "medium",
+      scoreBand: "600-700",
+      synonyms: ["creative", "original"],
+      businessContext: "技術革新の上級語彙",
+    },
+  },
+  {
+    id: 21,
+    word: "comprehensive",
+    meaning: "包括的な、総合的な",
+    partOfSpeech: "形容詞",
+    phonetic: "/ˌkɑːmprɪˈhensɪv/",
+    rarity: "rare",
+    examples: [
+      {
+        sentence: "We need a comprehensive analysis of the market.",
+        translation: "市場の包括的な分析が必要です。",
+        situation: "TOEIC Part7 (市場調査)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "comprehensive report",
+        meaning: "包括的な報告書",
+        example: "The comprehensive report was published.",
+        translation: "包括的な報告書が発表されました。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "comprehensive study",
+        explanation: "包括的な研究",
+        example: "We conducted a comprehensive study.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part4", "Part7"],
+      frequency: "medium",
+      scoreBand: "600-700",
+      synonyms: ["complete", "thorough"],
+      businessContext: "分析・調査の上級語彙",
+    },
+  },
+  {
+    id: 22,
+    word: "sophisticated",
+    meaning: "洗練された、高度な",
+    partOfSpeech: "形容詞",
+    phonetic: "/səˈfɪstɪkeɪtɪd/",
+    rarity: "rare",
+    examples: [
+      {
+        sentence: "We use sophisticated technology in our products.",
+        translation: "製品に洗練された技術を使用しています。",
+        situation: "TOEIC Part4 (技術説明)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "sophisticated system",
+        meaning: "高度なシステム",
+        example: "The sophisticated system improved efficiency.",
+        translation: "高度なシステムが効率を向上させました。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "sophisticated analysis",
+        explanation: "高度な分析",
+        example: "We need sophisticated analysis tools.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part4", "Part7"],
+      frequency: "medium",
+      scoreBand: "600-700",
+      synonyms: ["advanced", "complex"],
+      businessContext: "技術・システムの上級語彙",
+    },
+  },
+  {
+    id: 23,
+    word: "substantial",
+    meaning: "相当な、重要な",
+    partOfSpeech: "形容詞",
+    phonetic: "/səbˈstænʃəl/",
+    rarity: "rare",
+    examples: [
+      {
+        sentence: "We made substantial progress this quarter.",
+        translation: "今四半期で相当な進歩を遂げました。",
+        situation: "TOEIC Part4 (業績報告)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "substantial increase",
+        meaning: "大幅な増加",
+        example: "We saw a substantial increase in sales.",
+        translation: "売上で大幅な増加が見られました。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "substantial amount",
+        explanation: "相当な量",
+        example: "We invested a substantial amount.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part4", "Part7"],
+      frequency: "medium",
+      scoreBand: "600-700",
+      synonyms: ["significant", "considerable"],
+      businessContext: "数量・程度の上級語彙",
+    },
+  },
+  {
+    id: 24,
+    word: "optimize",
+    meaning: "最適化する、効率化する",
+    partOfSpeech: "動詞",
+    phonetic: "/ˈɑːptɪmaɪz/",
+    rarity: "rare",
+    examples: [
+      {
+        sentence: "We need to optimize our production process.",
+        translation: "生産プロセスを最適化する必要があります。",
+        situation: "TOEIC Part4 (生産効率)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "optimize performance",
+        meaning: "性能を最適化する",
+        example: "The team optimized system performance.",
+        translation: "チームはシステムの性能を最適化しました。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "optimize efficiency",
+        explanation: "効率を最適化する",
+        example: "We need to optimize efficiency.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part4", "Part7"],
+      frequency: "medium",
+      scoreBand: "600-700",
+      synonyms: ["improve", "enhance"],
+      businessContext: "効率化の上級語彙",
+    },
+  },
+  // 追加のEpic Cards
+  {
+    id: 25,
+    word: "infrastructure",
+    meaning: "インフラ、基盤",
+    partOfSpeech: "名詞",
+    phonetic: "/ˈɪnfrəstrʌktʃər/",
+    rarity: "epic",
+    examples: [
+      {
+        sentence: "We need to upgrade our IT infrastructure.",
+        translation: "ITインフラをアップグレードする必要があります。",
+        situation: "TOEIC Part7 (技術基盤)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "digital infrastructure",
+        meaning: "デジタルインフラ",
+        example: "The company invested in digital infrastructure.",
+        translation: "会社はデジタルインフラに投資しました。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "infrastructure development",
+        explanation: "インフラ開発",
+        example: "Infrastructure development is crucial.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part7"],
+      frequency: "low",
+      scoreBand: "700-800",
+      synonyms: ["foundation", "framework"],
+      businessContext: "技術基盤の専門語彙",
+    },
+  },
+  {
+    id: 26,
+    word: "methodology",
+    meaning: "方法論、手法",
+    partOfSpeech: "名詞",
+    phonetic: "/ˌmeθəˈdɑːlədʒi/",
+    rarity: "epic",
+    examples: [
+      {
+        sentence: "We use a proven methodology for project management.",
+        translation: "プロジェクト管理に実証済みの方法論を使用しています。",
+        situation: "TOEIC Part7 (管理手法)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "research methodology",
+        meaning: "研究方法論",
+        example: "The research methodology was sound.",
+        translation: "研究方法論は適切でした。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "agile methodology",
+        explanation: "アジャイル手法",
+        example: "We adopted agile methodology.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part7"],
+      frequency: "low",
+      scoreBand: "700-800",
+      synonyms: ["approach", "technique"],
+      businessContext: "管理手法の専門語彙",
+    },
+  },
+  // 追加のLegendary Cards
+  {
+    id: 27,
+    word: "entrepreneurship",
+    meaning: "起業家精神、アントレプレナーシップ",
+    partOfSpeech: "名詞",
+    phonetic: "/ˌɑːntrəprəˈnɜːrʃɪp/",
+    rarity: "legendary",
+    examples: [
+      {
+        sentence: "Entrepreneurship drives innovation in our economy.",
+        translation: "起業家精神が経済の革新を推進しています。",
+        situation: "TOEIC Part7 (経済論)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "social entrepreneurship",
+        meaning: "ソーシャルアントレプレナーシップ",
+        example: "Social entrepreneurship is growing rapidly.",
+        translation: "ソーシャルアントレプレナーシップが急速に成長しています。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "entrepreneurship education",
+        explanation: "起業家教育",
+        example: "Entrepreneurship education is important.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part7"],
+      frequency: "low",
+      scoreBand: "800+",
+      synonyms: ["innovation", "initiative"],
+      businessContext: "最高級ビジネス概念",
+    },
+  },
+  {
+    id: 28,
+    word: "sustainability",
+    meaning: "持続可能性、サステナビリティ",
+    partOfSpeech: "名詞",
+    phonetic: "/səˌsteɪnəˈbɪləti/",
+    rarity: "legendary",
+    examples: [
+      {
+        sentence: "Sustainability is a key focus for modern businesses.",
+        translation: "持続可能性は現代企業の重要な焦点です。",
+        situation: "TOEIC Part7 (企業責任)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "environmental sustainability",
+        meaning: "環境持続可能性",
+        example: "Environmental sustainability is our priority.",
+        translation: "環境持続可能性が私たちの優先事項です。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "sustainability goals",
+        explanation: "持続可能性目標",
+        example: "We set ambitious sustainability goals.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part7"],
+      frequency: "low",
+      scoreBand: "800+",
+      synonyms: ["viability", "endurance"],
+      businessContext: "最高級ビジネス概念",
+    },
+  },
 ];
 
 export const gachaPacks: GachaPack[] = [

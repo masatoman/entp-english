@@ -1,18 +1,12 @@
 import {
   BarChart3,
-  BookOpen,
-  ChevronRight,
   Clock,
   Flame,
-  Gamepad2,
-  Gift,
   Heart,
-  PenTool,
   Settings,
   Star,
   Target,
   TrendingUp,
-  Trophy,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { UserStats } from "../data/achievements";
@@ -26,6 +20,7 @@ import {
   StarData,
 } from "../types/starSystem";
 import { DataManager } from "../utils/dataManager";
+import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 import {
   calculateRecoveredStars,
   canUseStars,
@@ -36,16 +31,14 @@ import { EnhancedGrammarQuiz } from "./EnhancedGrammarQuiz";
 import { GrammarQuizCategorySelection } from "./GrammarQuizCategorySelection";
 import { GrammarQuizDifficultySelection } from "./GrammarQuizDifficultySelection";
 import { GrowthDashboard } from "./GrowthDashboard";
-import { HeartSystemDisplay } from "./HeartSystem";
 import { LearningFeedbackForm } from "./LearningFeedbackForm";
 import { LevelDisplay } from "./LevelDisplay";
 import { StatusAllocationComponent } from "./StatusAllocation";
 import { PreStudyContentViewer } from "./starSystem/PreStudyContentViewer";
 import { PreStudyMenu } from "./starSystem/PreStudyMenu";
-import { StarDisplay } from "./starSystem/StarDisplay";
-import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardContent } from "./ui/card";
+import { SelectionCard } from "./ui/selection-card";
 
 interface NewHomeProps {
   onNavigateToGrammar: () => void;
@@ -477,21 +470,95 @@ export function NewHome({
             />
           </div>
 
-          {/* ハートシステム */}
+          {/* 体力システム（ハート + スタミナ） */}
           <div>
-            <HeartSystemDisplay
-              showRecoveryTime={true}
-              onHeartChange={forceRefreshHearts}
-            />
-          </div>
+            <div className="bg-white rounded-lg shadow-md p-4">
+              <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                体力システム
+              </h3>
 
-          {/* ⭐️スターシステム */}
-          <div>
-            <StarDisplay
-              stars={starSystem}
-              showRecoveryTime={true}
-              size="medium"
-            />
+              {/* ハート表示 */}
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-600">体力</span>
+                  <div className="flex space-x-1">
+                    {Array.from({ length: heartSystem.max }, (_, i) => (
+                      <span
+                        key={i}
+                        className={`text-2xl ${
+                          i < heartSystem.current
+                            ? "text-red-500"
+                            : "text-gray-300"
+                        }`}
+                      >
+                        {i < heartSystem.current ? "♥" : "♡"}
+                      </span>
+                    ))}
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">
+                    ({heartSystem.current}/{heartSystem.max})
+                  </span>
+                </div>
+              </div>
+
+              {/* スタミナ（星）表示 */}
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-600">スタミナ</span>
+                  <div className="flex space-x-1">
+                    {Array.from({ length: starSystem.max }, (_, i) => (
+                      <span
+                        key={i}
+                        className={`text-2xl ${
+                          i < starSystem.current
+                            ? "text-yellow-500"
+                            : "text-gray-300"
+                        }`}
+                      >
+                        {i < starSystem.current ? "⭐️" : "☆"}
+                      </span>
+                    ))}
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">
+                    ({starSystem.current}/{starSystem.max})
+                  </span>
+                </div>
+              </div>
+
+              {/* 体力とスタミナの操作ボタン */}
+              <div className="flex items-center justify-between">
+                <div className="flex space-x-2">
+                  <p className="text-xs text-gray-500">1問題につき1体力消費</p>
+                  <p className="text-xs text-gray-500">5分で1体力回復</p>
+                </div>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => {
+                      const manager = getLevelManager();
+                      const newHeartSystem = manager.consumeHeart();
+                      forceRefreshHearts();
+                      saveLevelManager();
+                    }}
+                    className="px-2 py-1 text-xs bg-red-100 hover:bg-red-200 text-red-700 rounded"
+                    disabled={heartSystem.current === 0}
+                  >
+                    体力を消費
+                  </button>
+                  <button
+                    onClick={() => {
+                      const manager = getLevelManager();
+                      const heartSystem = manager.getHeartSystem();
+                      heartSystem.current = heartSystem.max;
+                      forceRefreshHearts();
+                      saveLevelManager();
+                    }}
+                    className="px-2 py-1 text-xs bg-green-100 hover:bg-green-200 text-green-700 rounded"
+                  >
+                    ♥回復
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -505,299 +572,133 @@ export function NewHome({
         {/* 学習モード選択 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* ⭐️事前学習 */}
-          <Card
-            className={`hover:shadow-lg transition-shadow cursor-pointer ${
-              !canUseStars(starSystem) ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+          <SelectionCard
+            id="pre-study"
+            title="事前学習"
+            description="理論を理解してから実践へ"
+            icon="⭐️"
+            difficulty="理論"
+            detail="必要スター: 1 ⭐️"
+            color="bg-purple-50 border-purple-200 text-purple-800"
+            isLocked={!canUseStars(starSystem)}
             onClick={() => canUseStars(starSystem) && handlePreStudyMenuOpen()}
-          >
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg flex items-center">
-                  <Star className="w-5 h-5 mr-2 text-purple-600" />
-                  事前学習
-                </CardTitle>
-                <Badge variant="secondary">理論</Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600 mb-4">
-                理論を理解してから実践へ
-              </p>
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500">必要スター: 1 ⭐️</div>
-                <div className="flex items-center text-sm font-medium">
-                  {canUseStars(starSystem) ? "クリックして開始" : "スター不足"}
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          />
           {/* 文法クイズ */}
-          <Card
-            className={`hover:shadow-lg transition-shadow cursor-pointer ${
-              !canStartLearning ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+          <SelectionCard
+            id="grammar-quiz"
+            title="文法クイズ"
+            description="9つのカテゴリーから文法問題に挑戦"
+            icon="✏️"
+            difficulty="文法"
+            detail="必要体力: 1 ♥"
+            color="bg-blue-50 border-blue-200 text-blue-800"
+            isLocked={!canStartLearning}
             onClick={() => canStartLearning && handleStartLearning("grammar")}
-          >
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg flex items-center">
-                  <PenTool className="w-5 h-5 mr-2 text-blue-600" />
-                  文法クイズ
-                </CardTitle>
-                <Badge variant="secondary">文法</Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600 mb-4">
-                9つのカテゴリーから文法問題に挑戦
-              </p>
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500">必要体力: 1 ♥</div>
-                <div className="flex items-center text-sm font-medium">
-                  {canStartLearning ? "クリックして開始" : "体力不足"}
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          />
 
           {/* 語彙学習 */}
-          <Card
-            className={`hover:shadow-lg transition-shadow cursor-pointer ${
-              !canStartLearning ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+          <SelectionCard
+            id="vocabulary"
+            title="語彙学習"
+            description="レベル別・カテゴリー別の単語学習"
+            icon="📚"
+            difficulty="語彙"
+            detail="必要体力: 1 ♥"
+            color="bg-green-50 border-green-200 text-green-800"
+            isLocked={!canStartLearning}
             onClick={() =>
               canStartLearning && handleStartLearning("vocabulary")
             }
-          >
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg flex items-center">
-                  <BookOpen className="w-5 h-5 mr-2 text-green-600" />
-                  語彙学習
-                </CardTitle>
-                <Badge variant="secondary">語彙</Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600 mb-4">
-                レベル別・カテゴリー別の単語学習
-              </p>
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500">必要体力: 1 ♥</div>
-                <div className="flex items-center text-sm font-medium">
-                  {canStartLearning ? "クリックして開始" : "体力不足"}
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          />
 
           {/* 総合テスト */}
-          <Card
-            className={`hover:shadow-lg transition-shadow cursor-pointer ${
-              !canStartLearning ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+          <SelectionCard
+            id="combined-test"
+            title="総合テスト"
+            description="全分野から出題される総合テスト"
+            icon="🎯"
+            difficulty="総合"
+            detail="必要体力: 1 ♥"
+            color="bg-purple-50 border-purple-200 text-purple-800"
+            isLocked={!canStartLearning}
             onClick={() => canStartLearning && handleStartLearning("combined")}
-          >
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg flex items-center">
-                  <Target className="w-5 h-5 mr-2 text-purple-600" />
-                  総合テスト
-                </CardTitle>
-                <Badge variant="secondary">総合</Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600 mb-4">
-                全分野から出題される総合テスト
-              </p>
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500">必要体力: 1 ♥</div>
-                <div className="flex items-center text-sm font-medium">
-                  {canStartLearning ? "クリックして開始" : "体力不足"}
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          />
 
           {/* タイムアタック */}
-          <Card
-            className={`hover:shadow-lg transition-shadow cursor-pointer ${
-              !canStartLearning ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+          <SelectionCard
+            id="time-attack"
+            title="タイムアタック"
+            description="制限時間内で問題を解くスピード重視モード"
+            icon="⏰"
+            difficulty="スピード"
+            detail="必要体力: 1 ♥"
+            color="bg-orange-50 border-orange-200 text-orange-800"
+            isLocked={!canStartLearning}
             onClick={() =>
               canStartLearning && handleStartLearning("timeattack")
             }
-          >
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg flex items-center">
-                  <Clock className="w-5 h-5 mr-2 text-orange-600" />
-                  タイムアタック
-                </CardTitle>
-                <Badge variant="secondary">スピード</Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600 mb-4">
-                制限時間内で問題を解くスピード重視モード
-              </p>
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500">必要体力: 1 ♥</div>
-                <div className="flex items-center text-sm font-medium">
-                  {canStartLearning ? "クリックして開始" : "体力不足"}
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          />
 
           {/* 英作文 */}
-          <Card
-            className={`hover:shadow-lg transition-shadow cursor-pointer ${
-              !canStartLearning ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+          <SelectionCard
+            id="essay"
+            title="英作文"
+            description="文法カテゴリー別の4択英作文問題"
+            icon="✍️"
+            difficulty="ライティング"
+            detail="必要体力: 1 ♥"
+            color="bg-indigo-50 border-indigo-200 text-indigo-800"
+            isLocked={!canStartLearning}
             onClick={() => canStartLearning && handleStartLearning("writing")}
-          >
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg flex items-center">
-                  <PenTool className="w-5 h-5 mr-2 text-indigo-600" />
-                  英作文
-                </CardTitle>
-                <Badge variant="secondary">ライティング</Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600 mb-4">
-                文法カテゴリー別の4択英作文問題
-              </p>
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500">必要体力: 1 ♥</div>
-                <div className="flex items-center text-sm font-medium">
-                  {canStartLearning ? "クリックして開始" : "体力不足"}
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          />
 
           {/* タワーディフェンス */}
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg flex items-center">
-                  <Gamepad2 className="w-5 h-5 mr-2 text-red-600" />
-                  タワーディフェンス
-                </CardTitle>
-                <Badge variant="secondary">ゲーム</Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600 mb-4">
-                英語学習要素を含むタワーディフェンスゲーム
-              </p>
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500">体力不要</div>
-                <Button
-                  onClick={onNavigateToSimpleTowerDefense}
-                  className="flex items-center"
-                >
-                  開始
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <SelectionCard
+            id="tower-defense"
+            title="タワーディフェンス"
+            description="英語学習要素を含むタワーディフェンスゲーム"
+            icon="🎮"
+            difficulty="ゲーム"
+            detail="体力不要"
+            color="bg-red-50 border-red-200 text-red-800"
+            onClick={() => onNavigateToSimpleTowerDefense()}
+          />
 
           {/* TOEIC単語ガチャ */}
-          <Card
-            className="hover:shadow-lg transition-shadow cursor-pointer"
-            onClick={onNavigateToGacha}
-          >
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg flex items-center">
-                  <Gift className="w-5 h-5 mr-2 text-purple-600" />
-                  TOEIC単語ガチャ
-                </CardTitle>
-                <Badge variant="secondary">ガチャ</Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600 mb-4">
-                新しい単語をゲット！レアカードを集めよう
-              </p>
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500">XP消費</div>
-                <div className="flex items-center text-sm font-medium text-purple-600">
-                  クリックして開始
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <SelectionCard
+            id="gacha"
+            title="TOEIC単語ガチャ"
+            description="新しい単語をゲット！レアカードを集めよう"
+            icon="🎁"
+            difficulty="ガチャ"
+            detail="XP消費"
+            color="bg-purple-50 border-purple-200 text-purple-800"
+            onClick={() => onNavigateToGacha()}
+          />
 
           {/* 実績 */}
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg flex items-center">
-                  <Trophy className="w-5 h-5 mr-2 text-yellow-600" />
-                  実績
-                </CardTitle>
-                <Badge variant="secondary">進捗</Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600 mb-4">
-                学習の進捗とアチーブメントを確認
-              </p>
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500">体力不要</div>
-                <Button
-                  onClick={onNavigateToAchievements}
-                  className="flex items-center"
-                >
-                  確認
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <SelectionCard
+            id="achievements"
+            title="実績"
+            description="学習の進捗とアチーブメントを確認"
+            icon="🏆"
+            difficulty="進捗"
+            detail="体力不要"
+            color="bg-yellow-50 border-yellow-200 text-yellow-800"
+            onClick={() => onNavigateToAchievements()}
+          />
 
           {/* 成長ダッシュボード */}
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg flex items-center">
-                  <TrendingUp className="w-5 h-5 mr-2 text-green-600" />
-                  成長ダッシュボード
-                </CardTitle>
-                <Badge variant="secondary">分析</Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600 mb-4">
-                あなたの学習成長を可視化
-              </p>
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-500">体力不要</div>
-                <Button
-                  onClick={handleShowGrowthDashboard}
-                  className="flex items-center"
-                >
-                  成長を確認
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <SelectionCard
+            id="growth-dashboard"
+            title="成長ダッシュボード"
+            description="あなたの学習成長を可視化"
+            icon="📈"
+            difficulty="分析"
+            detail="体力不要"
+            color="bg-green-50 border-green-200 text-green-800"
+            onClick={() => handleShowGrowthDashboard()}
+          />
         </div>
 
         {/* フィードバックボタン */}
