@@ -1,4 +1,4 @@
-import{j as t,r as u}from"./ui-iDNYoGPn.js";import{u as T,b as I,B as j}from"./game-DNOgwd-m.js";import{D as C}from"./progress-D2o6Jopk.js";import{g as k,A as O}from"./learning-CAFcT4jp.js";import{S as P}from"./index--0uh6uKU.js";import"./vendor-D3F3s8fL.js";const E=[{id:"basic-grammar-theory",title:"英文の基本構造",category:"grammar",subcategory:"basic-grammar",level:1,contentType:"theory",duration:300,difficulty:"beginner",content:`# 英文の基本構造
+import{j as t,r as u}from"./ui-smpf69Zd.js";import{u as T,b as I,B as j}from"./game-Dd6Kb0LE.js";import{D as C}from"./progress-BPWR83xl.js";import{g as k,A as O}from"./learning-B-E1ZIuS.js";import{S as P}from"./index-CPlkK9WN.js";import"./vendor-D3F3s8fL.js";const E=[{id:"basic-grammar-theory",title:"英文の基本構造",category:"grammar",subcategory:"basic-grammar",level:1,contentType:"theory",duration:300,difficulty:"beginner",content:`# 英文の基本構造
 
 ## 英語の語順：SVO
 英語は**主語（S）→ 動詞（V）→ 目的語（O）**の順番が基本です。
@@ -355,7 +355,7 @@ TOEICでは**丁寧な表現**が頻出：
 ## 実践への活用
 - ✅ ガチャで獲得した語彙の効率的学習
 - ✅ 文法クイズでの語彙問題対策
-- ✅ TOEICスコア向上の戦略的アプローチ`,keyPoints:["スコア帯別の語彙レベル","ガチャシステムとの連携学習","理論→実践の学習フロー","ビジネス場面での実用性"],examples:[{english:"The comprehensive report covers all aspects.",japanese:"包括的なレポートは全ての側面をカバーしています。",explanation:"上級語彙comprehensiveの使用例"},{english:"We need to optimize our workflow.",japanese:"ワークフローを最適化する必要があります。",explanation:"中級語彙optimizeの実用例"}],relatedProblems:["vocabulary"],prerequisites:[]},{id:"writing-strategy",title:"英作文で高得点を取る方法",category:"writing",subcategory:"strategy",level:6,contentType:"strategy",duration:480,difficulty:"advanced",content:`# 英作文で高得点を取る方法
+- ✅ TOEICスコア向上の戦略的アプローチ`,keyPoints:["スコア帯別の語彙レベル","ガチャシステムとの連携学習","理論→実践の学習フロー","ビジネス場面での実用性"],examples:[{english:"The comprehensive report covers all aspects.",japanese:"包括的なレポートは全ての側面をカバーしています。",explanation:"上級語彙comprehensiveの使用例"},{english:"We need to optimize our workflow.",japanese:"ワークフローを最適化する必要があります。",explanation:"中級語彙optimizeの実用例"}],relatedProblems:["vocabulary"],prerequisites:[]},{id:"writing-strategy",title:"英作文で高得点を取る方法",category:"writing",subcategory:"strategy",level:8,contentType:"strategy",duration:480,difficulty:"advanced",content:`# 英作文で高得点を取る方法
 
 ## 英作文の基本戦略
 **正確性**と**流暢性**のバランスが重要です。

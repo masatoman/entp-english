@@ -378,7 +378,7 @@ export default function TimeAttackMode() {
       <div className="max-w-md mx-auto p-4 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <Button variant="ghost" onClick={onBack} className="p-2">
+          <Button variant="ghost" onClick={() => navigate("/")} className="p-2">
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <h1 className="text-xl font-bold">タイムアタック</h1>
