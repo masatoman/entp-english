@@ -1,13 +1,9 @@
 import { ArrowLeft } from "lucide-react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
+import { SelectionCard } from "./ui/selection-card";
 
 interface VocabularyCategorySelectionProps {
   onBack: () => void;
@@ -18,6 +14,10 @@ export function VocabularyCategorySelection({
   onBack,
   onSelectCategory,
 }: VocabularyCategorySelectionProps) {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const difficulty = searchParams.get("difficulty") || "intermediate";
+  useScrollToTop();
   const categories = [
     {
       id: "all" as const,
@@ -56,7 +56,11 @@ export function VocabularyCategorySelection({
       <div className="max-w-md mx-auto w-full space-y-6">
         {/* Header with back button */}
         <div className="flex items-center space-x-3">
-          <Button variant="ghost" size="sm" onClick={onBack}>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate("/learning/vocabulary/difficulty")}
+          >
             <ArrowLeft className="w-4 h-4" />
           </Button>
           <div className="flex-1 text-center">
@@ -73,45 +77,27 @@ export function VocabularyCategorySelection({
           カテゴリを選択してください
         </p>
 
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {categories.map((category) => (
-            <Card
+            <SelectionCard
               key={category.id}
-              className={`cursor-pointer hover:bg-accent transition-colors active:scale-[0.98] ${category.color}`}
-              onClick={() => onSelectCategory(category.id)}
-            >
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-xl">{category.title}</CardTitle>
-                    <CardDescription className="mt-1">
-                      {category.description}
-                    </CardDescription>
-                  </div>
-                  <Badge variant="secondary" className="ml-2">
-                    {category.difficulty}
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-sm text-muted-foreground mb-3">
-                  {category.detail}
-                </p>
-                <div className="space-y-2">
-                  <p className="text-sm font-medium">例:</p>
-                  <div className="flex flex-wrap gap-1">
-                    {category.examples.map((example, index) => (
-                      <Badge key={index} variant="outline" className="text-xs">
-                        {example}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-                <div className="mt-3 text-sm text-muted-foreground">
-                  {category.wordCount}
-                </div>
-              </CardContent>
-            </Card>
+              id={category.id}
+              title={category.title}
+              description={category.description}
+              detail={category.detail}
+              difficulty={category.difficulty}
+              color={category.color}
+              keyPoints={[
+                `例: ${category.examples.join(", ")}`,
+                category.wordCount,
+              ]}
+              onClick={(id) => {
+                const category = id as "all" | "toeic" | "daily";
+                navigate(
+                  `/learning/vocabulary/study/${difficulty}/${category}`
+                );
+              }}
+            />
           ))}
         </div>
       </div>

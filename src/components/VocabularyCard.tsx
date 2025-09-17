@@ -1,6 +1,8 @@
 import { ArrowLeft, RefreshCw, Star, Volume2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { VocabularyWord, getVocabularyWords } from "../data/vocabulary";
+import { useScrollToTop } from "../hooks/useScrollToTop";
 import { DataManager } from "../utils/dataManager";
 import { SoundManager } from "../utils/soundManager";
 import {
@@ -41,6 +43,14 @@ export function VocabularyCard({
   difficulty = "intermediate",
   category = "all",
 }: VocabularyCardProps) {
+  const navigate = useNavigate();
+  const { difficulty: urlDifficulty, category: urlCategory } = useParams();
+  const actualDifficulty = urlDifficulty || difficulty;
+  const actualCategory = urlCategory || category;
+
+  // ページトップにスクロール
+  useScrollToTop();
+
   const [words, setWords] = useState<VocabularyWord[]>([]);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [session, setSession] = useState<StudySession>({
@@ -218,7 +228,11 @@ export function VocabularyCard({
         <div className="max-w-md mx-auto p-4 space-y-6">
           {/* Header */}
           <div className="flex items-center justify-between pt-8">
-            <Button variant="ghost" onClick={onBack} className="p-2">
+            <Button
+              variant="ghost"
+              onClick={() => navigate("/learning/vocabulary/category")}
+              className="p-2"
+            >
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <h1 className="text-xl">エラー</h1>
@@ -252,7 +266,11 @@ export function VocabularyCard({
 
               {/* アクションボタン */}
               <div className="space-y-3">
-                <Button onClick={onBack} className="w-full" size="lg">
+                <Button
+                  onClick={() => navigate("/learning/vocabulary/category")}
+                  className="w-full"
+                  size="lg"
+                >
                   カテゴリ選択に戻る
                 </Button>
               </div>
@@ -278,7 +296,11 @@ export function VocabularyCard({
         <div className="max-w-md mx-auto p-4 space-y-6">
           {/* Header */}
           <div className="flex items-center justify-between pt-8">
-            <Button variant="ghost" onClick={onBack} className="p-2">
+            <Button
+              variant="ghost"
+              onClick={() => navigate("/learning/vocabulary/category")}
+              className="p-2"
+            >
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <h1 className="text-xl">学習完了！</h1>
@@ -328,7 +350,7 @@ export function VocabularyCard({
                   もう一度学習する
                 </Button>
                 <Button
-                  onClick={onBack}
+                  onClick={() => navigate("/learning/vocabulary/category")}
                   variant="outline"
                   className="w-full"
                   size="lg"

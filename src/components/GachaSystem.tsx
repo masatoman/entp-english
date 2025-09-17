@@ -1,18 +1,14 @@
-import {
-  ArrowLeft,
-  ChevronRight,
-  Crown,
-  Diamond,
-  Gift,
-  Star,
-  Zap,
-} from "lucide-react";
+import { ArrowLeft, Diamond, Gift, Star, Zap } from "lucide-react";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useScrollToTop } from "../hooks/useScrollToTop";
 import { GachaPack, WordCard } from "../types/gacha";
 import { GachaSystem } from "../utils/gachaSystem";
 import { CardDetailContent } from "./CardDetailContent";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
+import { CardCollectionGrid } from "./ui/card-collection-grid";
+import { GachaCard } from "./ui/gacha-card";
 
 interface GachaSystemProps {
   onBack: () => void;
@@ -25,6 +21,9 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
   userXP,
   onXPChange,
 }) => {
+  const navigate = useNavigate();
+  // コンポーネントマウント時にページトップにスクロール
+  useScrollToTop();
   const [drawnCards, setDrawnCards] = useState<WordCard[]>([]);
   const [isOpening, setIsOpening] = useState(false);
   const [selectedPack, setSelectedPack] = useState<string | null>(null);
@@ -36,53 +35,7 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
   const [showCollection, setShowCollection] = useState(false);
   const [showCardDetail, setShowCardDetail] = useState(false);
 
-  // レアリティに応じたアイコンと色を取得
-  const getRarityInfo = (rarity: WordCard["rarity"]) => {
-    switch (rarity) {
-      case "common":
-        return {
-          icon: Star,
-          color: "text-gray-500",
-          bgColor: "bg-gray-100",
-          borderColor: "border-gray-300",
-        };
-      case "uncommon":
-        return {
-          icon: Star,
-          color: "text-green-500",
-          bgColor: "bg-green-100",
-          borderColor: "border-green-300",
-        };
-      case "rare":
-        return {
-          icon: Zap,
-          color: "text-blue-500",
-          bgColor: "bg-blue-100",
-          borderColor: "border-blue-300",
-        };
-      case "epic":
-        return {
-          icon: Crown,
-          color: "text-purple-500",
-          bgColor: "bg-purple-100",
-          borderColor: "border-purple-300",
-        };
-      case "legendary":
-        return {
-          icon: Diamond,
-          color: "text-yellow-500",
-          bgColor: "bg-yellow-100",
-          borderColor: "border-yellow-300",
-        };
-      default:
-        return {
-          icon: Star,
-          color: "text-gray-500",
-          bgColor: "bg-gray-100",
-          borderColor: "border-gray-300",
-        };
-    }
-  };
+  // 古いgetRarityInfo関数は削除 - GachaCardコンポーネント内で処理
 
   const handleOpenPack = async (packId: string) => {
     const pack = GachaSystem.getPackById(packId);
@@ -201,7 +154,7 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
           <Button
             variant="outline"
             size="sm"
-            onClick={onBack}
+            onClick={() => navigate("/")}
             className="flex items-center gap-2"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -265,13 +218,12 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {availablePacks.map((pack) => {
               const canOpen = GachaSystem.canOpenPack(pack.id, userXP);
-              const RarityIcon = getRarityInfo(
+              const RarityIcon =
                 pack.rarity === "normal"
-                  ? "common"
+                  ? Star
                   : pack.rarity === "premium"
-                  ? "rare"
-                  : "legendary"
-              ).icon;
+                  ? Zap
+                  : Diamond;
 
               return (
                 <Card
@@ -402,70 +354,60 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
                   >
                     全て
                   </Button>
-                  {["common", "uncommon", "rare", "epic", "legendary"].map(
-                    (rarity) => {
-                      const count = userGachaData.ownedCards.filter(
-                        (card) => card.rarity === rarity
-                      ).length;
-                      const rarityInfo = getRarityInfo(
-                        rarity as WordCard["rarity"]
-                      );
-                      return (
-                        <Button
-                          key={rarity}
-                          variant="outline"
-                          size="sm"
-                          className={`text-xs ${rarityInfo.color} border-current`}
-                        >
-                          {rarityInfo.label} ({count})
-                        </Button>
-                      );
-                    }
-                  )}
-                </div>
-
-                {/* カードグリッド */}
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                  {userGachaData.ownedCards.map((card, index) => {
-                    const rarityInfo = getRarityInfo(card.rarity);
-                    const RarityIcon = rarityInfo.icon;
-
+                  {[
+                    {
+                      rarity: "common",
+                      name: "コモン",
+                      color: "text-gray-700 border-gray-400",
+                    },
+                    {
+                      rarity: "uncommon",
+                      name: "アンコモン",
+                      color: "text-green-700 border-green-500",
+                    },
+                    {
+                      rarity: "rare",
+                      name: "レア",
+                      color: "text-blue-700 border-blue-500",
+                    },
+                    {
+                      rarity: "epic",
+                      name: "エピック",
+                      color: "text-purple-700 border-purple-500",
+                    },
+                    {
+                      rarity: "legendary",
+                      name: "レジェンダリー",
+                      color: "text-yellow-700 border-yellow-500",
+                    },
+                  ].map(({ rarity, name, color }) => {
+                    const count = userGachaData.ownedCards.filter(
+                      (card) => card.rarity === rarity
+                    ).length;
                     return (
-                      <Card
-                        key={`collection-${card.id}-${index}`}
-                        className={`p-3 text-center transition-all hover:scale-105 hover:shadow-lg cursor-pointer ${rarityInfo.bgColor} ${rarityInfo.borderColor} border-2`}
-                        onClick={() => {
-                          setSelectedCard(card);
-                          setShowCardDetail(true);
-                        }}
+                      <Button
+                        key={rarity}
+                        variant="outline"
+                        size="sm"
+                        className={`text-xs ${color} border-2`}
                       >
-                        <div className="flex items-center justify-center mb-2">
-                          <RarityIcon
-                            className={`w-4 h-4 ${rarityInfo.color}`}
-                          />
-                        </div>
-
-                        <h4 className="font-bold text-xs mb-1 line-clamp-1">
-                          {card.word}
-                        </h4>
-                        <p className="text-xs text-gray-600 mb-2 line-clamp-2">
-                          {card.meaning}
-                        </p>
-
-                        <div className="flex items-center justify-between">
-                          <div
-                            className={`inline-block px-1 py-0.5 rounded-full text-xs font-medium ${rarityInfo.bgColor} ${rarityInfo.color}`}
-                          >
-                            {card.rarity.charAt(0).toUpperCase()}
-                          </div>
-                          <div className="text-xs text-blue-600">
-                            <ChevronRight className="w-3 h-3" />
-                          </div>
-                        </div>
-                      </Card>
+                        {name} ({count})
+                      </Button>
                     );
                   })}
                 </div>
+
+                {/* カードコレクション */}
+                <CardCollectionGrid
+                  cards={userGachaData.ownedCards}
+                  onCardClick={(card) => {
+                    setSelectedCard(card);
+                    setShowCardDetail(true);
+                  }}
+                  title="マイコレクション"
+                  showFilters={true}
+                  showSearch={true}
+                />
               </div>
             )}
           </div>
@@ -475,58 +417,51 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
       {/* 開封結果 */}
       {drawnCards.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">開封結果 - 8枚のカード</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
-            {drawnCards.map((card, index) => {
-              const rarityInfo = getRarityInfo(card.rarity);
-              const RarityIcon = rarityInfo.icon;
-
-              return (
-                <Card
-                  key={`${card.id}-${index}`}
-                  className={`p-2 text-center transition-all hover:scale-105 cursor-pointer ${rarityInfo.bgColor} ${rarityInfo.borderColor} border-2`}
-                  onClick={() => {
-                    setSelectedCard(card);
-                    setShowCardDetail(true);
-                  }}
-                >
-                  <div className="flex items-center justify-center mb-1">
-                    <RarityIcon className={`w-4 h-4 ${rarityInfo.color}`} />
-                  </div>
-
-                  <h4 className="font-bold text-xs mb-1 line-clamp-1">
-                    {card.word}
-                  </h4>
-                  <p className="text-xs text-gray-600 mb-1 line-clamp-2">
-                    {card.meaning}
-                  </p>
-
-                  <div
-                    className={`inline-block px-1 py-0.5 rounded-full text-xs font-medium ${rarityInfo.bgColor} ${rarityInfo.color}`}
-                  >
-                    {card.rarity.charAt(0).toUpperCase()}
-                  </div>
-
-                  <div className="text-xs text-gray-500 mt-1">
-                    {card.partOfSpeech}
-                  </div>
-
-                  <div className="text-xs text-blue-600 mt-1 font-medium">
-                    詳細
-                  </div>
-                </Card>
-              );
-            })}
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              🎉 開封結果 - {drawnCards.length}枚のカード 🎉
+            </h2>
+            <p className="text-gray-600">
+              新しいカードを獲得しました！語彙学習で使用できます。
+            </p>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-2">
+            {drawnCards.map((card, index) => (
+              <GachaCard
+                key={`drawn-${card.id}-${index}`}
+                card={card}
+                onClick={() => {
+                  setSelectedCard(card);
+                  setShowCardDetail(true);
+                }}
+                size="sm"
+                showDetails={false}
+                isNew={true}
+                isAnimated={true}
+                isFavorite={false}
+                onFavoriteToggle={() => {
+                  console.log(`Toggle favorite for card: ${card.word}`);
+                }}
+                className="animate-bounce-in"
+                style={{
+                  animationDelay: `${index * 100}ms`,
+                  animationFillMode: "both",
+                }}
+              />
+            ))}
           </div>
 
-          <div className="mt-4 text-center">
-            <p className="text-sm text-gray-600">
-              {drawnCards.length}
-              枚のカードを獲得しました！語彙学習で使用できます。
-            </p>
-            <p className="text-xs text-blue-600 mt-1">
+          <div className="mt-6 text-center">
+            <p className="text-blue-600 text-sm mb-3">
               💡 カードをクリックすると詳細情報が見れます
             </p>
+            <Button
+              onClick={() => setDrawnCards([])}
+              variant="outline"
+              className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-none hover:from-purple-600 hover:to-pink-600"
+            >
+              結果を閉じる
+            </Button>
           </div>
         </div>
       )}

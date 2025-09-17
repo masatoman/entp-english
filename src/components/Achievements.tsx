@@ -1,11 +1,13 @@
 import { ArrowLeft, Flame, Star, Target, Trophy } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Achievement,
   getTierColor,
   getTierTextColor,
   UserStats,
 } from "../data/achievements";
+import { useScrollToTop } from "../hooks/useScrollToTop";
 import { DataManager } from "../utils/dataManager";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -136,6 +138,10 @@ function StatCard({
 }
 
 export function Achievements({ onBack }: AchievementsProps) {
+  const navigate = useNavigate();
+  // ページトップにスクロール
+  useScrollToTop();
+
   const [userStats, setUserStats] = useState<UserStats>(
     DataManager.getUserStats()
   );
@@ -158,7 +164,7 @@ export function Achievements({ onBack }: AchievementsProps) {
       <div className="max-w-md mx-auto p-4 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between pt-8">
-          <Button variant="ghost" onClick={onBack} className="p-2">
+          <Button variant="ghost" onClick={() => navigate("/")} className="p-2">
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <h1 className="text-xl">実績</h1>

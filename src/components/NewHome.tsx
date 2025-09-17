@@ -9,6 +9,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserStats } from "../data/achievements";
 import { getPreStudyContentsForLevel } from "../data/preStudyContents";
 import { useHeartSystem } from "../hooks/useHeartSystem";
@@ -40,28 +41,10 @@ import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { SelectionCard } from "./ui/selection-card";
 
-interface NewHomeProps {
-  onNavigateToGrammar: () => void;
-  onNavigateToVocabulary: () => void;
-  onNavigateToGrammarQuiz: () => void;
-  onNavigateToEssay: () => void;
-  onNavigateToCombinedTest: () => void;
-  onNavigateToAchievements: () => void;
-  onNavigateToAppSettings: () => void;
-  onNavigateToTimeAttack: () => void;
-  onNavigateToSimpleTowerDefense: () => void;
-  onNavigateToGacha: () => void;
-}
+// NewHomeProps は不要（React Router使用）
 
-export function NewHome({
-  onNavigateToVocabulary,
-  onNavigateToEssay,
-  onNavigateToCombinedTest,
-  onNavigateToAchievements,
-  onNavigateToTimeAttack,
-  onNavigateToSimpleTowerDefense,
-  onNavigateToGacha,
-}: NewHomeProps) {
+export function NewHome() {
+  const navigate = useNavigate();
   const { userLevel, refreshLevel } = useLevelSystem();
   const { heartSystem, processRecovery, refreshHearts } = useHeartSystem();
 
@@ -183,19 +166,19 @@ export function NewHome({
     // 学習を開始（ハート消費は各学習コンポーネントで行う）
     switch (type) {
       case "grammar":
-        setShowGrammarQuizCategory(true);
+        navigate("/learning/grammar/category");
         break;
       case "vocabulary":
-        onNavigateToVocabulary();
+        navigate("/learning/vocabulary/difficulty");
         break;
       case "writing":
-        onNavigateToEssay();
+        navigate("/learning/grammar/category"); // 英作文も文法カテゴリから
         break;
       case "combined":
-        onNavigateToCombinedTest();
+        navigate("/learning/combined-test");
         break;
       case "timeattack":
-        onNavigateToTimeAttack();
+        navigate("/learning/time-attack");
         break;
       default:
         break;
@@ -235,7 +218,7 @@ export function NewHome({
 
   // ⭐️スターシステムのハンドラー
   const handlePreStudyMenuOpen = () => {
-    setShowPreStudyMenu(true);
+    navigate("/learning/pre-study/menu");
   };
 
   const handlePreStudyMenuClose = () => {
@@ -347,7 +330,7 @@ export function NewHome({
   };
 
   const handleShowGrowthDashboard = () => {
-    setShowGrowthDashboard(true);
+    navigate("/progress/dashboard");
   };
 
   const handleHideGrowthDashboard = () => {
@@ -431,32 +414,40 @@ export function NewHome({
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* ヘッダー */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-800">
-              ENTP英語学習アプリ
-            </h1>
-            <p className="text-gray-600 mt-1">
-              あなたの英語学習をサポートします
-            </p>
-          </div>
-          <div className="flex items-center space-x-4">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowDetailedView(!showDetailedView)}
-            >
-              <BarChart3 className="w-4 h-4 mr-2" />
-              {showDetailedView ? "統計を隠す" : "統計を表示"}
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowStatusAllocation(!showStatusAllocation)}
-            >
-              <Settings className="w-4 h-4 mr-2" />
-              ステータス設定
-            </Button>
+        <div className="bg-white rounded-lg shadow-sm border p-6 mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex-1">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                ENTP英語学習アプリ
+              </h1>
+              <p className="text-gray-600 text-sm sm:text-base">
+                あなたの英語学習をサポートします
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowDetailedView(!showDetailedView)}
+                className="flex items-center gap-2"
+              >
+                <BarChart3 className="w-4 h-4" />
+                <span className="hidden sm:inline">
+                  {showDetailedView ? "統計を隠す" : "統計を表示"}
+                </span>
+                <span className="sm:hidden">統計</span>
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowStatusAllocation(!showStatusAllocation)}
+                className="flex items-center gap-2"
+              >
+                <Settings className="w-4 h-4" />
+                <span className="hidden sm:inline">ステータス設定</span>
+                <span className="sm:hidden">設定</span>
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -661,7 +652,7 @@ export function NewHome({
             difficulty="ゲーム"
             detail="体力不要"
             color="bg-red-50 border-red-200 text-red-800"
-            onClick={() => onNavigateToSimpleTowerDefense()}
+            onClick={() => navigate("/games/tower-defense")}
           />
 
           {/* TOEIC単語ガチャ */}
@@ -673,7 +664,7 @@ export function NewHome({
             difficulty="ガチャ"
             detail="XP消費"
             color="bg-purple-50 border-purple-200 text-purple-800"
-            onClick={() => onNavigateToGacha()}
+            onClick={() => navigate("/games/gacha")}
           />
 
           {/* 実績 */}
@@ -685,7 +676,7 @@ export function NewHome({
             difficulty="進捗"
             detail="体力不要"
             color="bg-yellow-50 border-yellow-200 text-yellow-800"
-            onClick={() => onNavigateToAchievements()}
+            onClick={() => navigate("/progress/achievements")}
           />
 
           {/* 成長ダッシュボード */}

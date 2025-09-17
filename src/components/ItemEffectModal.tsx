@@ -14,6 +14,25 @@ interface ItemEffectModalProps {
   onClose: () => void;
 }
 
+import React, { useEffect, useState } from 'react';
+import { Card, CardContent } from './ui/card';
+import { Badge } from './ui/badge';
+import { Alert, AlertDescription } from './ui/alert';
+import { Sparkles, Zap, Target, Timer, Coins, TrendingUp } from 'lucide-react';
+import { cn } from '../lib/utils';
+
+interface ItemEffect {
+  type: 'damage-boost' | 'range-boost' | 'speed-boost' | 'gold-bonus' | 'xp-bonus';
+  value: number;
+  isPercentage: boolean;
+  rarity: 'common' | 'rare' | 'epic' | 'legendary';
+}
+
+interface ItemEffectModalProps {
+  effect: ItemEffect | null;
+  onClose: () => void;
+}
+
 export function ItemEffectModal({ effect, onClose }: ItemEffectModalProps) {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -32,71 +51,115 @@ export function ItemEffectModal({ effect, onClose }: ItemEffectModalProps) {
 
   if (!effect || !isVisible) return null;
 
-  const getEffectName = (type: string) => {
+  const getEffectIcon = (type: ItemEffect['type']) => {
     switch (type) {
-      case 'damage-boost': return '攻撃力アップ';
-      case 'range-boost': return '射程アップ';
-      case 'speed-boost': return '攻撃速度アップ';
-      case 'gold-bonus': return 'ゴールドボーナス';
-      case 'xp-bonus': return 'XPボーナス';
-      default: return '未知の効果';
+      case 'damage-boost':
+        return <Zap className="w-4 h-4" />;
+      case 'range-boost':
+        return <Target className="w-4 h-4" />;
+      case 'speed-boost':
+        return <Timer className="w-4 h-4" />;
+      case 'gold-bonus':
+        return <Coins className="w-4 h-4" />;
+      case 'xp-bonus':
+        return <TrendingUp className="w-4 h-4" />;
+      default:
+        return <Sparkles className="w-4 h-4" />;
     }
   };
 
-  const getEffectIcon = (type: string) => {
+  const getEffectLabel = (type: ItemEffect['type']) => {
     switch (type) {
-      case 'damage-boost': return '⚔️';
-      case 'range-boost': return '🎯';
-      case 'speed-boost': return '⚡';
-      case 'gold-bonus': return '💰';
-      case 'xp-bonus': return '⭐';
-      default: return '❓';
+      case 'damage-boost':
+        return 'ダメージブースト';
+      case 'range-boost':
+        return '射程ブースト';
+      case 'speed-boost':
+        return 'スピードブースト';
+      case 'gold-bonus':
+        return 'ゴールドボーナス';
+      case 'xp-bonus':
+        return 'XPボーナス';
+      default:
+        return 'エフェクト';
     }
   };
 
-  const getRarityColor = (rarity: string) => {
+  const getRarityColor = (rarity: ItemEffect['rarity']) => {
     switch (rarity) {
-      case 'common': return 'bg-gray-500';
-      case 'rare': return 'bg-blue-500';
-      case 'epic': return 'bg-purple-500';
-      case 'legendary': return 'bg-yellow-500';
-      default: return 'bg-gray-500';
+      case 'common':
+        return 'border-gray-300 bg-gray-50';
+      case 'rare':
+        return 'border-blue-300 bg-blue-50';
+      case 'epic':
+        return 'border-purple-300 bg-purple-50';
+      case 'legendary':
+        return 'border-yellow-300 bg-yellow-50';
+      default:
+        return 'border-gray-300 bg-gray-50';
     }
   };
 
-  const getRarityText = (rarity: string) => {
+  const getRarityTextColor = (rarity: ItemEffect['rarity']) => {
     switch (rarity) {
-      case 'common': return 'コモン';
-      case 'rare': return 'レア';
-      case 'epic': return 'エピック';
-      case 'legendary': return 'レジェンダリー';
-      default: return 'コモン';
+      case 'common':
+        return 'text-gray-700';
+      case 'rare':
+        return 'text-blue-700';
+      case 'epic':
+        return 'text-purple-700';
+      case 'legendary':
+        return 'text-yellow-700';
+      default:
+        return 'text-gray-700';
     }
-  };
-
-  const formatValue = (value: number, isPercentage: boolean) => {
-    if (isPercentage) {
-      return `+${value}%`;
-    }
-    return `+${value}`;
   };
 
   return (
-    <div className="fixed top-4 right-4 z-50 pointer-events-none sm:top-6 sm:right-6">
-      <div className="animate-bounce">
-        <Card className="bg-gradient-to-r from-yellow-400 to-orange-500 border-2 border-yellow-300 shadow-2xl transform scale-110 min-w-[180px] sm:min-w-[200px]">
-          <CardContent className="p-3 sm:p-4 text-center">
-            <div className="text-3xl sm:text-4xl mb-2">
-              {getEffectIcon(effect.type)}
+    <div className="fixed top-4 right-4 z-50 animate-in slide-in-from-right-5 duration-300">
+      <Alert 
+        className={cn(
+          "shadow-lg border-2 min-w-[280px] max-w-sm",
+          getRarityColor(effect.rarity)
+        )}
+      >
+        <div className="flex items-center gap-2">
+          {getEffectIcon(effect.type)}
+          <Sparkles className="w-4 h-4 text-amber-500" />
+        </div>
+        <AlertDescription className="ml-0">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className={cn("font-medium", getRarityTextColor(effect.rarity))}>
+                {getEffectLabel(effect.type)}
+              </span>
+              <Badge 
+                variant="outline"
+                className={cn(
+                  "text-xs font-bold",
+                  getRarityTextColor(effect.rarity)
+                )}
+              >
+                {effect.rarity.toUpperCase()}
+              </Badge>
             </div>
-            <div className="text-foreground font-bold text-sm sm:text-lg mb-1">
-              {getEffectName(effect.type)} 獲得！
+            
+            <div className="flex items-center gap-2">
+              <span className="text-sm">効果:</span>
+              <Badge className="font-mono">
+                +{effect.value}{effect.isPercentage ? '%' : ''}
+              </Badge>
             </div>
-            <div className="text-foreground text-lg sm:text-xl font-bold mb-2">
-              {formatValue(effect.value, effect.isPercentage)}
+            
+            <div className="text-xs text-muted-foreground">
+              アイテム効果が発動しました！
             </div>
-            <Badge 
-              className={`${getRarityColor(effect.rarity)} text-foreground font-bold text-xs`}
+          </div>
+        </AlertDescription>
+      </Alert>
+    </div>
+  );
+}
             >
               {getRarityText(effect.rarity)}
             </Badge>

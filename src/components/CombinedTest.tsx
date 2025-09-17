@@ -1,14 +1,27 @@
-import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader } from "./ui/card";
+import {
+  ArrowLeft,
+  CheckCircle,
+  Clock,
+  Star,
+  XCircle,
+  Zap,
+} from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  CombinedTestQuestion,
+  getCombinedTestQuestions,
+  shuffleArray,
+} from "../data/combinedTest";
+import { useScrollToTop } from "../hooks/useScrollToTop";
+import { getLevelManager, saveLevelManager } from "../utils/levelManager";
+import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader } from "./ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { Progress } from "./ui/progress";
-import { Badge } from "./ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
-import { ArrowLeft, Clock, Star, Zap, CheckCircle, XCircle } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
-import { CombinedTestQuestion, getCombinedTestQuestions, shuffleArray } from "../data/combinedTest";
-import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 
 interface CombinedTestProps {
   onBack: () => void;
@@ -47,7 +60,13 @@ function XPAnimation({ show, xp, onComplete }: XPAnimationProps) {
   );
 }
 
-function Timer({ timeLimit, onTimeUp }: { timeLimit: number; onTimeUp: () => void }) {
+function Timer({
+  timeLimit,
+  onTimeUp,
+}: {
+  timeLimit: number;
+  onTimeUp: () => void;
+}) {
   const [timeLeft, setTimeLeft] = useState(timeLimit);
 
   useEffect(() => {
@@ -61,7 +80,7 @@ function Timer({ timeLimit, onTimeUp }: { timeLimit: number; onTimeUp: () => voi
     }
 
     const timer = setInterval(() => {
-      setTimeLeft(prev => prev - 1);
+      setTimeLeft((prev) => prev - 1);
     }, 1000);
 
     return () => clearInterval(timer);
@@ -75,21 +94,29 @@ function Timer({ timeLimit, onTimeUp }: { timeLimit: number; onTimeUp: () => voi
     <div className="space-y-2">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <Clock className={`w-5 h-5 ${timeLeft <= 10 ? 'text-red-500' : 'text-blue-500'}`} />
-          <span className={`font-mono ${timeLeft <= 10 ? 'text-red-500' : ''}`}>
-            {minutes}:{seconds.toString().padStart(2, '0')}
+          <Clock
+            className={`w-5 h-5 ${
+              timeLeft <= 10 ? "text-red-500" : "text-blue-500"
+            }`}
+          />
+          <span className={`font-mono ${timeLeft <= 10 ? "text-red-500" : ""}`}>
+            {minutes}:{seconds.toString().padStart(2, "0")}
           </span>
         </div>
       </div>
-      <Progress 
-        value={percentage} 
-        className={`h-2 ${timeLeft <= 10 ? '[&>div]:bg-red-500' : '[&>div]:bg-blue-500'}`}
+      <Progress
+        value={percentage}
+        className={`h-2 ${
+          timeLeft <= 10 ? "[&>div]:bg-red-500" : "[&>div]:bg-blue-500"
+        }`}
       />
     </div>
   );
 }
 
 export function CombinedTest({ onBack }: CombinedTestProps) {
+  const navigate = useNavigate();
+  useScrollToTop();
   const [questions, setQuestions] = useState<CombinedTestQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswer, setUserAnswer] = useState("");
@@ -106,8 +133,8 @@ export function CombinedTest({ onBack }: CombinedTestProps) {
     // ハートを消費して学習を開始
     const levelManager = getLevelManager();
     if (!levelManager.consumeHeart()) {
-      alert('体力が不足しています。回復を待ってから再試行してください。');
-      onBack();
+      alert("体力が不足しています。回復を待ってから再試行してください。");
+      navigate("/");
       return;
     }
 
@@ -118,7 +145,8 @@ export function CombinedTest({ onBack }: CombinedTestProps) {
   }, []);
 
   const currentQuestion = questions[currentQuestionIndex];
-  const progress = questions.length > 0 ? ((currentQuestionIndex) / questions.length) * 100 : 0;
+  const progress =
+    questions.length > 0 ? (currentQuestionIndex / questions.length) * 100 : 0;
 
   const handleTimeUp = () => {
     if (!showResult) {
@@ -131,7 +159,7 @@ export function CombinedTest({ onBack }: CombinedTestProps) {
     if (!currentQuestion) return;
 
     let answer = "";
-    if (currentQuestion.type === 'multiple-choice') {
+    if (currentQuestion.type === "multiple-choice") {
       answer = selectedOption;
     } else {
       answer = userAnswer.trim();
@@ -141,40 +169,46 @@ export function CombinedTest({ onBack }: CombinedTestProps) {
 
     const correct = checkAnswer(answer, currentQuestion.correctAnswer);
     setIsCorrect(correct);
-    
+
     if (correct) {
-      setScore(prev => prev + 1);
-      setTotalXP(prev => prev + currentQuestion.xpReward);
+      setScore((prev) => prev + 1);
+      setTotalXP((prev) => prev + currentQuestion.xpReward);
       setCurrentXP(currentQuestion.xpReward);
       setShowXPAnimation(true);
     }
-    
+
     setShowResult(true);
     setTimeUp(false);
   };
 
   const checkAnswer = (userAns: string, correctAns: string): boolean => {
-    const normalize = (str: string) => str.toLowerCase().replace(/[^\w\s]/g, '').trim();
+    const normalize = (str: string) =>
+      str
+        .toLowerCase()
+        .replace(/[^\w\s]/g, "")
+        .trim();
     const userNormalized = normalize(userAns);
     const correctNormalized = normalize(correctAns);
-    
+
     // 完全一致チェック
     if (userNormalized === correctNormalized) return true;
-    
+
     // キーワードベースのチェック（テキスト入力の場合）
-    if (currentQuestion.type === 'text-input') {
-      const correctWords = correctNormalized.split(/\s+/).filter(w => w.length > 2);
+    if (currentQuestion.type === "text-input") {
+      const correctWords = correctNormalized
+        .split(/\s+/)
+        .filter((w) => w.length > 2);
       const userWords = userNormalized.split(/\s+/);
-      
-      const matchedWords = correctWords.filter(word => 
-        userWords.some(userWord => 
-          userWord.includes(word) || word.includes(userWord)
+
+      const matchedWords = correctWords.filter((word) =>
+        userWords.some(
+          (userWord) => userWord.includes(word) || word.includes(userWord)
         )
       );
-      
+
       return matchedWords.length >= Math.ceil(correctWords.length * 0.7);
     }
-    
+
     return false;
   };
 
@@ -182,13 +216,15 @@ export function CombinedTest({ onBack }: CombinedTestProps) {
     setShowResult(false);
     setUserAnswer("");
     setSelectedOption("");
-    
+
     if (currentQuestionIndex + 1 < questions.length) {
-      setCurrentQuestionIndex(prev => prev + 1);
+      setCurrentQuestionIndex((prev) => prev + 1);
     } else {
       // テスト完了
-      alert(`テスト完了！\nスコア: ${score}/${questions.length}\n獲得XP: ${totalXP}`);
-      onBack();
+      alert(
+        `テスト完了！\nスコア: ${score}/${questions.length}\n獲得XP: ${totalXP}`
+      );
+      navigate("/");
     }
   };
 
@@ -212,7 +248,7 @@ export function CombinedTest({ onBack }: CombinedTestProps) {
       <div className="max-w-md mx-auto p-4 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between pt-8">
-          <Button variant="ghost" onClick={onBack} className="p-2">
+          <Button variant="ghost" onClick={() => navigate("/")} className="p-2">
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <h1 className="text-xl">総合テスト</h1>
@@ -223,7 +259,9 @@ export function CombinedTest({ onBack }: CombinedTestProps) {
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <span className="text-sm">進捗</span>
-            <span className="text-sm">{currentQuestionIndex + 1} / {questions.length}</span>
+            <span className="text-sm">
+              {currentQuestionIndex + 1} / {questions.length}
+            </span>
           </div>
           <Progress value={progress} className="h-2" />
         </div>
@@ -247,23 +285,30 @@ export function CombinedTest({ onBack }: CombinedTestProps) {
           <CardHeader className="space-y-3">
             <div className="flex justify-between items-start">
               <Badge variant="secondary" className="text-xs">
-                {currentQuestion.difficulty === 'beginner' ? '初級' : 
-                 currentQuestion.difficulty === 'intermediate' ? '中級' : '上級'}
+                {currentQuestion.difficulty === "beginner"
+                  ? "初級"
+                  : currentQuestion.difficulty === "intermediate"
+                  ? "中級"
+                  : "上級"}
               </Badge>
               <Badge variant="outline" className="text-xs">
                 {currentQuestion.grammarPattern}
               </Badge>
             </div>
-            
+
             <div className="space-y-3">
               <h3 className="font-medium">{currentQuestion.instruction}</h3>
-              
+
               {/* Vocabulary display */}
               <div className="p-3 bg-indigo-50 rounded-lg">
                 <p className="text-sm text-indigo-700 mb-2">使用する単語:</p>
                 <div className="flex flex-wrap gap-2">
                   {currentQuestion.vocabulary.map((word, index) => (
-                    <Badge key={index} variant="secondary" className="bg-indigo-100 text-indigo-800">
+                    <Badge
+                      key={index}
+                      variant="secondary"
+                      className="bg-indigo-100 text-indigo-800"
+                    >
                       {word}
                     </Badge>
                   ))}
@@ -271,19 +316,20 @@ export function CombinedTest({ onBack }: CombinedTestProps) {
               </div>
             </div>
           </CardHeader>
-          
+
           <CardContent className="space-y-4">
             {/* Answer area */}
-            {currentQuestion.type === 'multiple-choice' ? (
+            {currentQuestion.type === "multiple-choice" ? (
               <div className="space-y-2">
                 {currentQuestion.options?.map((option, index) => (
                   <label
                     key={index}
                     className={`
                       block p-3 border rounded-lg cursor-pointer transition-colors
-                      ${selectedOption === option 
-                        ? 'border-indigo-500 bg-indigo-50' 
-                        : 'border-gray-200 hover:bg-gray-50'
+                      ${
+                        selectedOption === option
+                          ? "border-indigo-500 bg-indigo-50"
+                          : "border-gray-200 hover:bg-gray-50"
                       }
                     `}
                   >
@@ -326,38 +372,54 @@ export function CombinedTest({ onBack }: CombinedTestProps) {
         <Dialog open={showResult} onOpenChange={setShowResult}>
           <DialogContent className="max-w-sm mx-auto">
             <DialogHeader>
-              <DialogTitle className={`text-center flex items-center justify-center space-x-2 ${isCorrect ? 'text-emerald-600' : 'text-red-600'}`}>
-                {isCorrect ? <CheckCircle className="w-6 h-6" /> : <XCircle className="w-6 h-6" />}
-                <span>{isCorrect ? '正解！' : '不正解'}</span>
+              <DialogTitle
+                className={`text-center flex items-center justify-center space-x-2 ${
+                  isCorrect ? "text-emerald-600" : "text-red-600"
+                }`}
+              >
+                {isCorrect ? (
+                  <CheckCircle className="w-6 h-6" />
+                ) : (
+                  <XCircle className="w-6 h-6" />
+                )}
+                <span>{isCorrect ? "正解！" : "不正解"}</span>
               </DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <div className="p-4 bg-gray-50 rounded-lg space-y-2">
                 <div>
                   <span className="text-sm font-medium">正解:</span>
-                  <p className="text-emerald-600 font-medium">{currentQuestion.correctAnswer}</p>
+                  <p className="text-emerald-600 font-medium">
+                    {currentQuestion.correctAnswer}
+                  </p>
                 </div>
                 <div>
                   <span className="text-sm font-medium">解説:</span>
-                  <p className="text-sm text-muted-foreground">{currentQuestion.explanation}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {currentQuestion.explanation}
+                  </p>
                 </div>
                 {isCorrect && (
                   <div className="flex items-center space-x-2 text-emerald-600">
                     <Star className="w-4 h-4" />
-                    <span className="text-sm font-medium">+{currentQuestion.xpReward} XP獲得！</span>
+                    <span className="text-sm font-medium">
+                      +{currentQuestion.xpReward} XP獲得！
+                    </span>
                   </div>
                 )}
               </div>
               <Button onClick={handleNext} className="w-full">
-                {currentQuestionIndex + 1 < questions.length ? '次の問題' : '完了'}
+                {currentQuestionIndex + 1 < questions.length
+                  ? "次の問題"
+                  : "完了"}
               </Button>
             </div>
           </DialogContent>
         </Dialog>
 
         {/* XP Animation */}
-        <XPAnimation 
-          show={showXPAnimation} 
+        <XPAnimation
+          show={showXPAnimation}
           xp={currentXP}
           onComplete={handleXPAnimationComplete}
         />

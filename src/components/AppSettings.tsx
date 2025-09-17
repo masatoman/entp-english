@@ -1,24 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
-import { Switch } from './ui/switch';
-import { Label } from './ui/label';
-import { Input } from './ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { 
-  Settings, 
-  Bell, 
+import {
+  Bell,
   BellOff,
-  Clock,
-  TestTube,
   CheckCircle,
-  Trash2, 
+  Clock,
   Download,
-  Target
-} from 'lucide-react';
-import { notificationManager, NotificationSettings } from '../utils/notificationManager';
-import { DataManager, AppSettings as AppSettingsType } from '../utils/dataManager';
-import { SoundManager } from '../utils/soundManager';
+  Target,
+  TestTube,
+  Trash2,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useScrollToTop } from "../hooks/useScrollToTop";
+import {
+  AppSettings as AppSettingsType,
+  DataManager,
+} from "../utils/dataManager";
+import {
+  notificationManager,
+  NotificationSettings,
+} from "../utils/notificationManager";
+import { SoundManager } from "../utils/soundManager";
+import { Button } from "./ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { Switch } from "./ui/switch";
 
 interface AppSettingsProps {
   onBack: () => void;
@@ -27,15 +46,20 @@ interface AppSettingsProps {
 // AppSettingsTypeをDataManagerから使用
 
 export function AppSettings({ onBack }: AppSettingsProps) {
+  const navigate = useNavigate();
+  useScrollToTop();
   const [settings, setSettings] = useState<AppSettingsType>({
     dailyXPGoal: 100,
     grammarQuizQuestionCount: 10,
     vocabularyQuestionCount: 10,
-    essayQuestionCount: 10
+    essayQuestionCount: 10,
   });
-  
-  const [notificationSettings, setNotificationSettings] = useState<NotificationSettings>(notificationManager.getSettings());
-  const [permission, setPermission] = useState<NotificationPermission>(notificationManager.getPermissionStatus());
+
+  const [notificationSettings, setNotificationSettings] =
+    useState<NotificationSettings>(notificationManager.getSettings());
+  const [permission, setPermission] = useState<NotificationPermission>(
+    notificationManager.getPermissionStatus()
+  );
   const [isSupported, setIsSupported] = useState(false);
   const [isTesting, setIsTesting] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(SoundManager.getEnabled());
@@ -61,7 +85,10 @@ export function AppSettings({ onBack }: AppSettingsProps) {
     saveSettings({ [key]: value });
   };
 
-  const handleNotificationSettingChange = (key: keyof NotificationSettings, value: boolean | string) => {
+  const handleNotificationSettingChange = (
+    key: keyof NotificationSettings,
+    value: boolean | string
+  ) => {
     const newSettings = { ...notificationSettings, [key]: value };
     setNotificationSettings(newSettings);
     notificationManager.updateSettings(newSettings);
@@ -80,14 +107,16 @@ export function AppSettings({ onBack }: AppSettingsProps) {
       const newPermission = await notificationManager.requestPermission();
       setPermission(newPermission);
     } catch (error) {
-      console.error('Error requesting permission:', error);
-      alert('通知の許可を取得できませんでした。ブラウザの設定を確認してください。');
+      console.error("Error requesting permission:", error);
+      alert(
+        "通知の許可を取得できませんでした。ブラウザの設定を確認してください。"
+      );
     }
   };
 
   const handleTestNotification = async () => {
-    if (permission !== 'granted') {
-      alert('通知の許可が必要です。');
+    if (permission !== "granted") {
+      alert("通知の許可が必要です。");
       return;
     }
 
@@ -95,8 +124,8 @@ export function AppSettings({ onBack }: AppSettingsProps) {
     try {
       await notificationManager.testNotification();
     } catch (error) {
-      console.error('Error showing test notification:', error);
-      alert('テスト通知の表示に失敗しました。');
+      console.error("Error showing test notification:", error);
+      alert("テスト通知の表示に失敗しました。");
     } finally {
       setIsTesting(false);
     }
@@ -104,12 +133,12 @@ export function AppSettings({ onBack }: AppSettingsProps) {
 
   const getPermissionStatusText = () => {
     switch (permission) {
-      case 'granted':
-        return { text: '許可済み', color: 'text-green-600', icon: CheckCircle };
-      case 'denied':
-        return { text: '拒否済み', color: 'text-red-600', icon: BellOff };
+      case "granted":
+        return { text: "許可済み", color: "text-green-600", icon: CheckCircle };
+      case "denied":
+        return { text: "拒否済み", color: "text-red-600", icon: BellOff };
       default:
-        return { text: '未設定', color: 'text-yellow-600', icon: Bell };
+        return { text: "未設定", color: "text-yellow-600", icon: Bell };
     }
   };
 
@@ -117,8 +146,10 @@ export function AppSettings({ onBack }: AppSettingsProps) {
   const StatusIcon = permissionStatus.icon;
 
   const handleClearData = () => {
-    if (confirm('すべての学習データを削除しますか？この操作は取り消せません。')) {
-      if (confirm('本当に削除しますか？')) {
+    if (
+      confirm("すべての学習データを削除しますか？この操作は取り消せません。")
+    ) {
+      if (confirm("本当に削除しますか？")) {
         localStorage.clear();
         window.location.reload();
       }
@@ -134,21 +165,25 @@ export function AppSettings({ onBack }: AppSettingsProps) {
         vocabularyProgress: DataManager.getVocabularyProgress(),
         appSettings: settings,
         notificationSettings: notificationSettings,
-        exportDate: new Date().toISOString()
+        exportDate: new Date().toISOString(),
       };
-      
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+
+      const blob = new Blob([JSON.stringify(data, null, 2)], {
+        type: "application/json",
+      });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
-      a.download = `entp-english-backup-${new Date().toISOString().split('T')[0]}.json`;
+      a.download = `entp-english-backup-${
+        new Date().toISOString().split("T")[0]
+      }.json`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch (error) {
-      console.error('Error exporting data:', error);
-      alert('データのエクスポートに失敗しました。');
+      console.error("Error exporting data:", error);
+      alert("データのエクスポートに失敗しました。");
     }
   };
 
@@ -157,7 +192,7 @@ export function AppSettings({ onBack }: AppSettingsProps) {
       <div className="max-w-md mx-auto w-full space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <Button variant="ghost" onClick={onBack} className="p-2">
+          <Button variant="ghost" onClick={() => navigate("/")} className="p-2">
             ←
           </Button>
           <h1 className="text-2xl font-bold">アプリ設定</h1>
@@ -171,15 +206,18 @@ export function AppSettings({ onBack }: AppSettingsProps) {
               <Target className="w-5 h-5" />
               学習設定
             </CardTitle>
-            <CardDescription>
-              学習目標をカスタマイズできます
-            </CardDescription>
+            <CardDescription>学習目標をカスタマイズできます</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Daily XP Goal */}
             <div className="space-y-2">
               <label className="text-sm font-medium">1日のXP目標</label>
-              <Select value={settings.dailyXPGoal.toString()} onValueChange={(value) => handleSettingChange('dailyXPGoal', parseInt(value))}>
+              <Select
+                value={settings.dailyXPGoal.toString()}
+                onValueChange={(value) =>
+                  handleSettingChange("dailyXPGoal", parseInt(value))
+                }
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -199,7 +237,15 @@ export function AppSettings({ onBack }: AppSettingsProps) {
             {/* Grammar Quiz Question Count */}
             <div className="space-y-2">
               <label className="text-sm font-medium">文法クイズの問題数</label>
-              <Select value={settings.grammarQuizQuestionCount.toString()} onValueChange={(value) => handleSettingChange('grammarQuizQuestionCount', parseInt(value))}>
+              <Select
+                value={settings.grammarQuizQuestionCount.toString()}
+                onValueChange={(value) =>
+                  handleSettingChange(
+                    "grammarQuizQuestionCount",
+                    parseInt(value)
+                  )
+                }
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -219,7 +265,15 @@ export function AppSettings({ onBack }: AppSettingsProps) {
             {/* Vocabulary Question Count */}
             <div className="space-y-2">
               <label className="text-sm font-medium">語彙学習の問題数</label>
-              <Select value={settings.vocabularyQuestionCount.toString()} onValueChange={(value) => handleSettingChange('vocabularyQuestionCount', parseInt(value))}>
+              <Select
+                value={settings.vocabularyQuestionCount.toString()}
+                onValueChange={(value) =>
+                  handleSettingChange(
+                    "vocabularyQuestionCount",
+                    parseInt(value)
+                  )
+                }
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -239,7 +293,12 @@ export function AppSettings({ onBack }: AppSettingsProps) {
             {/* Essay Question Count */}
             <div className="space-y-2">
               <label className="text-sm font-medium">英作文の問題数</label>
-              <Select value={settings.essayQuestionCount.toString()} onValueChange={(value) => handleSettingChange('essayQuestionCount', parseInt(value))}>
+              <Select
+                value={settings.essayQuestionCount.toString()}
+                onValueChange={(value) =>
+                  handleSettingChange("essayQuestionCount", parseInt(value))
+                }
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -280,16 +339,22 @@ export function AppSettings({ onBack }: AppSettingsProps) {
               <Download className="w-5 h-5" />
               データ管理
             </CardTitle>
-            <CardDescription>
-              学習データのバックアップと管理
-            </CardDescription>
+            <CardDescription>学習データのバックアップと管理</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <Button onClick={handleExportData} variant="outline" className="w-full">
+            <Button
+              onClick={handleExportData}
+              variant="outline"
+              className="w-full"
+            >
               <Download className="w-4 h-4 mr-2" />
               データをエクスポート
             </Button>
-            <Button onClick={handleClearData} variant="destructive" className="w-full">
+            <Button
+              onClick={handleClearData}
+              variant="destructive"
+              className="w-full"
+            >
               <Trash2 className="w-4 h-4 mr-2" />
               すべてのデータを削除
             </Button>
@@ -310,16 +375,20 @@ export function AppSettings({ onBack }: AppSettingsProps) {
               <CardContent>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <StatusIcon className={`w-5 h-5 ${permissionStatus.color}`} />
-                    <span className={permissionStatus.color}>{permissionStatus.text}</span>
+                    <StatusIcon
+                      className={`w-5 h-5 ${permissionStatus.color}`}
+                    />
+                    <span className={permissionStatus.color}>
+                      {permissionStatus.text}
+                    </span>
                   </div>
-                  {permission !== 'granted' && (
+                  {permission !== "granted" && (
                     <Button onClick={handlePermissionRequest} size="sm">
                       許可をリクエスト
                     </Button>
                   )}
                 </div>
-                {permission === 'denied' && (
+                {permission === "denied" && (
                   <p className="text-sm text-red-600 mt-2">
                     通知が拒否されています。ブラウザの設定から許可してください。
                   </p>
@@ -339,7 +408,9 @@ export function AppSettings({ onBack }: AppSettingsProps) {
                 {/* Enable Notifications */}
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <Label htmlFor="enable-notifications">通知を有効にする</Label>
+                    <Label htmlFor="enable-notifications">
+                      通知を有効にする
+                    </Label>
                     <p className="text-sm text-muted-foreground">
                       すべての通知機能を有効/無効にします
                     </p>
@@ -347,8 +418,10 @@ export function AppSettings({ onBack }: AppSettingsProps) {
                   <Switch
                     id="enable-notifications"
                     checked={notificationSettings.enabled}
-                    onCheckedChange={(checked) => handleNotificationSettingChange('enabled', checked)}
-                    disabled={permission !== 'granted'}
+                    onCheckedChange={(checked) =>
+                      handleNotificationSettingChange("enabled", checked)
+                    }
+                    disabled={permission !== "granted"}
                   />
                 </div>
 
@@ -356,7 +429,9 @@ export function AppSettings({ onBack }: AppSettingsProps) {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
-                      <Label htmlFor="daily-reminder">毎日の学習リマインダー</Label>
+                      <Label htmlFor="daily-reminder">
+                        毎日の学習リマインダー
+                      </Label>
                       <p className="text-sm text-muted-foreground">
                         指定した時間に学習を促す通知を送信します
                       </p>
@@ -364,8 +439,16 @@ export function AppSettings({ onBack }: AppSettingsProps) {
                     <Switch
                       id="daily-reminder"
                       checked={notificationSettings.dailyReminder}
-                      onCheckedChange={(checked) => handleNotificationSettingChange('dailyReminder', checked)}
-                      disabled={!notificationSettings.enabled || permission !== 'granted'}
+                      onCheckedChange={(checked) =>
+                        handleNotificationSettingChange(
+                          "dailyReminder",
+                          checked
+                        )
+                      }
+                      disabled={
+                        !notificationSettings.enabled ||
+                        permission !== "granted"
+                      }
                     />
                   </div>
 
@@ -377,7 +460,12 @@ export function AppSettings({ onBack }: AppSettingsProps) {
                         id="reminder-time"
                         type="time"
                         value={notificationSettings.reminderTime}
-                        onChange={(e) => handleNotificationSettingChange('reminderTime', e.target.value)}
+                        onChange={(e) =>
+                          handleNotificationSettingChange(
+                            "reminderTime",
+                            e.target.value
+                          )
+                        }
                         className="w-32"
                       />
                     </div>
@@ -395,8 +483,12 @@ export function AppSettings({ onBack }: AppSettingsProps) {
                   <Switch
                     id="streak-reminder"
                     checked={notificationSettings.streakReminder}
-                    onCheckedChange={(checked) => handleNotificationSettingChange('streakReminder', checked)}
-                    disabled={!notificationSettings.enabled || permission !== 'granted'}
+                    onCheckedChange={(checked) =>
+                      handleNotificationSettingChange("streakReminder", checked)
+                    }
+                    disabled={
+                      !notificationSettings.enabled || permission !== "granted"
+                    }
                   />
                 </div>
 
@@ -411,8 +503,15 @@ export function AppSettings({ onBack }: AppSettingsProps) {
                   <Switch
                     id="achievement-reminder"
                     checked={notificationSettings.achievementReminder}
-                    onCheckedChange={(checked) => handleNotificationSettingChange('achievementReminder', checked)}
-                    disabled={!notificationSettings.enabled || permission !== 'granted'}
+                    onCheckedChange={(checked) =>
+                      handleNotificationSettingChange(
+                        "achievementReminder",
+                        checked
+                      )
+                    }
+                    disabled={
+                      !notificationSettings.enabled || permission !== "granted"
+                    }
                   />
                 </div>
               </CardContent>
@@ -423,12 +522,12 @@ export function AppSettings({ onBack }: AppSettingsProps) {
               <CardContent className="pt-6">
                 <Button
                   onClick={handleTestNotification}
-                  disabled={permission !== 'granted' || isTesting}
+                  disabled={permission !== "granted" || isTesting}
                   className="w-full"
                   variant="outline"
                 >
                   <TestTube className="w-4 h-4 mr-2" />
-                  {isTesting ? 'テスト中...' : 'テスト通知を送信'}
+                  {isTesting ? "テスト中..." : "テスト通知を送信"}
                 </Button>
                 <p className="text-xs text-muted-foreground text-center mt-2">
                   通知が正常に動作するかテストできます
@@ -441,7 +540,9 @@ export function AppSettings({ onBack }: AppSettingsProps) {
             <CardContent className="pt-6">
               <div className="text-center">
                 <BellOff className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">通知機能が利用できません</h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  通知機能が利用できません
+                </h3>
                 <p className="text-sm text-gray-600">
                   お使いのブラウザは通知機能をサポートしていません。
                 </p>

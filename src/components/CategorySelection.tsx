@@ -1,4 +1,6 @@
 import { ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Category } from "../types";
 import { Button } from "./ui/button";
 import { SelectionCard } from "./ui/selection-card";
@@ -87,6 +89,8 @@ export function CategorySelection({
   onSelectCategory,
   onBack,
 }: CategorySelectionProps) {
+  const navigate = useNavigate();
+  useScrollToTop();
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-4xl mx-auto">
@@ -94,7 +98,7 @@ export function CategorySelection({
         <div className="flex items-center justify-between mb-6">
           <Button
             variant="outline"
-            onClick={onBack}
+            onClick={() => navigate("/")}
             className="flex items-center"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -121,7 +125,7 @@ export function CategorySelection({
               color={category.color}
               onClick={(id) => {
                 console.log("Category clicked:", id);
-                onSelectCategory(id as Category);
+                navigate(`/learning/grammar/difficulty/${id}`);
               }}
             />
           ))}

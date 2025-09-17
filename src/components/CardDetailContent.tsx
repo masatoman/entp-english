@@ -1,5 +1,6 @@
 import { Award, BookOpen, Star, Target, Volume2 } from "lucide-react";
 import React from "react";
+import { useScrollToTop } from "../hooks/useScrollToTop";
 import { WordCard } from "../types/gacha";
 import { Card } from "./ui/card";
 
@@ -10,6 +11,8 @@ interface CardDetailContentProps {
 export const CardDetailContent: React.FC<CardDetailContentProps> = ({
   card,
 }) => {
+  // カードが変更されるたびにページトップにスクロール
+  useScrollToTop([card.id]);
   const getRarityInfo = (rarity: WordCard["rarity"]) => {
     const rarityMap = {
       common: {

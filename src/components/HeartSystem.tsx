@@ -9,6 +9,23 @@ interface HeartSystemDisplayProps {
   compact?: boolean;
 }
 
+export const import React, { useState, useEffect } from 'react';
+import { HeartSystem } from '../types';
+import { getLevelManager, saveLevelManager } from '../utils/levelManager';
+import { useHeartSystem } from '../hooks/useHeartSystem';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { Progress } from './ui/progress';
+import { Alert, AlertDescription } from './ui/alert';
+import { Heart, AlertTriangle } from 'lucide-react';
+
+interface HeartSystemDisplayProps {
+  onHeartChange?: (hearts: HeartSystem) => void;
+  showRecoveryTime?: boolean;
+  compact?: boolean;
+}
+
 export const HeartSystemDisplay: React.FC<HeartSystemDisplayProps> = ({
   onHeartChange,
   showRecoveryTime = true,
@@ -83,19 +100,134 @@ export const HeartSystemDisplay: React.FC<HeartSystemDisplayProps> = ({
     }
   };
 
+  const handleRecoverAllHearts = () => {
+    const manager = getLevelManager();
+    const newHeartSystem = {
+      ...heartSystem,
+      current: heartSystem.max,
+      lastRecoveryTime: Date.now(),
+      nextRecovery: Date.now() + 5 * 60 * 1000,
+    };
+    manager.heartSystem = newHeartSystem;
+    saveLevelManager(manager);
+    setHeartSystem(newHeartSystem);
+    onHeartChange?.(newHeartSystem);
+  };
+
+  const recoveryProgress = ((5 * 60 * 1000 - timeUntilRecovery) / (5 * 60 * 1000)) * 100;
+
   if (compact) {
     return (
-      <div className="flex items-center space-x-1">
+      <div className="flex items-center space-x-2">
         <div className="flex space-x-1">
           {Array.from({ length: heartSystem.max }, (_, i) => (
-            <span
+            <Heart
               key={i}
-              className={`text-lg ${
-                i < heartSystem.current ? 'text-red-500' : 'text-gray-300'
+              className={`w-5 h-5 ${
+                i < heartSystem.current 
+                  ? 'text-red-500 fill-red-500' 
+                  : 'text-gray-300'
               }`}
+            />
+          ))}
+        </div>
+        <Badge variant="outline" className="text-xs">
+          {heartSystem.current}/{heartSystem.max}
+        </Badge>
+      </div>
+    );
+  }
+
+  return (
+    <Card className="shadow-md">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg flex items-center gap-2">
+          <Heart className="w-5 h-5 text-red-500" />
+          体力システム
+        </CardTitle>
+      </CardHeader>
+      
+      <CardContent className="space-y-4">
+        {/* ハート表示 */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">体力</span>
+            <div className="flex space-x-1">
+              {Array.from({ length: heartSystem.max }, (_, i) => (
+                <Heart
+                  key={i}
+                  className={`w-6 h-6 ${
+                    i < heartSystem.current 
+                      ? 'text-red-500 fill-red-500' 
+                      : 'text-gray-300'
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+          <Badge variant="secondary" className="font-mono">
+            {heartSystem.current}/{heartSystem.max}
+          </Badge>
+        </div>
+
+        {/* 回復時間表示 */}
+        {showRecoveryTime && heartSystem.current < heartSystem.max && (
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">次回復:</span>
+              <Badge variant="outline" className="font-mono">
+                {timeUntilRecovery > 0 ? formatTime(timeUntilRecovery) + '後' : '満タン'}
+              </Badge>
+            </div>
+            <Progress 
+              value={Math.max(0, Math.min(100, recoveryProgress))} 
+              className="h-2"
+            />
+          </div>
+        )}
+
+        {/* 説明とボタン */}
+        <div className="flex items-center justify-between">
+          <div className="text-sm text-muted-foreground space-y-1">
+            <p>1問題につき1体力消費</p>
+            <p>5分で1体力回復</p>
+          </div>
+          
+          <div className="flex gap-2">
+            <Button
+              onClick={handleConsumeHeart}
+              disabled={!canConsumeHeart}
+              variant={canConsumeHeart ? "destructive" : "secondary"}
+              size="sm"
             >
-              {i < heartSystem.current ? '♥' : '♡'}
-            </span>
+              {canConsumeHeart ? '体力を消費' : '体力不足'}
+            </Button>
+            
+            <Button
+              onClick={handleRecoverAllHearts}
+              variant="outline"
+              size="sm"
+              className="text-green-600 border-green-600 hover:bg-green-50"
+              title="テスト用: 体力を全回復"
+            >
+              ♥回復
+            </Button>
+          </div>
+        </div>
+
+        {/* 体力不足警告 */}
+        {heartSystem.current === 0 && (
+          <Alert className="border-yellow-200 bg-yellow-50">
+            <AlertTriangle className="h-4 w-4 text-yellow-600" />
+            <AlertDescription className="text-yellow-800">
+              体力が不足しています。回復を待つか、時間をスキップしてください。
+            </AlertDescription>
+          </Alert>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
           ))}
         </div>
         <span className="text-sm text-gray-600">
