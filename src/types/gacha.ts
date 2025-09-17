@@ -58,8 +58,10 @@ export interface GachaPack {
 export interface UserGachaData {
   ownedCards: WordCard[];
   totalPacks: number;
-  dailyPacksUsed: number;
-  lastPackDate: string;
+  dailyPacksUsed: number; // 互換性のため残す
+  lastPackDate: string; // 互換性のため残す
+  availablePacks?: number; // 利用可能なパック数（最大2）
+  lastPackOpenTime?: number; // 最後にパックを開封した時間
   collection: {
     totalCards: number;
     uniqueCards: number;

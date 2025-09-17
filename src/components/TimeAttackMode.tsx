@@ -5,17 +5,14 @@ import { getQuestions } from "../data/questions";
 import { getVocabularyWords } from "../data/vocabulary";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { DataManager } from "../utils/dataManager";
+import { GachaSystem } from "../utils/gachaSystem";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
 
-interface TimeAttackModeProps {
-  onBack: () => void;
-}
-
 interface TimeAttackQuestion {
-  id: number;
+  id: number | string;
   type: "grammar" | "vocabulary";
   question: string;
   options?: string[];
@@ -24,7 +21,7 @@ interface TimeAttackQuestion {
   timeLimit: number; // 秒
 }
 
-export function TimeAttackMode({ onBack }: TimeAttackModeProps) {
+export default function TimeAttackMode() {
   const navigate = useNavigate();
   useScrollToTop();
   const [questions, setQuestions] = useState<TimeAttackQuestion[]>([]);
@@ -39,44 +36,106 @@ export function TimeAttackMode({ onBack }: TimeAttackModeProps) {
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
 
-  // タイムアタック問題を生成
+  // 相乗効果データ取得
+  const [synergyStats, setSynergyStats] = useState({
+    gachaVocabCount: 0,
+    grammarCategoriesStudied: 0,
+  });
+
+  useEffect(() => {
+    try {
+      const userGachaData = GachaSystem.getUserGachaData();
+      setSynergyStats({
+        gachaVocabCount: userGachaData.ownedCards.length,
+        grammarCategoriesStudied: 3, // TODO: 実際の文法学習進捗と連携
+      });
+    } catch (error) {
+      console.log("相乗効果データの取得に失敗:", error);
+    }
+  }, []);
+
+  // 相乗効果を活用したタイムアタック問題を生成
   const generateTimeAttackQuestions = (): TimeAttackQuestion[] => {
     const timeAttackQuestions: TimeAttackQuestion[] = [];
 
-    // 文法問題（簡単）を5問
-    const grammarQuestions = getQuestions("basic-grammar", "easy").slice(0, 5);
-    grammarQuestions.forEach((q) => {
-      timeAttackQuestions.push({
-        id: q.id,
-        type: "grammar",
-        question: q.japanese,
-        options: q.choices,
-        correctAnswer: q.correctAnswer,
-        explanation: q.explanation,
-        timeLimit: 15, // 15秒
-      });
+    // ガチャで獲得した語彙を活用
+    try {
+      const userGachaData = GachaSystem.getUserGachaData();
+      const ownedVocabulary = userGachaData.ownedCards.slice(0, 6); // 最大6問
+
+      if (ownedVocabulary.length > 0) {
+        ownedVocabulary.forEach((card, index) => {
+          // 他の語彙からダミー選択肢を作成
+          const otherCards = userGachaData.ownedCards
+            .filter((c) => c.id !== card.id)
+            .slice(0, 3);
+
+          if (otherCards.length >= 3) {
+            timeAttackQuestions.push({
+              id: `gacha-${card.id}`,
+              type: "vocabulary",
+              question: `「${card.meaning}」を英語で言うと？`,
+              options: [card.word, ...otherCards.map((c) => c.word)].sort(
+                () => Math.random() - 0.5
+              ),
+              correctAnswer: card.word,
+              explanation: `ガチャ語彙: ${card.word} - ${card.meaning}`,
+              timeLimit: 8, // ガチャ語彙は短時間で
+            });
+          }
+        });
+      }
+    } catch (error) {
+      console.log("ガチャ語彙の取得に失敗:", error);
+    }
+
+    // 文法問題を追加（学習済みカテゴリー優先）
+    const grammarCategories = ["basic-grammar", "tenses", "modals"];
+    grammarCategories.forEach((category) => {
+      if (timeAttackQuestions.length < 10) {
+        const categoryQuestions = getQuestions(category as any, "easy").slice(
+          0,
+          2
+        );
+        categoryQuestions.forEach((q) => {
+          timeAttackQuestions.push({
+            id: `grammar-${category}-${q.id}`,
+            type: "grammar",
+            question: q.japanese,
+            options: q.choices,
+            correctAnswer: q.correctAnswer,
+            explanation: `文法復習: ${q.explanation}`,
+            timeLimit: 12, // 文法問題は少し長めに
+          });
+        });
+      }
     });
 
-    // 単語問題（初級）を5問
-    const vocabularyWords = getVocabularyWords("beginner", "all").slice(0, 5);
-    vocabularyWords.forEach((word, index) => {
-      timeAttackQuestions.push({
-        id: 1000 + index,
-        type: "vocabulary",
-        question: `「${word.japanese}」を英語で言うと？`,
-        options: [
-          word.word,
-          vocabularyWords[(index + 1) % vocabularyWords.length].word,
-          vocabularyWords[(index + 2) % vocabularyWords.length].word,
-          vocabularyWords[(index + 3) % vocabularyWords.length].word,
-        ].sort(() => Math.random() - 0.5),
-        correctAnswer: word.word,
-        explanation: word.meaning,
-        timeLimit: 10, // 10秒
+    // 不足分は従来の語彙問題で補完
+    if (timeAttackQuestions.length < 10) {
+      const vocabularyWords = getVocabularyWords("beginner", "all").slice(
+        0,
+        10 - timeAttackQuestions.length
+      );
+      vocabularyWords.forEach((word, index) => {
+        timeAttackQuestions.push({
+          id: `vocab-${1000 + index}`,
+          type: "vocabulary",
+          question: `「${word.japanese}」を英語で言うと？`,
+          options: [
+            word.word,
+            vocabularyWords[(index + 1) % vocabularyWords.length].word,
+            vocabularyWords[(index + 2) % vocabularyWords.length].word,
+            vocabularyWords[(index + 3) % vocabularyWords.length].word,
+          ].sort(() => Math.random() - 0.5),
+          correctAnswer: word.word,
+          explanation: word.meaning,
+          timeLimit: 10,
+        });
       });
-    });
+    }
 
-    return timeAttackQuestions.sort(() => Math.random() - 0.5);
+    return timeAttackQuestions.sort(() => Math.random() - 0.5).slice(0, 10);
   };
 
   // ゲーム開始

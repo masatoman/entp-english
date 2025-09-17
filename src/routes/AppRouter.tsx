@@ -26,11 +26,8 @@ const TimeAttackMode = lazy(() => import("../components/TimeAttackMode"));
 const SimpleTowerDefense = lazy(
   () => import("../components/SimpleTowerDefense")
 );
-const GachaSystem = lazy(() =>
-  import("../components/GachaSystem").then((m) => ({
-    default: m.GachaSystemComponent,
-  }))
-);
+const GachaSystem = lazy(() => import("../components/GachaSystem"));
+const GachaResultScreen = lazy(() => import("../components/GachaResultScreen"));
 const Achievements = lazy(() => import("../components/Achievements"));
 const AppSettings = lazy(() => import("../components/AppSettings"));
 const PreStudyMenu = lazy(
@@ -41,6 +38,10 @@ const PreStudyContentViewer = lazy(
 );
 const GrowthDashboard = lazy(() => import("../components/GrowthDashboard"));
 const CardDetailContent = lazy(() => import("../components/CardDetailContent"));
+const EssayWriting = lazy(() => import("../components/EssayWriting"));
+const EnhancedTimeAttack = lazy(
+  () => import("../components/EnhancedTimeAttack")
+);
 
 export function AppRouter() {
   return (
@@ -98,6 +99,7 @@ export function AppRouter() {
             {/* その他の学習機能 */}
             <Route path="/learning/combined-test" element={<CombinedTest />} />
             <Route path="/learning/time-attack" element={<TimeAttackMode />} />
+            <Route path="/learning/essay-writing" element={<EssayWriting />} />
 
             {/* ゲーム機能 */}
             <Route
@@ -105,6 +107,7 @@ export function AppRouter() {
               element={<SimpleTowerDefense />}
             />
             <Route path="/games/gacha" element={<GachaSystem />} />
+            <Route path="/games/gacha/result" element={<GachaResultScreen />} />
             <Route
               path="/games/gacha/card/:cardId"
               element={<CardDetailContent />}

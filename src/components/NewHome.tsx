@@ -36,7 +36,6 @@ import { LearningFeedbackForm } from "./LearningFeedbackForm";
 import { LevelDisplay } from "./LevelDisplay";
 import { StatusAllocationComponent } from "./StatusAllocation";
 import { PreStudyContentViewer } from "./starSystem/PreStudyContentViewer";
-import { PreStudyMenu } from "./starSystem/PreStudyMenu";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { SelectionCard } from "./ui/selection-card";
@@ -105,7 +104,6 @@ export function NewHome() {
   );
 
   // 事前学習の状態
-  const [showPreStudyMenu, setShowPreStudyMenu] = useState(false);
   const [showPreStudyContent, setShowPreStudyContent] = useState(false);
   const [currentPreStudyContent, setCurrentPreStudyContent] =
     useState<PreStudyContent | null>(null);
@@ -219,10 +217,6 @@ export function NewHome() {
   // ⭐️スターシステムのハンドラー
   const handlePreStudyMenuOpen = () => {
     navigate("/learning/pre-study/menu");
-  };
-
-  const handlePreStudyMenuClose = () => {
-    setShowPreStudyMenu(false);
   };
 
   const handlePreStudyContentSelect = (contentId: string) => {
@@ -364,18 +358,6 @@ export function NewHome() {
         onComplete={handlePreStudyContentComplete}
         onBack={handlePreStudyContentBack}
         onNavigateToPractice={handleNavigateToPractice}
-      />
-    );
-  }
-
-  if (showPreStudyMenu) {
-    return (
-      <PreStudyMenu
-        availableContents={getPreStudyContentsForLevel(userLevel.level)}
-        completedContents={preStudyProgress.completedContents}
-        userLevel={userLevel.level}
-        onSelectContent={handlePreStudyContentSelect}
-        onBack={handlePreStudyMenuClose}
       />
     );
   }
@@ -634,25 +616,35 @@ export function NewHome() {
           <SelectionCard
             id="essay"
             title="英作文"
-            description="文法カテゴリー別の4択英作文問題"
+            description="文法・語彙を実践で活用する英作文課題"
             icon="✍️"
             difficulty="ライティング"
             detail="必要体力: 1 ♥"
             color="bg-indigo-50 border-indigo-200 text-indigo-800"
             isLocked={!canStartLearning}
-            onClick={() => canStartLearning && handleStartLearning("writing")}
+            onClick={() => {
+              if (canStartLearning) {
+                const levelManager = getLevelManager();
+                if (levelManager.consumeHeart()) {
+                  navigate("/learning/essay-writing");
+                } else {
+                  alert("体力が不足しています。");
+                }
+              }
+            }}
           />
 
-          {/* タワーディフェンス */}
+          {/* タワーディフェンス - 一時非活性 */}
           <SelectionCard
             id="tower-defense"
             title="タワーディフェンス"
-            description="英語学習要素を含むタワーディフェンスゲーム"
+            description="🚧 機能改善中です（近日公開予定）"
             icon="🎮"
-            difficulty="ゲーム"
-            detail="体力不要"
-            color="bg-red-50 border-red-200 text-red-800"
-            onClick={() => navigate("/games/tower-defense")}
+            difficulty="準備中"
+            detail="機能改善中"
+            color="bg-gray-50 border-gray-200 text-gray-500"
+            isLocked={true}
+            onClick={() => {}}
           />
 
           {/* TOEIC単語ガチャ */}

@@ -14,9 +14,7 @@ import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Progress } from "./ui/progress";
 
-interface AchievementsProps {
-  onBack: () => void;
-}
+// ルーター対応版 - propsは不要
 
 function AchievementCard({ achievement }: { achievement: Achievement }) {
   const progressPercentage =
@@ -137,7 +135,7 @@ function StatCard({
   );
 }
 
-export function Achievements({ onBack }: AchievementsProps) {
+export default function Achievements() {
   const navigate = useNavigate();
   // ページトップにスクロール
   useScrollToTop();

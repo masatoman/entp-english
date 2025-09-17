@@ -5,17 +5,8 @@ import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { SelectionCard } from "./ui/selection-card";
 
-interface VocabularyDifficultySelectionProps {
-  onBack: () => void;
-  onSelectDifficulty: (
-    difficulty: "beginner" | "intermediate" | "advanced"
-  ) => void;
-}
-
-export function VocabularyDifficultySelection({
-  onBack,
-  onSelectDifficulty,
-}: VocabularyDifficultySelectionProps) {
+// ルーター対応版 - propsは不要
+export default function VocabularyDifficultySelection() {
   const navigate = useNavigate();
   useScrollToTop();
   const difficulties = [

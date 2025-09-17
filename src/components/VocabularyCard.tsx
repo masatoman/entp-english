@@ -15,12 +15,6 @@ import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Progress } from "./ui/progress";
 
-interface VocabularyCardProps {
-  onBack: () => void;
-  difficulty?: "beginner" | "intermediate" | "advanced";
-  category?: "all" | "toeic" | "daily";
-}
-
 interface StudySession {
   totalWords: number;
   currentIndex: number;
@@ -38,15 +32,13 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
-export function VocabularyCard({
-  onBack,
-  difficulty = "intermediate",
-  category = "all",
-}: VocabularyCardProps) {
+export default function VocabularyCard() {
   const navigate = useNavigate();
   const { difficulty: urlDifficulty, category: urlCategory } = useParams();
-  const actualDifficulty = urlDifficulty || difficulty;
-  const actualCategory = urlCategory || category;
+  const actualDifficulty =
+    (urlDifficulty as "beginner" | "intermediate" | "advanced") ||
+    "intermediate";
+  const actualCategory = (urlCategory as "all" | "toeic" | "daily") || "all";
 
   // ページトップにスクロール
   useScrollToTop();
@@ -66,18 +58,18 @@ export function VocabularyCard({
 
   useEffect(() => {
     // 選択された難易度とカテゴリの単語を取得
-    const filteredWords = getVocabularyWords(difficulty, category);
+    const filteredWords = getVocabularyWords(actualDifficulty, actualCategory);
     console.log("VocabularyCard - フィルタリング結果:", {
-      difficulty,
-      category,
+      actualDifficulty,
+      actualCategory,
       filteredWordsCount: filteredWords.length,
       filteredWords: filteredWords.slice(0, 5), // 最初の5個を表示
     });
 
     if (filteredWords.length === 0) {
       console.error("VocabularyCard - 該当する単語が見つかりません:", {
-        difficulty,
-        category,
+        actualDifficulty,
+        actualCategory,
       });
       // エラー状態を設定
       setWords([]);
@@ -103,7 +95,7 @@ export function VocabularyCard({
       unknownWords: 0,
       studiedWords: new Set(),
     });
-  }, [difficulty, category]);
+  }, [actualDifficulty, actualCategory]);
 
   // 語彙学習セッション完了時の処理
   useEffect(() => {
@@ -175,7 +167,7 @@ export function VocabularyCard({
   };
 
   const handleRestart = () => {
-    const filteredWords = getVocabularyWords(difficulty, category);
+    const filteredWords = getVocabularyWords(actualDifficulty, actualCategory);
     const wordCount = 20; // 設定可能にする場合は、propsや設定から取得
     const shuffledWords = shuffleArray(filteredWords).slice(0, wordCount);
     setWords(shuffledWords);
@@ -230,7 +222,7 @@ export function VocabularyCard({
           <div className="flex items-center justify-between pt-8">
             <Button
               variant="ghost"
-              onClick={() => navigate("/learning/vocabulary/category")}
+              onClick={() => navigate("/learning/vocabulary/actualCategory")}
               className="p-2"
             >
               <ArrowLeft className="w-5 h-5" />
@@ -248,17 +240,17 @@ export function VocabularyCard({
               </h2>
               <p className="text-red-700 mb-6">
                 選択した条件（
-                {difficulty === "beginner"
+                {actualDifficulty === "beginner"
                   ? "初級"
-                  : difficulty === "intermediate"
+                  : actualDifficulty === "intermediate"
                   ? "中級"
                   : "上級"}{" "}
                 +
-                {category === "all"
+                {actualCategory === "all"
                   ? "すべて"
-                  : category === "toeic"
+                  : actualCategory === "toeic"
                   ? "TOEIC"
-                  : category === "daily"
+                  : actualCategory === "daily"
                   ? "日常"
                   : "学術"}
                 ）に該当する単語がありません。
@@ -267,7 +259,9 @@ export function VocabularyCard({
               {/* アクションボタン */}
               <div className="space-y-3">
                 <Button
-                  onClick={() => navigate("/learning/vocabulary/category")}
+                  onClick={() =>
+                    navigate("/learning/vocabulary/actualCategory")
+                  }
                   className="w-full"
                   size="lg"
                 >
@@ -298,7 +292,7 @@ export function VocabularyCard({
           <div className="flex items-center justify-between pt-8">
             <Button
               variant="ghost"
-              onClick={() => navigate("/learning/vocabulary/category")}
+              onClick={() => navigate("/learning/vocabulary/actualCategory")}
               className="p-2"
             >
               <ArrowLeft className="w-5 h-5" />
@@ -350,7 +344,9 @@ export function VocabularyCard({
                   もう一度学習する
                 </Button>
                 <Button
-                  onClick={() => navigate("/learning/vocabulary/category")}
+                  onClick={() =>
+                    navigate("/learning/vocabulary/actualCategory")
+                  }
                   variant="outline"
                   className="w-full"
                   size="lg"
@@ -370,25 +366,29 @@ export function VocabularyCard({
       <div className="max-w-md mx-auto p-4 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between pt-8">
-          <Button variant="ghost" onClick={onBack} className="p-2">
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/learning/vocabulary/actualCategory")}
+            className="p-2"
+          >
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <div className="text-center">
             <h1 className="text-xl">単語学習</h1>
             <div className="flex justify-center gap-2 mt-1">
               <Badge variant="secondary" className="text-xs">
-                {difficulty === "beginner"
+                {actualDifficulty === "beginner"
                   ? "初級"
-                  : difficulty === "intermediate"
+                  : actualDifficulty === "intermediate"
                   ? "中級"
                   : "上級"}
               </Badge>
               <Badge variant="outline" className="text-xs">
-                {category === "all"
+                {actualCategory === "all"
                   ? "すべて"
-                  : category === "toeic"
+                  : actualCategory === "toeic"
                   ? "TOEIC"
-                  : category === "daily"
+                  : actualCategory === "daily"
                   ? "日常"
                   : "学術"}
               </Badge>

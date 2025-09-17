@@ -1,5 +1,6 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { SimpleTowerDefense } from "../../components/SimpleTowerDefense";
 
@@ -60,7 +61,11 @@ describe("SimpleTowerDefense Component", () => {
   });
 
   it("コンポーネントが正しくレンダリングされる", () => {
-    render(<SimpleTowerDefense {...mockProps} />);
+    render(
+      <MemoryRouter>
+        <SimpleTowerDefense {...mockProps} />
+      </MemoryRouter>
+    );
 
     expect(screen.getByText("シンプル タワーディフェンス")).toBeInTheDocument();
     expect(screen.getByText("戻る")).toBeInTheDocument();
@@ -68,7 +73,11 @@ describe("SimpleTowerDefense Component", () => {
   });
 
   it("ゲーム開始ボタンが正しく動作する", async () => {
-    render(<SimpleTowerDefense {...mockProps} />);
+    render(
+      <MemoryRouter>
+        <SimpleTowerDefense {...mockProps} />
+      </MemoryRouter>
+    );
 
     const startButton = screen.getByText("ゲーム開始");
     fireEvent.click(startButton);
@@ -79,7 +88,11 @@ describe("SimpleTowerDefense Component", () => {
   });
 
   it("ゲーム速度変更が正しく動作する", () => {
-    render(<SimpleTowerDefense {...mockProps} />);
+    render(
+      <MemoryRouter>
+        <SimpleTowerDefense {...mockProps} />
+      </MemoryRouter>
+    );
 
     const speed2xButton = screen.getByText("2x");
     fireEvent.click(speed2xButton);
@@ -88,7 +101,11 @@ describe("SimpleTowerDefense Component", () => {
   });
 
   it("タワー選択が正しく動作する", () => {
-    render(<SimpleTowerDefense {...mockProps} />);
+    render(
+      <MemoryRouter>
+        <SimpleTowerDefense {...mockProps} />
+      </MemoryRouter>
+    );
 
     const basicTowerButton = screen.getByText("基本タワー");
     fireEvent.click(basicTowerButton);
@@ -98,7 +115,11 @@ describe("SimpleTowerDefense Component", () => {
   });
 
   it("リセットボタンが正しく動作する", () => {
-    render(<SimpleTowerDefense {...mockProps} />);
+    render(
+      <MemoryRouter>
+        <SimpleTowerDefense {...mockProps} />
+      </MemoryRouter>
+    );
 
     const resetButton = screen.getByText("リセット");
     fireEvent.click(resetButton);
@@ -108,7 +129,11 @@ describe("SimpleTowerDefense Component", () => {
   });
 
   it("統計情報が正しく表示される", () => {
-    render(<SimpleTowerDefense {...mockProps} />);
+    render(
+      <MemoryRouter>
+        <SimpleTowerDefense {...mockProps} />
+      </MemoryRouter>
+    );
 
     expect(screen.getByText("💰")).toBeInTheDocument();
     expect(screen.getByText("💎")).toBeInTheDocument();
@@ -116,14 +141,22 @@ describe("SimpleTowerDefense Component", () => {
   });
 
   it("体力バーが正しく表示される", () => {
-    render(<SimpleTowerDefense {...mockProps} />);
+    render(
+      <MemoryRouter>
+        <SimpleTowerDefense {...mockProps} />
+      </MemoryRouter>
+    );
 
     expect(screen.getByText("体力")).toBeInTheDocument();
     expect(screen.getByText("100 / 100")).toBeInTheDocument();
   });
 
   it("XPショップが正しく表示される", () => {
-    render(<SimpleTowerDefense {...mockProps} />);
+    render(
+      <MemoryRouter>
+        <SimpleTowerDefense {...mockProps} />
+      </MemoryRouter>
+    );
 
     expect(screen.getByText("XPショップ")).toBeInTheDocument();
     expect(screen.getByText("ダメージ強化")).toBeInTheDocument();
@@ -131,7 +164,11 @@ describe("SimpleTowerDefense Component", () => {
   });
 
   it("ショップアイテムの購入が正しく動作する", () => {
-    render(<SimpleTowerDefense {...mockProps} />);
+    render(
+      <MemoryRouter>
+        <SimpleTowerDefense {...mockProps} />
+      </MemoryRouter>
+    );
 
     const damageBoostButton = screen.getByText("ダメージ強化");
     fireEvent.click(damageBoostButton);
@@ -141,14 +178,22 @@ describe("SimpleTowerDefense Component", () => {
   });
 
   it("ゲームフィールドが正しく表示される", () => {
-    render(<SimpleTowerDefense {...mockProps} />);
+    render(
+      <MemoryRouter>
+        <SimpleTowerDefense {...mockProps} />
+      </MemoryRouter>
+    );
 
     // 基本的なレンダリングテスト
     expect(screen.getByText("シンプル タワーディフェンス")).toBeInTheDocument();
   });
 
   it("戻るボタンが正しく動作する", () => {
-    render(<SimpleTowerDefense {...mockProps} />);
+    render(
+      <MemoryRouter>
+        <SimpleTowerDefense {...mockProps} />
+      </MemoryRouter>
+    );
 
     const backButton = screen.getByText("戻る");
     fireEvent.click(backButton);
@@ -169,14 +214,22 @@ describe("SimpleTowerDefense Component", () => {
 
   it("ドロップアイテムが正しく表示される", () => {
     // ドロップアイテムがある状態をシミュレート
-    render(<SimpleTowerDefense {...mockProps} />);
+    render(
+      <MemoryRouter>
+        <SimpleTowerDefense {...mockProps} />
+      </MemoryRouter>
+    );
 
     // 基本的なレンダリングテスト
     expect(screen.getByText("シンプル タワーディフェンス")).toBeInTheDocument();
   });
 
   it("アイテム効果モーダルが正しく表示される", async () => {
-    render(<SimpleTowerDefense {...mockProps} />);
+    render(
+      <MemoryRouter>
+        <SimpleTowerDefense {...mockProps} />
+      </MemoryRouter>
+    );
 
     // 基本的なレンダリングテスト
     expect(screen.getByText("シンプル タワーディフェンス")).toBeInTheDocument();

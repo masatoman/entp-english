@@ -1,14 +1,13 @@
 import { ArrowLeft, Diamond, Gift, Star, Zap } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useScrollToTop } from "../hooks/useScrollToTop";
-import { GachaPack, WordCard } from "../types/gacha";
-import { GachaSystem } from "../utils/gachaSystem";
-import { CardDetailContent } from "./CardDetailContent";
+import { GachaPack } from "../types/gacha";
+import { GachaSystem as GachaSystemUtil } from "../utils/gachaSystem";
+import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { CardCollectionGrid } from "./ui/card-collection-grid";
-import { GachaCard } from "./ui/gacha-card";
 
 interface GachaSystemProps {
   onBack: () => void;
@@ -24,24 +23,36 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
   const navigate = useNavigate();
   // コンポーネントマウント時にページトップにスクロール
   useScrollToTop();
-  const [drawnCards, setDrawnCards] = useState<WordCard[]>([]);
   const [isOpening, setIsOpening] = useState(false);
   const [selectedPack, setSelectedPack] = useState<string | null>(null);
   const [userGachaData, setUserGachaData] = useState(
-    GachaSystem.getUserGachaData()
+    GachaSystemUtil.getUserGachaData()
   );
-  const [availablePacks] = useState(GachaSystem.getAvailablePacks());
-  const [selectedCard, setSelectedCard] = useState<WordCard | null>(null);
+  const [availablePacks] = useState(GachaSystemUtil.getAvailablePacks());
   const [showCollection, setShowCollection] = useState(false);
-  const [showCardDetail, setShowCardDetail] = useState(false);
 
-  // 古いgetRarityInfo関数は削除 - GachaCardコンポーネント内で処理
+  // 時間ベースの回復システム用の定期更新
+  useEffect(() => {
+    const updateAvailablePacks = () => {
+      const updatedData =
+        GachaSystemUtil.updateAvailablePacksCount(userGachaData);
+      setUserGachaData(updatedData);
+    };
+
+    // 初回実行
+    updateAvailablePacks();
+
+    // 30秒ごとに更新
+    const interval = setInterval(updateAvailablePacks, 30000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleOpenPack = async (packId: string) => {
-    const pack = GachaSystem.getPackById(packId);
+    const pack = GachaSystemUtil.getPackById(packId);
     if (!pack) return;
 
-    const canOpen = GachaSystem.canOpenPack(packId, userXP);
+    const canOpen = GachaSystemUtil.canOpenPack(packId, userXP);
     if (!canOpen.canOpen) {
       alert(canOpen.reason);
       return;
@@ -54,19 +65,41 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     try {
-      const cards = GachaSystem.openPackAndSave(packId);
-      setDrawnCards(cards);
+      console.log("Opening pack:", packId, "with userXP:", userXP);
+      const cards = GachaSystemUtil.openPackAndSave(packId);
+      console.log("Cards drawn:", cards);
 
       // XPを消費
-      onXPChange(userXP - pack.cost);
+      const newXP = userXP - pack.cost;
+      console.log("Updating XP from", userXP, "to", newXP);
+      onXPChange(newXP);
 
       // 語彙学習システムに追加
-      GachaSystem.addToVocabularySystem(cards);
+      console.log("Adding cards to vocabulary system...");
+      GachaSystemUtil.addToVocabularySystem(cards);
 
       // ユーザーデータを更新
-      setUserGachaData(GachaSystem.getUserGachaData());
+      console.log("Updating user gacha data...");
+      setUserGachaData(GachaSystemUtil.getUserGachaData());
+      console.log("Pack opening completed successfully");
+
+      // 開封状態をリセット
+      setIsOpening(false);
+      setSelectedPack(null);
+
+      // 結果画面に遷移
+      const cardsParam = encodeURIComponent(JSON.stringify(cards));
+      navigate(
+        `/games/gacha/result?cards=${cardsParam}&packName=${encodeURIComponent(
+          pack.name
+        )}`
+      );
     } catch (error) {
       console.error("Error opening pack:", error);
+      alert(
+        "ガチャの開封中にエラーが発生しました: " +
+          (error instanceof Error ? error.message : "不明なエラー")
+      );
       console.error("Error details:", {
         packId,
         userXP,
@@ -78,9 +111,11 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
           error instanceof Error ? error.message : String(error)
         }`
       );
-    }
 
-    setIsOpening(false);
+      // エラー時も開封状態をリセット
+      setIsOpening(false);
+      setSelectedPack(null);
+    }
   };
 
   const getPackThemeIcon = (theme: GachaPack["theme"]) => {
@@ -116,35 +151,6 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
         return "bg-gray-100 text-gray-800";
     }
   };
-
-  // カード詳細画面を表示
-  if (showCardDetail && selectedCard) {
-    return (
-      <div className="max-w-4xl mx-auto p-6">
-        {/* ヘッダー */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowCardDetail(false)}
-              className="flex items-center gap-2"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              戻る
-            </Button>
-            <h1 className="text-2xl font-bold flex items-center gap-2">
-              <Gift className="w-6 h-6 text-purple-600" />
-              カード詳細
-            </h1>
-          </div>
-        </div>
-
-        {/* カード詳細コンテンツ */}
-        <CardDetailContent card={selectedCard} />
-      </div>
-    );
-  }
 
   return (
     <div className="max-w-6xl mx-auto p-6">
@@ -203,11 +209,54 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
             <div className="font-bold">{userGachaData.totalPacks}</div>
           </div>
           <div>
-            <div className="text-gray-600">本日開封数</div>
-            <div className="font-bold">{userGachaData.dailyPacksUsed}/5</div>
+            <div className="text-gray-600">利用可能パック</div>
+            <div className="font-bold">
+              {GachaSystemUtil.getAvailablePacksCount(userGachaData)}/2
+            </div>
           </div>
         </div>
       </Card>
+
+      {/* パック回復時間表示 */}
+      {GachaSystemUtil.getAvailablePacksCount(userGachaData) < 2 && (
+        <Card className="mb-6">
+          <div className="p-4">
+            <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+              <Zap className="w-5 h-5 text-yellow-500" />
+              パック回復システム
+            </h3>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">次のパック回復まで</span>
+                <span className="font-bold text-purple-600">
+                  {(() => {
+                    const nextTime =
+                      GachaSystemUtil.getNextPackRecoveryTime(userGachaData);
+                    const remaining = Math.max(0, nextTime - Date.now());
+                    const minutes = Math.ceil(remaining / (1000 * 60));
+                    return `${minutes}分`;
+                  })()}
+                </span>
+              </div>
+              <div className="text-sm text-gray-500">
+                💡 5分ごとに1パック回復します（最大2パック）
+              </div>
+              {/* 開発用リセットボタン */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  localStorage.removeItem("userGachaData");
+                  setUserGachaData(GachaSystemUtil.getUserGachaData());
+                }}
+                className="mt-2 text-xs"
+              >
+                🔄 テスト用リセット
+              </Button>
+            </div>
+          </div>
+        </Card>
+      )}
 
       {/* パック選択またはコレクション表示 */}
       <div className="mb-8">
@@ -217,7 +266,7 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
         {!showCollection ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {availablePacks.map((pack) => {
-              const canOpen = GachaSystem.canOpenPack(pack.id, userXP);
+              const canOpen = GachaSystemUtil.canOpenPack(pack.id, userXP);
               const RarityIcon =
                 pack.rarity === "normal"
                   ? Star
@@ -278,6 +327,19 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
                   {!canOpen.canOpen && (
                     <div className="text-xs text-red-600 mt-2">
                       {canOpen.reason}
+                      {canOpen.nextPackTime && (
+                        <div className="mt-1 text-gray-500">
+                          次の回復:{" "}
+                          {(() => {
+                            const remaining = Math.max(
+                              0,
+                              canOpen.nextPackTime - Date.now()
+                            );
+                            const minutes = Math.ceil(remaining / (1000 * 60));
+                            return `${minutes}分後`;
+                          })()}
+                        </div>
+                      )}
                     </div>
                   )}
                 </Card>
@@ -414,58 +476,6 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
         )}
       </div>
 
-      {/* 開封結果 */}
-      {drawnCards.length > 0 && (
-        <div className="mb-8">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              🎉 開封結果 - {drawnCards.length}枚のカード 🎉
-            </h2>
-            <p className="text-gray-600">
-              新しいカードを獲得しました！語彙学習で使用できます。
-            </p>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-2">
-            {drawnCards.map((card, index) => (
-              <GachaCard
-                key={`drawn-${card.id}-${index}`}
-                card={card}
-                onClick={() => {
-                  setSelectedCard(card);
-                  setShowCardDetail(true);
-                }}
-                size="sm"
-                showDetails={false}
-                isNew={true}
-                isAnimated={true}
-                isFavorite={false}
-                onFavoriteToggle={() => {
-                  console.log(`Toggle favorite for card: ${card.word}`);
-                }}
-                className="animate-bounce-in"
-                style={{
-                  animationDelay: `${index * 100}ms`,
-                  animationFillMode: "both",
-                }}
-              />
-            ))}
-          </div>
-
-          <div className="mt-6 text-center">
-            <p className="text-blue-600 text-sm mb-3">
-              💡 カードをクリックすると詳細情報が見れます
-            </p>
-            <Button
-              onClick={() => setDrawnCards([])}
-              variant="outline"
-              className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-none hover:from-purple-600 hover:to-pink-600"
-            >
-              結果を閉じる
-            </Button>
-          </div>
-        </div>
-      )}
-
       {/* 開封アニメーション */}
       {isOpening && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -479,3 +489,55 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
     </div>
   );
 };
+
+// ルーター用のラッパーコンポーネント
+export default function GachaSystem() {
+  const navigate = useNavigate();
+  const [userXP, setUserXP] = useState(1000); // 初期値を1000に設定
+
+  // XPの初期化
+  useEffect(() => {
+    try {
+      const manager = getLevelManager();
+      const xp = manager.getXP();
+      console.log("Initial XP loaded:", xp);
+      setUserXP(xp || 1000); // デフォルト値を1000に設定
+    } catch (error) {
+      console.error("Error getting initial XP:", error);
+      setUserXP(1000); // エラー時は1000に設定
+    }
+  }, []);
+
+  const handleXPChange = (newXP: number) => {
+    console.log("handleXPChange called with:", newXP);
+    setUserXP(newXP);
+    // LevelManagerにXPを保存
+    try {
+      const manager = getLevelManager();
+      const currentXP = manager.getXP();
+      console.log("Current XP in manager:", currentXP, "Setting to:", newXP);
+
+      // XPの差分を計算して追加
+      const xpDifference = newXP - currentXP;
+      if (xpDifference !== 0) {
+        manager.addXP(xpDifference);
+      }
+      saveLevelManager();
+      console.log("XP updated successfully");
+    } catch (error) {
+      console.error("Error updating XP:", error);
+    }
+  };
+
+  const handleBack = () => {
+    navigate("/");
+  };
+
+  return (
+    <GachaSystemComponent
+      onBack={handleBack}
+      userXP={userXP}
+      onXPChange={handleXPChange}
+    />
+  );
+}

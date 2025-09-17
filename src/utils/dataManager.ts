@@ -657,4 +657,63 @@ export class DataManager {
 
     this.saveVocabularyProgress(progress);
   }
+
+  // 事前学習進捗管理
+  static getPreStudyProgress(): any {
+    try {
+      const stored = localStorage.getItem("preStudyProgress");
+      if (stored) {
+        return JSON.parse(stored);
+      }
+      return {
+        totalContentsStudied: 0,
+        contentsByCategory: {},
+        averageComprehension: 0,
+        totalTimeSpent: 0,
+        completedContents: [],
+      };
+    } catch (error) {
+      console.error("Error loading pre-study progress:", error);
+      return {
+        totalContentsStudied: 0,
+        contentsByCategory: {},
+        averageComprehension: 0,
+        totalTimeSpent: 0,
+        completedContents: [],
+      };
+    }
+  }
+
+  static savePreStudyProgress(progress: any): void {
+    try {
+      localStorage.setItem("preStudyProgress", JSON.stringify(progress));
+    } catch (error) {
+      console.error("Error saving pre-study progress:", error);
+    }
+  }
+
+  static recordPreStudyCompletion(
+    contentId: string,
+    comprehensionRating: number,
+    timeSpent: number
+  ): void {
+    try {
+      const progress = this.getPreStudyProgress();
+
+      if (!progress.completedContents.includes(contentId)) {
+        progress.completedContents.push(contentId);
+        progress.totalContentsStudied++;
+      }
+
+      progress.totalTimeSpent += timeSpent;
+      progress.averageComprehension =
+        (progress.averageComprehension * (progress.totalContentsStudied - 1) +
+          comprehensionRating) /
+        progress.totalContentsStudied;
+
+      this.savePreStudyProgress(progress);
+    } catch (error) {
+      console.error("Error recording pre-study completion:", error);
+    }
+  }
 }

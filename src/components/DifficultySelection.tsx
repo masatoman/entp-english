@@ -6,11 +6,7 @@ import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { SelectionCard } from "./ui/selection-card";
 
-interface DifficultySelectionProps {
-  category: Category;
-  onSelectDifficulty: (difficulty: "easy" | "normal" | "hard") => void;
-  onBack: () => void;
-}
+// ルーター対応版 - propsは不要
 
 const categoryLabels: Record<Category, string> = {
   "basic-grammar": "基本文型",
@@ -24,14 +20,10 @@ const categoryLabels: Record<Category, string> = {
   infinitive: "不定詞",
 };
 
-export function DifficultySelection({
-  category,
-  onSelectDifficulty,
-  onBack,
-}: DifficultySelectionProps) {
+export default function DifficultySelection() {
   const navigate = useNavigate();
   const { category: urlCategory } = useParams<{ category: Category }>();
-  const actualCategory = urlCategory || category;
+  const actualCategory = urlCategory || "basic-grammar";
   useScrollToTop();
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">

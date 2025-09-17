@@ -5,15 +5,8 @@ import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { SelectionCard } from "./ui/selection-card";
 
-interface VocabularyCategorySelectionProps {
-  onBack: () => void;
-  onSelectCategory: (category: "all" | "toeic" | "daily") => void;
-}
-
-export function VocabularyCategorySelection({
-  onBack,
-  onSelectCategory,
-}: VocabularyCategorySelectionProps) {
+// ルーター対応版 - propsは不要
+export default function VocabularyCategorySelection() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const difficulty = searchParams.get("difficulty") || "intermediate";

@@ -1,22 +1,36 @@
-import React, { useMemo, useState } from "react";
-import { PreStudyContent } from "../../types/starSystem";
+import { ArrowLeft } from "lucide-react";
+import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getPreStudyContentsForLevel } from "../../data/preStudyContents";
+import { useScrollToTop } from "../../hooks/useScrollToTop";
+import { DataManager } from "../../utils/dataManager";
+import { getLevelManager } from "../../utils/levelManager";
+import { Button } from "../ui/button";
 import { PreStudyContentCard } from "./PreStudyContentCard";
 
-interface PreStudyMenuProps {
-  availableContents: PreStudyContent[];
-  completedContents: string[];
-  userLevel: number;
-  onSelectContent: (contentId: string) => void;
-  onBack: () => void;
-}
+// ルーター対応版 - propsは不要
+export default function PreStudyMenu() {
+  const navigate = useNavigate();
+  useScrollToTop();
 
-export const PreStudyMenu: React.FC<PreStudyMenuProps> = ({
-  availableContents,
-  completedContents,
-  userLevel,
-  onSelectContent,
-  onBack,
-}) => {
+  // 実際のデータを取得
+  const levelManager = getLevelManager();
+  const userLevelData = levelManager.getLevel();
+  const userLevel =
+    typeof userLevelData === "object"
+      ? userLevelData.level || 1
+      : userLevelData || 1;
+  const availableContents = getPreStudyContentsForLevel(userLevel);
+  const preStudyProgress = DataManager.getPreStudyProgress();
+  const completedContents = preStudyProgress.completedContents;
+
+  // デバッグ情報
+  console.log("PreStudyMenu - Debug Info:", {
+    userLevel,
+    availableContentsCount: availableContents.length,
+    completedContents,
+    preStudyProgress,
+  });
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedLevel, setSelectedLevel] = useState<string>("all");
 
@@ -51,12 +65,14 @@ export const PreStudyMenu: React.FC<PreStudyMenuProps> = ({
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <button
-            onClick={onBack}
-            className="px-4 py-2 text-gray-600 hover:text-gray-800 hover:bg-white/50 rounded-lg transition-colors flex items-center gap-2"
+          <Button
+            variant="outline"
+            onClick={() => navigate("/")}
+            className="flex items-center gap-2"
           >
-            ← 戻る
-          </button>
+            <ArrowLeft className="w-4 h-4" />
+            戻る
+          </Button>
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2 justify-center">
               <span>📚</span>
@@ -105,7 +121,9 @@ export const PreStudyMenu: React.FC<PreStudyMenuProps> = ({
             <PreStudyContentCard
               content={recommendedContent}
               isCompleted={completedContents.includes(recommendedContent.id)}
-              onSelect={onSelectContent}
+              onSelect={(contentId: string) =>
+                navigate(`/learning/pre-study/content/${contentId}`)
+              }
             />
           </div>
         )}
@@ -122,7 +140,9 @@ export const PreStudyMenu: React.FC<PreStudyMenuProps> = ({
                 content={content}
                 isLocked={content.level > userLevel}
                 isCompleted={completedContents.includes(content.id)}
-                onSelect={onSelectContent}
+                onSelect={(contentId: string) =>
+                  navigate(`/learning/pre-study/content/${contentId}`)
+                }
               />
             ))}
           </div>
@@ -142,4 +162,4 @@ export const PreStudyMenu: React.FC<PreStudyMenuProps> = ({
       </div>
     </div>
   );
-};
+}

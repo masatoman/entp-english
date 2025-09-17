@@ -5,11 +5,7 @@ import { Category } from "../types";
 import { Button } from "./ui/button";
 import { SelectionCard } from "./ui/selection-card";
 
-interface CategorySelectionProps {
-  onSelectCategory: (category: Category) => void;
-  onBack: () => void;
-}
-
+// ルーター対応版 - propsは不要
 const categories = [
   {
     id: "basic-grammar" as Category,
@@ -85,10 +81,7 @@ const categories = [
   },
 ];
 
-export function CategorySelection({
-  onSelectCategory,
-  onBack,
-}: CategorySelectionProps) {
+export default function CategorySelection() {
   const navigate = useNavigate();
   useScrollToTop();
   return (

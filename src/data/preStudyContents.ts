@@ -1,264 +1,810 @@
-import { PreStudyContent } from '../types/starSystem';
+import { PreStudyContent } from "../types/starSystem";
 
-export const samplePreStudyContents: PreStudyContent[] = [
-  // Level 1-5: be動詞の理論
+/**
+ * 事前学習コンテンツデータ
+ * 文法クイズ・英作文との相乗効果を狙った設計
+ */
+export const preStudyContents: PreStudyContent[] = [
+  // 基本文型 (basic-grammar)
   {
-    id: "theory_be_001",
-    title: "be動詞の基本概念",
+    id: "basic-grammar-theory",
+    title: "英文の基本構造",
     category: "grammar",
-    subcategory: "be-verb",
+    subcategory: "basic-grammar",
     level: 1,
     contentType: "theory",
-    duration: 90,
-    content: `# be動詞の本質
+    duration: 300, // 5分
+    difficulty: "beginner",
+    content: `# 英文の基本構造
 
-## 核心概念
-be動詞は「存在」と「状態」を表す動詞です。
+## 英語の語順：SVO
+英語は**主語（S）→ 動詞（V）→ 目的語（O）**の順番が基本です。
 
-## なぜ重要なのか
-- 英語の最も基本的な動詞
-- 文の骨格を作る役割
-- 他の文法の基礎となる
+### be動詞の文
+- **肯定文**: I am a student. (私は学生です)
+- **否定文**: I am not a teacher. (私は先生ではありません)
+- **疑問文**: Are you happy? (あなたは幸せですか？)
 
-## 3つの形
-- **am**: I専用
-- **is**: 単数（he, she, it, this, that等）
-- **are**: 複数（you, we, they等）
+### 一般動詞の文
+- **肯定文**: I play tennis. (私はテニスをします)
+- **否定文**: I don't play soccer. (私はサッカーをしません)
+- **疑問文**: Do you like music? (あなたは音楽が好きですか？)
 
-## 使い分けの論理
-主語の「人称」と「数」によって自動的に決まる
-→ 暗記ではなく、論理で理解`,
+## なぜ大切？
+この基本構造を理解することで：
+- ✅ 文法クイズの基本文型問題が解けるようになります
+- ✅ 英作文で正しい語順で書けるようになります
+- ✅ TOEICのPart5-6での語順問題に強くなります`,
     keyPoints: [
-      "be動詞は存在・状態を表す",
-      "主語によって形が変わる",
-      "am/is/areの使い分けは論理的"
+      "英語の基本語順はSVO",
+      "be動詞と一般動詞の使い分け",
+      "疑問文・否定文の作り方",
+      "文法クイズ・英作文の基礎",
     ],
     examples: [
       {
-        english: "I am a student.",
-        japanese: "私は学生です。",
-        explanation: "主語がIなのでam"
+        english: "She is a teacher.",
+        japanese: "彼女は先生です。",
+        explanation: "be動詞の基本形（主語 + be動詞 + 補語）",
       },
       {
-        english: "She is kind.",
-        japanese: "彼女は親切です。",
-        explanation: "三人称単数なのでis"
+        english: "They study English every day.",
+        japanese: "彼らは毎日英語を勉強します。",
+        explanation: "一般動詞の基本形（主語 + 動詞 + 目的語）",
       },
-      {
-        english: "They are friends.",
-        japanese: "彼らは友達です。",
-        explanation: "複数主語なのでare"
-      }
     ],
-    relatedProblems: ["be001", "be002", "be003"],
-    difficulty: "beginner"
+    relatedProblems: ["basic-grammar"],
+    prerequisites: [],
   },
 
+  // 時制 (tenses)
   {
-    id: "theory_be_002", 
-    title: "be動詞の語源と歴史",
+    id: "tenses-theory",
+    title: "時制の概念と使い分け",
     category: "grammar",
-    subcategory: "be-verb",
-    level: 3,
-    contentType: "background",
-    duration: 120,
-    content: `# be動詞の語源的理解
+    subcategory: "tenses",
+    level: 2,
+    contentType: "theory",
+    duration: 420, // 7分
+    difficulty: "beginner",
+    content: `# 時制の概念と使い分け
 
-## 古英語からの変遷
-現代のam/is/areは、実は3つの異なる語根から来ています：
+## 時制とは？
+**時制**は「いつの話をしているか」を表現する文法です。
 
-## 語源の謎
-- **am**: 古英語「eom」< ゲルマン語「esmi」
-- **is**: 古英語「is」< ゲルマン語「esti」  
-- **are**: 古英語「aron」< ゲルマン語「arun」
+### 現在形
+- **基本用法**: 習慣・事実・状態
+- **例**: I go to school every day. (毎日学校に行きます)
+- **TOEIC頻出**: スケジュール・習慣の話
 
-## なぜバラバラなのか
-最も基本的な動詞だからこそ、古い形が保存された
-→ 不規則だが、それが歴史の証拠
+### 過去形
+- **基本用法**: 過去の事実・完了した行動
+- **例**: I went to Tokyo yesterday. (昨日東京に行きました)
+- **TOEIC頻出**: 会議・イベントの報告
 
-## 他言語との比較
-- ドイツ語: bin/ist/sind
-- フランス語: suis/est/sont
-- 共通の印欧語族の起源`,
+### 未来形
+- **will**: 意志・予測
+- **be going to**: 計画・予定
+- **例**: I will call you tomorrow. (明日電話します)
+
+### 現在完了形
+- **基本用法**: 過去から現在への継続・経験・完了
+- **例**: I have lived here for 5 years. (5年間ここに住んでいます)
+- **TOEIC頻出**: 経験・継続の表現
+
+## 実践への活用
+- ✅ 文法クイズの時制問題で正答率アップ
+- ✅ 英作文で適切な時制選択
+- ✅ TOEICのPart5-6で時制問題に強くなる`,
     keyPoints: [
-      "be動詞は3つの語根から成る",
-      "不規則性は歴史の証拠",
-      "他言語とも共通起源"
+      "現在形は習慣・事実を表す",
+      "過去形は完了した行動",
+      "未来形はwillとbe going toの使い分け",
+      "現在完了形は過去と現在の関係",
     ],
     examples: [
       {
-        english: "Evolution of 'am'",
-        japanese: "amの変遷",
-        explanation: "印欧語→ゲルマン語→古英語→現代英語"
-      }
+        english: "I have been studying English for 3 years.",
+        japanese: "3年間英語を勉強しています。",
+        explanation: "現在完了進行形：過去から現在まで継続している行動",
+      },
+      {
+        english: "The meeting will start at 9 AM.",
+        japanese: "会議は午前9時に始まります。",
+        explanation: "未来形：確定した予定を表すwill",
+      },
     ],
-    prerequisites: ["theory_be_001"],
-    difficulty: "intermediate"
+    relatedProblems: ["tenses"],
+    prerequisites: ["basic-grammar-theory"],
   },
 
-  // Level 6-10: 一般動詞の理論
+  // 助動詞 (modals)
   {
-    id: "theory_verb_001",
-    title: "一般動詞の概念",
-    category: "grammar", 
-    subcategory: "general-verb",
+    id: "modals-theory",
+    title: "助動詞の意味と使い方",
+    category: "grammar",
+    subcategory: "modals",
+    level: 3,
+    contentType: "theory",
+    duration: 360, // 6分
+    difficulty: "intermediate",
+    content: `# 助動詞の意味と使い方
+
+## 助動詞とは？
+動詞に**意味を付け加える**単語です。
+
+### 能力・可能性
+- **can**: できる、可能性がある
+- **could**: できた、可能性があった（過去・丁寧）
+- **例**: I can speak English. (英語を話せます)
+
+### 意志・予測
+- **will**: ～するつもり、～でしょう
+- **would**: ～するつもりだった（過去・丁寧）
+- **例**: It will rain tomorrow. (明日雨が降るでしょう)
+
+### 義務・必要性
+- **must**: ～しなければならない（強い義務）
+- **should**: ～すべき（アドバイス）
+- **have to**: ～しなければならない（外的義務）
+- **例**: You must submit the report. (レポートを提出しなければなりません)
+
+### 許可・依頼
+- **may**: ～してもよい（許可）、～かもしれない（推量）
+- **might**: ～かもしれない（弱い推量）
+- **例**: May I use your phone? (電話をお借りしてもよいですか？)
+
+## ビジネス英語での重要性
+TOEICでは**丁寧な表現**が頻出：
+- Could you help me? (手伝っていただけますか？)
+- Would you like some coffee? (コーヒーはいかがですか？)
+
+## 実践への活用
+- ✅ 文法クイズの助動詞問題で満点
+- ✅ 英作文で適切な丁寧さレベル
+- ✅ TOEICのビジネス場面で高得点`,
+    keyPoints: [
+      "can/could: 能力・可能性",
+      "will/would: 意志・予測",
+      "must/should: 義務・アドバイス",
+      "may/might: 許可・推量",
+    ],
+    examples: [
+      {
+        english: "Could you please send me the document?",
+        japanese: "書類を送っていただけませんか？",
+        explanation: "ビジネスでの丁寧な依頼表現",
+      },
+      {
+        english: "You should check your email regularly.",
+        japanese: "定期的にメールをチェックすべきです。",
+        explanation: "アドバイスを表すshould",
+      },
+    ],
+    relatedProblems: ["modals"],
+    prerequisites: ["basic-grammar-theory", "tenses-theory"],
+  },
+
+  // 受動態 (passive)
+  {
+    id: "passive-theory",
+    title: "受動態の理解と活用",
+    category: "grammar",
+    subcategory: "passive",
+    level: 4,
+    contentType: "theory",
+    duration: 480, // 8分
+    difficulty: "intermediate",
+    content: `# 受動態の理解と活用
+
+## 受動態とは？
+**動作を受ける側**に焦点を当てた表現です。
+
+### 基本形：be動詞 + 過去分詞
+- **能動態**: Tom wrote this letter. (トムがこの手紙を書いた)
+- **受動態**: This letter was written by Tom. (この手紙はトムによって書かれた)
+
+### 時制別の受動態
+#### 現在形
+- **形**: am/is/are + 過去分詞
+- **例**: English is spoken all over the world. (英語は世界中で話されています)
+
+#### 過去形
+- **形**: was/were + 過去分詞
+- **例**: The meeting was canceled. (会議は中止されました)
+
+#### 未来形
+- **形**: will be + 過去分詞
+- **例**: The report will be finished tomorrow. (レポートは明日完成します)
+
+#### 現在完了形
+- **形**: have/has been + 過去分詞
+- **例**: The project has been completed. (プロジェクトは完了しました)
+
+## ビジネス英語での重要性
+### フォーマルな表現
+- **能動**: We will send the documents.
+- **受動**: The documents will be sent. (より丁寧・客観的)
+
+### TOEIC頻出パターン
+- The conference is held annually. (会議は毎年開催されます)
+- All applications must be submitted by Friday. (全ての申請書は金曜日までに提出されなければなりません)
+
+## 実践への活用
+- ✅ 文法クイズの受動態問題で満点
+- ✅ 英作文でフォーマルな表現
+- ✅ TOEICのビジネス文書読解で高得点`,
+    keyPoints: [
+      "be動詞 + 過去分詞の基本形",
+      "時制に応じたbe動詞の変化",
+      "by + 行為者は省略可能",
+      "ビジネスではフォーマルな印象",
+    ],
+    examples: [
+      {
+        english: "The new policy will be implemented next month.",
+        japanese: "新しい方針は来月実施されます。",
+        explanation: "ビジネスでの未来受動態",
+      },
+      {
+        english: "All employees are required to attend the training.",
+        japanese: "全従業員は研修への参加が義務付けられています。",
+        explanation: "義務を表す受動態",
+      },
+    ],
+    relatedProblems: ["passive"],
+    prerequisites: ["basic-grammar-theory", "tenses-theory"],
+  },
+
+  // 関係詞 (relative)
+  {
+    id: "relative-theory",
+    title: "関係詞で文を豊かに",
+    category: "grammar",
+    subcategory: "relative",
+    level: 5,
+    contentType: "theory",
+    duration: 540, // 9分
+    difficulty: "intermediate",
+    content: `# 関係詞で文を豊かに
+
+## 関係詞とは？
+**2つの文を1つにつなげる**接続詞です。
+
+### 関係代名詞
+#### who（人）
+- **例**: The man who is standing there is my teacher.
+- **意味**: そこに立っている男性は私の先生です。
+
+#### which（物・動物）
+- **例**: The book which I bought yesterday is interesting.
+- **意味**: 昨日買った本は面白いです。
+
+#### that（人・物）
+- **例**: The car that he drives is expensive.
+- **意味**: 彼が運転する車は高価です。
+
+### 関係副詞
+#### where（場所）
+- **例**: This is the place where I was born.
+- **意味**: ここが私が生まれた場所です。
+
+#### when（時）
+- **例**: I remember the day when we first met.
+- **意味**: 初めて会った日を覚えています。
+
+## ビジネス英語での活用
+### 効率的な情報伝達
+- The client who called yesterday wants to reschedule. (昨日電話をかけた顧客は予定変更を希望しています)
+- The project that we discussed is now approved. (私たちが話し合ったプロジェクトが承認されました)
+
+### TOEIC頻出パターン
+- The person who is responsible for... (責任者は...)
+- The company which provides... (提供する会社は...)
+
+## 実践への活用
+- ✅ 文法クイズの関係詞問題で満点
+- ✅ 英作文で複雑な文構造
+- ✅ TOEICの長文読解で理解力向上`,
+    keyPoints: [
+      "who: 人を修飾",
+      "which: 物・動物を修飾",
+      "that: 人・物両方OK",
+      "関係副詞で場所・時間を表現",
+    ],
+    examples: [
+      {
+        english: "The employee who works in accounting is very helpful.",
+        japanese: "経理部で働く従業員はとても親切です。",
+        explanation: "人を修飾するwho",
+      },
+      {
+        english: "The software which we use is very efficient.",
+        japanese: "私たちが使用するソフトウェアはとても効率的です。",
+        explanation: "物を修飾するwhich",
+      },
+    ],
+    relatedProblems: ["relative"],
+    prerequisites: ["basic-grammar-theory", "tenses-theory"],
+  },
+
+  // 仮定法 (subjunctive)
+  {
+    id: "subjunctive-theory",
+    title: "仮定法で表現力アップ",
+    category: "grammar",
+    subcategory: "subjunctive",
     level: 6,
     contentType: "theory",
-    duration: 90,
-    content: `# 一般動詞の本質
+    duration: 600, // 10分
+    difficulty: "advanced",
+    content: `# 仮定法で表現力アップ
 
-## be動詞との違い
-- **be動詞**: 状態・存在
-- **一般動詞**: 動作・行為
+## 仮定法とは？
+**実際とは異なる仮定**を表現する文法です。
 
-## 三人称単数現在の「s」
-なぜ「He plays」なのか？
+### 仮定法過去（現在の仮定）
+#### 形：If + 主語 + 動詞の過去形, 主語 + would + 動詞原形
+- **例**: If I were you, I would accept the offer.
+- **意味**: もし私があなたなら、その申し出を受け入れるでしょう。
+- **ポイント**: be動詞は人称に関係なく「were」
 
-## 歴史的経緯
-古英語では全ての人称で語尾変化があった
-現代では三人称単数のみ残存
+### 仮定法過去完了（過去の仮定）
+#### 形：If + 主語 + had + 過去分詞, 主語 + would have + 過去分詞
+- **例**: If I had studied harder, I would have passed the exam.
+- **意味**: もっと勉強していたら、試験に合格していたでしょう。
 
-## 論理的理解
-「三人称単数は特別」という英語の特徴
-→ 暗記ではなく、言語の特性として理解`,
+### ビジネスでの仮定法
+#### 丁寧な提案・依頼
+- **Would you mind if...?**: ～していただけませんか？
+- **I would appreciate if...**: ～していただければ幸いです
+- **例**: I would appreciate if you could review this document.
+
+#### 条件付きの話
+- **If we had more budget, we could hire more staff.**
+- **意味**: もっと予算があれば、より多くのスタッフを雇えるのですが。
+
+## TOEIC攻略ポイント
+### Part5-6での判別
+- 仮定法のキーワード：if, wish, as if
+- 時制の一致に注意
+- wouldとwillの使い分け
+
+### Part7での理解
+- 提案書・企画書での仮定法表現
+- 条件付きの契約条項
+
+## 実践への活用
+- ✅ 文法クイズの仮定法問題で満点
+- ✅ 英作文で高度な表現力
+- ✅ TOEICの上級問題で高得点`,
     keyPoints: [
-      "一般動詞は動作を表す",
-      "三人称単数現在にsをつける",
-      "歴史的経緯がある規則"
+      "仮定法過去：現在の非現実的仮定",
+      "仮定法過去完了：過去の非現実的仮定",
+      "ビジネスでの丁寧な表現",
+      "TOEICでの頻出パターン",
     ],
     examples: [
       {
-        english: "I play tennis.",
-        japanese: "私はテニスをします。",
-        explanation: "一人称なのでplay"
+        english: "If I were the manager, I would change the policy.",
+        japanese: "もし私がマネージャーなら、方針を変更するでしょう。",
+        explanation: "仮定法過去：現在の非現実的な仮定",
       },
       {
-        english: "He plays tennis.",
-        japanese: "彼はテニスをします。", 
-        explanation: "三人称単数なのでplays"
-      }
+        english: "I wish I could attend the conference.",
+        japanese: "その会議に参加できればいいのですが。",
+        explanation: "wishを使った願望の表現",
+      },
     ],
-    relatedProblems: ["verb001", "verb002"],
-    difficulty: "beginner"
+    relatedProblems: ["subjunctive"],
+    prerequisites: ["basic-grammar-theory", "tenses-theory", "modals-theory"],
   },
 
-  // Level 11-15: 時制の理論
+  // 比較 (comparison)
   {
-    id: "theory_tense_001",
-    title: "英語時制の哲学",
+    id: "comparison-theory",
+    title: "比較表現をマスター",
     category: "grammar",
-    subcategory: "tense", 
-    level: 11,
+    subcategory: "comparison",
+    level: 4,
     contentType: "theory",
-    duration: 120,
-    content: `# 時制の概念設計
+    duration: 360, // 6分
+    difficulty: "intermediate",
+    content: `# 比較表現をマスター
 
-## 時制とは何か
-時制 = 時間の文法的表現
-英語話者の時間認識を反映
+## 比較の基本
+**2つ以上のものを比べる**表現です。
 
-## 3つの基本時制
-- **現在**: 今の状況・習慣
-- **過去**: 完了した出来事
-- **未来**: これから起こること
+### 比較級（2つを比較）
+#### 形：-er / more + 形容詞 + than
+- **短い語**: tall → taller
+- **例**: Tokyo is larger than Osaka. (東京は大阪より大きいです)
+- **長い語**: more + beautiful
+- **例**: This car is more expensive than that one. (この車はあの車より高価です)
 
-## 進行形の概念
-「動作が進行中」という視点
-→ 動作の途中を切り取る感覚
+### 最上級（3つ以上で最も）
+#### 形：the + -est / the most + 形容詞
+- **短い語**: the tallest
+- **例**: Mt. Fuji is the highest mountain in Japan. (富士山は日本で最も高い山です)
+- **長い語**: the most + beautiful
+- **例**: This is the most important meeting. (これは最も重要な会議です)
 
-## 完了形の概念  
-「過去の動作が現在に影響」
-→ 時間軸をまたがる表現`,
+### 同等比較
+#### 形：as + 形容詞 + as
+- **例**: This book is as interesting as that one. (この本はあの本と同じくらい面白いです)
+- **否定**: not as + 形容詞 + as = ～ほど...ではない
+
+## ビジネス英語での活用
+### 提案・比較検討
+- **This solution is more cost-effective than the previous one.**
+- **Our new system is the most efficient in the industry.**
+
+### TOEIC頻出表現
+- **比較級 + and + 比較級**: ますます～
+  - The market is getting more and more competitive.
+- **the + 比較級, the + 比較級**: ～すればするほど
+  - The more you practice, the better you become.
+
+## 実践への活用
+- ✅ 文法クイズの比較問題で満点
+- ✅ 英作文で説得力のある比較
+- ✅ TOEICのグラフ・データ問題で高得点`,
     keyPoints: [
-      "時制は時間の認識方法",
-      "進行形は動作の途中を表現",
-      "完了形は時間軸をまたぐ"
+      "比較級：-er / more + than",
+      "最上級：the -est / the most",
+      "同等比較：as...as",
+      "ビジネスでの比較表現",
     ],
     examples: [
       {
-        english: "I am studying.",
-        japanese: "勉強中です。",
-        explanation: "今まさに進行中の動作"
+        english: "Our sales are higher than last year.",
+        japanese: "売上は昨年より高いです。",
+        explanation: "ビジネスでの比較級表現",
       },
       {
-        english: "I have studied.", 
-        japanese: "勉強し終えた状態です。",
-        explanation: "過去の動作が現在に影響"
-      }
+        english: "This is the best solution we can offer.",
+        japanese: "これは私たちが提供できる最良の解決策です。",
+        explanation: "最上級での強調表現",
+      },
     ],
-    relatedProblems: ["tense001", "tense002", "tense003"],
-    difficulty: "intermediate"
+    relatedProblems: ["comparison"],
+    prerequisites: ["basic-grammar-theory", "tenses-theory"],
   },
 
-  // 語彙学習
+  // 分詞・動名詞 (participle)
   {
-    id: "vocab_travel_001",
-    title: "Travel語彙：移動の概念",
-    category: "vocabulary",
-    subcategory: "travel",
-    level: 8,
-    contentType: "explanation", 
-    duration: 180,
-    content: `# 移動・旅行の語彙体系
+    id: "participle-theory",
+    title: "分詞・動名詞の使い分け",
+    category: "grammar",
+    subcategory: "participle",
+    level: 7,
+    contentType: "theory",
+    duration: 540, // 9分
+    difficulty: "advanced",
+    content: `# 分詞・動名詞の使い分け
 
-## 語根：port（運ぶ）
-この語根から多くの単語が派生
+## 現在分詞（-ing）
+### 進行形
+- **形**: be動詞 + -ing
+- **例**: I am reading a book. (本を読んでいます)
 
-## 派生語ネットワーク
-- **transport**: trans（横切って）+ port（運ぶ）= 輸送
-- **import**: im（中に）+ port（運ぶ）= 輸入
-- **export**: ex（外に）+ port（運ぶ）= 輸出
-- **portable**: port（運ぶ）+ able（できる）= 持ち運べる
+### 形容詞的用法
+- **前置修飾**: a running man (走っている男性)
+- **後置修飾**: The man running over there is my friend. (向こうで走っている男性は友人です)
 
-## 記憶戦略
-語根を軸とした関連性で覚える
-→ 単体暗記より効率的
+### 分詞構文
+- **例**: Walking in the park, I met an old friend. (公園を歩いていて、旧友に会いました)
 
-## 実用コンテキスト
-空港・駅・旅行での実際の使用場面`,
+## 過去分詞（-ed）
+### 受動態
+- **例**: The book was written by Shakespeare. (その本はシェイクスピアによって書かれました)
+
+### 形容詞的用法
+- **例**: I found a broken window. (壊れた窓を見つけました)
+- **例**: The letter written by him was beautiful. (彼によって書かれた手紙は美しかった)
+
+## 動名詞（-ing）
+### 名詞として使用
+- **主語**: Swimming is good exercise. (水泳は良い運動です)
+- **目的語**: I enjoy reading books. (読書を楽しんでいます)
+- **前置詞の後**: Thank you for helping me. (手伝ってくれてありがとう)
+
+### 動名詞 vs 不定詞
+#### 動名詞を取る動詞
+- enjoy, finish, avoid, mind, suggest
+- **例**: I finished writing the report. (レポートを書き終えました)
+
+#### 不定詞を取る動詞  
+- want, decide, hope, plan, expect
+- **例**: I decided to study abroad. (留学することを決めました)
+
+## ビジネス英語での活用
+### 効率的な表現
+- **Having completed the project, we can focus on the next phase.**
+- **The increasing demand requires more resources.**
+
+## 実践への活用
+- ✅ 文法クイズの分詞・動名詞問題で満点
+- ✅ 英作文で洗練された表現
+- ✅ TOEICの複雑な文構造理解`,
     keyPoints: [
-      "portは「運ぶ」という意味",
-      "語根から派生語を体系的に理解",
-      "実際の場面での使用方法"
+      "現在分詞：進行・能動的修飾",
+      "過去分詞：完了・受動的修飾",
+      "動名詞：名詞としての-ing",
+      "動名詞と不定詞の使い分け",
     ],
     examples: [
       {
-        english: "I need to transport my luggage.",
-        japanese: "荷物を運ぶ必要があります。",
-        explanation: "transportは輸送・運搬の意味"
+        english: "The increasing sales show our success.",
+        japanese: "増加している売上は私たちの成功を示しています。",
+        explanation: "現在分詞の形容詞的用法",
       },
       {
-        english: "This device is portable.",
-        japanese: "この機器は持ち運び可能です。",
-        explanation: "portableは携帯可能という意味"
-      }
+        english: "I'm interested in learning new skills.",
+        japanese: "新しいスキルを学ぶことに興味があります。",
+        explanation: "前置詞の後の動名詞",
+      },
     ],
-    difficulty: "beginner"
-  }
+    relatedProblems: ["participle"],
+    prerequisites: ["basic-grammar-theory", "tenses-theory", "passive-theory"],
+  },
+
+  // 不定詞 (infinitive)
+  {
+    id: "infinitive-theory",
+    title: "不定詞の3つの用法",
+    category: "grammar",
+    subcategory: "infinitive",
+    level: 5,
+    contentType: "theory",
+    duration: 480, // 8分
+    difficulty: "intermediate",
+    content: `# 不定詞の3つの用法
+
+## 不定詞とは？
+**to + 動詞の原形**で、名詞・形容詞・副詞の働きをします。
+
+### 名詞的用法（～すること）
+#### 主語として
+- **例**: To study English is important. (英語を勉強することは重要です)
+- **改良**: It is important to study English. (英語を勉強することは重要です)
+
+#### 目的語として
+- **例**: I want to visit Japan. (日本を訪れたいです)
+- **例**: I decided to change my job. (転職することを決めました)
+
+### 形容詞的用法（～するための、～すべき）
+#### 名詞を修飾
+- **例**: I have something to tell you. (あなたに話すことがあります)
+- **例**: This is the best way to solve the problem. (これが問題を解決する最良の方法です)
+
+### 副詞的用法（～するために、～して）
+#### 目的
+- **例**: I came here to study English. (英語を勉強するためにここに来ました)
+- **例**: We work hard to achieve our goals. (目標を達成するために一生懸命働きます)
+
+#### 結果
+- **例**: I woke up to find it was raining. (目を覚ますと雨が降っていました)
+
+## ビジネス英語での重要性
+### 目的・計画の表現
+- **We need to improve our customer service.** (顧客サービスを改善する必要があります)
+- **The goal is to increase sales by 20%.** (目標は売上を20%増加させることです)
+
+### TOEIC頻出パターン
+- **in order to**: ～するために（より丁寧）
+- **so as to**: ～するために（否定形：so as not to）
+- **too...to**: あまりに～すぎて...できない
+
+## 実践への活用
+- ✅ 文法クイズの不定詞問題で満点
+- ✅ 英作文で目的・理由を明確に表現
+- ✅ TOEICのビジネス文書で意図理解`,
+    keyPoints: [
+      "名詞的用法：～すること",
+      "形容詞的用法：～するための",
+      "副詞的用法：～するために",
+      "ビジネスでの目的表現",
+    ],
+    examples: [
+      {
+        english: "Our company plans to expand overseas.",
+        japanese: "私たちの会社は海外展開を計画しています。",
+        explanation: "目的語としての不定詞",
+      },
+      {
+        english: "We have a meeting to discuss the budget.",
+        japanese: "予算について話し合う会議があります。",
+        explanation: "形容詞的用法：meetingを修飾",
+      },
+    ],
+    relatedProblems: ["infinitive"],
+    prerequisites: ["basic-grammar-theory", "tenses-theory"],
+  },
+
+  // TOEIC語彙戦略
+  {
+    id: "toeic-vocabulary-strategy",
+    title: "TOEIC語彙攻略法",
+    category: "vocabulary",
+    subcategory: "toeic",
+    level: 3,
+    contentType: "strategy",
+    duration: 420, // 7分
+    difficulty: "intermediate",
+    content: `# TOEIC語彙攻略法
+
+## TOEIC語彙の特徴
+**ビジネス場面**に特化した実用的な語彙が中心です。
+
+### スコア帯別語彙戦略
+#### 400-500点レベル
+- **基本ビジネス語彙**: meeting, office, schedule, report
+- **日常語彙**: important, available, necessary, possible
+- **戦略**: ガチャの基礎パックで基本語彙を固める
+
+#### 500-600点レベル  
+- **中級ビジネス語彙**: conference, presentation, deadline, budget
+- **動詞**: implement, analyze, collaborate, optimize
+- **戦略**: ガチャの中級パックで実用語彙を拡充
+
+#### 600-700点レベル
+- **上級ビジネス語彙**: acquisition, comprehensive, substantial
+- **形容詞**: sophisticated, efficient, strategic
+- **戦略**: ガチャの上級パックでレア語彙を収集
+
+### 語彙学習の相乗効果
+#### ガチャシステムとの連携
+1. **ガチャでカード獲得** → 新しい語彙に出会う
+2. **事前学習で理論理解** → 語彙の使い方を学ぶ
+3. **語彙学習で実践** → 記憶定着を図る
+4. **文法クイズで応用** → 文脈での使用練習
+
+#### 効果的な学習順序
+1. **事前学習**: 語彙の背景知識・使用場面を理解
+2. **ガチャ**: 楽しみながら新語彙獲得
+3. **語彙学習**: 集中的な記憶練習
+4. **文法クイズ**: 実際の文での使用練習
+
+## 実践への活用
+- ✅ ガチャで獲得した語彙の効率的学習
+- ✅ 文法クイズでの語彙問題対策
+- ✅ TOEICスコア向上の戦略的アプローチ`,
+    keyPoints: [
+      "スコア帯別の語彙レベル",
+      "ガチャシステムとの連携学習",
+      "理論→実践の学習フロー",
+      "ビジネス場面での実用性",
+    ],
+    examples: [
+      {
+        english: "The comprehensive report covers all aspects.",
+        japanese: "包括的なレポートは全ての側面をカバーしています。",
+        explanation: "上級語彙comprehensiveの使用例",
+      },
+      {
+        english: "We need to optimize our workflow.",
+        japanese: "ワークフローを最適化する必要があります。",
+        explanation: "中級語彙optimizeの実用例",
+      },
+    ],
+    relatedProblems: ["vocabulary"],
+    prerequisites: [],
+  },
+
+  // 英作文戦略
+  {
+    id: "writing-strategy",
+    title: "英作文で高得点を取る方法",
+    category: "writing",
+    subcategory: "strategy",
+    level: 6,
+    contentType: "strategy",
+    duration: 480, // 8分
+    difficulty: "advanced",
+    content: `# 英作文で高得点を取る方法
+
+## 英作文の基本戦略
+**正確性**と**流暢性**のバランスが重要です。
+
+### 文構造の基本パターン
+#### シンプルな文から始める
+1. **SVO**: I study English.
+2. **SVC**: The meeting is important.
+3. **SVOO**: He gave me a book.
+4. **SVOC**: We found the solution effective.
+
+#### 複雑な文への発展
+1. **接続詞**: because, although, while
+2. **関係詞**: who, which, that
+3. **分詞構文**: Having finished the work, I went home.
+
+### 語彙レベルの使い分け
+#### 基本レベル（400-500点）
+- **動詞**: go, come, make, take, get
+- **形容詞**: good, bad, big, small, important
+- **戦略**: 確実に使える語彙で文を構成
+
+#### 中級レベル（500-600点）
+- **動詞**: implement, analyze, collaborate
+- **形容詞**: efficient, effective, appropriate
+- **戦略**: ガチャで獲得した語彙を積極活用
+
+#### 上級レベル（600-700点）
+- **動詞**: optimize, enhance, facilitate
+- **形容詞**: comprehensive, sophisticated, substantial
+- **戦略**: レア語彙で表現力をアップ
+
+### 文法クイズとの相乗効果
+#### 学習した文法の実践
+1. **基本文型** → 正確な語順で作文
+2. **時制** → 適切な時制選択
+3. **助動詞** → 丁寧さレベルの調整
+4. **受動態** → フォーマルな表現
+5. **関係詞** → 複雑な文構造
+6. **仮定法** → 高度な表現力
+
+## 実践への活用
+- ✅ 文法クイズで学んだ知識の実践
+- ✅ ガチャ語彙の効果的活用
+- ✅ TOEICライティングセクション対策`,
+    keyPoints: [
+      "シンプルな文から複雑な文へ",
+      "語彙レベルの戦略的使い分け",
+      "文法知識の実践的応用",
+      "ガチャ語彙との相乗効果",
+    ],
+    examples: [
+      {
+        english:
+          "Having analyzed the data, we decided to implement the new strategy.",
+        japanese: "データを分析した結果、新戦略を実施することを決定しました。",
+        explanation: "分詞構文 + 上級語彙の組み合わせ",
+      },
+      {
+        english:
+          "The comprehensive report, which was written by our team, provides valuable insights.",
+        japanese:
+          "私たちのチームが作成した包括的なレポートは、貴重な洞察を提供します。",
+        explanation: "関係詞 + 上級語彙での複雑な文構造",
+      },
+    ],
+    relatedProblems: ["writing"],
+    prerequisites: [
+      "basic-grammar-theory",
+      "tenses-theory",
+      "relative-theory",
+      "participle-theory",
+    ],
+  },
 ];
 
-// 事前学習コンテンツを取得する関数
-export const getPreStudyContentsForLevel = (level: number): PreStudyContent[] => {
-  return samplePreStudyContents.filter(content => content.level <= level);
-};
+/**
+ * レベル別コンテンツ取得
+ */
+export function getPreStudyContentsForLevel(
+  userLevel: number
+): PreStudyContent[] {
+  return preStudyContents.filter((content) => content.level <= userLevel);
+}
 
-// カテゴリ別コンテンツ取得
-export const getPreStudyContentsByCategory = (
-  category: PreStudyContent['category'],
-  level: number
-): PreStudyContent[] => {
-  return samplePreStudyContents.filter(
-    content => content.category === category && content.level <= level
+/**
+ * カテゴリー別コンテンツ取得
+ */
+export function getPreStudyContentsByCategory(
+  category: string
+): PreStudyContent[] {
+  if (category === "all") return preStudyContents;
+  return preStudyContents.filter((content) => content.category === category);
+}
+
+/**
+ * 文法カテゴリーに対応する事前学習コンテンツ取得
+ */
+export function getPreStudyContentForGrammarCategory(
+  grammarCategory: string
+): PreStudyContent | undefined {
+  return preStudyContents.find(
+    (content) => content.subcategory === grammarCategory
   );
-};
-
-// 前提条件をチェック
-export const canAccessPreStudyContent = (
-  contentId: string,
-  completedContents: string[]
-): boolean => {
-  const content = samplePreStudyContents.find(c => c.id === contentId);
-  if (!content || !content.prerequisites) return true;
-  
-  return content.prerequisites.every(prereq => completedContents.includes(prereq));
-};
+}

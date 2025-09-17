@@ -15,6 +15,8 @@ import {
   shuffleArray,
 } from "../data/combinedTest";
 import { useScrollToTop } from "../hooks/useScrollToTop";
+import { DataManager } from "../utils/dataManager";
+import { GachaSystem } from "../utils/gachaSystem";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -23,9 +25,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { Progress } from "./ui/progress";
 
-interface CombinedTestProps {
-  onBack: () => void;
-}
+// Router対応のため、propsは削除
 
 interface XPAnimationProps {
   show: boolean;
@@ -114,7 +114,7 @@ function Timer({
   );
 }
 
-export function CombinedTest({ onBack }: CombinedTestProps) {
+export default function CombinedTest() {
   const navigate = useNavigate();
   useScrollToTop();
   const [questions, setQuestions] = useState<CombinedTestQuestion[]>([]);
@@ -127,6 +127,32 @@ export function CombinedTest({ onBack }: CombinedTestProps) {
   const [totalXP, setTotalXP] = useState(0);
   const [showXPAnimation, setShowXPAnimation] = useState(false);
   const [currentXP, setCurrentXP] = useState(0);
+
+  // 相乗効果データ
+  const [personalizedData, setPersonalizedData] = useState({
+    gachaVocabCount: 0,
+    preStudyCompleted: 0,
+    weakAreas: [] as string[],
+    strongAreas: [] as string[],
+    personalizedQuestions: 0,
+  });
+
+  useEffect(() => {
+    try {
+      const userGachaData = GachaSystem.getUserGachaData();
+      const preStudyProgress = DataManager.getPreStudyProgress();
+
+      setPersonalizedData({
+        gachaVocabCount: userGachaData.ownedCards.length,
+        preStudyCompleted: preStudyProgress.completedContents.length,
+        weakAreas: ["tenses", "modals"], // TODO: 実際の弱点分析と連携
+        strongAreas: ["basic-grammar"], // TODO: 実際の強み分析と連携
+        personalizedQuestions: Math.min(userGachaData.ownedCards.length, 5),
+      });
+    } catch (error) {
+      console.log("パーソナライズデータの取得に失敗:", error);
+    }
+  }, []);
   const [timeUp, setTimeUp] = useState(false);
 
   useEffect(() => {

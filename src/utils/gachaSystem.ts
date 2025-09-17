@@ -25,13 +25,29 @@ export class GachaSystem {
     else if (rand < 0.8) rarity = "uncommon";
     else rarity = "common";
 
+    console.log(
+      `GachaSystem.drawRandomCard - Rolled ${rand}, selected rarity: ${rarity}`
+    );
+
     const availableCards = toeicWordCards.filter(
       (card) => card.rarity === rarity
     );
+    console.log(
+      `GachaSystem.drawRandomCard - Available ${rarity} cards:`,
+      availableCards.length
+    );
+
     if (availableCards.length === 0) {
       // 該当するレアリティのカードがない場合はcommonを返す
+      console.warn(
+        `GachaSystem.drawRandomCard - No ${rarity} cards available, falling back to common`
+      );
       const commonCards = toeicWordCards.filter(
         (card) => card.rarity === "common"
+      );
+      console.log(
+        `GachaSystem.drawRandomCard - Common cards available:`,
+        commonCards.length
       );
       return commonCards[Math.floor(Math.random() * commonCards.length)];
     }
@@ -43,56 +59,74 @@ export class GachaSystem {
    * パックを開封して8枚の重複なしカードを取得
    */
   static openPack(packId: string): WordCard[] {
-    const pack = gachaPacks.find((p) => p.id === packId);
-    if (!pack) {
-      throw new Error(`Pack with id ${packId} not found`);
-    }
+    try {
+      console.log("GachaSystem.openPack - Opening pack:", packId);
+      const pack = gachaPacks.find((p) => p.id === packId);
+      if (!pack) {
+        throw new Error(`Pack with id ${packId} not found`);
+      }
+      console.log(
+        "GachaSystem.openPack - Pack found:",
+        pack.name,
+        "theme:",
+        pack.theme
+      );
 
-    const cards: WordCard[] = [];
-    const usedCardIds = new Set<number>();
+      const cards: WordCard[] = [];
+      const usedCardIds = new Set<number>();
 
-    // パックのテーマに応じてカードを調整
-    for (let i = 0; i < 8; i++) {
-      let card: WordCard;
-      let attempts = 0;
-      const maxAttempts = 100; // 無限ループ防止
+      // パックのテーマに応じてカードを調整
+      for (let i = 0; i < 8; i++) {
+        let card: WordCard;
+        let attempts = 0;
+        const maxAttempts = 100; // 無限ループ防止
 
-      do {
-        card = this.drawRandomCard();
-        attempts++;
+        do {
+          card = this.drawRandomCard();
+          attempts++;
 
-        // パックのテーマに応じてカードを調整
-        if (pack.theme !== "mixed") {
-          const themeCards = toeicWordCards.filter((c) =>
-            c.toeicSpecific.parts.some((part) =>
-              pack.theme === "part1_2"
-                ? ["Part1", "Part2"].includes(part)
-                : pack.theme === "part3_4"
-                ? ["Part3", "Part4"].includes(part)
-                : pack.theme === "part5_6"
-                ? ["Part5", "Part6"].includes(part)
-                : pack.theme === "part7"
-                ? part === "Part7"
-                : true
-            )
-          );
+          // パックのテーマに応じてカードを調整
+          if (pack.theme !== "mixed") {
+            const themeCards = toeicWordCards.filter((c) =>
+              c.toeicSpecific.parts.some((part) =>
+                pack.theme === "part1_2"
+                  ? ["Part1", "Part2"].includes(part)
+                  : pack.theme === "part3_4"
+                  ? ["Part3", "Part4"].includes(part)
+                  : pack.theme === "part5_6"
+                  ? ["Part5", "Part6"].includes(part)
+                  : pack.theme === "part7"
+                  ? part === "Part7"
+                  : true
+              )
+            );
 
-          if (themeCards.length > 0) {
-            card = themeCards[Math.floor(Math.random() * themeCards.length)];
+            if (themeCards.length > 0) {
+              card = themeCards[Math.floor(Math.random() * themeCards.length)];
+            }
           }
-        }
 
-        // 無限ループ防止：最大試行回数に達した場合は重複を許可
-        if (attempts >= maxAttempts) {
-          break;
-        }
-      } while (usedCardIds.has(card.id));
+          // 無限ループ防止：最大試行回数に達した場合は重複を許可
+          if (attempts >= maxAttempts) {
+            break;
+          }
+        } while (usedCardIds.has(card.id));
 
-      cards.push(card);
-      usedCardIds.add(card.id);
+        cards.push(card);
+        usedCardIds.add(card.id);
+        console.log(
+          `GachaSystem.openPack - Drew card ${i + 1}:`,
+          card.word,
+          card.rarity
+        );
+      }
+
+      console.log("GachaSystem.openPack - Final cards:", cards.length);
+      return cards;
+    } catch (error) {
+      console.error("GachaSystem.openPack - Error:", error);
+      throw error;
     }
-
-    return cards;
   }
 
   /**
@@ -107,8 +141,10 @@ export class GachaSystem {
     return {
       ownedCards: [],
       totalPacks: 0,
-      dailyPacksUsed: 0,
-      lastPackDate: "",
+      dailyPacksUsed: 0, // 互換性のため残す
+      lastPackDate: "", // 互換性のため残す
+      availablePacks: 2, // 初期値: 2パック利用可能
+      lastPackOpenTime: 0, // 最後に開封した時間
       collection: {
         totalCards: 0,
         uniqueCards: 0,
@@ -129,49 +165,64 @@ export class GachaSystem {
    */
   static addCardsToCollection(cards: WordCard[]): void {
     const userData = this.getUserGachaData();
-    const today = new Date().toDateString();
 
-    // 日付が変わったらデイリー使用回数をリセット
-    if (userData.lastPackDate !== today) {
-      userData.dailyPacksUsed = 0;
-      userData.lastPackDate = today;
-    }
+    // 時間ベースシステムでは日付リセットは不要
+    // 利用可能パック数を現在時刻で更新
+    const updatedUserData = this.updateAvailablePacksCount(userData);
 
     // カードを追加（重複カードも含む）
     cards.forEach((card) => {
-      userData.ownedCards.push(card);
+      updatedUserData.ownedCards.push(card);
     });
 
     // 統計を更新
-    userData.collection.totalCards = userData.ownedCards.length;
+    updatedUserData.collection.totalCards = updatedUserData.ownedCards.length;
 
     // ユニークカード数を計算
-    const uniqueCardIds = new Set(userData.ownedCards.map((card) => card.id));
-    userData.collection.uniqueCards = uniqueCardIds.size;
+    const uniqueCardIds = new Set(
+      updatedUserData.ownedCards.map((card) => card.id)
+    );
+    updatedUserData.collection.uniqueCards = uniqueCardIds.size;
 
     // レアリティ統計を更新
-    userData.collection.rarityStats = {};
-    userData.ownedCards.forEach((card) => {
-      userData.collection.rarityStats[card.rarity] =
-        (userData.collection.rarityStats[card.rarity] || 0) + 1;
+    updatedUserData.collection.rarityStats = {};
+    updatedUserData.ownedCards.forEach((card) => {
+      updatedUserData.collection.rarityStats[card.rarity] =
+        (updatedUserData.collection.rarityStats[card.rarity] || 0) + 1;
     });
 
-    this.saveUserGachaData(userData);
+    this.saveUserGachaData(updatedUserData);
   }
 
   /**
    * パックを開封してコレクションに追加
    */
   static openPackAndSave(packId: string): WordCard[] {
-    const cards = this.openPack(packId);
-    this.addCardsToCollection(cards);
+    try {
+      console.log(
+        "GachaSystem.openPackAndSave - Starting pack opening:",
+        packId
+      );
+      const cards = this.openPack(packId);
+      console.log("GachaSystem.openPackAndSave - Cards drawn:", cards.length);
 
-    const userData = this.getUserGachaData();
-    userData.totalPacks++;
-    userData.dailyPacksUsed++;
-    this.saveUserGachaData(userData);
+      this.addCardsToCollection(cards);
+      console.log("GachaSystem.openPackAndSave - Cards added to collection");
 
-    return cards;
+      const userData = this.getUserGachaData();
+      userData.totalPacks++;
+      // 時間ベースシステムでは dailyPacksUsed は使用しない
+      // 代わりに lastPackOpenTime を更新し、availablePacks を減らす
+      userData.lastPackOpenTime = Date.now();
+      userData.availablePacks = Math.max(0, (userData.availablePacks || 2) - 1);
+      this.saveUserGachaData(userData);
+      console.log("GachaSystem.openPackAndSave - User data updated");
+
+      return cards;
+    } catch (error) {
+      console.error("GachaSystem.openPackAndSave - Error:", error);
+      throw error;
+    }
   }
 
   /**
@@ -194,7 +245,7 @@ export class GachaSystem {
   static canOpenPack(
     packId: string,
     userXP: number
-  ): { canOpen: boolean; reason?: string } {
+  ): { canOpen: boolean; reason?: string; nextPackTime?: number } {
     const pack = this.getPackById(packId);
     if (!pack) {
       return { canOpen: false, reason: "パックが見つかりません" };
@@ -208,17 +259,63 @@ export class GachaSystem {
     }
 
     const userData = this.getUserGachaData();
-    const today = new Date().toDateString();
+    const availablePacks = this.getAvailablePacksCount(userData);
 
-    // デイリー制限チェック（1日5パックまで）
-    if (userData.lastPackDate === today && userData.dailyPacksUsed >= 5) {
+    if (availablePacks <= 0) {
+      const nextPackTime = this.getNextPackRecoveryTime(userData);
       return {
         canOpen: false,
-        reason: "本日のパック開封回数上限に達しています",
+        reason: "利用可能なパックがありません",
+        nextPackTime,
       };
     }
 
     return { canOpen: true };
+  }
+
+  /**
+   * 利用可能なパック数を計算（時間ベース回復システム）
+   */
+  static getAvailablePacksCount(userData: UserGachaData): number {
+    const now = Date.now();
+    const lastOpenTime = userData.lastPackOpenTime || 0;
+    const currentAvailable = userData.availablePacks || 2; // 初期値は2
+
+    // テスト用: 5分 = 5 * 60 * 1000ms
+    // 本番用: 12時間 = 12 * 60 * 60 * 1000ms
+    const RECOVERY_TIME = 5 * 60 * 1000; // 5分（テスト用）
+
+    if (currentAvailable >= 2) {
+      return 2; // 最大2パック
+    }
+
+    // 前回の開封から何回分回復したか計算
+    const timeSinceLastOpen = now - lastOpenTime;
+    const recoveredPacks = Math.floor(timeSinceLastOpen / RECOVERY_TIME);
+
+    return Math.min(2, currentAvailable + recoveredPacks);
+  }
+
+  /**
+   * 次のパック回復時間を取得
+   */
+  static getNextPackRecoveryTime(userData: UserGachaData): number {
+    const now = Date.now();
+    const lastOpenTime = userData.lastPackOpenTime || now;
+    const RECOVERY_TIME = 5 * 60 * 1000; // 5分（テスト用）
+
+    return lastOpenTime + RECOVERY_TIME;
+  }
+
+  /**
+   * ユーザーデータの利用可能パック数を更新
+   */
+  static updateAvailablePacksCount(userData: UserGachaData): UserGachaData {
+    const availablePacks = this.getAvailablePacksCount(userData);
+    return {
+      ...userData,
+      availablePacks,
+    };
   }
 
   /**
