@@ -1,0 +1,65 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e5]:
+  - generic [ref=e6]:
+    - button "戻る" [ref=e7]:
+      - img
+      - text: 戻る
+    - generic [ref=e8]:
+      - heading "📚 事前学習" [level=1] [ref=e9]:
+        - generic [ref=e10]: 📚
+        - text: 事前学習
+      - paragraph [ref=e11]: 理論を理解してから実践へ
+  - generic [ref=e12]:
+    - combobox [ref=e13]:
+      - option "すべてのカテゴリ" [selected]
+      - option "grammar"
+    - combobox [ref=e14]:
+      - option "すべてのレベル" [selected]
+      - option "Level 1"
+  - generic [ref=e15]:
+    - heading "🎯 推奨コンテンツ" [level=2] [ref=e16]
+    - generic [ref=e17] [cursor=pointer]:
+      - generic [ref=e18] [cursor=pointer]:
+        - generic [ref=e19] [cursor=pointer]:
+          - generic [ref=e20] [cursor=pointer]:
+            - generic [ref=e21] [cursor=pointer]: 💡
+            - heading "英文の基本構造" [level=4] [ref=e22] [cursor=pointer]
+          - generic [ref=e23] [cursor=pointer]:
+            - generic [ref=e24] [cursor=pointer]: beginner
+            - generic [ref=e25] [cursor=pointer]: Level 1
+        - paragraph [ref=e26] [cursor=pointer]: ⭐️ grammar
+      - generic [ref=e27] [cursor=pointer]:
+        - paragraph [ref=e28] [cursor=pointer]: 理論学習 - theory
+        - generic [ref=e29] [cursor=pointer]:
+          - generic [ref=e30] [cursor=pointer]: ⏱️ 5分
+          - generic [ref=e31] [cursor=pointer]: grammar
+        - generic [ref=e32] [cursor=pointer]:
+          - generic [ref=e33] [cursor=pointer]: "重要ポイント:"
+          - list [ref=e34] [cursor=pointer]:
+            - listitem [ref=e35] [cursor=pointer]: 英語の基本語順はSVO
+            - listitem [ref=e36] [cursor=pointer]: be動詞と一般動詞の使い分け
+  - generic [ref=e37]:
+    - heading "📖 利用可能なコンテンツ" [level=2] [ref=e38]
+    - generic [ref=e40] [cursor=pointer]:
+      - generic [ref=e41] [cursor=pointer]:
+        - generic [ref=e42] [cursor=pointer]:
+          - generic [ref=e43] [cursor=pointer]:
+            - generic [ref=e44] [cursor=pointer]: 💡
+            - heading "英文の基本構造" [level=4] [ref=e45] [cursor=pointer]
+          - generic [ref=e46] [cursor=pointer]:
+            - generic [ref=e47] [cursor=pointer]: beginner
+            - generic [ref=e48] [cursor=pointer]: Level 1
+        - paragraph [ref=e49] [cursor=pointer]: ⭐️ grammar
+      - generic [ref=e50] [cursor=pointer]:
+        - paragraph [ref=e51] [cursor=pointer]: 理論学習 - theory
+        - generic [ref=e52] [cursor=pointer]:
+          - generic [ref=e53] [cursor=pointer]: ⏱️ 5分
+          - generic [ref=e54] [cursor=pointer]: grammar
+        - generic [ref=e55] [cursor=pointer]:
+          - generic [ref=e56] [cursor=pointer]: "重要ポイント:"
+          - list [ref=e57] [cursor=pointer]:
+            - listitem [ref=e58] [cursor=pointer]: 英語の基本語順はSVO
+            - listitem [ref=e59] [cursor=pointer]: be動詞と一般動詞の使い分け
+```

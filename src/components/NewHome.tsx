@@ -28,10 +28,10 @@ import {
   consumeStar,
   initializeStarSystem,
 } from "../utils/starUtils";
-import { EnhancedGrammarQuiz } from "./EnhancedGrammarQuiz";
+// EnhancedGrammarQuizはRouter経由で使用するため、直接importを削除
 import { GrammarQuizCategorySelection } from "./GrammarQuizCategorySelection";
 import { GrammarQuizDifficultySelection } from "./GrammarQuizDifficultySelection";
-import { GrowthDashboard } from "./GrowthDashboard";
+// GrowthDashboardはRouter経由で使用するため、直接importを削除
 import { LearningFeedbackForm } from "./LearningFeedbackForm";
 import { LevelDisplay } from "./LevelDisplay";
 import { StatusAllocationComponent } from "./StatusAllocation";

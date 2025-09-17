@@ -39,13 +39,7 @@ import {
 } from "./ui/select";
 import { Switch } from "./ui/switch";
 
-interface AppSettingsProps {
-  onBack: () => void;
-}
-
-// AppSettingsTypeをDataManagerから使用
-
-export function AppSettings({ onBack }: AppSettingsProps) {
+export default function AppSettings() {
   const navigate = useNavigate();
   useScrollToTop();
   const [settings, setSettings] = useState<AppSettingsType>({

@@ -1,0 +1,45 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e5]:
+  - generic [ref=e6]:
+    - button [ref=e7]:
+      - img
+    - heading "実績" [level=1] [ref=e8]
+  - generic [ref=e10]:
+    - generic [ref=e11]:
+      - img [ref=e12]
+      - generic [ref=e18]: 合計XP
+    - generic [ref=e19]: "0"
+    - generic [ref=e20]: 継続は力なり！
+  - generic [ref=e23]:
+    - generic [ref=e24]:
+      - img [ref=e26]
+      - generic [ref=e28]:
+        - generic [ref=e29]: 連続学習
+        - generic [ref=e30]: 0日
+    - generic [ref=e31]:
+      - generic [ref=e32]: 最長記録
+      - generic [ref=e33]: 0日
+  - generic [ref=e34]:
+    - generic [ref=e36]:
+      - img [ref=e38]
+      - generic [ref=e42]: 0%
+      - generic [ref=e43]: 正解率
+    - generic [ref=e45]:
+      - img [ref=e47]
+      - generic [ref=e49]: "0"
+      - generic [ref=e50]: 総問題数
+  - generic [ref=e51]:
+    - heading "実績進捗" [level=2] [ref=e53]:
+      - img [ref=e54]
+      - text: 実績進捗
+    - generic [ref=e60]:
+      - generic [ref=e61]:
+        - generic [ref=e62]: 獲得済み
+        - generic [ref=e63]: 0 / 0
+      - progressbar [ref=e64]
+  - heading "獲得済み実績 (0)" [level=2] [ref=e67]:
+    - img [ref=e68]
+    - text: 獲得済み実績 (0)
+```

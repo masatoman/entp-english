@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 // import {
@@ -80,13 +80,7 @@ const loadProfile = (): TowerDefenseProfile => ({
 const addXP = (amount: number): void => {};
 const applyShopItemEffect = (item: any, state: GameState): GameState => state;
 
-interface SimpleTowerDefenseProps {
-  onBack: () => void;
-}
-
-export const SimpleTowerDefense = React.memo(function SimpleTowerDefense({
-  onBack,
-}: SimpleTowerDefenseProps) {
+export default function SimpleTowerDefense() {
   const navigate = useNavigate();
   useScrollToTop();
   const [gameState, setGameState] = useState<GameState>(
@@ -652,4 +646,4 @@ export const SimpleTowerDefense = React.memo(function SimpleTowerDefense({
       </div>
     </div>
   );
-});
+}

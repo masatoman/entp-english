@@ -1,0 +1,52 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e5]:
+  - generic [ref=e6]:
+    - button [ref=e7]:
+      - img
+    - generic [ref=e8]:
+      - heading "難易度選択" [level=1] [ref=e9]
+      - generic [ref=e11]: 単語学習
+  - paragraph [ref=e12]: 難易度を選択してください
+  - generic [ref=e13]:
+    - generic [ref=e14] [cursor=pointer]:
+      - generic [ref=e15] [cursor=pointer]:
+        - generic [ref=e16] [cursor=pointer]:
+          - heading "初級" [level=4] [ref=e18] [cursor=pointer]
+          - generic [ref=e20] [cursor=pointer]: 初級
+        - paragraph [ref=e21] [cursor=pointer]: 基本的な日常会話でよく使われる単語
+      - generic [ref=e22] [cursor=pointer]:
+        - paragraph [ref=e23] [cursor=pointer]: I am / You are / He has など基本的な単語
+        - generic [ref=e24] [cursor=pointer]:
+          - generic [ref=e25] [cursor=pointer]: "重要ポイント:"
+          - list [ref=e26] [cursor=pointer]:
+            - listitem [ref=e27] [cursor=pointer]: "例: reliable, confident, important, beautiful"
+            - listitem [ref=e28] [cursor=pointer]: 約20個の単語
+    - generic [ref=e29] [cursor=pointer]:
+      - generic [ref=e30] [cursor=pointer]:
+        - generic [ref=e31] [cursor=pointer]:
+          - heading "中級" [level=4] [ref=e33] [cursor=pointer]
+          - generic [ref=e35] [cursor=pointer]: 中級
+        - paragraph [ref=e36] [cursor=pointer]: ビジネスや日常でよく使われる単語
+      - generic [ref=e37] [cursor=pointer]:
+        - paragraph [ref=e38] [cursor=pointer]: ビジネスシーンや日常会話で頻繁に使用される単語
+        - generic [ref=e39] [cursor=pointer]:
+          - generic [ref=e40] [cursor=pointer]: "重要ポイント:"
+          - list [ref=e41] [cursor=pointer]:
+            - listitem [ref=e42] [cursor=pointer]: "例: accomplish, opportunity, effective, professional"
+            - listitem [ref=e43] [cursor=pointer]: 約50個の単語
+    - generic [ref=e44] [cursor=pointer]:
+      - generic [ref=e45] [cursor=pointer]:
+        - generic [ref=e46] [cursor=pointer]:
+          - heading "上級" [level=4] [ref=e48] [cursor=pointer]
+          - generic [ref=e50] [cursor=pointer]: 上級
+        - paragraph [ref=e51] [cursor=pointer]: ビジネス、学術、専門的な単語
+      - generic [ref=e52] [cursor=pointer]:
+        - paragraph [ref=e53] [cursor=pointer]: 学術論文や専門分野で使用される高度な単語
+        - generic [ref=e54] [cursor=pointer]:
+          - generic [ref=e55] [cursor=pointer]: "重要ポイント:"
+          - list [ref=e56] [cursor=pointer]:
+            - listitem [ref=e57] [cursor=pointer]: "例: sophisticated, comprehensive, methodology, infrastructure"
+            - listitem [ref=e58] [cursor=pointer]: 約30個の単語
+```

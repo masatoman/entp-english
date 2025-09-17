@@ -698,7 +698,7 @@ TOEICでは**丁寧な表現**が頻出：
     title: "英作文で高得点を取る方法",
     category: "writing",
     subcategory: "strategy",
-    level: 6,
+    level: 8,
     contentType: "strategy",
     duration: 480, // 8分
     difficulty: "advanced",

@@ -8,17 +8,29 @@ import {
   Target,
   TrendingUp,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { UserStats } from "../data/achievements";
+import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Badge } from "./ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
 
-interface GrowthDashboardProps {
-  userStats: UserStats;
-  onBack: () => void;
-}
+export default function GrowthDashboard() {
+  const navigate = useNavigate();
+  useScrollToTop();
 
-export function GrowthDashboard({ userStats, onBack }: GrowthDashboardProps) {
+  // 仮のユーザー統計データ（実際の実装では適切なデータソースから取得）
+  const userStats: UserStats = {
+    totalXP: 0,
+    level: 1,
+    streak: 0,
+    maxStreak: 0,
+    totalQuestions: 0,
+    correctAnswers: 0,
+    studyTimeMinutes: 0,
+    achievements: [],
+    preStudySessions: [],
+  };
   // 成長指標の計算
   const calculateGrowthMetrics = () => {
     const sessions = userStats.preStudySessions || [];
@@ -177,7 +189,7 @@ export function GrowthDashboard({ userStats, onBack }: GrowthDashboardProps) {
         {/* Header */}
         <div className="flex items-center justify-between pt-8">
           <button
-            onClick={onBack}
+            onClick={() => navigate("/")}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
             ← 戻る

@@ -1,0 +1,52 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e5]:
+  - generic [ref=e6]:
+    - button [ref=e7]:
+      - img
+    - generic [ref=e8]:
+      - heading "カテゴリ選択" [level=1] [ref=e9]
+      - generic [ref=e11]: 単語学習
+  - paragraph [ref=e12]: カテゴリを選択してください
+  - generic [ref=e13]:
+    - generic [ref=e14] [cursor=pointer]:
+      - generic [ref=e15] [cursor=pointer]:
+        - generic [ref=e16] [cursor=pointer]:
+          - heading "すべて" [level=4] [ref=e18] [cursor=pointer]
+          - generic [ref=e20] [cursor=pointer]: 全レベル
+        - paragraph [ref=e21] [cursor=pointer]: 全レベルの単語をランダムに学習
+      - generic [ref=e22] [cursor=pointer]:
+        - paragraph [ref=e23] [cursor=pointer]: 初級から上級まで幅広いレベルの単語
+        - generic [ref=e24] [cursor=pointer]:
+          - generic [ref=e25] [cursor=pointer]: "重要ポイント:"
+          - list [ref=e26] [cursor=pointer]:
+            - listitem [ref=e27] [cursor=pointer]: "例: reliable, accomplish, sophisticated"
+            - listitem [ref=e28] [cursor=pointer]: 130個の単語
+    - generic [ref=e29] [cursor=pointer]:
+      - generic [ref=e30] [cursor=pointer]:
+        - generic [ref=e31] [cursor=pointer]:
+          - heading "TOEIC頻出" [level=4] [ref=e33] [cursor=pointer]
+          - generic [ref=e35] [cursor=pointer]: 中級
+        - paragraph [ref=e36] [cursor=pointer]: TOEIC試験でよく出る単語
+      - generic [ref=e37] [cursor=pointer]:
+        - paragraph [ref=e38] [cursor=pointer]: TOEIC試験で頻繁に出題されるビジネス単語
+        - generic [ref=e39] [cursor=pointer]:
+          - generic [ref=e40] [cursor=pointer]: "重要ポイント:"
+          - list [ref=e41] [cursor=pointer]:
+            - listitem [ref=e42] [cursor=pointer]: "例: revenue, budget, deadline, contract"
+            - listitem [ref=e43] [cursor=pointer]: 20個の単語
+    - generic [ref=e44] [cursor=pointer]:
+      - generic [ref=e45] [cursor=pointer]:
+        - generic [ref=e46] [cursor=pointer]:
+          - heading "日常会話" [level=4] [ref=e48] [cursor=pointer]
+          - generic [ref=e50] [cursor=pointer]: 初級
+        - paragraph [ref=e51] [cursor=pointer]: 日常会話でよく使われる単語
+      - generic [ref=e52] [cursor=pointer]:
+        - paragraph [ref=e53] [cursor=pointer]: 友達との会話や日常的な表現で使用される単語
+        - generic [ref=e54] [cursor=pointer]:
+          - generic [ref=e55] [cursor=pointer]: "重要ポイント:"
+          - list [ref=e56] [cursor=pointer]:
+            - listitem [ref=e57] [cursor=pointer]: "例: awesome, amazing, fantastic, wonderful"
+            - listitem [ref=e58] [cursor=pointer]: 15個の単語
+```

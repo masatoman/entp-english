@@ -1,0 +1,150 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e5]:
+  - generic [ref=e7]:
+    - generic [ref=e8]:
+      - heading "ENTP英語学習アプリ" [level=1] [ref=e9]
+      - paragraph [ref=e10]: あなたの英語学習をサポートします
+    - generic [ref=e11]:
+      - button "統計" [ref=e12]:
+        - img
+        - generic [ref=e13]: 統計
+      - button "設定" [ref=e14]:
+        - img
+        - generic [ref=e15]: 設定
+  - generic [ref=e16]:
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - heading "レベル情報" [level=3] [ref=e20]
+        - generic [ref=e21]:
+          - generic [ref=e22]: "1"
+          - generic [ref=e23]:
+            - generic [ref=e24]: 章
+            - generic [ref=e25]: 基礎編
+      - generic [ref=e27]:
+        - generic [ref=e28]:
+          - generic [ref=e29]: Level 1
+          - generic [ref=e30]: 0 XP
+        - generic [ref=e32]:
+          - generic [ref=e33]: "進捗: 0.0%"
+          - generic [ref=e34]: "次のレベルまで: 50 XP"
+    - generic [ref=e36]:
+      - heading "体力システム" [level=3] [ref=e37]
+      - generic [ref=e39]:
+        - generic [ref=e40]: 体力
+        - generic [ref=e41]:
+          - generic [ref=e42]: ♥
+          - generic [ref=e43]: ♥
+          - generic [ref=e44]: ♡
+        - generic [ref=e45]: (2/3)
+      - generic [ref=e47]:
+        - generic [ref=e48]: スタミナ
+        - generic [ref=e49]:
+          - generic [ref=e50]: ⭐️
+          - generic [ref=e51]: ⭐️
+          - generic [ref=e52]: ⭐️
+        - generic [ref=e53]: (3/3)
+      - generic [ref=e54]:
+        - generic [ref=e55]:
+          - paragraph [ref=e56]: 1問題につき1体力消費
+          - paragraph [ref=e57]: 5分で1体力回復
+        - generic [ref=e58]:
+          - button "体力を消費" [ref=e59]
+          - button "♥回復" [ref=e60]
+  - generic [ref=e61]:
+    - generic [ref=e62] [cursor=pointer]:
+      - generic [ref=e63] [cursor=pointer]:
+        - generic [ref=e64] [cursor=pointer]:
+          - generic [ref=e65] [cursor=pointer]:
+            - generic [ref=e66] [cursor=pointer]: ⭐️
+            - heading "事前学習" [level=4] [ref=e67] [cursor=pointer]
+          - generic [ref=e69] [cursor=pointer]: 理論
+        - paragraph [ref=e70] [cursor=pointer]: 理論を理解してから実践へ
+      - paragraph [ref=e72] [cursor=pointer]: "必要スター: 1 ⭐️"
+    - generic [ref=e73] [cursor=pointer]:
+      - generic [ref=e74] [cursor=pointer]:
+        - generic [ref=e75] [cursor=pointer]:
+          - generic [ref=e76] [cursor=pointer]:
+            - generic [ref=e77] [cursor=pointer]: ✏️
+            - heading "文法クイズ" [level=4] [ref=e78] [cursor=pointer]
+          - generic [ref=e80] [cursor=pointer]: 文法
+        - paragraph [ref=e81] [cursor=pointer]: 9つのカテゴリーから文法問題に挑戦
+      - paragraph [ref=e83] [cursor=pointer]: "必要体力: 1 ♥"
+    - generic [ref=e84] [cursor=pointer]:
+      - generic [ref=e85] [cursor=pointer]:
+        - generic [ref=e86] [cursor=pointer]:
+          - generic [ref=e87] [cursor=pointer]:
+            - generic [ref=e88] [cursor=pointer]: 📚
+            - heading "語彙学習" [level=4] [ref=e89] [cursor=pointer]
+          - generic [ref=e91] [cursor=pointer]: 語彙
+        - paragraph [ref=e92] [cursor=pointer]: レベル別・カテゴリー別の単語学習
+      - paragraph [ref=e94] [cursor=pointer]: "必要体力: 1 ♥"
+    - generic [ref=e95] [cursor=pointer]:
+      - generic [ref=e96] [cursor=pointer]:
+        - generic [ref=e97] [cursor=pointer]:
+          - generic [ref=e98] [cursor=pointer]:
+            - generic [ref=e99] [cursor=pointer]: 🎯
+            - heading "総合テスト" [level=4] [ref=e100] [cursor=pointer]
+          - generic [ref=e102] [cursor=pointer]: 総合
+        - paragraph [ref=e103] [cursor=pointer]: 全分野から出題される総合テスト
+      - paragraph [ref=e105] [cursor=pointer]: "必要体力: 1 ♥"
+    - generic [ref=e106] [cursor=pointer]:
+      - generic [ref=e107] [cursor=pointer]:
+        - generic [ref=e108] [cursor=pointer]:
+          - generic [ref=e109] [cursor=pointer]:
+            - generic [ref=e110] [cursor=pointer]: ⏰
+            - heading "タイムアタック" [level=4] [ref=e111] [cursor=pointer]
+          - generic [ref=e113] [cursor=pointer]: スピード
+        - paragraph [ref=e114] [cursor=pointer]: 制限時間内で問題を解くスピード重視モード
+      - paragraph [ref=e116] [cursor=pointer]: "必要体力: 1 ♥"
+    - generic [ref=e117] [cursor=pointer]:
+      - generic [ref=e118] [cursor=pointer]:
+        - generic [ref=e119] [cursor=pointer]:
+          - generic [ref=e120] [cursor=pointer]:
+            - generic [ref=e121] [cursor=pointer]: ✍️
+            - heading "英作文" [level=4] [ref=e122] [cursor=pointer]
+          - generic [ref=e124] [cursor=pointer]: ライティング
+        - paragraph [ref=e125] [cursor=pointer]: 文法・語彙を実践で活用する英作文課題
+      - paragraph [ref=e127] [cursor=pointer]: "必要体力: 1 ♥"
+    - generic [ref=e128]:
+      - generic [ref=e129]:
+        - generic [ref=e130]:
+          - generic [ref=e131]:
+            - generic [ref=e132]: 🎮
+            - heading "タワーディフェンス" [level=4] [ref=e133]
+            - generic [ref=e134]: 🔒
+          - generic [ref=e136]: 準備中
+        - paragraph [ref=e137]: 🚧 機能改善中です（近日公開予定）
+      - paragraph [ref=e139]: 機能改善中
+    - generic [ref=e140] [cursor=pointer]:
+      - generic [ref=e141] [cursor=pointer]:
+        - generic [ref=e142] [cursor=pointer]:
+          - generic [ref=e143] [cursor=pointer]:
+            - generic [ref=e144] [cursor=pointer]: 🎁
+            - heading "TOEIC単語ガチャ" [level=4] [ref=e145] [cursor=pointer]
+          - generic [ref=e147] [cursor=pointer]: ガチャ
+        - paragraph [ref=e148] [cursor=pointer]: 新しい単語をゲット！レアカードを集めよう
+      - paragraph [ref=e150] [cursor=pointer]: XP消費
+    - generic [ref=e151] [cursor=pointer]:
+      - generic [ref=e152] [cursor=pointer]:
+        - generic [ref=e153] [cursor=pointer]:
+          - generic [ref=e154] [cursor=pointer]:
+            - generic [ref=e155] [cursor=pointer]: 🏆
+            - heading "実績" [level=4] [ref=e156] [cursor=pointer]
+          - generic [ref=e158] [cursor=pointer]: 進捗
+        - paragraph [ref=e159] [cursor=pointer]: 学習の進捗とアチーブメントを確認
+      - paragraph [ref=e161] [cursor=pointer]: 体力不要
+    - generic [ref=e162] [cursor=pointer]:
+      - generic [ref=e163] [cursor=pointer]:
+        - generic [ref=e164] [cursor=pointer]:
+          - generic [ref=e165] [cursor=pointer]:
+            - generic [ref=e166] [cursor=pointer]: 📈
+            - heading "成長ダッシュボード" [level=4] [ref=e167] [cursor=pointer]
+          - generic [ref=e169] [cursor=pointer]: 分析
+        - paragraph [ref=e170] [cursor=pointer]: あなたの学習成長を可視化
+      - paragraph [ref=e172] [cursor=pointer]: 体力不要
+  - button "学習フィードバック" [ref=e174]:
+    - img
+    - generic [ref=e175]: 学習フィードバック
+```

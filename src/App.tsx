@@ -34,9 +34,8 @@ const GrammarQuiz = lazy(() =>
   import("./components/GrammarQuiz").then((m) => ({ default: m.GrammarQuiz }))
 );
 const EnhancedGrammarQuiz = lazy(() =>
-  import("./components/EnhancedGrammarQuiz").then((m) => ({
-    default: m.EnhancedGrammarQuiz,
-  }))
+  // EnhancedGrammarQuizはRouter経由で使用するため削除
+  import("./components/NewHome").then((m) => ({ default: m.NewHome }))
 );
 const GrammarQuizDifficultySelection = lazy(() =>
   import("./components/GrammarQuizDifficultySelection").then((m) => ({
