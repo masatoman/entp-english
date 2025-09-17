@@ -39,9 +39,6 @@ const PreStudyContentViewer = lazy(
 const GrowthDashboard = lazy(() => import("../components/GrowthDashboard"));
 const CardDetailContent = lazy(() => import("../components/CardDetailContent"));
 const EssayWriting = lazy(() => import("../components/EssayWriting"));
-const EnhancedTimeAttack = lazy(
-  () => import("../components/EnhancedTimeAttack")
-);
 
 export function AppRouter() {
   return (
