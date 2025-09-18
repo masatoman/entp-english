@@ -10,6 +10,7 @@ import {
   speakEnglishWord,
 } from "../utils/speechSynthesis";
 import { calculateVocabularyXP } from "../utils/xpCalculator";
+import { KnownWordsManager } from "../utils/knownWordsManager";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader } from "./ui/card";
@@ -58,11 +59,17 @@ export default function VocabularyCard() {
 
   useEffect(() => {
     // 選択された難易度とカテゴリの単語を取得
-    const filteredWords = getVocabularyWords(actualDifficulty, actualCategory);
+    const allWords = getVocabularyWords(actualDifficulty, actualCategory);
+    
+    // 既知単語を除外
+    const filteredWords = KnownWordsManager.filterUnknownWords(allWords);
+    
     console.log("VocabularyCard - フィルタリング結果:", {
       actualDifficulty,
       actualCategory,
+      totalWords: allWords.length,
       filteredWordsCount: filteredWords.length,
+      excludedCount: allWords.length - filteredWords.length,
       filteredWords: filteredWords.slice(0, 5), // 最初の5個を表示
     });
 
@@ -499,12 +506,18 @@ export default function VocabularyCard() {
           <Button
             size="lg"
             onClick={() => {
+              // 既知単語としてマーク
+              KnownWordsManager.markWordAsKnown(currentWord);
               handleAnswer(true);
               SoundManager.sounds.correct();
+              
+              // ENTPの即効性重視：視覚的フィードバック
+              console.log(`🎯 「${currentWord.word}」を既知単語に追加しました！今後の学習から除外されます。`);
             }}
-            className="h-14 text-base bg-emerald-600 hover:bg-emerald-700"
+            className="h-14 text-base bg-emerald-600 hover:bg-emerald-700 relative overflow-hidden"
           >
-            知ってる
+            <span className="relative z-10">知ってる</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-green-400 opacity-20"></div>
           </Button>
         </div>
 

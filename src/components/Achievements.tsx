@@ -9,6 +9,7 @@ import {
 } from "../data/achievements";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { DataManager } from "../utils/dataManager";
+import { KnownWordsManager } from "../utils/knownWordsManager";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader } from "./ui/card";
@@ -245,6 +246,63 @@ export default function Achievements() {
             />
           </CardContent>
         </Card>
+
+        {/* 既知単語統計 */}
+        {(() => {
+          const knownWordsStats = KnownWordsManager.getKnownWordsStats();
+          return knownWordsStats.total > 0 ? (
+            <Card className="border-0 shadow-md">
+              <CardHeader className="pb-3">
+                <h2 className="text-lg font-semibold flex items-center">
+                  <Target className="w-5 h-5 mr-2 text-emerald-600" />
+                  既知単語
+                </h2>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-emerald-600">
+                      {knownWordsStats.total}
+                    </div>
+                    <div className="text-sm text-muted-foreground">マスター済み</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-blue-600">
+                      {knownWordsStats.recentlyMarked.length}
+                    </div>
+                    <div className="text-sm text-muted-foreground">今週追加</div>
+                  </div>
+                </div>
+                
+                {/* レベル別統計 */}
+                <div className="space-y-2">
+                  <div className="text-sm font-medium text-gray-700">レベル別</div>
+                  {Object.entries(knownWordsStats.byLevel).map(([level, count]) => (
+                    <div key={level} className="flex justify-between items-center">
+                      <span className="text-sm capitalize">{level}</span>
+                      <Badge variant="outline" className="text-xs">
+                        {count}語
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+                
+                {/* カテゴリ別統計 */}
+                <div className="space-y-2">
+                  <div className="text-sm font-medium text-gray-700">カテゴリ別</div>
+                  {Object.entries(knownWordsStats.byCategory).map(([category, count]) => (
+                    <div key={category} className="flex justify-between items-center">
+                      <span className="text-sm capitalize">{category}</span>
+                      <Badge variant="outline" className="text-xs">
+                        {count}語
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          ) : null;
+        })()}
 
         {/* 事前学習の理解度統計 */}
         {userStats.preStudyProgress &&

@@ -7,6 +7,7 @@ import { useScrollToTop } from "../hooks/useScrollToTop";
 import { DataManager } from "../utils/dataManager";
 import { GachaSystem } from "../utils/gachaSystem";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
+import { KnownWordsManager } from "../utils/knownWordsManager";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
@@ -111,9 +112,11 @@ export default function TimeAttackMode() {
       }
     });
 
-    // 不足分は従来の語彙問題で補完
+    // 不足分は従来の語彙問題で補完（既知単語を除外）
     if (timeAttackQuestions.length < 10) {
-      const vocabularyWords = getVocabularyWords("beginner", "all").slice(
+      const allVocabularyWords = getVocabularyWords("beginner", "all");
+      const unknownVocabularyWords = KnownWordsManager.filterUnknownWords(allVocabularyWords);
+      const vocabularyWords = unknownVocabularyWords.slice(
         0,
         10 - timeAttackQuestions.length
       );

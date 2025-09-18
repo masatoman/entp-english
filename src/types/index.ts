@@ -123,3 +123,22 @@ export interface Achievement {
     value: number;
   };
 }
+
+// 既知単語管理システム
+export interface KnownWord {
+  id: string;
+  word: string;
+  meaning: string;
+  category: string;
+  level: 'beginner' | 'intermediate' | 'advanced';
+  markedAsKnownAt: Date;
+  reviewCount: number; // 復習回数
+  lastReviewAt?: Date;
+}
+
+export interface KnownWordsData {
+  knownWords: KnownWord[];
+  totalKnownCount: number;
+  categoryStats: Record<string, number>;
+  levelStats: Record<string, number>;
+}
