@@ -126,7 +126,7 @@ export function SelectionCard({
           <div className="text-sm text-gray-600">
             <div className="font-medium mb-1">重要ポイント:</div>
             <ul className="list-disc list-inside space-y-1">
-              {keyPoints.slice(0, 2).map((point, index) => (
+              {keyPoints.map((point, index) => (
                 <li key={index} className="truncate">
                   {point}
                 </li>

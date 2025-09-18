@@ -85,27 +85,28 @@ export class KnownWordsManager {
    */
   static filterUnknownWords(words: VocabularyWord[]): VocabularyWord[] {
     const data = this.getKnownWordsData();
-    
+
     // IDベースと単語内容ベースの両方で除外判定
     const knownWordIds = new Set(data.knownWords.map((kw) => kw.id));
     const knownWordContents = new Set(data.knownWords.map((kw) => kw.word));
 
     const filteredWords = words.filter((word) => {
       // IDベースでの除外判定
-      const isKnownById = knownWordIds.has(word.id) || 
-                          knownWordIds.has(word.id.toString()) ||
-                          knownWordIds.has(parseInt(word.id.toString()));
-      
+      const isKnownById =
+        knownWordIds.has(word.id) ||
+        knownWordIds.has(word.id.toString()) ||
+        knownWordIds.has(parseInt(word.id.toString()));
+
       // 単語内容ベースでの除外判定
       const isKnownByContent = knownWordContents.has(word.word);
-      
+
       // どちらかで既知と判定されたら除外
       const isKnown = isKnownById || isKnownByContent;
-      
+
       if (isKnown) {
         console.log(`🚫 既知単語「${word.word}」(ID: ${word.id})を除外`);
       }
-      
+
       return !isKnown;
     });
 

@@ -165,16 +165,18 @@ export default function VocabularyCard() {
     // 「知ってる」を選択した場合、既知単語としてマーク
     if (known) {
       KnownWordsManager.markWordAsKnown(currentWord);
-      console.log(`🎯 「${currentWord.word}」を既知単語に追加しました！今後の学習から除外されます。`);
-      
+      console.log(
+        `🎯 「${currentWord.word}」を既知単語に追加しました！今後の学習から除外されます。`
+      );
+
       // 現在のセッションからも該当する単語を除外
-      const updatedWords = words.filter(word => word.id !== currentWord.id);
+      const updatedWords = words.filter((word) => word.id !== currentWord.id);
       setWords(updatedWords);
-      
+
       // インデックスを調整（除外により配列が短くなるため）
       const newIndex = Math.min(currentWordIndex, updatedWords.length - 1);
       setCurrentWordIndex(Math.max(0, newIndex));
-      
+
       // 残りの単語がない場合は学習完了
       if (updatedWords.length === 0) {
         console.log("🎊 すべての単語を学習完了！");
