@@ -1,1 +1,167 @@
-if(!self.define){let e,i={};const n=(n,s)=>(n=new URL(n+".js",s).href,i[n]||new Promise(i=>{if("document"in self){const e=document.createElement("script");e.src=n,e.onload=i,document.head.appendChild(e)}else e=n,importScripts(n),i()}).then(()=>{let e=i[n];if(!e)throw new Error(`Module ${n} didn’t register its module`);return e}));self.define=(s,c)=>{const o=e||("document"in self?document.currentScript.src:"")||location.href;if(i[o])return;let r={};const f=e=>n(e,o),t={module:{uri:o},exports:r,require:f};i[o]=Promise.all(s.map(e=>t[e]||f(e))).then(e=>(c(...e),r))}}define(["./workbox-74f2ef77"],function(e){"use strict";self.skipWaiting(),e.clientsClaim(),e.precacheAndRoute([{url:"apple-touch-icon.png",revision:"4381b670f72ebf81c933c27024163c42"},{url:"assets/index-LW_ED_f-.css",revision:null},{url:"assets/index-SKlm_vLl.js",revision:null},{url:"favicon.ico",revision:"538995bcf11c7a6e84a85c85f84ce5a9"},{url:"icon.svg",revision:"b434194fd4bb2d912d184cd8b1682de2"},{url:"index.html",revision:"1262ddb928463b2a6dd248f6722e1231"},{url:"pwa-192x192.png",revision:"86ee5fd652caadbe5ff7e425e19f5895"},{url:"pwa-512x512.png",revision:"163d33eb1d3afb1efd2db700b7b4be9e"},{url:"registerSW.js",revision:"f8f1ca47554a4a1bf63513122ea54f19"},{url:"apple-touch-icon.png",revision:"4381b670f72ebf81c933c27024163c42"},{url:"favicon.ico",revision:"538995bcf11c7a6e84a85c85f84ce5a9"},{url:"pwa-192x192.png",revision:"86ee5fd652caadbe5ff7e425e19f5895"},{url:"pwa-512x512.png",revision:"163d33eb1d3afb1efd2db700b7b4be9e"},{url:"manifest.webmanifest",revision:"fe7fcddca9b95ba65866b9b64cb6ef2b"}],{}),e.cleanupOutdatedCaches(),e.registerRoute(new e.NavigationRoute(e.createHandlerBoundToURL("index.html"))),e.registerRoute(/^https:\/\/fonts\.googleapis\.com\/.*/i,new e.CacheFirst({cacheName:"google-fonts-cache",plugins:[new e.ExpirationPlugin({maxEntries:10,maxAgeSeconds:31536e3})]}),"GET"),e.registerRoute(/^https:\/\/fonts\.gstatic\.com\/.*/i,new e.CacheFirst({cacheName:"gstatic-fonts-cache",plugins:[new e.ExpirationPlugin({maxEntries:10,maxAgeSeconds:31536e3})]}),"GET")});
+// Custom Service Worker for Push Notifications
+const CACHE_NAME = 'entp-english-v1';
+const urlsToCache = [
+  '/',
+  '/index.html',
+  '/manifest.webmanifest',
+  '/pwa-192x192.png',
+  '/pwa-512x512.png'
+];
+
+// Install event
+self.addEventListener('install', (event) => {
+  console.log('Service Worker installing...');
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => {
+        console.log('Opened cache');
+        return cache.addAll(urlsToCache);
+      })
+  );
+});
+
+// Activate event
+self.addEventListener('activate', (event) => {
+  console.log('Service Worker activating...');
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('Deleting old cache:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+});
+
+// Fetch event
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request)
+      .then((response) => {
+        // Return cached version or fetch from network
+        return response || fetch(event.request);
+      })
+  );
+});
+
+// Push event - Handle incoming push notifications
+self.addEventListener('push', (event) => {
+  console.log('Push event received:', event);
+  
+  let notificationData = {
+    title: 'ENTP英語学習アプリ',
+    body: '学習の時間です！今日も頑張りましょう 🎯',
+    icon: '/pwa-192x192.png',
+    badge: '/pwa-192x192.png',
+    tag: 'learning-reminder',
+    requireInteraction: false,
+    actions: [
+      {
+        action: 'open',
+        title: '学習を開始',
+        icon: '/pwa-192x192.png'
+      },
+      {
+        action: 'dismiss',
+        title: '後で',
+        icon: '/pwa-192x192.png'
+      }
+    ]
+  };
+
+  // If push event has data, use it
+  if (event.data) {
+    try {
+      const data = event.data.json();
+      notificationData = { ...notificationData, ...data };
+    } catch (e) {
+      console.error('Error parsing push data:', e);
+    }
+  }
+
+  const promiseChain = self.registration.showNotification(
+    notificationData.title,
+    notificationData
+  );
+
+  event.waitUntil(promiseChain);
+});
+
+// Notification click event
+self.addEventListener('notificationclick', (event) => {
+  console.log('Notification click received:', event);
+  
+  event.notification.close();
+
+  if (event.action === 'open') {
+    // Open the app
+    event.waitUntil(
+      clients.matchAll({ type: 'window' }).then((clientList) => {
+        // If app is already open, focus it
+        for (const client of clientList) {
+          if (client.url === '/' && 'focus' in client) {
+            return client.focus();
+          }
+        }
+        // If app is not open, open it
+        if (clients.openWindow) {
+          return clients.openWindow('/');
+        }
+      })
+    );
+  } else if (event.action === 'dismiss') {
+    // Just close the notification
+    console.log('Notification dismissed');
+  } else {
+    // Default action (clicking the notification body)
+    event.waitUntil(
+      clients.matchAll({ type: 'window' }).then((clientList) => {
+        for (const client of clientList) {
+          if (client.url === '/' && 'focus' in client) {
+            return client.focus();
+          }
+        }
+        if (clients.openWindow) {
+          return clients.openWindow('/');
+        }
+      })
+    );
+  }
+});
+
+// Background sync (for future use)
+self.addEventListener('sync', (event) => {
+  console.log('Background sync event:', event);
+  
+  if (event.tag === 'learning-sync') {
+    event.waitUntil(
+      // Sync learning data when online
+      console.log('Syncing learning data...')
+    );
+  }
+});
+
+// Message event - Handle messages from main thread
+self.addEventListener('message', (event) => {
+  console.log('Message received in service worker:', event.data);
+  
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+  
+  if (event.data && event.data.type === 'SCHEDULE_NOTIFICATION') {
+    const { title, body, delay } = event.data;
+    setTimeout(() => {
+      self.registration.showNotification(title, {
+        body,
+        icon: '/pwa-192x192.png',
+        badge: '/pwa-192x192.png',
+        tag: 'scheduled-notification'
+      });
+    }, delay);
+  }
+});

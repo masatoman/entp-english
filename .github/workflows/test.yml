@@ -166,15 +166,15 @@ jobs:
 
       - name: Check build output
         run: |
-          ls -la build/
-          test -f build/index.html
-          test -f build/manifest.webmanifest
+          ls -la dist/
+          test -f dist/index.html
+          test -f dist/manifest.webmanifest
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-files
-          path: build/
+          name: dist-files
+          path: dist/
           retention-days: 30
 
   security-audit:
