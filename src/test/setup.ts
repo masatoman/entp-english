@@ -1,57 +1,40 @@
-import '@testing-library/jest-dom'
-import { expect, afterEach, vi, beforeAll, afterAll } from 'vitest'
-import { cleanup } from '@testing-library/react'
-import * as matchers from '@testing-library/jest-dom/matchers'
+import { vi } from 'vitest';
 
-// カスタムマッチャーの追加
-expect.extend(matchers)
+// LocalStorageのモック（実際の動作をシミュレート）
+const storage: Record<string, string> = {};
 
-// 各テスト後にクリーンアップ
-afterEach(() => {
-  cleanup()
-})
+const localStorageMock = {
+  getItem: vi.fn((key: string) => storage[key] || null),
+  setItem: vi.fn((key: string, value: string) => {
+    storage[key] = value;
+  }),
+  removeItem: vi.fn((key: string) => {
+    delete storage[key];
+  }),
+  clear: vi.fn(() => {
+    Object.keys(storage).forEach(key => delete storage[key]);
+  }),
+  length: 0,
+  key: vi.fn(),
+};
 
-// ローカルストレージのモック
 Object.defineProperty(window, 'localStorage', {
-  value: {
-    getItem: vi.fn(),
-    setItem: vi.fn(),
-    removeItem: vi.fn(),
-    clear: vi.fn(),
-  },
+  value: localStorageMock,
   writable: true,
-})
+});
 
-// Date.now()のモック
-const mockDateNow = vi.fn(() => 1703001600000) // 2023-12-20 00:00:00 UTC
-const mockDate = class MockDate extends Date {
-  constructor(...args: any[]) {
-    if (args.length === 0) {
-      super(1703001600000)
-    } else {
-      super(...args)
-    }
-  }
-  static now() {
-    return mockDateNow()
-  }
-}
-vi.stubGlobal('Date', mockDate)
+// window.scrollToのモック
+Object.defineProperty(window, 'scrollTo', {
+  value: vi.fn(),
+  writable: true,
+});
 
-// コンソールエラーの抑制（テスト中の不要なエラーを防ぐ）
-const originalError = console.error
-beforeAll(() => {
-  console.error = (...args: any[]) => {
-    if (
-      typeof args[0] === 'string' &&
-      args[0].includes('Warning: ReactDOM.render is deprecated')
-    ) {
-      return
-    }
-    originalError.call(console, ...args)
-  }
-})
+// 各テスト前にLocalStorageをクリア
+beforeEach(() => {
+  localStorageMock.clear();
+  localStorageMock.getItem.mockClear();
+  localStorageMock.setItem.mockClear();
+  localStorageMock.removeItem.mockClear();
+});
 
-afterAll(() => {
-  console.error = originalError
-})
+export { localStorageMock };
