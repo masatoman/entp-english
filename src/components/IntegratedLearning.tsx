@@ -6,8 +6,8 @@ import {
   LearningProgress,
   LearningQuestion,
 } from "../types/learningItem";
-import { LearningItemManager } from "../utils/learningItemManager";
 import { KnownWordsManager } from "../utils/knownWordsManager";
+import { LearningItemManager } from "../utils/learningItemManager";
 import { SpeechSynthesisManager } from "../utils/speechSynthesis";
 import { calculateVocabularyXP } from "../utils/xpCalculator";
 import { Button } from "./ui/button";
@@ -64,32 +64,33 @@ export default function IntegratedLearning() {
     const filteredItems = allItems.filter((item) => {
       // 既知単語データを取得
       const knownWordsData = KnownWordsManager.getKnownWordsData();
-      
+
       // 単語の内容（content）で既知単語かどうかを判定
       const isKnownByContent = knownWordsData.knownWords.some(
         (knownWord) => knownWord.word === item.content
       );
-      
+
       // IDベースでの判定も併用（後方互換性）
       let wordId: string;
-      if (item.id.startsWith('gacha-')) {
-        wordId = item.id.replace('gacha-', '');
-      } else if (item.id.startsWith('vocab-')) {
-        wordId = item.id.replace('vocab-', '');
+      if (item.id.startsWith("gacha-")) {
+        wordId = item.id.replace("gacha-", "");
+      } else if (item.id.startsWith("vocab-")) {
+        wordId = item.id.replace("vocab-", "");
       } else {
         wordId = item.id;
       }
-      
-      const isKnownById = KnownWordsManager.isWordKnown(wordId) || 
-                          KnownWordsManager.isWordKnown(wordId.toString());
-      
+
+      const isKnownById =
+        KnownWordsManager.isWordKnown(wordId) ||
+        KnownWordsManager.isWordKnown(wordId.toString());
+
       // どちらかの方法で既知と判定された場合は除外
       const isKnown = isKnownByContent || isKnownById;
-      
+
       if (isKnown) {
         console.log(`🚫 既知単語「${item.content}」を統合学習から除外`);
       }
-      
+
       return !isKnown;
     });
 
@@ -150,9 +151,9 @@ export default function IntegratedLearning() {
     if (known) {
       // LearningItemから語彙ワード形式に変換して既知単語としてマーク
       const vocabularyWord = {
-        id: currentItem.id.startsWith('gacha-') 
-          ? currentItem.id.replace('gacha-', '') 
-          : currentItem.id.replace('vocab-', ''),
+        id: currentItem.id.startsWith("gacha-")
+          ? currentItem.id.replace("gacha-", "")
+          : currentItem.id.replace("vocab-", ""),
         word: currentItem.content,
         meaning: currentItem.meaning,
         category: currentItem.category,
@@ -161,9 +162,11 @@ export default function IntegratedLearning() {
         example: currentItem.examples[0]?.sentence || "",
         exampleTranslation: currentItem.examples[0]?.translation || "",
       };
-      
+
       KnownWordsManager.markWordAsKnown(vocabularyWord);
-      console.log(`🎯 統合学習: 「${currentItem.content}」を既知単語にマークしました`);
+      console.log(
+        `🎯 統合学習: 「${currentItem.content}」を既知単語にマークしました`
+      );
     }
 
     // XP計算
