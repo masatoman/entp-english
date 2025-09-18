@@ -2,13 +2,13 @@ import { ArrowLeft, RefreshCw, Star, Volume2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { VocabularyWord, getVocabularyWords } from "../data/vocabulary";
-import { VocabularyManager } from "../utils/vocabularyManager";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { DataManager } from "../utils/dataManager";
 import { KnownWordsManager } from "../utils/knownWordsManager";
 import { LearningAnalyzer } from "../utils/learningAnalyzer";
 import { SoundManager } from "../utils/soundManager";
 import { SpeechSynthesisManager } from "../utils/speechSynthesis";
+import { VocabularyManager } from "../utils/vocabularyManager";
 import { calculateVocabularyXP } from "../utils/xpCalculator";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -58,7 +58,10 @@ export default function VocabularyCard() {
 
   useEffect(() => {
     // 統合語彙管理システムから単語を取得（ガチャカード含む）
-    const allWords = VocabularyManager.getFilteredVocabularyWords(actualDifficulty, actualCategory);
+    const allWords = VocabularyManager.getFilteredVocabularyWords(
+      actualDifficulty,
+      actualCategory
+    );
 
     // 既知単語を除外
     const filteredWords = KnownWordsManager.filterUnknownWords(allWords);
@@ -69,8 +72,8 @@ export default function VocabularyCard() {
       totalWords: allWords.length,
       filteredWordsCount: filteredWords.length,
       excludedCount: allWords.length - filteredWords.length,
-      gachaCards: allWords.filter(w => w.id >= 10000).length,
-      standardCards: allWords.filter(w => w.id < 10000).length,
+      gachaCards: allWords.filter((w) => w.id >= 10000).length,
+      standardCards: allWords.filter((w) => w.id < 10000).length,
       filteredWords: filteredWords.slice(0, 5), // 最初の5個を表示
     });
 

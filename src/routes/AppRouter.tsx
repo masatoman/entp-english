@@ -24,13 +24,16 @@ import TimeAttackMode from "../components/TimeAttackMode";
 import VocabularyCard from "../components/VocabularyCard";
 import VocabularyCategorySelection from "../components/VocabularyCategorySelection";
 import VocabularyDifficultySelection from "../components/VocabularyDifficultySelection";
+import IntegratedLearning from "../components/IntegratedLearning";
+import { MigrationProvider } from "../components/MigrationProvider";
 
 export function AppRouter() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <div className="min-h-screen bg-background">
-        <Routes>
+      <MigrationProvider>
+        <div className="min-h-screen bg-background">
+          <Routes>
           {/* ホーム */}
           <Route path="/" element={<NewHome />} />
 
@@ -46,6 +49,12 @@ export function AppRouter() {
           <Route
             path="/learning/vocabulary/study/:difficulty/:category"
             element={<VocabularyCard />}
+          />
+          
+          {/* 統合学習システム */}
+          <Route
+            path="/learning/integrated/:level/:category/:mode"
+            element={<IntegratedLearning />}
           />
 
           {/* 文法クイズ */}
@@ -102,7 +111,8 @@ export function AppRouter() {
           {/* フォールバック */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </div>
+        </div>
+      </MigrationProvider>
     </BrowserRouter>
   );
 }

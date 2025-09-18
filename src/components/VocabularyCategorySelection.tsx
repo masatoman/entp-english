@@ -22,11 +22,23 @@ export default function VocabularyCategorySelection() {
 
   // 語彙統計を取得
   useEffect(() => {
-    const actualDifficulty = difficulty as "beginner" | "intermediate" | "advanced";
-    
-    const allCount = VocabularyManager.getAvailableVocabularyCount(actualDifficulty, "all");
-    const toeicCount = VocabularyManager.getAvailableVocabularyCount(actualDifficulty, "toeic");
-    const dailyCount = VocabularyManager.getAvailableVocabularyCount(actualDifficulty, "daily");
+    const actualDifficulty = difficulty as
+      | "beginner"
+      | "intermediate"
+      | "advanced";
+
+    const allCount = VocabularyManager.getAvailableVocabularyCount(
+      actualDifficulty,
+      "all"
+    );
+    const toeicCount = VocabularyManager.getAvailableVocabularyCount(
+      actualDifficulty,
+      "toeic"
+    );
+    const dailyCount = VocabularyManager.getAvailableVocabularyCount(
+      actualDifficulty,
+      "daily"
+    );
     const gachaStats = VocabularyManager.getGachaVocabularyStats();
 
     setVocabularyStats({

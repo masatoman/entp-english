@@ -606,6 +606,21 @@ export function NewHome() {
             }
           />
 
+          {/* 統合学習（新機能） */}
+          <SelectionCard
+            id="integrated"
+            title="統合学習"
+            description="単語と問題を組み合わせた効率的学習"
+            icon="🧠"
+            difficulty="統合"
+            detail="必要体力: 1 ♥ • ガチャカード活用"
+            color="bg-purple-50 border-purple-200 text-purple-800"
+            isLocked={!canStartLearning}
+            onClick={() =>
+              canStartLearning && navigate("/learning/integrated/intermediate/toeic/mixed")
+            }
+          />
+
           {/* 総合テスト */}
           <SelectionCard
             id="combined-test"

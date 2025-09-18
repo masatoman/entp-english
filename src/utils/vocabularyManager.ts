@@ -1,6 +1,5 @@
 import { VocabularyWord, vocabularyWords } from "../data/vocabulary";
 import { WordCard } from "../types/gacha";
-import { DataManager } from "./dataManager";
 import { GachaSystem } from "./gachaSystem";
 
 /**
@@ -62,7 +61,9 @@ export class VocabularyManager {
    */
   static getGachaVocabularyWords(): VocabularyWord[] {
     const ownedCards = this.getOwnedGachaCards();
-    return ownedCards.map((card) => this.convertGachaCardToVocabularyWord(card));
+    return ownedCards.map((card) =>
+      this.convertGachaCardToVocabularyWord(card)
+    );
   }
 
   /**
@@ -83,7 +84,7 @@ export class VocabularyManager {
   static getAllVocabularyWords(): VocabularyWord[] {
     const standardWords = this.getStandardVocabularyWords();
     const gachaWords = this.getGachaVocabularyWords();
-    
+
     console.log("VocabularyManager.getAllVocabularyWords:", {
       standardWords: standardWords.length,
       gachaWords: gachaWords.length,
