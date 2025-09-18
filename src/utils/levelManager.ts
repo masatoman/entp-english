@@ -112,6 +112,25 @@ export class LevelManager {
     return true;
   }
 
+  // テスト用：ハート全回復
+  recoverAllHearts(): void {
+    this.heartSystem = {
+      ...this.heartSystem,
+      current: this.heartSystem.max,
+      lastRecovery: Date.now(),
+      nextRecovery: Date.now() + (5 * 60 * 1000),
+    };
+  }
+
+  // テスト用：スター全回復
+  recoverAllStars(): void {
+    this.starSystem = {
+      ...this.starSystem,
+      current: this.starSystem.max,
+      lastRecoveryTime: Date.now(),
+    };
+  }
+
   // ステータス配分を更新
   updateStatusAllocation(allocation: StatusAllocation): boolean {
     if (validateStatusAllocation(allocation)) {

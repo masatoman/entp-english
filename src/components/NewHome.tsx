@@ -521,30 +521,62 @@ export function NewHome() {
                   <p className="text-xs text-gray-500">1問題につき1体力消費</p>
                   <p className="text-xs text-gray-500">5分で1体力回復</p>
                 </div>
-                <div className="flex space-x-2">
+                <div className="flex space-x-1">
                   <button
                     onClick={() => {
                       const manager = getLevelManager();
-                      const newHeartSystem = manager.consumeHeart();
-                      forceRefreshHearts();
-                      saveLevelManager();
+                      if (manager.consumeHeart()) {
+                        forceRefreshHearts();
+                        saveLevelManager();
+                        console.log("💔 体力を1消費しました");
+                      } else {
+                        alert("体力が不足しています");
+                      }
                     }}
                     className="px-2 py-1 text-xs bg-red-100 hover:bg-red-200 text-red-700 rounded"
                     disabled={heartSystem.current === 0}
                   >
-                    体力を消費
+                    体力消費
                   </button>
                   <button
                     onClick={() => {
                       const manager = getLevelManager();
-                      const heartSystem = manager.getHeartSystem();
-                      heartSystem.current = heartSystem.max;
+                      manager.recoverAllHearts();
                       forceRefreshHearts();
                       saveLevelManager();
+                      console.log("💖 体力を全回復しました");
                     }}
                     className="px-2 py-1 text-xs bg-green-100 hover:bg-green-200 text-green-700 rounded"
                   >
                     ♥回復
+                  </button>
+                  <button
+                    onClick={() => {
+                      const manager = getLevelManager();
+                      if (manager.consumeStar()) {
+                        setStarSystem(manager.getStarSystem());
+                        saveLevelManager();
+                        console.log("⭐ スタミナを1消費しました");
+                      } else {
+                        alert("スタミナが不足しています");
+                      }
+                    }}
+                    className="px-2 py-1 text-xs bg-orange-100 hover:bg-orange-200 text-orange-700 rounded"
+                    disabled={starSystem.current === 0}
+                  >
+                    スタミナ消費
+                  </button>
+                  <button
+                    onClick={() => {
+                      const manager = getLevelManager();
+                      manager.recoverAllStars();
+                      setStarSystem(manager.getStarSystem());
+                      saveLevelManager();
+                      console.log("⭐ スタミナを全回復しました");
+                    }}
+                    className="px-2 py-1 text-xs bg-purple-100 hover:bg-purple-200 text-purple-700 rounded"
+                  >
+                    ⭐回復
                   </button>
                 </div>
               </div>
