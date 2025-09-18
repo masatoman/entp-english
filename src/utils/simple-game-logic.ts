@@ -1,4 +1,4 @@
-import { Enemy, Tower, GameState, GameConfig, Position } from '../types/simple-game';
+import { Enemy, Tower, GameState, GameConfig, Position, DropItem, DropItemType, EnemyType, TowerType } from '../types/simple-game';
 import { loadProfile, addXP, updateGameStats } from './tower-defense-data';
 
 // ゲーム設定（定数）

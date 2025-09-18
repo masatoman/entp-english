@@ -3,9 +3,9 @@ import { Card, CardContent, CardHeader } from "./ui/card";
 import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
-import { ArrowLeft, RotateCcw, Heart, Star, CheckCircle, XCircle } from "lucide-react";
-import { getVocabularyByDifficulty, VocabularyItem } from "../data/vocabulary";
-import { DataManager } from "../utils/dataManager";
+import { ArrowLeft, RotateCcw, Heart, CheckCircle, XCircle } from "lucide-react";
+import { getVocabularyByDifficulty } from "../data/vocabulary";
+// import { DataManager } from "../utils/dataManager"; // 未使用
 import { SoundManager } from "../utils/soundManager";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 import { QuestionRankDisplay } from "./QuestionRankDisplay";

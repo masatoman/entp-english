@@ -129,7 +129,7 @@ export default function CombinedTest() {
   const [currentXP, setCurrentXP] = useState(0);
 
   // 相乗効果データ
-  const [personalizedData, setPersonalizedData] = useState({
+  const [, setPersonalizedData] = useState({
     gachaVocabCount: 0,
     preStudyCompleted: 0,
     weakAreas: [] as string[],
@@ -153,7 +153,7 @@ export default function CombinedTest() {
       console.log("パーソナライズデータの取得に失敗:", error);
     }
   }, []);
-  const [timeUp, setTimeUp] = useState(false);
+  const [, setTimeUp] = useState(false);
 
   useEffect(() => {
     // ハートを消費して学習を開始

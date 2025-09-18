@@ -238,10 +238,10 @@ export default function EnhancedGrammarQuiz() {
   };
 
   const checkCurrentAnswer = () => {
-    if (!currentQuestion || !currentQuestion.blanks) return false;
+    if (!currentQuestion || !(currentQuestion as any).blanks) return false;
 
     let isCorrect = true;
-    for (const blank of currentQuestion.blanks) {
+    for (const blank of (currentQuestion as any).blanks) {
       const userAnswer = userAnswers[blank.id];
       if (!userAnswer || userAnswer !== blank.correctAnswer) {
         isCorrect = false;
