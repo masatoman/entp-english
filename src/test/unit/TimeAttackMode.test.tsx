@@ -148,7 +148,9 @@ describe("TimeAttackMode Component", () => {
         </TestWrapper>
       );
 
-      const backButton = screen.getByRole("button", { name: /戻る/ });
+      // 戻るボタンはArrowLeftアイコンのみなので、最初のボタンを取得
+      const buttons = screen.getAllByRole("button");
+      const backButton = buttons[0]; // 最初のボタンが戻るボタン
       fireEvent.click(backButton);
 
       expect(mockNavigate).toHaveBeenCalledWith("/");

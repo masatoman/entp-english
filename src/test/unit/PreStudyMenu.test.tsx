@@ -95,7 +95,9 @@ describe("PreStudyMenu Component", () => {
 
       // Level 1で利用可能な「英文の基本構造」が表示されることを確認
       expect(screen.getByText("英文の基本構造")).toBeInTheDocument();
-      expect(screen.getByText("Level 1")).toBeInTheDocument();
+      // Level 1要素が複数ある場合は最初の要素をチェック
+      const level1Elements = screen.getAllByText("Level 1");
+      expect(level1Elements.length).toBeGreaterThan(0);
       expect(screen.getByText("⏱️ 5分")).toBeInTheDocument();
     });
 
@@ -153,8 +155,9 @@ describe("PreStudyMenu Component", () => {
       fireEvent.change(levelFilter, { target: { value: "1" } });
 
       await waitFor(() => {
-        // Level 1のコンテンツのみ表示されることを確認
-        expect(screen.getByText("Level 1")).toBeInTheDocument();
+        // Level 1のコンテンツのみ表示されることを確認（複数ある場合は最初の要素）
+        const level1Elements = screen.getAllByText("Level 1");
+        expect(level1Elements.length).toBeGreaterThan(0);
       });
     });
   });

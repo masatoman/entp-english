@@ -201,10 +201,18 @@ describe("SimpleTowerDefense Component", () => {
 
   it("ゲームオーバー時の処理が正しく動作する", () => {
     // ゲームオーバー状態をシミュレート
-    const { rerender } = render(<SimpleTowerDefense />);
+    const { rerender } = render(
+      <MemoryRouter>
+        <SimpleTowerDefense />
+      </MemoryRouter>
+    );
 
     // ゲームオーバー状態で再レンダリング
-    rerender(<SimpleTowerDefense />);
+    rerender(
+      <MemoryRouter>
+        <SimpleTowerDefense />
+      </MemoryRouter>
+    );
 
     // 基本的なレンダリングテスト
     expect(screen.getByText("シンプル タワーディフェンス")).toBeInTheDocument();
