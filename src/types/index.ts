@@ -108,3 +108,18 @@ export interface LevelConfig {
     legendary: number;
   };
 }
+
+// 実績システム
+export interface Achievement {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  xpReward: number;
+  isUnlocked: boolean;
+  unlockedAt?: Date;
+  requirements: {
+    type: string;
+    value: number;
+  };
+}
