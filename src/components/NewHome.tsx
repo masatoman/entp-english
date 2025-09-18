@@ -33,6 +33,7 @@ import { GrammarQuizCategorySelection } from "./GrammarQuizCategorySelection";
 import { GrammarQuizDifficultySelection } from "./GrammarQuizDifficultySelection";
 // GrowthDashboardはRouter経由で使用するため、直接importを削除
 import { DailyChallengeCard } from "./DailyChallengeCard";
+import { PWAInstallButton } from "./PWAInstallButton";
 import { LearningFeedbackForm } from "./LearningFeedbackForm";
 import { LevelDisplay } from "./LevelDisplay";
 import { StatusAllocationComponent } from "./StatusAllocation";
@@ -412,6 +413,7 @@ export function NewHome() {
               </p>
             </div>
             <div className="flex items-center gap-3">
+              <PWAInstallButton variant="compact" showInstructions={false} />
               <Button
                 variant="outline"
                 size="sm"

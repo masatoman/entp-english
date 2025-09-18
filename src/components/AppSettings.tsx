@@ -21,6 +21,7 @@ import {
 } from "../utils/notificationManager";
 import { SoundManager } from "../utils/soundManager";
 import { Button } from "./ui/button";
+import { PWAInstallButton } from "./PWAInstallButton";
 import {
   Card,
   CardContent,
@@ -544,6 +545,52 @@ export default function AppSettings() {
             </CardContent>
           </Card>
         )}
+
+        {/* PWA インストール */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
+            <Download className="w-5 h-5" />
+            アプリインストール
+          </h2>
+          
+          <PWAInstallButton variant="card" showInstructions={true} />
+          
+          <Card className="bg-gray-50">
+            <CardHeader>
+              <CardTitle className="text-lg">📱 PWA機能について</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <h4 className="font-medium text-sm mb-2">✅ 利用可能な機能</h4>
+                  <ul className="text-xs text-gray-600 space-y-1">
+                    <li>• オフライン学習</li>
+                    <li>• ホーム画面から直接起動</li>
+                    <li>• ネイティブアプリのような体験</li>
+                    <li>• 自動更新</li>
+                    <li>• 学習データの永続保存</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-medium text-sm mb-2">📱 対応ブラウザ</h4>
+                  <ul className="text-xs text-gray-600 space-y-1">
+                    <li>• <strong>iPhone</strong>: Safari 推奨</li>
+                    <li>• <strong>Android</strong>: Chrome, Edge</li>
+                    <li>• <strong>デスクトップ</strong>: Chrome, Edge</li>
+                    <li>• <strong>制限</strong>: iOS版サードパーティブラウザ</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div className="bg-blue-50 p-3 rounded-lg">
+                <p className="text-xs text-blue-700">
+                  <strong>💡 iPhoneユーザーの方へ</strong><br />
+                  Brave、Chrome等では制限があります。Safari でアクセスして「共有ボタン → ホーム画面に追加」をお試しください。
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
