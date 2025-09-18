@@ -282,7 +282,7 @@ export default function EnhancedGrammarQuiz() {
     setShowResults(true);
 
     // XP計算とレベルアップ処理
-    const sessionDuration = Math.round((Date.now() - sessionStartTime) / 1000);
+    // const sessionDuration = Math.round((Date.now() - sessionStartTime) / 1000); // 未使用
     const xpGained = calculateNewXP(
       questions.length > 0
         ? questions.map((q, index) => ({
@@ -308,10 +308,10 @@ export default function EnhancedGrammarQuiz() {
   };
 
   const renderSentenceWithBlanks = () => {
-    if (!currentQuestion || !currentQuestion.blanks) return null;
+    if (!currentQuestion || !(currentQuestion as any).blanks) return null;
 
     const sentence = currentQuestion.question;
-    const blanks = currentQuestion.blanks;
+    const blanks = (currentQuestion as any).blanks;
 
     // 文を単語に分割
     const words = sentence.split(" ");
@@ -630,8 +630,8 @@ export default function EnhancedGrammarQuiz() {
                   <div className="bg-white p-4 rounded-lg border">
                     <div className="text-sm text-gray-600 mb-2">正解:</div>
                     <div className="text-lg font-semibold text-gray-800">
-                      {currentQuestion.blanks
-                        ?.map((blank) => blank.correctAnswer)
+                      {(currentQuestion as any).blanks
+                        ?.map((blank: any) => blank.correctAnswer)
                         .join(" ")}
                     </div>
                   </div>

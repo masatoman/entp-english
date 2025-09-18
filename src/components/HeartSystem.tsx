@@ -99,7 +99,7 @@ export function HeartSystemDisplay({
               <span>回復進行度</span>
               <span>
                 {Math.floor(
-                  ((Date.now() - heartSystem.lastUsedTime) / (5 * 60 * 1000)) *
+                  ((Date.now() - heartSystem.lastRecovery) / (5 * 60 * 1000)) *
                     100
                 )}
                 %

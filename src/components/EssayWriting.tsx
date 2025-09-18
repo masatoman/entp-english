@@ -36,7 +36,7 @@ export default function EssayWriting() {
   const [essayText, setEssayText] = useState("");
   const [showInstructions, setShowInstructions] = useState(true);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [selfAssessment, setSelfAssessment] = useState({
+  const [selfAssessment] = useState({
     difficulty: 3,
     satisfaction: 3,
     grammarConfidence: 3,

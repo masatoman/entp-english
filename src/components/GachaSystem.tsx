@@ -500,7 +500,7 @@ export default function GachaSystem() {
   useEffect(() => {
     try {
       const manager = getLevelManager();
-      const xp = manager.getXP();
+      const xp = manager.userLevel.xp;
       console.log("Initial XP loaded:", xp);
       setUserXP(xp || 1000); // デフォルト値を1000に設定
     } catch (error) {
@@ -515,7 +515,7 @@ export default function GachaSystem() {
     // LevelManagerにXPを保存
     try {
       const manager = getLevelManager();
-      const currentXP = manager.getXP();
+      const currentXP = manager.userLevel.xp;
       console.log("Current XP in manager:", currentXP, "Setting to:", newXP);
 
       // XPの差分を計算して追加
