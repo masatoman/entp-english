@@ -2,161 +2,161 @@ name: Test Suite
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   unit-tests:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Run unit tests
-      run: npm run test:unit
-      continue-on-error: true
-    
-    - name: Upload coverage reports (if available)
-      uses: codecov/codecov-action@v4
-      if: always()
-      with:
-        file: ./coverage/lcov.info
-        flags: unittests
-        name: codecov-umbrella
-      continue-on-error: true
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+       - name: Install dependencies
+         run: npm ci || npm install
+
+      - name: Run unit tests
+        run: npm run test:unit
+        continue-on-error: true
+
+      - name: Upload coverage reports (if available)
+        uses: codecov/codecov-action@v4
+        if: always()
+        with:
+          file: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+        continue-on-error: true
 
   integration-tests:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Run integration tests
-      run: npm run test:integration
-      continue-on-error: true
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+       - name: Install dependencies
+         run: npm ci || npm install
+
+      - name: Run integration tests
+        run: npm run test:integration
+        continue-on-error: true
 
   e2e-tests:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Build application
-      run: npm run build
-    
-    - name: E2E tests (skipped - use Playwright MCP)
-      run: |
-        echo "⚠️ E2Eテストは現在Playwright MCP使用時のみ実行"
-        echo "✅ ビルドテストは正常完了"
-      continue-on-error: true
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+       - name: Install dependencies
+         run: npm ci || npm install
+
+      - name: Build application
+        run: npm run build
+
+      - name: E2E tests (skipped - use Playwright MCP)
+        run: |
+          echo "⚠️ E2Eテストは現在Playwright MCP使用時のみ実行"
+          echo "✅ ビルドテストは正常完了"
+        continue-on-error: true
 
   build-test:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Build application
-      run: npm run build
-    
-    - name: Check build output
-      run: |
-        ls -la build/
-        test -f build/index.html
-        test -f build/manifest.webmanifest
-    
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: build-files
-        path: build/
-        retention-days: 30
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+       - name: Install dependencies
+         run: npm ci || npm install
+
+      - name: Build application
+        run: npm run build
+
+      - name: Check build output
+        run: |
+          ls -la build/
+          test -f build/index.html
+          test -f build/manifest.webmanifest
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files
+          path: build/
+          retention-days: 30
 
   security-audit:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Run security audit
-      run: |
-        echo "🔍 セキュリティ監査を実行中..."
-        npm audit --audit-level high || echo "⚠️ 中程度の脆弱性が検出されましたが、高リスクではありません"
-        echo "✅ セキュリティチェック完了"
-      continue-on-error: true
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+       - name: Install dependencies
+         run: npm ci || npm install
+
+      - name: Run security audit
+        run: |
+          echo "🔍 セキュリティ監査を実行中..."
+          npm audit --audit-level high || echo "⚠️ 中程度の脆弱性が検出されましたが、高リスクではありません"
+          echo "✅ セキュリティチェック完了"
+        continue-on-error: true
 
   performance-test:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Build application
-      run: npm run build
-    
-    - name: Install Lighthouse CI
-      run: npm install -g @lhci/cli@0.12.x
-    
-    - name: Run Lighthouse CI
-      run: |
-        echo "🚀 Lighthouseパフォーマンステストを実行中..."
-        lhci autorun || echo "⚠️ パフォーマンステストで改善点が見つかりました（機能は正常動作）"
-        echo "✅ パフォーマンステスト完了"
-      env:
-        LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
-      continue-on-error: true
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+       - name: Install dependencies
+         run: npm ci || npm install
+
+      - name: Build application
+        run: npm run build
+
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.12.x
+
+      - name: Run Lighthouse CI
+        run: |
+          echo "🚀 Lighthouseパフォーマンステストを実行中..."
+          lhci autorun || echo "⚠️ パフォーマンステストで改善点が見つかりました（機能は正常動作）"
+          echo "✅ パフォーマンステスト完了"
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        continue-on-error: true
