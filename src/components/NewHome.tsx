@@ -27,7 +27,6 @@ import {
   calculateRecoveredStars,
   canUseStars,
   consumeStar,
-  initializeStarSystem,
 } from "../utils/starUtils";
 // EnhancedGrammarQuizはRouter経由で使用するため、直接importを削除
 import { GrammarQuizCategorySelection } from "./GrammarQuizCategorySelection";
@@ -48,6 +47,9 @@ export function NewHome() {
   const navigate = useNavigate();
   const { userLevel, refreshLevel } = useLevelSystem();
   const { heartSystem, processRecovery, refreshHearts } = useHeartSystem();
+
+  // レベルマネージャーの初期化
+  const levelManager = getLevelManager();
 
   // ハートシステムの状態を強制的に更新
   const forceRefreshHearts = () => {
@@ -70,17 +72,9 @@ export function NewHome() {
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
   const [showGrowthDashboard, setShowGrowthDashboard] = useState(false);
 
-  // ⭐️スターシステムの状態
+  // ⭐️スターシステムの状態（LevelManagerから取得）
   const [starSystem, setStarSystem] = useState<StarData>(() => {
-    const stats = DataManager.getUserStats();
-    if (stats.stars) {
-      return {
-        current: calculateRecoveredStars(stats.stars),
-        max: stats.stars.max,
-        lastRecoveryTime: stats.stars.lastRecoveryTime,
-      };
-    }
-    return initializeStarSystem(userLevel.level);
+    return levelManager.getStarSystem();
   });
 
   const [preStudyProgress, setPreStudyProgress] = useState<PreStudyProgress>(
@@ -163,7 +157,17 @@ export function NewHome() {
   }, []); // 初回のみ実行
 
   const handleStartLearning = (type: string) => {
-    // 学習を開始（ハート消費は各学習コンポーネントで行う）
+    // 体力を必要とする学習の場合、事前チェック
+    const requiresHeart = ["grammar", "vocabulary", "combined", "timeattack"];
+
+    if (requiresHeart.includes(type)) {
+      if (heartSystem.currentHearts <= 0) {
+        alert("体力が不足しています。回復を待ってから再試行してください。");
+        return;
+      }
+    }
+
+    // 学習を開始
     switch (type) {
       case "grammar":
         navigate("/learning/grammar/category");
@@ -218,6 +222,11 @@ export function NewHome() {
 
   // ⭐️スターシステムのハンドラー
   const handlePreStudyMenuOpen = () => {
+    // スタミナチェック
+    if (starSystem.current <= 0) {
+      alert("スタミナが不足しています。回復を待ってから再試行してください。");
+      return;
+    }
     navigate("/learning/pre-study/menu");
   };
 
@@ -333,10 +342,13 @@ export function NewHome() {
     setShowGrowthDashboard(false);
   };
 
-  // ハートシステムの状態を定期的に更新
+  // ハートシステムとスターシステムの状態を定期的に更新
   useEffect(() => {
     const interval = setInterval(() => {
       forceRefreshHearts();
+      // スターシステムも更新
+      const updatedStarSystem = levelManager.getStarSystem();
+      setStarSystem(updatedStarSystem);
     }, 1000);
 
     return () => clearInterval(interval);

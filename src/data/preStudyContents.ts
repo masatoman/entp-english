@@ -57,13 +57,68 @@ export const preStudyContents: PreStudyContent[] = [
     prerequisites: [],
   },
 
+  // 助動詞 (modals)
+  {
+    id: "modals-theory",
+    title: "助動詞の基本",
+    category: "grammar",
+    subcategory: "modals",
+    level: 1,
+    contentType: "theory",
+    duration: 300, // 5分
+    difficulty: "beginner",
+    content: `# 助動詞の基本
+
+## 主要な助動詞
+助動詞は動詞の前に置いて、話し手の気持ちや可能性を表します。
+
+### can / could (可能・能力)
+- **現在**: I can swim. (私は泳げます)
+- **過去**: I could swim when I was young. (若い頃は泳げました)
+- **丁寧**: Could you help me? (手伝っていただけますか？)
+
+### will / would (意志・推量)
+- **未来**: I will go tomorrow. (明日行きます)
+- **丁寧**: Would you like some tea? (お茶はいかがですか？)
+
+### should / must (義務・必要)
+- **義務**: You should study hard. (一生懸命勉強すべきです)
+- **必要**: I must go now. (今行かなければなりません)
+
+## なぜ大切？
+助動詞を理解することで：
+- ✅ 文法クイズの助動詞問題が解けるようになります
+- ✅ 英作文で自然な表現ができるようになります
+- ✅ TOEICでの助動詞問題に強くなります`,
+    keyPoints: [
+      "can/could：可能・能力・許可",
+      "will/would：意志・推量・丁寧な依頼",
+      "should/must：義務・必要性",
+      "助動詞＋動詞の原形",
+    ],
+    examples: [
+      {
+        english: "I can speak English.",
+        japanese: "私は英語を話せます。",
+        explanation: "canで能力を表現（can + 動詞の原形）",
+      },
+      {
+        english: "You should try this.",
+        japanese: "これを試してみるべきです。",
+        explanation: "shouldで助言・推奨を表現",
+      },
+    ],
+    relatedProblems: ["modals"],
+    prerequisites: ["basic-grammar-theory"],
+  },
+
   // 時制 (tenses)
   {
     id: "tenses-theory",
     title: "時制の概念と使い分け",
     category: "grammar",
     subcategory: "tenses",
-    level: 2,
+    level: 1,
     contentType: "theory",
     duration: 420, // 7分
     difficulty: "beginner",
@@ -191,7 +246,7 @@ TOEICでは**丁寧な表現**が頻出：
     title: "受動態の理解と活用",
     category: "grammar",
     subcategory: "passive",
-    level: 4,
+    level: 2,
     contentType: "theory",
     duration: 480, // 8分
     difficulty: "intermediate",
@@ -406,7 +461,7 @@ TOEICでは**丁寧な表現**が頻出：
     title: "比較表現をマスター",
     category: "grammar",
     subcategory: "comparison",
-    level: 4,
+    level: 2,
     contentType: "theory",
     duration: 360, // 6分
     difficulty: "intermediate",

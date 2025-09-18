@@ -1,25 +1,44 @@
-import { UserLevel, HeartSystem, StatusAllocation, Chapter, QuestionRank, SkillField } from '../types';
-import { LEVEL_CONFIGS, CHAPTER_INFO, getTotalXPForLevel, getChapterProgress } from '../data/levelConfig';
-import { 
-  calculateNewLevel, 
-  calculateHeartSystem, 
-  determineQuestionRank, 
-  selectSkillField,
-  processHeartRecovery,
+import {
+  CHAPTER_INFO,
+  getChapterProgress,
+  LEVEL_CONFIGS,
+} from "../data/levelConfig";
+import {
+  Chapter,
+  HeartSystem,
+  QuestionRank,
+  SkillField,
+  StatusAllocation,
+  UserLevel,
+} from "../types";
+import { StarData } from "../types/starSystem";
+import {
+  calculateHeartSystem,
+  calculateNewLevel,
   consumeHeart,
+  determineQuestionRank,
+  processHeartRecovery,
+  selectSkillField,
   STATUS_TEMPLATES,
-  validateStatusAllocation
-} from './newXpCalculator';
+  validateStatusAllocation,
+} from "./newXpCalculator";
+import {
+  calculateRecoveredStars,
+  consumeStar,
+  initializeStarSystem,
+} from "./starUtils";
 
 // ユーザーレベル管理クラス
 export class LevelManager {
   private userLevel: UserLevel;
   private heartSystem: HeartSystem;
+  private starSystem: StarData;
   private statusAllocation: StatusAllocation;
 
   constructor(initialXP: number = 0) {
     this.userLevel = calculateNewLevel(initialXP);
     this.heartSystem = calculateHeartSystem(this.userLevel.level);
+    this.starSystem = initializeStarSystem(this.userLevel.level);
     this.statusAllocation = { ...STATUS_TEMPLATES.balanced };
   }
 
@@ -33,6 +52,18 @@ export class LevelManager {
     return { ...this.heartSystem };
   }
 
+  // スターシステムを取得
+  getStarSystem(): StarData {
+    // 現在時刻で回復処理
+    const currentTime = Date.now();
+    this.starSystem = {
+      ...this.starSystem,
+      current: calculateRecoveredStars(this.starSystem, currentTime),
+      lastRecoveryTime: currentTime,
+    };
+    return { ...this.starSystem };
+  }
+
   // ステータス配分を取得
   getStatusAllocation(): StatusAllocation {
     return { ...this.statusAllocation };
@@ -42,14 +73,14 @@ export class LevelManager {
   addXP(xp: number): { leveledUp: boolean; newLevel?: UserLevel } {
     const oldLevel = this.userLevel.level;
     this.userLevel = calculateNewLevel(this.userLevel.xp + xp);
-    
+
     const leveledUp = this.userLevel.level > oldLevel;
-    
+
     if (leveledUp) {
       // レベルアップ時にハートシステムを更新
       this.heartSystem = calculateHeartSystem(this.userLevel.level);
     }
-    
+
     return {
       leveledUp,
       newLevel: leveledUp ? { ...this.userLevel } : undefined,
@@ -70,6 +101,15 @@ export class LevelManager {
       return true;
     }
     return false;
+  }
+
+  // スターを消費
+  consumeStar(): boolean {
+    if (this.starSystem.current <= 0) {
+      return false;
+    }
+    this.starSystem = consumeStar(this.starSystem);
+    return true;
   }
 
   // ステータス配分を更新
@@ -102,10 +142,14 @@ export class LevelManager {
   }
 
   // 章の進捗を取得
-  getChapterProgress(): { chapter: Chapter; progress: number; chapterInfo: any } {
+  getChapterProgress(): {
+    chapter: Chapter;
+    progress: number;
+    chapterInfo: any;
+  } {
     const progress = getChapterProgress(this.userLevel.level);
     const chapterInfo = CHAPTER_INFO[this.userLevel.chapter];
-    
+
     return {
       chapter: this.userLevel.chapter,
       progress,
@@ -115,18 +159,22 @@ export class LevelManager {
 
   // レベル設定を取得
   getLevelConfig() {
-    return LEVEL_CONFIGS.find(config => config.level === this.userLevel.level);
+    return LEVEL_CONFIGS.find(
+      (config) => config.level === this.userLevel.level
+    );
   }
 
   // 次のレベルまでの詳細情報
   getNextLevelInfo() {
     const currentConfig = this.getLevelConfig();
-    const nextLevelConfig = LEVEL_CONFIGS.find(config => config.level === this.userLevel.level + 1);
-    
+    const nextLevelConfig = LEVEL_CONFIGS.find(
+      (config) => config.level === this.userLevel.level + 1
+    );
+
     if (!nextLevelConfig) {
       return null; // 最大レベル到達
     }
-    
+
     return {
       currentLevel: this.userLevel.level,
       nextLevel: nextLevelConfig.level,
@@ -141,7 +189,7 @@ export class LevelManager {
   getChapterCompletion() {
     const chapterProgress = this.getChapterProgress();
     const isChapterComplete = chapterProgress.progress >= 100;
-    
+
     return {
       chapter: chapterProgress.chapter,
       progress: chapterProgress.progress,
@@ -154,7 +202,7 @@ export class LevelManager {
   getOverallProgress() {
     const chapterProgress = this.getChapterProgress();
     const nextLevelInfo = this.getNextLevelInfo();
-    
+
     return {
       level: this.userLevel.level,
       chapter: this.userLevel.chapter,
@@ -171,6 +219,7 @@ export class LevelManager {
     return {
       userLevel: this.userLevel,
       heartSystem: this.heartSystem,
+      starSystem: this.starSystem,
       statusAllocation: this.statusAllocation,
     };
   }
@@ -179,19 +228,26 @@ export class LevelManager {
   static deserialize(data: {
     userLevel: UserLevel;
     heartSystem: HeartSystem;
+    starSystem?: StarData;
     statusAllocation: StatusAllocation;
   }) {
     const xp = data.userLevel?.xp || 0;
     const manager = new LevelManager(xp);
     manager.userLevel = data.userLevel || { level: 1, xp: 0, totalXP: 0 };
-    manager.heartSystem = data.heartSystem || { current: 5, max: 5, lastRecoveryTime: Date.now() };
+    manager.heartSystem = data.heartSystem || {
+      current: 5,
+      max: 5,
+      lastRecoveryTime: Date.now(),
+    };
+    manager.starSystem =
+      data.starSystem || initializeStarSystem(manager.userLevel.level);
     manager.statusAllocation = data.statusAllocation || {
       listening: 5,
       reading: 5,
       writing: 5,
       grammar: 5,
       idioms: 5,
-      vocabulary: 5
+      vocabulary: 5,
     };
     return manager;
   }
@@ -204,13 +260,13 @@ let globalLevelManager: LevelManager | null = null;
 export function getLevelManager(): LevelManager {
   if (!globalLevelManager) {
     // ローカルストレージから復元を試行
-    const savedData = localStorage.getItem('entp-english-level-manager');
+    const savedData = localStorage.getItem("entp-english-level-manager");
     if (savedData) {
       try {
         const data = JSON.parse(savedData);
         globalLevelManager = LevelManager.deserialize(data);
       } catch (error) {
-        console.error('Failed to restore level manager:', error);
+        console.error("Failed to restore level manager:", error);
         globalLevelManager = new LevelManager();
       }
     } else {
@@ -223,12 +279,15 @@ export function getLevelManager(): LevelManager {
 // レベルマネージャーを保存
 export function saveLevelManager(): void {
   if (globalLevelManager) {
-    localStorage.setItem('entp-english-level-manager', JSON.stringify(globalLevelManager.serialize()));
+    localStorage.setItem(
+      "entp-english-level-manager",
+      JSON.stringify(globalLevelManager.serialize())
+    );
   }
 }
 
 // レベルマネージャーをリセット
 export function resetLevelManager(): void {
   globalLevelManager = new LevelManager();
-  localStorage.removeItem('entp-english-level-manager');
+  localStorage.removeItem("entp-english-level-manager");
 }

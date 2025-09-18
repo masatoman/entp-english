@@ -6,9 +6,10 @@ import {
   Star,
   Target,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { preStudyContents } from "../../data/preStudyContents";
+import { getLevelManager, saveLevelManager } from "../../utils/levelManager";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
@@ -21,6 +22,7 @@ function PreStudyContentViewer() {
   const navigate = useNavigate();
   const [comprehensionRating, setComprehensionRating] = useState<number>(0);
   const [showCompletion, setShowCompletion] = useState(false);
+  const [levelManager] = useState(() => getLevelManager());
 
   // contentIdからcontentを取得
   const content = preStudyContents.find((c) => c.id === contentId);
@@ -30,6 +32,20 @@ function PreStudyContentViewer() {
     navigate("/");
     return null;
   }
+
+  // スタミナ消費（コンテンツ表示時に1回のみ）
+  useEffect(() => {
+    const starSystem = levelManager.getStarSystem();
+    if (starSystem.current <= 0) {
+      alert("スタミナが不足しています。回復を待ってから再試行してください。");
+      navigate("/learning/pre-study/menu");
+      return;
+    }
+
+    // スタミナを消費
+    levelManager.consumeStar();
+    saveLevelManager();
+  }, [contentId]); // contentIdが変わった時のみ実行
 
   const handleComplete = () => {
     setShowCompletion(true);
