@@ -63,13 +63,13 @@ function PreStudyContentViewer() {
       // 事前学習完了をマーク
       if (contentId) {
         PreStudyProgressManager.markContentAsCompleted(contentId);
-        
+
         // TOEIC解答結果も保存
         if (Object.keys(toeicAnswers).length > 0) {
           PreStudyProgressManager.saveToeicAnswers(contentId, toeicAnswers);
         }
       }
-      
+
       navigate("/learning/pre-study/menu");
     }
   };
