@@ -11,16 +11,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
+       - name: Debug - Check files
+         run: |
+           echo "🔍 リポジトリファイル確認..."
+           ls -la
+           echo "📋 package.json存在確認:"
+           test -f package.json && echo "✅ package.json found" || echo "❌ package.json missing"
+           echo "🔒 package-lock.json存在確認:"
+           test -f package-lock.json && echo "✅ package-lock.json found" || echo "❌ package-lock.json missing"
+
+       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "18"
           cache: "npm"
 
        - name: Install dependencies
-         run: npm ci || npm install
+         run: |
+           echo "📦 依存関係をインストール中..."
+           if [ -f "package-lock.json" ]; then
+             echo "✅ package-lock.json found, using npm ci"
+             npm ci
+           else
+             echo "⚠️ package-lock.json not found, using npm install"
+             npm install
+           fi
 
       - name: Run unit tests
         run: npm run test:unit
@@ -39,16 +56,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
+       - name: Debug - Check files
+         run: |
+           echo "🔍 リポジトリファイル確認..."
+           ls -la
+           echo "📋 package.json存在確認:"
+           test -f package.json && echo "✅ package.json found" || echo "❌ package.json missing"
+           echo "🔒 package-lock.json存在確認:"
+           test -f package-lock.json && echo "✅ package-lock.json found" || echo "❌ package-lock.json missing"
+
+       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "18"
           cache: "npm"
 
        - name: Install dependencies
-         run: npm ci || npm install
+         run: |
+           echo "📦 依存関係をインストール中..."
+           if [ -f "package-lock.json" ]; then
+             echo "✅ package-lock.json found, using npm ci"
+             npm ci
+           else
+             echo "⚠️ package-lock.json not found, using npm install"
+             npm install
+           fi
 
       - name: Run integration tests
         run: npm run test:integration
@@ -58,16 +92,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
+       - name: Debug - Check files
+         run: |
+           echo "🔍 リポジトリファイル確認..."
+           ls -la
+           echo "📋 package.json存在確認:"
+           test -f package.json && echo "✅ package.json found" || echo "❌ package.json missing"
+           echo "🔒 package-lock.json存在確認:"
+           test -f package-lock.json && echo "✅ package-lock.json found" || echo "❌ package-lock.json missing"
+
+       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "18"
           cache: "npm"
 
        - name: Install dependencies
-         run: npm ci || npm install
+         run: |
+           echo "📦 依存関係をインストール中..."
+           if [ -f "package-lock.json" ]; then
+             echo "✅ package-lock.json found, using npm ci"
+             npm ci
+           else
+             echo "⚠️ package-lock.json not found, using npm install"
+             npm install
+           fi
 
       - name: Build application
         run: npm run build
@@ -82,16 +133,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
+       - name: Debug - Check files
+         run: |
+           echo "🔍 リポジトリファイル確認..."
+           ls -la
+           echo "📋 package.json存在確認:"
+           test -f package.json && echo "✅ package.json found" || echo "❌ package.json missing"
+           echo "🔒 package-lock.json存在確認:"
+           test -f package-lock.json && echo "✅ package-lock.json found" || echo "❌ package-lock.json missing"
+
+       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "18"
           cache: "npm"
 
        - name: Install dependencies
-         run: npm ci || npm install
+         run: |
+           echo "📦 依存関係をインストール中..."
+           if [ -f "package-lock.json" ]; then
+             echo "✅ package-lock.json found, using npm ci"
+             npm ci
+           else
+             echo "⚠️ package-lock.json not found, using npm install"
+             npm install
+           fi
 
       - name: Build application
         run: npm run build
@@ -113,16 +181,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
+       - name: Debug - Check files
+         run: |
+           echo "🔍 リポジトリファイル確認..."
+           ls -la
+           echo "📋 package.json存在確認:"
+           test -f package.json && echo "✅ package.json found" || echo "❌ package.json missing"
+           echo "🔒 package-lock.json存在確認:"
+           test -f package-lock.json && echo "✅ package-lock.json found" || echo "❌ package-lock.json missing"
+
+       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "18"
           cache: "npm"
 
        - name: Install dependencies
-         run: npm ci || npm install
+         run: |
+           echo "📦 依存関係をインストール中..."
+           if [ -f "package-lock.json" ]; then
+             echo "✅ package-lock.json found, using npm ci"
+             npm ci
+           else
+             echo "⚠️ package-lock.json not found, using npm install"
+             npm install
+           fi
 
       - name: Run security audit
         run: |
@@ -135,16 +220,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
+       - name: Debug - Check files
+         run: |
+           echo "🔍 リポジトリファイル確認..."
+           ls -la
+           echo "📋 package.json存在確認:"
+           test -f package.json && echo "✅ package.json found" || echo "❌ package.json missing"
+           echo "🔒 package-lock.json存在確認:"
+           test -f package-lock.json && echo "✅ package-lock.json found" || echo "❌ package-lock.json missing"
+
+       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "18"
           cache: "npm"
 
        - name: Install dependencies
-         run: npm ci || npm install
+         run: |
+           echo "📦 依存関係をインストール中..."
+           if [ -f "package-lock.json" ]; then
+             echo "✅ package-lock.json found, using npm ci"
+             npm ci
+           else
+             echo "⚠️ package-lock.json not found, using npm install"
+             npm install
+           fi
 
       - name: Build application
         run: npm run build

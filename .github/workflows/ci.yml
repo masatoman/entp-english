@@ -20,7 +20,15 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci || npm install
+        run: |
+          echo "📦 依存関係をインストール中..."
+          if [ -f "package-lock.json" ]; then
+            echo "✅ package-lock.json found, using npm ci"
+            npm ci
+          else
+            echo "⚠️ package-lock.json not found, using npm install"
+            npm install
+          fi
 
       - name: Generate PWA icons
         run: npm run generate-icons
@@ -59,7 +67,15 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci || npm install
+        run: |
+          echo "📦 依存関係をインストール中..."
+          if [ -f "package-lock.json" ]; then
+            echo "✅ package-lock.json found, using npm ci"
+            npm ci
+          else
+            echo "⚠️ package-lock.json not found, using npm install"
+            npm install
+          fi
 
       - name: Run security audit
         run: npm audit --audit-level moderate
@@ -78,7 +94,15 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci || npm install
+        run: |
+          echo "📦 依存関係をインストール中..."
+          if [ -f "package-lock.json" ]; then
+            echo "✅ package-lock.json found, using npm ci"
+            npm ci
+          else
+            echo "⚠️ package-lock.json not found, using npm install"
+            npm install
+          fi
 
       - name: Build for performance test
         run: npm run build
