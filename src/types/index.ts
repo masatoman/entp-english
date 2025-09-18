@@ -1,26 +1,26 @@
-export type Category = 
-  | 'basic-grammar'
-  | 'tenses' 
-  | 'modals'
-  | 'passive'
-  | 'relative'
-  | 'subjunctive'
-  | 'comparison'
-  | 'participle'
-  | 'infinitive';
+export type Category =
+  | "basic-grammar"
+  | "tenses"
+  | "modals"
+  | "passive"
+  | "relative"
+  | "subjunctive"
+  | "comparison"
+  | "participle"
+  | "infinitive";
 
 // 新仕様の型定義
 export type Chapter = 1 | 2 | 3 | 4 | 5;
 
-export type QuestionRank = 'normal' | 'rare' | 'epic' | 'legendary';
+export type QuestionRank = "normal" | "rare" | "epic" | "legendary";
 
-export type SkillField = 
-  | 'listening'
-  | 'reading'
-  | 'writing'
-  | 'grammar'
-  | 'idioms'
-  | 'vocabulary';
+export type SkillField =
+  | "listening"
+  | "reading"
+  | "writing"
+  | "grammar"
+  | "idioms"
+  | "vocabulary";
 
 export interface UserAnswer {
   questionId: number;
@@ -90,7 +90,7 @@ export interface QuestionWithRank {
   correctAnswer: string;
   explanation: string;
   category: Category;
-  difficulty: 'easy' | 'normal' | 'hard';
+  difficulty: "easy" | "normal" | "hard";
   rank: QuestionRank;
   skillField: SkillField;
   xpReward: number;
