@@ -7,6 +7,7 @@ import {
   LearningQuestion,
 } from "../types/learningItem";
 import { LearningItemManager } from "../utils/learningItemManager";
+import { KnownWordsManager } from "../utils/knownWordsManager";
 import { SpeechSynthesisManager } from "../utils/speechSynthesis";
 import { calculateVocabularyXP } from "../utils/xpCalculator";
 import { Button } from "./ui/button";
@@ -53,20 +54,59 @@ export default function IntegratedLearning() {
     const actualMode = (mode as "card" | "question" | "mixed") || "mixed";
 
     // 学習項目を取得
-    const items = LearningItemManager.getFilteredLearningItems(
+    const allItems = LearningItemManager.getFilteredLearningItems(
       actualLevel,
       category,
       "vocabulary"
     );
 
-    if (items.length === 0) {
-      console.warn("No learning items found for the specified criteria");
+    // 既知単語を除外（単語の内容ベースで判定）
+    const filteredItems = allItems.filter((item) => {
+      // 既知単語データを取得
+      const knownWordsData = KnownWordsManager.getKnownWordsData();
+      
+      // 単語の内容（content）で既知単語かどうかを判定
+      const isKnownByContent = knownWordsData.knownWords.some(
+        (knownWord) => knownWord.word === item.content
+      );
+      
+      // IDベースでの判定も併用（後方互換性）
+      let wordId: string;
+      if (item.id.startsWith('gacha-')) {
+        wordId = item.id.replace('gacha-', '');
+      } else if (item.id.startsWith('vocab-')) {
+        wordId = item.id.replace('vocab-', '');
+      } else {
+        wordId = item.id;
+      }
+      
+      const isKnownById = KnownWordsManager.isWordKnown(wordId) || 
+                          KnownWordsManager.isWordKnown(wordId.toString());
+      
+      // どちらかの方法で既知と判定された場合は除外
+      const isKnown = isKnownByContent || isKnownById;
+      
+      if (isKnown) {
+        console.log(`🚫 既知単語「${item.content}」を統合学習から除外`);
+      }
+      
+      return !isKnown;
+    });
+
+    console.log("IntegratedLearning - 既知単語除外結果:", {
+      allItems: allItems.length,
+      filteredItems: filteredItems.length,
+      excludedCount: allItems.length - filteredItems.length,
+    });
+
+    if (filteredItems.length === 0) {
+      console.warn("No learning items found after filtering known words");
       return;
     }
 
     // 学習進捗を取得
     const progressMap = new Map<string, LearningProgress>();
-    items.forEach((item) => {
+    filteredItems.forEach((item) => {
       const progress = LearningItemManager.getLearningProgress(item.id);
       if (progress) {
         progressMap.set(item.id, progress);
@@ -74,18 +114,18 @@ export default function IntegratedLearning() {
     });
 
     const newSession: LearningSession = {
-      items: items.slice(0, 10), // 最初は10項目に制限
+      items: filteredItems.slice(0, 10), // 最初は10項目に制限
       currentIndex: 0,
       mode: actualMode,
       progress: progressMap,
     };
 
     setSession(newSession);
-    setCurrentItem(items[0]);
+    setCurrentItem(filteredItems[0]);
 
     // モードに応じて最初のコンテンツを設定
     if (actualMode === "question" || actualMode === "mixed") {
-      setCurrentQuestion(selectQuestionForItem(items[0]));
+      setCurrentQuestion(selectQuestionForItem(filteredItems[0]));
     }
   };
 
@@ -105,6 +145,26 @@ export default function IntegratedLearning() {
 
   const handleCardResponse = (known: boolean) => {
     if (!currentItem || !session) return;
+
+    // 「覚えている」を選択した場合、既知単語としてマーク
+    if (known) {
+      // LearningItemから語彙ワード形式に変換して既知単語としてマーク
+      const vocabularyWord = {
+        id: currentItem.id.startsWith('gacha-') 
+          ? currentItem.id.replace('gacha-', '') 
+          : currentItem.id.replace('vocab-', ''),
+        word: currentItem.content,
+        meaning: currentItem.meaning,
+        category: currentItem.category,
+        level: currentItem.level,
+        partOfSpeech: currentItem.partOfSpeech || "名詞",
+        example: currentItem.examples[0]?.sentence || "",
+        exampleTranslation: currentItem.examples[0]?.translation || "",
+      };
+      
+      KnownWordsManager.markWordAsKnown(vocabularyWord);
+      console.log(`🎯 統合学習: 「${currentItem.content}」を既知単語にマークしました`);
+    }
 
     // XP計算
     const xpGained = known ? calculateVocabularyXP(1, currentItem.level) : 5;
