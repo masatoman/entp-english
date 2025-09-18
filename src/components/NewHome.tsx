@@ -35,7 +35,7 @@ import { GrammarQuizDifficultySelection } from "./GrammarQuizDifficultySelection
 import { LearningFeedbackForm } from "./LearningFeedbackForm";
 import { LevelDisplay } from "./LevelDisplay";
 import { StatusAllocationComponent } from "./StatusAllocation";
-import { PreStudyContentViewer } from "./starSystem/PreStudyContentViewer";
+// PreStudyContentViewerはRouter経由で使用するため、直接importを削除
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { SelectionCard } from "./ui/selection-card";
@@ -350,17 +350,8 @@ export function NewHome() {
     );
   }
 
-  // 事前学習のコンポーネントが表示されている場合は、それらを優先表示
-  if (showPreStudyContent && currentPreStudyContent) {
-    return (
-      <PreStudyContentViewer
-        content={currentPreStudyContent}
-        onComplete={handlePreStudyContentComplete}
-        onBack={handlePreStudyContentBack}
-        onNavigateToPractice={handleNavigateToPractice}
-      />
-    );
-  }
+  // 事前学習のコンテンツ表示はRouter経由で処理
+  // showPreStudyContentロジックは削除
 
   // 文法クイズのコンポーネントが表示されている場合は、それらを優先表示
   if (showGrammarQuizCategory) {

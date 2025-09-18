@@ -6,27 +6,30 @@ import {
   Star,
   Target,
 } from "lucide-react";
-import React, { useState } from "react";
-import { PreStudyContent } from "../../types/starSystem";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { preStudyContents } from "../../data/preStudyContents";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
-interface PreStudyContentViewerProps {
-  content: PreStudyContent;
-  onComplete: (contentId: string, comprehensionRating: number) => void;
-  onBack: () => void;
-  onNavigateToPractice?: (category: string) => void;
-}
+// Router対応のため、PropsInterfaceは不要
 
-export const PreStudyContentViewer: React.FC<PreStudyContentViewerProps> = ({
-  content,
-  onComplete,
-  onBack,
-  onNavigateToPractice,
-}) => {
+function PreStudyContentViewer() {
+  // Router対応 - useParamsでcontentIdを取得
+  const { contentId } = useParams<{ contentId: string }>();
+  const navigate = useNavigate();
   const [comprehensionRating, setComprehensionRating] = useState<number>(0);
   const [showCompletion, setShowCompletion] = useState(false);
+
+  // contentIdからcontentを取得
+  const content = preStudyContents.find((c) => c.id === contentId);
+
+  // コンテンツが見つからない場合はホームに戻る
+  if (!content) {
+    navigate("/");
+    return null;
+  }
 
   const handleComplete = () => {
     setShowCompletion(true);
@@ -34,18 +37,23 @@ export const PreStudyContentViewer: React.FC<PreStudyContentViewerProps> = ({
 
   const handleFinalComplete = () => {
     if (comprehensionRating > 0) {
-      onComplete(content.id, comprehensionRating);
+      // 学習進捗保存処理をここに追加
+      navigate("/learning/pre-study/menu");
     }
   };
 
   const handleNavigateToPractice = () => {
     // 理解度評価が0の場合は3（普通）として扱う
     const finalRating = comprehensionRating > 0 ? comprehensionRating : 3;
-    onComplete(content.id, finalRating);
+    // 学習進捗保存処理をここに追加
     // カテゴリに基づいて適切な問題演習に遷移
-    if (onNavigateToPractice) {
-      onNavigateToPractice(content.category);
+    if (content.category) {
+      navigate(`/learning/grammar/category`);
     }
+  };
+
+  const handleBack = () => {
+    navigate("/learning/pre-study/menu");
   };
 
   const renderStars = (
@@ -151,7 +159,7 @@ export const PreStudyContentViewer: React.FC<PreStudyContentViewerProps> = ({
                   ♥ 問題演習へ
                 </Button>
                 <Button
-                  onClick={onBack}
+                  onClick={handleBack}
                   variant="outline"
                   className="flex-1"
                   size="lg"
@@ -174,7 +182,7 @@ export const PreStudyContentViewer: React.FC<PreStudyContentViewerProps> = ({
           <CardHeader>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <Button variant="outline" size="sm" onClick={onBack}>
+                <Button variant="outline" size="sm" onClick={handleBack}>
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   戻る
                 </Button>
@@ -259,4 +267,6 @@ export const PreStudyContentViewer: React.FC<PreStudyContentViewerProps> = ({
       </div>
     </div>
   );
-};
+}
+
+export default PreStudyContentViewer;

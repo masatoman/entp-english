@@ -1,4 +1,4 @@
-import{j as t,r as u}from"./ui-smpf69Zd.js";import{u as T,b as I,B as j}from"./game-Dd6Kb0LE.js";import{D as C}from"./progress-BPWR83xl.js";import{g as k,A as O}from"./learning-B-E1ZIuS.js";import{S as P}from"./index-CPlkK9WN.js";import"./vendor-D3F3s8fL.js";const E=[{id:"basic-grammar-theory",title:"英文の基本構造",category:"grammar",subcategory:"basic-grammar",level:1,contentType:"theory",duration:300,difficulty:"beginner",content:`# 英文の基本構造
+import{j as t,r as u}from"./ui-smpf69Zd.js";import{u as T,b as I,B as j}from"./game-Dd6Kb0LE.js";import{D as C}from"./progress-BPWR83xl.js";import{g as k,A as O}from"./learning-B-E1ZIuS.js";import{S as P}from"./index-DOAaQjy2.js";import"./vendor-D3F3s8fL.js";const E=[{id:"basic-grammar-theory",title:"英文の基本構造",category:"grammar",subcategory:"basic-grammar",level:1,contentType:"theory",duration:300,difficulty:"beginner",content:`# 英文の基本構造
 
 ## 英語の語順：SVO
 英語は**主語（S）→ 動詞（V）→ 目的語（O）**の順番が基本です。
