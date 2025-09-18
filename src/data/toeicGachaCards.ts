@@ -1269,7 +1269,6 @@ export const toeicWordCards: WordCard[] = [
       businessContext: "チームワーク・パートナーシップ",
     },
   },
-
 ];
 
 export const gachaPacks: GachaPack[] = [

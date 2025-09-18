@@ -116,7 +116,7 @@ export default function GachaResultScreen() {
             </Button>
             <Button
               variant="outline"
-              onClick={() => navigate("/learning/vocabulary/difficulty")}
+              onClick={() => navigate("/learning/vocabulary/study/intermediate/toeic")}
               size="lg"
             >
               語彙学習で使用する

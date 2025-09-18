@@ -24,7 +24,10 @@ export default function CardDetailContent() {
   const card = toeicWordCards.find((c) => c.id === parseInt(cardId || "0"));
 
   // 音声再生ハンドラ
-  const handlePlayPronunciation = async (text: string, isExample: boolean = false) => {
+  const handlePlayPronunciation = async (
+    text: string,
+    isExample: boolean = false
+  ) => {
     if (isPlaying) {
       SpeechSynthesisManager.stop();
       setIsPlaying(false);
@@ -43,7 +46,9 @@ export default function CardDetailContent() {
       }
     } catch (error) {
       console.error("音声再生エラー:", error);
-      alert("音声再生に失敗しました。ブラウザが音声合成をサポートしていない可能性があります。");
+      alert(
+        "音声再生に失敗しました。ブラウザが音声合成をサポートしていない可能性があります。"
+      );
     } finally {
       setIsPlaying(false);
     }
@@ -157,7 +162,11 @@ export default function CardDetailContent() {
                     disabled={isPlaying}
                     className="flex items-center gap-1 hover:bg-blue-50"
                   >
-                    <Volume2 className={`w-4 h-4 ${isPlaying ? "animate-pulse text-blue-600" : ""}`} />
+                    <Volume2
+                      className={`w-4 h-4 ${
+                        isPlaying ? "animate-pulse text-blue-600" : ""
+                      }`}
+                    />
                     {isPlaying ? "再生中..." : "発音"}
                   </Button>
                 </div>
@@ -222,7 +231,11 @@ export default function CardDetailContent() {
                       disabled={isPlaying}
                       className="flex items-center gap-1 text-green-600 hover:bg-green-50"
                     >
-                      <Volume2 className={`w-3 h-3 ${isPlaying ? "animate-pulse" : ""}`} />
+                      <Volume2
+                        className={`w-3 h-3 ${
+                          isPlaying ? "animate-pulse" : ""
+                        }`}
+                      />
                     </Button>
                   </div>
                   <div className="text-gray-600 text-sm mb-1">

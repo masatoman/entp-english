@@ -28,8 +28,8 @@ export class SpeechSynthesisManager {
     }
 
     const voices = window.speechSynthesis.getVoices();
-    return voices.filter(voice => 
-      voice.lang.startsWith('en') && voice.localService
+    return voices.filter(
+      (voice) => voice.lang.startsWith("en") && voice.localService
     );
   }
 
@@ -38,17 +38,12 @@ export class SpeechSynthesisManager {
    */
   static getBestEnglishVoice(): SpeechSynthesisVoice | null {
     const englishVoices = this.getEnglishVoices();
-    
+
     // 優先順位: en-US > en-GB > その他の英語
-    const preferredVoices = [
-      'en-US',
-      'en-GB', 
-      'en-AU',
-      'en-CA'
-    ];
+    const preferredVoices = ["en-US", "en-GB", "en-AU", "en-CA"];
 
     for (const preferredLang of preferredVoices) {
-      const voice = englishVoices.find(v => v.lang === preferredLang);
+      const voice = englishVoices.find((v) => v.lang === preferredLang);
       if (voice) return voice;
     }
 
@@ -83,12 +78,13 @@ export class SpeechSynthesisManager {
         utterance.voice = bestVoice;
         utterance.lang = bestVoice.lang;
       } else {
-        utterance.lang = 'en-US';
+        utterance.lang = "en-US";
       }
 
       // イベントハンドラ
       utterance.onend = () => resolve();
-      utterance.onerror = (event) => reject(new Error(`Speech error: ${event.error}`));
+      utterance.onerror = (event) =>
+        reject(new Error(`Speech error: ${event.error}`));
 
       // 読み上げ開始
       window.speechSynthesis.speak(utterance);
@@ -99,17 +95,17 @@ export class SpeechSynthesisManager {
    * 単語と例文を順番に読み上げ
    */
   static async speakWordWithExample(
-    word: string, 
+    word: string,
     example?: string,
     options: SpeechOptions = {}
   ): Promise<void> {
     try {
       // 単語を読み上げ
       await this.speak(word, { ...options, rate: 0.6 }); // 単語は少し遅く
-      
+
       // 短い間隔
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       // 例文があれば読み上げ
       if (example) {
         await this.speak(example, { ...options, rate: 0.8 }); // 例文は通常速度
@@ -124,7 +120,7 @@ export class SpeechSynthesisManager {
    * 音声合成が利用可能かチェック
    */
   static isSupported(): boolean {
-    return 'speechSynthesis' in window;
+    return "speechSynthesis" in window;
   }
 
   /**

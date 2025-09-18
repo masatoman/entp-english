@@ -54,7 +54,9 @@ export class CardCollectionManager {
     allAvailableCards: WordCard[]
   ): CollectionStats {
     const uniqueOwnedIds = new Set(ownedCards.map((card) => card.id));
-    const uniqueAvailableIds = new Set(allAvailableCards.map((card) => card.id));
+    const uniqueAvailableIds = new Set(
+      allAvailableCards.map((card) => card.id)
+    );
 
     // レアリティ別の統計
     const rarityBreakdown: Record<string, number> = {};
@@ -83,11 +85,12 @@ export class CardCollectionManager {
     };
 
     return cardsWithCount.sort((a, b) => {
-      const rarityDiff = (rarityOrder[b.card.rarity as keyof typeof rarityOrder] || 0) - 
-                        (rarityOrder[a.card.rarity as keyof typeof rarityOrder] || 0);
-      
+      const rarityDiff =
+        (rarityOrder[b.card.rarity as keyof typeof rarityOrder] || 0) -
+        (rarityOrder[a.card.rarity as keyof typeof rarityOrder] || 0);
+
       if (rarityDiff !== 0) return rarityDiff;
-      
+
       // レアリティが同じ場合は名前順
       return a.card.word.localeCompare(b.card.word);
     });
@@ -114,7 +117,9 @@ export class CardCollectionManager {
     rarity: string
   ): CardWithCount[] {
     if (rarity === "all") return cardsWithCount;
-    return cardsWithCount.filter((cardWithCount) => cardWithCount.card.rarity === rarity);
+    return cardsWithCount.filter(
+      (cardWithCount) => cardWithCount.card.rarity === rarity
+    );
   }
 
   /**
@@ -125,11 +130,12 @@ export class CardCollectionManager {
     searchTerm: string
   ): CardWithCount[] {
     if (!searchTerm) return cardsWithCount;
-    
+
     const term = searchTerm.toLowerCase();
-    return cardsWithCount.filter((cardWithCount) =>
-      cardWithCount.card.word.toLowerCase().includes(term) ||
-      cardWithCount.card.meaning.toLowerCase().includes(term)
+    return cardsWithCount.filter(
+      (cardWithCount) =>
+        cardWithCount.card.word.toLowerCase().includes(term) ||
+        cardWithCount.card.meaning.toLowerCase().includes(term)
     );
   }
 }

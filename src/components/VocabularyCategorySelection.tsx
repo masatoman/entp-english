@@ -1,6 +1,8 @@
 import { ArrowLeft } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useScrollToTop } from "../hooks/useScrollToTop";
+import { VocabularyManager } from "../utils/vocabularyManager";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { SelectionCard } from "./ui/selection-card";
@@ -10,26 +12,49 @@ export default function VocabularyCategorySelection() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const difficulty = searchParams.get("difficulty") || "intermediate";
+  const [vocabularyStats, setVocabularyStats] = useState({
+    all: 0,
+    toeic: 0,
+    daily: 0,
+    gachaCards: 0,
+  });
   useScrollToTop();
+
+  // 語彙統計を取得
+  useEffect(() => {
+    const actualDifficulty = difficulty as "beginner" | "intermediate" | "advanced";
+    
+    const allCount = VocabularyManager.getAvailableVocabularyCount(actualDifficulty, "all");
+    const toeicCount = VocabularyManager.getAvailableVocabularyCount(actualDifficulty, "toeic");
+    const dailyCount = VocabularyManager.getAvailableVocabularyCount(actualDifficulty, "daily");
+    const gachaStats = VocabularyManager.getGachaVocabularyStats();
+
+    setVocabularyStats({
+      all: allCount.total,
+      toeic: toeicCount.total,
+      daily: dailyCount.total,
+      gachaCards: gachaStats.totalCards,
+    });
+  }, [difficulty]);
   const categories = [
     {
       id: "all" as const,
       title: "すべて",
       description: "全レベルの単語をランダムに学習",
-      detail: "初級から上級まで幅広いレベルの単語",
+      detail: "初級から上級まで幅広いレベルの単語（ガチャカード含む）",
       color: "bg-gray-50 border-gray-200 text-gray-800",
       difficulty: "全レベル",
-      wordCount: "130個の単語",
+      wordCount: `${vocabularyStats.all}個の単語`,
       examples: ["reliable", "accomplish", "sophisticated"],
     },
     {
       id: "toeic" as const,
       title: "TOEIC頻出",
       description: "TOEIC試験でよく出る単語",
-      detail: "TOEIC試験で頻繁に出題されるビジネス単語",
+      detail: `TOEIC試験で頻繁に出題されるビジネス単語（ガチャカード${vocabularyStats.gachaCards}枚含む）`,
       color: "bg-orange-50 border-orange-200 text-orange-800",
       difficulty: "中級",
-      wordCount: "20個の単語",
+      wordCount: `${vocabularyStats.toeic}個の単語`,
       examples: ["revenue", "budget", "deadline", "contract"],
     },
     {
@@ -39,7 +64,7 @@ export default function VocabularyCategorySelection() {
       detail: "友達との会話や日常的な表現で使用される単語",
       color: "bg-green-50 border-green-200 text-green-800",
       difficulty: "初級",
-      wordCount: "15個の単語",
+      wordCount: `${vocabularyStats.daily}個の単語`,
       examples: ["awesome", "amazing", "fantastic", "wonderful"],
     },
   ];

@@ -10,7 +10,7 @@ import {
 import { useState } from "react";
 import { cn } from "../../lib/utils";
 import { WordCard } from "../../types/gacha";
-import { CardCollectionManager, CardWithCount } from "../../utils/cardCollectionManager";
+import { CardCollectionManager } from "../../utils/cardCollectionManager";
 import { Badge } from "./badge";
 import { Button } from "./button";
 import { Card, CardContent, CardHeader, CardTitle } from "./card";
@@ -69,8 +69,12 @@ export function CardCollectionGrid({
     .filter((cardWithCount) => {
       // 検索フィルター
       const matchesSearch =
-        cardWithCount.card.word.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        cardWithCount.card.meaning.toLowerCase().includes(searchTerm.toLowerCase());
+        cardWithCount.card.word
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        cardWithCount.card.meaning
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
 
       // レアリティフィルター
       const matchesRarity =
@@ -282,7 +286,9 @@ export function CardCollectionGrid({
               isFavorite={false} // TODO: 実際のお気に入り状態を連携
               onFavoriteToggle={() => {
                 // TODO: お気に入り状態の切り替え処理
-                console.log(`Toggle favorite for card: ${cardWithCount.card.word}`);
+                console.log(
+                  `Toggle favorite for card: ${cardWithCount.card.word}`
+                );
               }}
               className="hover:z-10"
             />
