@@ -2,6 +2,7 @@ import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getQuestions } from "../data/questions";
+import { getGrammarQuizQuestions } from "../data/grammarQuizCategorized";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Category } from "../types";
 import { getLevelManager } from "../utils/levelManager";
@@ -62,8 +63,41 @@ export default function Question() {
   useEffect(() => {
     if (category && difficulty) {
       try {
-        const questionData = getQuestions(category, difficulty);
-        setQuestions(questionData);
+        // 標準問題を取得
+        const standardQuestions = getQuestions(category, difficulty);
+        
+        // 事前学習由来の問題も取得（時制カテゴリの場合）
+        let allQuestions = standardQuestions;
+        if (category === "tenses") {
+          const levelMapping = {
+            easy: "beginner" as const,
+            normal: "intermediate" as const, 
+            hard: "advanced" as const
+          };
+          
+          const grammarQuestions = getGrammarQuizQuestions(
+            levelMapping[difficulty], 
+            "tenses"
+          );
+          
+          // 事前学習由来の問題を標準問題形式に変換
+          const preStudyQuestions = grammarQuestions
+            .filter(q => q.source === "prestudy")
+            .map(q => ({
+              id: q.id,
+              japanese: q.sentence,
+              correctAnswer: q.blanks[0]?.correctAnswer || "",
+              explanation: q.explanation,
+              choices: q.options
+            }));
+          
+          // 事前学習問題を先頭に配置して確実に出題されるようにする
+          allQuestions = [...preStudyQuestions, ...standardQuestions];
+          
+          console.log(`📚 時制問題統合: 標準${standardQuestions.length}問 + 事前学習${preStudyQuestions.length}問`);
+        }
+        
+        setQuestions(allQuestions);
       } catch (error) {
         console.error("問題データの取得に失敗:", error);
         navigate("/learning/grammar/category");

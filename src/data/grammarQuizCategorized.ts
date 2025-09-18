@@ -1,3 +1,5 @@
+import { getAvailablePreStudyQuestions } from './preStudyGrammarQuestions';
+
 export interface GrammarQuizQuestion {
   id: number;
   sentence: string;
@@ -10,6 +12,9 @@ export interface GrammarQuizQuestion {
   explanation: string;
   level: 'beginner' | 'intermediate' | 'advanced';
   category: 'basic-sentence-patterns' | 'tenses' | 'auxiliaries' | 'passive-voice' | 'relative-clauses' | 'subjunctive' | 'comparison' | 'participles-gerunds' | 'infinitives';
+  source?: 'prestudy' | 'standard';
+  preStudyContentId?: string;
+  toeicPart?: number;
 }
 
 export const grammarQuizQuestions: GrammarQuizQuestion[] = [
@@ -845,7 +850,18 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
 ];
 
 export function getGrammarQuizQuestions(level?: 'beginner' | 'intermediate' | 'advanced', category?: string): GrammarQuizQuestion[] {
-  let filteredQuestions = grammarQuizQuestions;
+  // 標準問題を取得
+  let filteredQuestions = grammarQuizQuestions.map(q => ({ ...q, source: 'standard' as const }));
+  
+  // 事前学習由来の問題を追加
+  try {
+    const preStudyQuestions = getAvailablePreStudyQuestions(level, category);
+    filteredQuestions = [...filteredQuestions, ...preStudyQuestions];
+    
+    console.log(`📚 文法クイズ問題統合: 標準${grammarQuizQuestions.length}問 + 事前学習${preStudyQuestions.length}問`);
+  } catch (error) {
+    console.warn("事前学習問題の統合に失敗:", error);
+  }
   
   if (level) {
     filteredQuestions = filteredQuestions.filter(q => q.level === level);

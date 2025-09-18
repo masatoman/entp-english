@@ -19,6 +19,9 @@ export interface GrammarQuizQuestion {
     | "comparison"
     | "participles-gerunds"
     | "infinitives";
+  source?: "prestudy" | "standard"; // 問題の出典
+  preStudyContentId?: string; // 関連する事前学習コンテンツID
+  toeicPart?: number; // TOEIC Part番号
 }
 
 export const grammarQuizQuestions: GrammarQuizQuestion[] = [

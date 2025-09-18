@@ -115,58 +115,229 @@ export const preStudyContents: PreStudyContent[] = [
   // 時制 (tenses)
   {
     id: "tenses-theory",
-    title: "時制の概念と使い分け",
+    title: "時制の完全マスター：基礎から応用まで",
     category: "grammar",
     subcategory: "tenses",
     level: 1,
     contentType: "theory",
-    duration: 420, // 7分
+    duration: 900, // 15分
     difficulty: "beginner",
-    content: `# 時制の概念と使い分け
+    content: `# 時制の完全マスター：基礎から応用まで
 
-## 時制とは？
-**時制**は「いつの話をしているか」を表現する文法です。
+## 1. 時制とは？
+**時制**は「いつの話をしているか」を表現する英語の重要な文法要素です。正確な時制の使い分けは、TOEICスコアアップの鍵となります。
 
-### 現在形
-- **基本用法**: 習慣・事実・状態
-- **例**: I go to school every day. (毎日学校に行きます)
-- **TOEIC頻出**: スケジュール・習慣の話
+## 2. 現在形（Present Simple）
 
-### 過去形
-- **基本用法**: 過去の事実・完了した行動
-- **例**: I went to Tokyo yesterday. (昨日東京に行きました)
-- **TOEIC頻出**: 会議・イベントの報告
+### 基本概念
+現在形は「今この瞬間」だけでなく、**習慣・真理・状態**を表現します。
 
-### 未来形
-- **will**: 意志・予測
-- **be going to**: 計画・予定
-- **例**: I will call you tomorrow. (明日電話します)
+### 用法1：習慣・反復行動
+- **構造**: 主語 + 動詞（三人称単数は+s/es）
+- **例**: I **go** to work by train every day. （毎日電車で通勤します）
+- **例**: She **studies** English on weekends. （彼女は週末に英語を勉強します）
 
-### 現在完了形
-- **基本用法**: 過去から現在への継続・経験・完了
-- **例**: I have lived here for 5 years. (5年間ここに住んでいます)
-- **TOEIC頻出**: 経験・継続の表現
+### 用法2：一般的事実・真理
+- **例**: The sun **rises** in the east. （太陽は東から昇る）
+- **例**: Water **boils** at 100 degrees Celsius. （水は100度で沸騰する）
 
-## 実践への活用
-- ✅ 文法クイズの時制問題で正答率アップ
-- ✅ 英作文で適切な時制選択
-- ✅ TOEICのPart5-6で時制問題に強くなる`,
+### 用法3：現在の状態
+- **例**: I **live** in Tokyo. （東京に住んでいます）
+- **例**: He **works** for a software company. （彼はソフトウェア会社で働いています）
+
+### TOEIC頻出パターン
+- **スケジュール表現**: The meeting **starts** at 2 PM. （会議は午後2時に始まります）
+- **時刻表・予定表**: The train **leaves** at 8:30. （電車は8時30分に出発します）
+
+## 3. 過去形（Past Simple）
+
+### 基本概念
+**完了した過去の行動・状態**を表現します。
+
+### 規則動詞の変化
+- **基本**: 動詞 + ed
+- **例**: work → worked, study → studied, play → played
+
+### 不規則動詞の重要パターン
+| 現在形 | 過去形 | 意味 |
+|--------|--------|------|
+| go | went | 行く |
+| come | came | 来る |
+| take | took | 取る |
+| make | made | 作る |
+| have | had | 持つ |
+| get | got | 得る |
+| see | saw | 見る |
+| know | knew | 知る |
+
+### TOEIC頻出表現
+- **会議・イベントの報告**: We **held** a conference last week. （先週会議を開催しました）
+- **過去の経験**: I **worked** in sales for five years. （5年間営業で働いていました）
+
+## 4. 未来形（Future）
+
+### will vs be going to の使い分け
+
+#### will の用法
+1. **その場での決定**: I'll **help** you with that. （それをお手伝いします）
+2. **予測・推測**: It **will** rain tomorrow. （明日雨が降るでしょう）
+3. **約束・意志**: I **will** call you later. （後で電話します）
+
+#### be going to の用法
+1. **計画・予定**: I'm **going to** visit my parents. （両親を訪ねる予定です）
+2. **根拠のある予測**: Look at those clouds! It's **going to** rain. （あの雲を見て！雨が降りそうです）
+
+### その他の未来表現
+- **現在進行形**: I'm **meeting** him tomorrow. （明日彼と会います）※確定した予定
+- **現在形**: The conference **begins** next Monday. （会議は来週月曜日に始まります）※スケジュール
+
+## 5. 現在完了形（Present Perfect）
+
+### 基本構造
+**have/has + 過去分詞**
+
+### 用法1：継続（for/since）
+- **for**: 期間を表す
+  - I **have lived** here **for** 10 years. （10年間ここに住んでいます）
+- **since**: 起点を表す
+  - I **have worked** here **since** 2020. （2020年からここで働いています）
+
+### 用法2：経験（ever/never）
+- **ever**: 今までに（疑問文）
+  - **Have** you **ever been** to Japan? （日本に行ったことがありますか？）
+- **never**: 一度も～ない
+  - I **have never seen** such a beautiful sunset. （こんなに美しい夕日は見たことがありません）
+
+### 用法3：完了・結果（just/already/yet）
+- **just**: ちょうど～したところ
+  - I **have just finished** the report. （レポートを終えたところです）
+- **already**: すでに（肯定文）
+  - She **has already left**. （彼女はすでに出発しました）
+- **yet**: まだ（否定文・疑問文）
+  - **Have** you finished **yet**? （もう終わりましたか？）
+
+## 6. 現在完了進行形（Present Perfect Continuous）
+
+### 基本構造
+**have/has + been + -ing**
+
+### 用法
+過去から現在まで**継続している行動**を強調
+- I **have been studying** English for 3 years. （3年間英語を勉強し続けています）
+- It **has been raining** since morning. （朝から雨が降り続いています）
+
+## 7. 過去完了形（Past Perfect）
+
+### 基本構造
+**had + 過去分詞**
+
+### 用法
+「過去のある時点より前に完了していた行動」を表現
+- When I arrived, the meeting **had already started**. （私が到着したとき、会議はすでに始まっていました）
+- She **had worked** there for 5 years before she quit. （彼女は辞める前に5年間そこで働いていました）
+
+## 8. ビジネス英語での時制活用
+
+### メール・文書での表現
+- **現在形**: We **provide** comprehensive solutions. （包括的なソリューションを提供しています）
+- **現在完了**: We **have completed** the project. （プロジェクトを完了しました）
+- **未来形**: We **will** send you the details shortly. （詳細を近日中にお送りします）
+
+### 会議・プレゼンテーションでの表現
+- **過去形**: Last quarter, sales **increased** by 15%. （前四半期、売上が15%増加しました）
+- **現在完了**: We **have achieved** our target. （目標を達成しました）
+- **未来形**: Next year, we **will expand** into new markets. （来年、新市場に進出します）
+
+## 9. 実践への活用
+
+### 文法クイズでの応用
+- ✅ 時制の一致問題で満点
+- ✅ 適切な時制選択で正答率向上
+- ✅ 複雑な時制問題への対応力強化
+
+### 英作文での応用
+- ✅ 時系列を明確に表現
+- ✅ 適切な時制で論理的な文章構成
+- ✅ ビジネス文書での正確な時制使用
+
+### TOEICでの応用
+- ✅ Part5-6の時制問題で高得点
+- ✅ Part7の文書理解で時系列把握
+- ✅ Listeningでの時制聞き取り向上`,
     keyPoints: [
-      "現在形は習慣・事実を表す",
-      "過去形は完了した行動",
-      "未来形はwillとbe going toの使い分け",
-      "現在完了形は過去と現在の関係",
+      "現在形：習慣・事実・状態を表現",
+      "過去形：完了した過去の行動",
+      "未来形：will（意志・予測）vs be going to（計画）",
+      "現在完了：継続・経験・完了の3用法",
+      "時制の一致でビジネス英語力向上",
+      "TOEIC頻出パターンの完全理解",
     ],
     examples: [
       {
-        english: "I have been studying English for 3 years.",
-        japanese: "3年間英語を勉強しています。",
-        explanation: "現在完了進行形：過去から現在まで継続している行動",
+        english: "I have been working on this project since last month.",
+        japanese: "先月からこのプロジェクトに取り組んでいます。",
+        explanation: "現在完了進行形：過去から現在まで継続している行動を強調",
       },
       {
-        english: "The meeting will start at 9 AM.",
-        japanese: "会議は午前9時に始まります。",
-        explanation: "未来形：確定した予定を表すwill",
+        english: "The conference will be held next Friday at 2 PM.",
+        japanese: "会議は来週金曜日の午後2時に開催されます。",
+        explanation: "未来受動態：確定した予定の丁寧な表現",
+      },
+      {
+        english: "When I arrived at the office, everyone had already left.",
+        japanese: "オフィスに着いたとき、みんなすでに帰っていました。",
+        explanation: "過去完了：過去のある時点より前に完了していた行動",
+      },
+      {
+        english: "Our sales have increased by 25% this quarter.",
+        japanese: "今四半期、売上が25%増加しました。",
+        explanation: "現在完了：過去から現在への結果を表現（ビジネス報告）",
+      },
+    ],
+    toeicExamples: [
+      {
+        question:
+          "The new employee _____ with our company for three months now.",
+        choices: ["works", "worked", "has been working", "will work"],
+        correctAnswer: 2,
+        explanation:
+          "「3か月間」という継続期間を表すfor three monthsがあるため、現在完了進行形has been workingが正解。過去から現在まで継続している状況を表現している。",
+        type: "grammar",
+        part: 5,
+      },
+      {
+        question:
+          "By the time the meeting starts, I _____ all the necessary documents.",
+        choices: ["prepare", "prepared", "will prepare", "will have prepared"],
+        correctAnswer: 3,
+        explanation:
+          "By the timeは「～する時までには」という意味で、未来のある時点までに完了している行動を表すため、未来完了形will have preparedが正解。",
+        type: "grammar",
+        part: 5,
+      },
+      {
+        question: "Last year, our company _____ a 15% increase in revenue.",
+        choices: [
+          "experiences",
+          "experienced",
+          "has experienced",
+          "will experience",
+        ],
+        correctAnswer: 1,
+        explanation:
+          "Last yearという過去の特定時点を示す語句があるため、過去形experiencedが正解。現在完了形は特定の過去時点を表す語句とは一緒に使えない。",
+        type: "grammar",
+        part: 5,
+      },
+      {
+        question:
+          "The project manager _____ the team every Monday to discuss progress.",
+        choices: ["meets", "met", "has met", "will meet"],
+        correctAnswer: 0,
+        explanation:
+          "every Mondayという習慣・反復を表す語句があるため、現在形meetsが正解。習慣的な行動は現在形で表現する。",
+        type: "grammar",
+        part: 5,
       },
     ],
     relatedProblems: ["tenses"],

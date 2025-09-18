@@ -9,23 +9,33 @@ export interface StarData {
 export interface PreStudyContent {
   id: string;
   title: string;
-  category: 'grammar' | 'vocabulary' | 'listening' | 'reading' | 'writing';
+  category: "grammar" | "vocabulary" | "listening" | "reading" | "writing";
   subcategory: string;
   level: number;
-  contentType: 'theory' | 'explanation' | 'background' | 'strategy';
+  contentType: "theory" | "explanation" | "background" | "strategy";
   duration: number; // 推定学習時間（秒）
   content: string; // メインコンテンツ（Markdown形式）
   keyPoints: string[]; // 重要ポイント
   examples: Example[];
+  toeicExamples?: TOEICExample[]; // TOEIC形式の例題
   relatedProblems?: string[]; // 関連する問題ID
   prerequisites?: string[]; // 前提知識となる他のコンテンツID
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  difficulty: "beginner" | "intermediate" | "advanced";
 }
 
 export interface Example {
   english: string;
   japanese: string;
   explanation?: string;
+}
+
+export interface TOEICExample {
+  question: string;
+  choices: string[];
+  correctAnswer: number; // 0-based index
+  explanation: string;
+  type: "grammar" | "vocabulary" | "reading";
+  part: number; // TOEIC Part番号
 }
 
 export interface PreStudySession {

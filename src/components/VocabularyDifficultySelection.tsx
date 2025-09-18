@@ -2,8 +2,8 @@ import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useScrollToTop } from "../hooks/useScrollToTop";
-import { VocabularyManager } from "../utils/vocabularyManager";
 import { KnownWordsManager } from "../utils/knownWordsManager";
+import { VocabularyManager } from "../utils/vocabularyManager";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { SelectionCard } from "./ui/selection-card";
@@ -18,31 +18,31 @@ interface WordStats {
 export default function VocabularyDifficultySelection() {
   const navigate = useNavigate();
   useScrollToTop();
-  
+
   const [wordStats, setWordStats] = useState<Record<string, WordStats>>({});
 
   // 各難易度の単語統計を計算
   useEffect(() => {
     const calculateWordStats = () => {
       const stats: Record<string, WordStats> = {};
-      
-      ['beginner', 'intermediate', 'advanced'].forEach(level => {
+
+      ["beginner", "intermediate", "advanced"].forEach((level) => {
         // 全カテゴリの単語を取得（TOEIC + 日常会話 + その他）
         const allWords = VocabularyManager.getFilteredVocabularyWords(
           level as "beginner" | "intermediate" | "advanced",
           "all"
         );
-        
+
         // 既知単語を除外
         const unknownWords = KnownWordsManager.filterUnknownWords(allWords);
-        
+
         stats[level] = {
           total: allWords.length,
           known: allWords.length - unknownWords.length,
           remaining: unknownWords.length,
         };
       });
-      
+
       setWordStats(stats);
       console.log("語彙統計計算完了:", stats);
     };
@@ -50,7 +50,7 @@ export default function VocabularyDifficultySelection() {
     calculateWordStats();
   }, []);
 
-const difficulties = [
+  const difficulties = [
     {
       level: "beginner" as const,
       title: "初級",
@@ -114,7 +114,7 @@ const difficulties = [
           {difficulties.map((difficulty) => {
             const stats = wordStats[difficulty.level];
             const statsLoaded = stats !== undefined;
-            
+
             return (
               <SelectionCard
                 key={difficulty.level}
@@ -126,15 +126,9 @@ const difficulties = [
                 color={difficulty.color}
                 keyPoints={[
                   `例: ${difficulty.examples.join(", ")}`,
-                  statsLoaded 
-                    ? `残り ${stats.remaining}語`
-                    : "計算中...",
-                  statsLoaded 
-                    ? `知ってる ${stats.known}語`
-                    : "計算中...",
-                  statsLoaded 
-                    ? `総数 ${stats.total}語`
-                    : "計算中...",
+                  statsLoaded ? `残り ${stats.remaining}語` : "計算中...",
+                  statsLoaded ? `知ってる ${stats.known}語` : "計算中...",
+                  statsLoaded ? `総数 ${stats.total}語` : "計算中...",
                 ]}
                 onClick={(id) => {
                   const difficulty = id as
