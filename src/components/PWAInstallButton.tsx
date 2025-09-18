@@ -102,6 +102,18 @@ export function PWAInstallButton({
   // 手動インストール指示を表示
   const handleManualInstall = () => {
     setShowInstructionsState(true);
+    console.log('📱 手動インストール手順を表示');
+    
+    // コンパクト版の場合はアラートで手順を表示
+    if (variant === 'compact') {
+      const instructions = deviceInfo.isIOS 
+        ? (deviceInfo.isSafari 
+          ? "📱 iPhone Safari でのインストール方法:\n\n1. 画面下部の 📤 共有ボタンをタップ\n2. 「ホーム画面に追加」を選択\n3. 「追加」をタップして完了\n\n✅ ホーム画面にアプリアイコンが追加されます！"
+          : "⚠️ iPhone では Safari でのアクセスが推奨されます\n\n現在のブラウザ: " + deviceInfo.browserName + "\n\n📱 Safari でアクセスして:\n1. 共有ボタン（📤）をタップ\n2. 「ホーム画面に追加」を選択\n3. 「追加」をタップ")
+        : "📱 アプリインストール方法:\n\n1. ブラウザメニューを開く\n2. 「ホーム画面に追加」を選択\n3. アプリ名を確認して「追加」\n\n✅ ホーム画面にアプリアイコンが追加されます！";
+      
+      alert(instructions);
+    }
   };
 
   // インストール済みの場合は表示しない
@@ -122,9 +134,25 @@ export function PWAInstallButton({
 
   // コンパクト版
   if (variant === 'compact') {
+    console.log('📱 PWAInstallButton compact variant rendered', { 
+      deferredPrompt: !!deferredPrompt, 
+      isInstalled, 
+      deviceInfo 
+    });
+    
     return (
       <Button
-        onClick={deferredPrompt ? handleAutoInstall : handleManualInstall}
+        onClick={() => {
+          console.log('📱 アプリ化ボタンクリック', { 
+            deferredPrompt: !!deferredPrompt, 
+            deviceInfo 
+          });
+          if (deferredPrompt) {
+            handleAutoInstall();
+          } else {
+            handleManualInstall();
+          }
+        }}
         variant="outline"
         size="sm"
         className="flex items-center gap-2"
