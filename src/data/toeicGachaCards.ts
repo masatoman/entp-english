@@ -1,4 +1,5 @@
 import { GachaPack, WordCard } from "../types/gacha";
+import { additionalToeicCards } from "./additionalToeicCards";
 
 export const toeicWordCards: WordCard[] = [
   // Common Cards (基本ビジネス語彙)
@@ -1269,13 +1270,788 @@ export const toeicWordCards: WordCard[] = [
       businessContext: "チームワーク・パートナーシップ",
     },
   },
+
+  // ビジネス語彙拡張パック（ID 56-80）
+  {
+    id: 56,
+    word: "executive",
+    meaning: "役員、経営幹部",
+    partOfSpeech: "名詞",
+    phonetic: "/ɪɡˈzekjətɪv/",
+    rarity: "uncommon",
+    examples: [
+      {
+        sentence: "The executive will make the final decision.",
+        translation: "役員が最終決定を下します。",
+        situation: "TOEIC Part3 (経営会議)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "chief executive",
+        meaning: "最高経営責任者",
+        example: "The chief executive announced the new strategy.",
+        translation: "最高経営責任者が新戦略を発表しました。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "executive decision",
+        explanation: "経営判断",
+        example: "This requires an executive decision.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part3", "Part4", "Part7"],
+      frequency: "high",
+      scoreBand: "600-800",
+      synonyms: ["manager", "director"],
+      businessContext: "経営・管理職",
+    },
+  },
+  {
+    id: 57,
+    word: "customer",
+    meaning: "顧客、お客様",
+    partOfSpeech: "名詞",
+    phonetic: "/ˈkʌstəmər/",
+    rarity: "common",
+    examples: [
+      {
+        sentence: "Customer satisfaction is our top priority.",
+        translation: "顧客満足が私たちの最優先事項です。",
+        situation: "TOEIC Part4 (顧客サービス)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "customer service",
+        meaning: "顧客サービス",
+        example: "Our customer service is available 24/7.",
+        translation: "私たちの顧客サービスは24時間対応です。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "regular customer",
+        explanation: "常連客",
+        example: "He is a regular customer at this store.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part1", "Part3", "Part4", "Part7"],
+      frequency: "very_high",
+      scoreBand: "400-600",
+      synonyms: ["client", "consumer"],
+      businessContext: "営業・サービス",
+    },
+  },
+  {
+    id: 58,
+    word: "employee",
+    meaning: "従業員、社員",
+    partOfSpeech: "名詞",
+    phonetic: "/ɪmˈplɔɪi/",
+    rarity: "common",
+    examples: [
+      {
+        sentence: "Every employee must attend the training session.",
+        translation: "全従業員が研修セッションに参加しなければなりません。",
+        situation: "TOEIC Part3 (人事・研修)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "full-time employee",
+        meaning: "正社員",
+        example: "She became a full-time employee last month.",
+        translation: "彼女は先月正社員になりました。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "hire employees",
+        explanation: "従業員を雇う",
+        example: "The company plans to hire more employees.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part3", "Part4", "Part7"],
+      frequency: "very_high",
+      scoreBand: "400-600",
+      synonyms: ["worker", "staff member"],
+      businessContext: "人事・雇用",
+    },
+  },
+  {
+    id: 59,
+    word: "department",
+    meaning: "部門、部署",
+    partOfSpeech: "名詞",
+    phonetic: "/dɪˈpɑrtmənt/",
+    rarity: "common",
+    examples: [
+      {
+        sentence: "The marketing department launched a new campaign.",
+        translation: "マーケティング部門が新しいキャンペーンを開始しました。",
+        situation: "TOEIC Part3 (部門間連携)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "human resources department",
+        meaning: "人事部",
+        example: "Contact the human resources department for benefits information.",
+        translation: "福利厚生については人事部にお問い合わせください。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "work in the department",
+        explanation: "その部署で働く",
+        example: "I work in the finance department.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part3", "Part4", "Part7"],
+      frequency: "very_high",
+      scoreBand: "400-600",
+      synonyms: ["division", "section"],
+      businessContext: "組織・部門",
+    },
+  },
+  {
+    id: 60,
+    word: "equipment",
+    meaning: "設備、機器",
+    partOfSpeech: "名詞",
+    phonetic: "/ɪˈkwɪpmənt/",
+    rarity: "common",
+    examples: [
+      {
+        sentence: "The new equipment will improve our productivity.",
+        translation: "新しい設備により生産性が向上します。",
+        situation: "TOEIC Part4 (設備投資)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "office equipment",
+        meaning: "オフィス機器",
+        example: "We need to upgrade our office equipment.",
+        translation: "オフィス機器をアップグレードする必要があります。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "install equipment",
+        explanation: "設備を設置する",
+        example: "They will install new equipment next week.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part1", "Part4", "Part7"],
+      frequency: "high",
+      scoreBand: "500-700",
+      synonyms: ["machinery", "apparatus"],
+      businessContext: "設備・技術",
+    },
+  },
+  {
+    id: 61,
+    word: "facility",
+    meaning: "施設、設備",
+    partOfSpeech: "名詞",
+    phonetic: "/fəˈsɪləti/",
+    rarity: "uncommon",
+    examples: [
+      {
+        sentence: "The new facility will open in March.",
+        translation: "新しい施設は3月にオープンします。",
+        situation: "TOEIC Part7 (施設案内)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "training facility",
+        meaning: "研修施設",
+        example: "The company built a new training facility.",
+        translation: "会社は新しい研修施設を建設しました。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "state-of-the-art facility",
+        explanation: "最新式の施設",
+        example: "This is a state-of-the-art facility.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part1", "Part4", "Part7"],
+      frequency: "medium",
+      scoreBand: "600-800",
+      synonyms: ["building", "establishment"],
+      businessContext: "施設・インフラ",
+    },
+  },
+
+  // 高級ビジネス語彙（ID 62-80）
+  {
+    id: 62,
+    word: "inventory",
+    meaning: "在庫、棚卸し",
+    partOfSpeech: "名詞",
+    phonetic: "/ˈɪnvəntɔri/",
+    rarity: "uncommon",
+    examples: [
+      {
+        sentence: "We need to check our inventory levels.",
+        translation: "在庫レベルを確認する必要があります。",
+        situation: "TOEIC Part4 (在庫管理)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "inventory management",
+        meaning: "在庫管理",
+        example: "Effective inventory management reduces costs.",
+        translation: "効果的な在庫管理はコストを削減します。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "take inventory",
+        explanation: "棚卸しをする",
+        example: "We take inventory every month.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part3", "Part4", "Part7"],
+      frequency: "medium",
+      scoreBand: "600-800",
+      synonyms: ["stock", "supply"],
+      businessContext: "物流・在庫管理",
+    },
+  },
+  {
+    id: 63,
+    word: "manufacture",
+    meaning: "製造する、生産する",
+    partOfSpeech: "動詞",
+    phonetic: "/ˌmænjəˈfæktʃər/",
+    rarity: "uncommon",
+    examples: [
+      {
+        sentence: "This company manufactures electronic devices.",
+        translation: "この会社は電子機器を製造しています。",
+        situation: "TOEIC Part7 (製造業)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "manufacture products",
+        meaning: "製品を製造する",
+        example: "We manufacture products for global markets.",
+        translation: "私たちは世界市場向けの製品を製造しています。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "manufacturing process",
+        explanation: "製造工程",
+        example: "The manufacturing process is highly automated.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part4", "Part7"],
+      frequency: "medium",
+      scoreBand: "600-800",
+      synonyms: ["produce", "create"],
+      businessContext: "製造・生産",
+    },
+  },
+  {
+    id: 64,
+    word: "supplier",
+    meaning: "供給業者、サプライヤー",
+    partOfSpeech: "名詞",
+    phonetic: "/səˈplaɪər/",
+    rarity: "uncommon",
+    examples: [
+      {
+        sentence: "We need to find a reliable supplier.",
+        translation: "信頼できる供給業者を見つける必要があります。",
+        situation: "TOEIC Part3 (調達)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "key supplier",
+        meaning: "主要供給業者",
+        example: "They are our key supplier for raw materials.",
+        translation: "彼らは私たちの原材料の主要供給業者です。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "work with suppliers",
+        explanation: "供給業者と協力する",
+        example: "We work closely with our suppliers.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part3", "Part4", "Part7"],
+      frequency: "medium",
+      scoreBand: "600-800",
+      synonyms: ["vendor", "provider"],
+      businessContext: "調達・サプライチェーン",
+    },
+  },
+  {
+    id: 65,
+    word: "competitor",
+    meaning: "競合他社、競争相手",
+    partOfSpeech: "名詞",
+    phonetic: "/kəmˈpetətər/",
+    rarity: "uncommon",
+    examples: [
+      {
+        sentence: "Our main competitor launched a similar product.",
+        translation: "主要競合他社が類似製品を発売しました。",
+        situation: "TOEIC Part7 (市場分析)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "direct competitor",
+        meaning: "直接的な競合",
+        example: "They are our direct competitor in this market.",
+        translation: "彼らはこの市場での直接的な競合です。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "compete with competitors",
+        explanation: "競合他社と競争する",
+        example: "We must compete effectively with our competitors.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part3", "Part4", "Part7"],
+      frequency: "medium",
+      scoreBand: "600-800",
+      synonyms: ["rival", "opponent"],
+      businessContext: "競争・市場戦略",
+    },
+  },
+
+  // レアカード（ID 66-80）
+  {
+    id: 66,
+    word: "acquisition",
+    meaning: "買収、取得",
+    partOfSpeech: "名詞",
+    phonetic: "/ˌækwɪˈzɪʃən/",
+    rarity: "rare",
+    examples: [
+      {
+        sentence: "The acquisition of the smaller company was successful.",
+        translation: "小さな会社の買収は成功しました。",
+        situation: "TOEIC Part7 (M&A)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "strategic acquisition",
+        meaning: "戦略的買収",
+        example: "This was a strategic acquisition for market expansion.",
+        translation: "これは市場拡大のための戦略的買収でした。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "acquisition target",
+        explanation: "買収対象",
+        example: "They identified several acquisition targets.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part4", "Part7"],
+      frequency: "low",
+      scoreBand: "700-900",
+      synonyms: ["takeover", "purchase"],
+      businessContext: "M&A・企業戦略",
+    },
+  },
+  {
+    id: 67,
+    word: "innovation",
+    meaning: "革新、イノベーション",
+    partOfSpeech: "名詞",
+    phonetic: "/ˌɪnəˈveɪʃən/",
+    rarity: "rare",
+    examples: [
+      {
+        sentence: "Innovation is key to staying competitive.",
+        translation: "イノベーションは競争力維持の鍵です。",
+        situation: "TOEIC Part7 (技術革新)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "technological innovation",
+        meaning: "技術革新",
+        example: "Technological innovation drives our growth.",
+        translation: "技術革新が私たちの成長を推進しています。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "drive innovation",
+        explanation: "イノベーションを推進する",
+        example: "We must drive innovation in our industry.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part4", "Part7"],
+      frequency: "medium",
+      scoreBand: "700-900",
+      synonyms: ["advancement", "breakthrough"],
+      businessContext: "技術・研究開発",
+    },
+  },
+  {
+    id: 68,
+    word: "entrepreneur",
+    meaning: "起業家、企業家",
+    partOfSpeech: "名詞",
+    phonetic: "/ˌɑntrəprəˈnɜr/",
+    rarity: "rare",
+    examples: [
+      {
+        sentence: "The young entrepreneur started three successful companies.",
+        translation: "その若い起業家は3つの成功した会社を立ち上げました。",
+        situation: "TOEIC Part7 (起業・ベンチャー)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "successful entrepreneur",
+        meaning: "成功した起業家",
+        example: "She is a successful entrepreneur in the tech industry.",
+        translation: "彼女はテック業界の成功した起業家です。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "entrepreneurial spirit",
+        explanation: "起業家精神",
+        example: "The company values entrepreneurial spirit.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part4", "Part7"],
+      frequency: "low",
+      scoreBand: "700-900",
+      synonyms: ["business owner", "founder"],
+      businessContext: "起業・ベンチャー",
+    },
+  },
+
+  // エピックカード（ID 69-75）
+  {
+    id: 69,
+    word: "merger",
+    meaning: "合併、統合",
+    partOfSpeech: "名詞",
+    phonetic: "/ˈmɜrdʒər/",
+    rarity: "epic",
+    examples: [
+      {
+        sentence: "The merger between the two companies created a global leader.",
+        translation: "2社の合併により世界的リーダーが誕生しました。",
+        situation: "TOEIC Part7 (企業合併)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "hostile merger",
+        meaning: "敵対的合併",
+        example: "The board rejected the hostile merger proposal.",
+        translation: "取締役会は敵対的合併提案を拒否しました。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "merger and acquisition",
+        explanation: "M&A（合併・買収）",
+        example: "Our M&A team handles merger and acquisition deals.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part7"],
+      frequency: "low",
+      scoreBand: "800+",
+      synonyms: ["consolidation", "amalgamation"],
+      businessContext: "企業戦略・M&A",
+    },
+  },
+  {
+    id: 70,
+    word: "stakeholder",
+    meaning: "利害関係者、ステークホルダー",
+    partOfSpeech: "名詞",
+    phonetic: "/ˈsteɪkhoʊldər/",
+    rarity: "epic",
+    examples: [
+      {
+        sentence: "All stakeholders must be informed of the decision.",
+        translation: "すべての利害関係者に決定を知らせる必要があります。",
+        situation: "TOEIC Part7 (企業統治)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "key stakeholder",
+        meaning: "主要利害関係者",
+        example: "Investors are key stakeholders in this project.",
+        translation: "投資家はこのプロジェクトの主要利害関係者です。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "stakeholder meeting",
+        explanation: "利害関係者会議",
+        example: "We scheduled a stakeholder meeting for next week.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part4", "Part7"],
+      frequency: "low",
+      scoreBand: "800+",
+      synonyms: ["interested party", "participant"],
+      businessContext: "企業統治・経営",
+    },
+  },
+
+  // レジェンダリーカード（ID 71-75）
+  {
+    id: 71,
+    word: "paradigm",
+    meaning: "パラダイム、概念的枠組み",
+    partOfSpeech: "名詞",
+    phonetic: "/ˈpærədaɪm/",
+    rarity: "legendary",
+    examples: [
+      {
+        sentence: "The new technology represents a paradigm shift in our industry.",
+        translation: "新技術は私たちの業界におけるパラダイムシフトを表しています。",
+        situation: "TOEIC Part7 (技術革新)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "paradigm shift",
+        meaning: "パラダイムシフト",
+        example: "Digital transformation created a paradigm shift.",
+        translation: "デジタル変革がパラダイムシフトを生み出しました。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "new paradigm",
+        explanation: "新しいパラダイム",
+        example: "We need to embrace this new paradigm.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part7"],
+      frequency: "very_low",
+      scoreBand: "900+",
+      synonyms: ["framework", "model"],
+      businessContext: "戦略的思考・概念",
+    },
+  },
+  {
+    id: 72,
+    word: "synergy",
+    meaning: "相乗効果、シナジー",
+    partOfSpeech: "名詞",
+    phonetic: "/ˈsɪnərdʒi/",
+    rarity: "legendary",
+    examples: [
+      {
+        sentence: "The merger will create significant synergy between the companies.",
+        translation: "合併により両社間に大きな相乗効果が生まれるでしょう。",
+        situation: "TOEIC Part7 (企業戦略)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "cost synergy",
+        meaning: "コストシナジー",
+        example: "The deal will generate substantial cost synergy.",
+        translation: "この取引は大きなコストシナジーを生み出すでしょう。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "achieve synergy",
+        explanation: "相乗効果を達成する",
+        example: "We aim to achieve synergy through collaboration.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part7"],
+      frequency: "very_low",
+      scoreBand: "900+",
+      synonyms: ["cooperation", "collaboration"],
+      businessContext: "戦略・M&A",
+    },
+  },
+
+  // 追加の中級カード（ID 73-100）
+  {
+    id: 73,
+    word: "productivity",
+    meaning: "生産性、効率性",
+    partOfSpeech: "名詞",
+    phonetic: "/ˌproʊdʌkˈtɪvəti/",
+    rarity: "common",
+    examples: [
+      {
+        sentence: "Remote work has improved employee productivity.",
+        translation: "リモートワークにより従業員の生産性が向上しました。",
+        situation: "TOEIC Part4 (働き方改革)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "increase productivity",
+        meaning: "生産性を向上させる",
+        example: "New software will increase productivity.",
+        translation: "新しいソフトウェアが生産性を向上させます。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "productivity gains",
+        explanation: "生産性向上",
+        example: "We achieved significant productivity gains.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part3", "Part4", "Part7"],
+      frequency: "high",
+      scoreBand: "500-700",
+      synonyms: ["efficiency", "output"],
+      businessContext: "業務効率・生産性",
+    },
+  },
+  {
+    id: 74,
+    word: "consultant",
+    meaning: "コンサルタント、顧問",
+    partOfSpeech: "名詞",
+    phonetic: "/kənˈsʌltənt/",
+    rarity: "uncommon",
+    examples: [
+      {
+        sentence: "We hired a consultant to improve our processes.",
+        translation: "プロセス改善のためにコンサルタントを雇いました。",
+        situation: "TOEIC Part3 (コンサルティング)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "management consultant",
+        meaning: "経営コンサルタント",
+        example: "The management consultant provided valuable insights.",
+        translation: "経営コンサルタントが貴重な洞察を提供しました。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "consult with",
+        explanation: "～に相談する",
+        example: "We should consult with the legal team.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part3", "Part4", "Part7"],
+      frequency: "medium",
+      scoreBand: "600-800",
+      synonyms: ["advisor", "expert"],
+      businessContext: "コンサルティング・専門サービス",
+    },
+  },
+  {
+    id: 75,
+    word: "regulation",
+    meaning: "規制、規則",
+    partOfSpeech: "名詞",
+    phonetic: "/ˌreɡjəˈleɪʃən/",
+    rarity: "uncommon",
+    examples: [
+      {
+        sentence: "New regulations will affect our business operations.",
+        translation: "新しい規制が事業運営に影響を与えるでしょう。",
+        situation: "TOEIC Part7 (法規制)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "comply with regulations",
+        meaning: "規制に準拠する",
+        example: "All companies must comply with safety regulations.",
+        translation: "すべての企業は安全規制に準拠しなければなりません。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "government regulation",
+        explanation: "政府規制",
+        example: "Government regulation ensures fair competition.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part4", "Part7"],
+      frequency: "medium",
+      scoreBand: "600-800",
+      synonyms: ["rule", "law"],
+      businessContext: "法務・コンプライアンス",
+    },
+  },
+
+  // 追加カードを統合
+  ...additionalToeicCards,
 ];
 
 export const gachaPacks: GachaPack[] = [
   {
     id: "toeic_beginner",
     name: "TOEIC基礎パック",
-    description: "Part1-2でよく出る基本ビジネス語彙8枚",
+    description: "Part1-2でよく出る基本ビジネス語彙8枚（100種類から抽選）",
     theme: "part1_2",
     targetScore: "400-500",
     cards: [], // ランダム生成される
@@ -1285,7 +2061,7 @@ export const gachaPacks: GachaPack[] = [
   {
     id: "toeic_intermediate",
     name: "TOEIC中級パック",
-    description: "Part3-4の会話・説明文で頻出する語彙8枚",
+    description: "Part3-4の会話・説明文で頻出する語彙8枚（100種類から抽選）",
     theme: "part3_4",
     targetScore: "500-600",
     cards: [],
@@ -1295,7 +2071,7 @@ export const gachaPacks: GachaPack[] = [
   {
     id: "toeic_advanced",
     name: "TOEIC上級パック",
-    description: "Part5-6の文法・語彙問題で出る難語彙8枚",
+    description: "Part5-6の文法・語彙問題で出る難語彙8枚（レア以上確定）",
     theme: "part5_6",
     targetScore: "600-700",
     cards: [],
@@ -1305,7 +2081,7 @@ export const gachaPacks: GachaPack[] = [
   {
     id: "toeic_reading",
     name: "TOEIC読解パック",
-    description: "Part7の長文読解で重要な語彙8枚",
+    description: "Part7の長文読解で重要な語彙8枚（エピック以上確定）",
     theme: "part7",
     targetScore: "700-800",
     cards: [],
@@ -1315,7 +2091,7 @@ export const gachaPacks: GachaPack[] = [
   {
     id: "toeic_mixed",
     name: "TOEIC総合パック",
-    description: "全パートから厳選した語彙8枚",
+    description: "全パートから厳選した語彙8枚（レジェンダリー確定1枚）",
     theme: "mixed",
     targetScore: "800+",
     cards: [],
