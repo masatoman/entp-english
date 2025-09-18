@@ -14,6 +14,8 @@ import EssayWriting from "../components/EssayWriting";
 import GachaResultScreen from "../components/GachaResultScreen";
 import GachaSystem from "../components/GachaSystem";
 import GrowthDashboard from "../components/GrowthDashboard";
+import IntegratedLearning from "../components/IntegratedLearning";
+import { MigrationProvider } from "../components/MigrationProvider";
 import PersonalInsights from "../components/PersonalInsights";
 import Question from "../components/Question";
 import Results from "../components/Results";
@@ -24,8 +26,6 @@ import TimeAttackMode from "../components/TimeAttackMode";
 import VocabularyCard from "../components/VocabularyCard";
 import VocabularyCategorySelection from "../components/VocabularyCategorySelection";
 import VocabularyDifficultySelection from "../components/VocabularyDifficultySelection";
-import IntegratedLearning from "../components/IntegratedLearning";
-import { MigrationProvider } from "../components/MigrationProvider";
 
 export function AppRouter() {
   return (
@@ -34,83 +34,86 @@ export function AppRouter() {
       <MigrationProvider>
         <div className="min-h-screen bg-background">
           <Routes>
-          {/* ホーム */}
-          <Route path="/" element={<NewHome />} />
+            {/* ホーム */}
+            <Route path="/" element={<NewHome />} />
 
-          {/* 学習機能 */}
-          <Route
-            path="/learning/vocabulary/difficulty"
-            element={<VocabularyDifficultySelection />}
-          />
-          <Route
-            path="/learning/vocabulary/category"
-            element={<VocabularyCategorySelection />}
-          />
-          <Route
-            path="/learning/vocabulary/study/:difficulty/:category"
-            element={<VocabularyCard />}
-          />
-          
-          {/* 統合学習システム */}
-          <Route
-            path="/learning/integrated/:level/:category/:mode"
-            element={<IntegratedLearning />}
-          />
+            {/* 学習機能 */}
+            <Route
+              path="/learning/vocabulary/difficulty"
+              element={<VocabularyDifficultySelection />}
+            />
+            <Route
+              path="/learning/vocabulary/category"
+              element={<VocabularyCategorySelection />}
+            />
+            <Route
+              path="/learning/vocabulary/study/:difficulty/:category"
+              element={<VocabularyCard />}
+            />
 
-          {/* 文法クイズ */}
-          <Route
-            path="/learning/grammar/category"
-            element={<CategorySelection />}
-          />
-          <Route
-            path="/learning/grammar/difficulty/:category"
-            element={<DifficultySelection />}
-          />
-          <Route
-            path="/learning/grammar/quiz/:category/:difficulty"
-            element={<EnhancedGrammarQuiz />}
-          />
-          <Route
-            path="/learning/grammar/question/:category/:difficulty"
-            element={<Question />}
-          />
-          <Route
-            path="/learning/grammar/results/:category/:difficulty"
-            element={<Results />}
-          />
+            {/* 統合学習システム */}
+            <Route
+              path="/learning/integrated/:level/:category/:mode"
+              element={<IntegratedLearning />}
+            />
 
-          {/* 事前学習 */}
-          <Route path="/learning/pre-study/menu" element={<PreStudyMenu />} />
-          <Route
-            path="/learning/pre-study/content/:contentId"
-            element={<PreStudyContentViewer />}
-          />
+            {/* 文法クイズ */}
+            <Route
+              path="/learning/grammar/category"
+              element={<CategorySelection />}
+            />
+            <Route
+              path="/learning/grammar/difficulty/:category"
+              element={<DifficultySelection />}
+            />
+            <Route
+              path="/learning/grammar/quiz/:category/:difficulty"
+              element={<EnhancedGrammarQuiz />}
+            />
+            <Route
+              path="/learning/grammar/question/:category/:difficulty"
+              element={<Question />}
+            />
+            <Route
+              path="/learning/grammar/results/:category/:difficulty"
+              element={<Results />}
+            />
 
-          {/* その他の学習機能 */}
-          <Route path="/learning/combined-test" element={<CombinedTest />} />
-          <Route path="/learning/time-attack" element={<TimeAttackMode />} />
-          <Route path="/learning/essay-writing" element={<EssayWriting />} />
+            {/* 事前学習 */}
+            <Route path="/learning/pre-study/menu" element={<PreStudyMenu />} />
+            <Route
+              path="/learning/pre-study/content/:contentId"
+              element={<PreStudyContentViewer />}
+            />
 
-          {/* ゲーム機能 */}
-          <Route path="/games/tower-defense" element={<SimpleTowerDefense />} />
-          <Route path="/games/gacha" element={<GachaSystem />} />
-          <Route path="/games/gacha/result" element={<GachaResultScreen />} />
-          <Route
-            path="/games/gacha/card/:cardId"
-            element={<CardDetailContent />}
-          />
+            {/* その他の学習機能 */}
+            <Route path="/learning/combined-test" element={<CombinedTest />} />
+            <Route path="/learning/time-attack" element={<TimeAttackMode />} />
+            <Route path="/learning/essay-writing" element={<EssayWriting />} />
 
-          {/* 進捗・統計 */}
-          <Route path="/progress/achievements" element={<Achievements />} />
-          <Route path="/progress/dashboard" element={<GrowthDashboard />} />
-          <Route path="/progress/insights" element={<PersonalInsights />} />
+            {/* ゲーム機能 */}
+            <Route
+              path="/games/tower-defense"
+              element={<SimpleTowerDefense />}
+            />
+            <Route path="/games/gacha" element={<GachaSystem />} />
+            <Route path="/games/gacha/result" element={<GachaResultScreen />} />
+            <Route
+              path="/games/gacha/card/:cardId"
+              element={<CardDetailContent />}
+            />
 
-          {/* 設定 */}
-          <Route path="/settings/app" element={<AppSettings />} />
+            {/* 進捗・統計 */}
+            <Route path="/progress/achievements" element={<Achievements />} />
+            <Route path="/progress/dashboard" element={<GrowthDashboard />} />
+            <Route path="/progress/insights" element={<PersonalInsights />} />
 
-          {/* フォールバック */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+            {/* 設定 */}
+            <Route path="/settings/app" element={<AppSettings />} />
+
+            {/* フォールバック */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
         </div>
       </MigrationProvider>
     </BrowserRouter>

@@ -153,7 +153,10 @@ export class LearningItemManager {
     // 2. 使用法穴埋め問題
     if (card.examples.length > 0) {
       const example = card.examples[0];
-      const blankSentence = example.sentence.replace(new RegExp(card.word, 'gi'), "____");
+      const blankSentence = example.sentence.replace(
+        new RegExp(card.word, "gi"),
+        "____"
+      );
 
       questions.push({
         id: `${baseId}-usage`,
@@ -220,7 +223,11 @@ export class LearningItemManager {
           "opposite meaning",
         ],
         correctAnswer: card.toeicSpecific.synonyms[0],
-        explanation: `「${card.toeicSpecific.synonyms[0]}」は「${card.word}」の類義語です。\n\nTOEIC ${card.toeicSpecific.parts.join(", ")}でよく出題されます。`,
+        explanation: `「${card.toeicSpecific.synonyms[0]}」は「${
+          card.word
+        }」の類義語です。\n\nTOEIC ${card.toeicSpecific.parts.join(
+          ", "
+        )}でよく出題されます。`,
         learningItemId: `gacha-${card.id}`,
         focusAspect: "meaning",
         estimatedTime: 15,
@@ -236,11 +243,11 @@ export class LearningItemManager {
    */
   private static generateMeaningOptions(card: WordCard): string[] {
     const correctMeaning = card.meaning;
-    
+
     // より適切なダミー選択肢を生成
     const dummyOptions = [
       "会議や打ち合わせ",
-      "書類や資料", 
+      "書類や資料",
       "計画や戦略",
       "システムや方法",
       "結果や成果",
@@ -251,13 +258,14 @@ export class LearningItemManager {
 
     // 正解以外の選択肢をランダムに選択
     const shuffledDummies = dummyOptions
-      .filter(option => option !== correctMeaning)
+      .filter((option) => option !== correctMeaning)
       .sort(() => Math.random() - 0.5)
       .slice(0, 3);
 
     // 正解と混ぜてシャッフル
-    const allOptions = [correctMeaning, ...shuffledDummies]
-      .sort(() => Math.random() - 0.5);
+    const allOptions = [correctMeaning, ...shuffledDummies].sort(
+      () => Math.random() - 0.5
+    );
 
     return allOptions;
   }

@@ -1,5 +1,4 @@
 import { vocabularyWords } from "../data/vocabulary";
-import { toeicWordCards } from "../data/toeicGachaCards";
 import { LearningItem } from "../types/learningItem";
 import { GachaSystem } from "./gachaSystem";
 import { LearningItemManager } from "./learningItemManager";
@@ -34,7 +33,7 @@ export class DataMigrationService {
     errors: string[];
   }> {
     console.log("🔄 統合学習項目システムへのデータ移行を開始...");
-    
+
     const result = {
       success: false,
       itemsCreated: 0,
@@ -48,10 +47,13 @@ export class DataMigrationService {
       console.log("📚 標準語彙データを変換中...");
       for (const vocabWord of vocabularyWords) {
         try {
-          const learningItem = LearningItemManager.convertVocabularyWordToLearningItem(vocabWord);
+          const learningItem =
+            LearningItemManager.convertVocabularyWordToLearningItem(vocabWord);
           learningItems.push(learningItem);
         } catch (error) {
-          result.errors.push(`標準語彙 ${vocabWord.word} の変換エラー: ${error}`);
+          result.errors.push(
+            `標準語彙 ${vocabWord.word} の変換エラー: ${error}`
+          );
         }
       }
 
@@ -60,16 +62,21 @@ export class DataMigrationService {
       const userGachaData = GachaSystem.getUserGachaData();
       for (const gachaCard of userGachaData.ownedCards) {
         try {
-          const learningItem = LearningItemManager.convertGachaCardToLearningItem(gachaCard);
+          const learningItem =
+            LearningItemManager.convertGachaCardToLearningItem(gachaCard);
           learningItems.push(learningItem);
         } catch (error) {
-          result.errors.push(`ガチャカード ${gachaCard.word} の変換エラー: ${error}`);
+          result.errors.push(
+            `ガチャカード ${gachaCard.word} の変換エラー: ${error}`
+          );
         }
       }
 
       // 3. 重複チェック
       const uniqueItems = this.removeDuplicateItems(learningItems);
-      console.log(`🔍 重複チェック完了: ${learningItems.length} → ${uniqueItems.length} 項目`);
+      console.log(
+        `🔍 重複チェック完了: ${learningItems.length} → ${uniqueItems.length} 項目`
+      );
 
       // 4. 関連性を自動生成
       console.log("🔗 項目間の関連性を生成中...");
@@ -86,7 +93,6 @@ export class DataMigrationService {
       result.itemsCreated = itemsWithRelations.length;
 
       console.log(`✅ データ移行完了: ${result.itemsCreated} 項目を作成`);
-
     } catch (error) {
       result.errors.push(`移行プロセスエラー: ${error}`);
       console.error("❌ データ移行エラー:", error);
@@ -100,10 +106,10 @@ export class DataMigrationService {
    */
   private static removeDuplicateItems(items: LearningItem[]): LearningItem[] {
     const uniqueItems = new Map<string, LearningItem>();
-    
+
     for (const item of items) {
       const key = `${item.content}-${item.type}-${item.category}`;
-      
+
       if (!uniqueItems.has(key)) {
         uniqueItems.set(key, item);
       } else {
@@ -121,7 +127,10 @@ export class DataMigrationService {
   /**
    * 項目の詳細度を比較（高い方が良い）
    */
-  private static compareItemDetail(item1: LearningItem, item2: LearningItem): number {
+  private static compareItemDetail(
+    item1: LearningItem,
+    item2: LearningItem
+  ): number {
     let score1 = 0;
     let score2 = 0;
 
@@ -149,23 +158,24 @@ export class DataMigrationService {
    */
   private static generateRelations(items: LearningItem[]): LearningItem[] {
     console.log("🔗 関連性生成中...");
-    
-    const itemsWithRelations = items.map(item => ({ ...item }));
+
+    const itemsWithRelations = items.map((item) => ({ ...item }));
 
     for (let i = 0; i < itemsWithRelations.length; i++) {
       const currentItem = itemsWithRelations[i];
-      
+
       for (let j = i + 1; j < itemsWithRelations.length; j++) {
         const targetItem = itemsWithRelations[j];
-        
+
         // 関連性を計算
         const relations = this.calculateRelations(currentItem, targetItem);
-        
+
         // 関連性が十分強い場合に追加
-        relations.forEach(relation => {
-          if (relation.strength >= 30) { // 閾値: 30%以上
+        relations.forEach((relation) => {
+          if (relation.strength >= 30) {
+            // 閾値: 30%以上
             currentItem.relations.push(relation);
-            
+
             // 逆方向の関連も追加
             targetItem.relations.push({
               targetItemId: currentItem.id,
@@ -208,8 +218,11 @@ export class DataMigrationService {
     }
 
     // 品詞が同じ場合
-    if (item1.partOfSpeech && item2.partOfSpeech && 
-        item1.partOfSpeech === item2.partOfSpeech) {
+    if (
+      item1.partOfSpeech &&
+      item2.partOfSpeech &&
+      item1.partOfSpeech === item2.partOfSpeech
+    ) {
       relations.push({
         targetItemId: item2.id,
         relationType: "related" as const,
@@ -236,9 +249,13 @@ export class DataMigrationService {
    */
   private static areWordsSimilar(word1: string, word2: string): boolean {
     // 同じルートを持つ単語を検出（簡易版）
-    const root1 = word1.toLowerCase().replace(/ing$|ed$|er$|est$|ly$|tion$|ness$/g, '');
-    const root2 = word2.toLowerCase().replace(/ing$|ed$|er$|est$|ly$|tion$|ness$/g, '');
-    
+    const root1 = word1
+      .toLowerCase()
+      .replace(/ing$|ed$|er$|est$|ly$|tion$|ness$/g, "");
+    const root2 = word2
+      .toLowerCase()
+      .replace(/ing$|ed$|er$|est$|ly$|tion$|ness$/g, "");
+
     return root1 === root2 && root1.length > 3;
   }
 
@@ -253,7 +270,7 @@ export class DataMigrationService {
     avgQuestionsPerItem: number;
   } {
     const items = LearningItemManager.getAllLearningItems();
-    
+
     const stats = {
       totalItems: items.length,
       bySource: {} as Record<string, number>,
@@ -264,21 +281,23 @@ export class DataMigrationService {
 
     let totalQuestions = 0;
 
-    items.forEach(item => {
+    items.forEach((item) => {
       // ソース別統計
       stats.bySource[item.source] = (stats.bySource[item.source] || 0) + 1;
-      
+
       // カテゴリ別統計
-      stats.byCategory[item.category] = (stats.byCategory[item.category] || 0) + 1;
-      
+      stats.byCategory[item.category] =
+        (stats.byCategory[item.category] || 0) + 1;
+
       // レベル別統計
       stats.byLevel[item.level] = (stats.byLevel[item.level] || 0) + 1;
-      
+
       // 問題数
       totalQuestions += item.questions.length;
     });
 
-    stats.avgQuestionsPerItem = items.length > 0 ? totalQuestions / items.length : 0;
+    stats.avgQuestionsPerItem =
+      items.length > 0 ? totalQuestions / items.length : 0;
 
     return stats;
   }

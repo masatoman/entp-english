@@ -1,5 +1,11 @@
 import { Database, RefreshCw } from "lucide-react";
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { DataMigrationService } from "../utils/dataMigrationService";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
@@ -39,7 +45,7 @@ export function MigrationProvider({ children }: MigrationProviderProps) {
 
   const checkAndPerformMigration = async () => {
     setIsLoading(true);
-    
+
     try {
       if (DataMigrationService.needsMigration()) {
         console.log("🔄 統合学習項目システムへの移行が必要です");
@@ -60,7 +66,7 @@ export function MigrationProvider({ children }: MigrationProviderProps) {
     try {
       const result = await DataMigrationService.performFullMigration();
       setMigrationResult(result);
-      
+
       if (result.success) {
         setIsMigrated(true);
         updateStats();
@@ -94,7 +100,7 @@ export function MigrationProvider({ children }: MigrationProviderProps) {
   if (isLoading || !isMigrated) {
     return (
       <MigrationContext.Provider value={contextValue}>
-        <MigrationScreen 
+        <MigrationScreen
           isLoading={isLoading}
           migrationResult={migrationResult}
           onRetry={checkAndPerformMigration}
@@ -121,14 +127,18 @@ interface MigrationScreenProps {
   onRetry: () => void;
 }
 
-function MigrationScreen({ isLoading, migrationResult, onRetry }: MigrationScreenProps) {
+function MigrationScreen({
+  isLoading,
+  migrationResult,
+  onRetry,
+}: MigrationScreenProps) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     if (isLoading) {
       // 進捗バーのアニメーション
       const interval = setInterval(() => {
-        setProgress(prev => {
+        setProgress((prev) => {
           if (prev >= 90) return prev;
           return prev + Math.random() * 10;
         });

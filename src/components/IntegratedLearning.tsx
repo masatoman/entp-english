@@ -1,4 +1,4 @@
-import { ArrowLeft, Brain, CheckCircle, Clock, Target, Volume2, Lightbulb, BookOpen } from "lucide-react";
+import { ArrowLeft, Brain, CheckCircle, Clock, Target } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -8,12 +8,10 @@ import {
 } from "../types/learningItem";
 import { LearningItemManager } from "../utils/learningItemManager";
 import { SpeechSynthesisManager } from "../utils/speechSynthesis";
-import { DataManager } from "../utils/dataManager";
 import { calculateVocabularyXP } from "../utils/xpCalculator";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
-import { Badge } from "./ui/badge";
 
 /**
  * 統合学習コンポーネント
@@ -110,7 +108,7 @@ export default function IntegratedLearning() {
 
     // XP計算
     const xpGained = known ? calculateVocabularyXP(1, currentItem.level) : 5;
-    setSessionStats(prev => ({
+    setSessionStats((prev) => ({
       ...prev,
       xpEarned: prev.xpEarned + xpGained,
     }));
@@ -124,7 +122,7 @@ export default function IntegratedLearning() {
 
   const handlePlayAudio = async (text: string) => {
     if (isSpeaking) return;
-    
+
     try {
       setIsSpeaking(true);
       await SpeechSynthesisManager.speak(text);
@@ -144,8 +142,12 @@ export default function IntegratedLearning() {
 
     // XP計算
     const baseXP = calculateVocabularyXP(1, currentItem.level);
-    const difficultyMultiplier = currentQuestion.difficulty === "easy" ? 1 : 
-                                currentQuestion.difficulty === "medium" ? 1.5 : 2;
+    const difficultyMultiplier =
+      currentQuestion.difficulty === "easy"
+        ? 1
+        : currentQuestion.difficulty === "medium"
+        ? 1.5
+        : 2;
     const xpGained = isCorrect ? Math.round(baseXP * difficultyMultiplier) : 2;
 
     setSessionStats((prev) => ({
@@ -354,64 +356,65 @@ export default function IntegratedLearning() {
               </div>
             )}
 
-            {(session.mode === "question" || session.mode === "mixed") && currentQuestion && (
-              <div className="space-y-4">
-                <div className="p-4 bg-yellow-50 rounded-lg">
-                  <h4 className="font-semibold mb-2">問題</h4>
-                  <p>{currentQuestion.prompt}</p>
-                </div>
+            {(session.mode === "question" || session.mode === "mixed") &&
+              currentQuestion && (
+                <div className="space-y-4">
+                  <div className="p-4 bg-yellow-50 rounded-lg">
+                    <h4 className="font-semibold mb-2">問題</h4>
+                    <p>{currentQuestion.prompt}</p>
+                  </div>
 
-                {currentQuestion.type === "multiple_choice" &&
-                  currentQuestion.options && (
-                    <div className="space-y-2">
-                      {currentQuestion.options.map((option, index) => (
-                        <Button
-                          key={index}
-                          variant={
-                            userAnswer === option ? "default" : "outline"
-                          }
-                          onClick={() => setUserAnswer(option)}
-                          className="w-full text-left justify-start"
-                        >
-                          {String.fromCharCode(65 + index)}. {option}
-                        </Button>
-                      ))}
+                  {currentQuestion.type === "multiple_choice" &&
+                    currentQuestion.options && (
+                      <div className="space-y-2">
+                        {currentQuestion.options.map((option, index) => (
+                          <Button
+                            key={index}
+                            variant={
+                              userAnswer === option ? "default" : "outline"
+                            }
+                            onClick={() => setUserAnswer(option)}
+                            className="w-full text-left justify-start"
+                          >
+                            {String.fromCharCode(65 + index)}. {option}
+                          </Button>
+                        ))}
+                      </div>
+                    )}
+
+                  {currentQuestion.type === "fill_blank" && (
+                    <div>
+                      <input
+                        type="text"
+                        value={userAnswer}
+                        onChange={(e) => setUserAnswer(e.target.value)}
+                        className="w-full p-3 border rounded-lg"
+                        placeholder="回答を入力してください"
+                      />
                     </div>
                   )}
 
-                {currentQuestion.type === "fill_blank" && (
-                  <div>
-                    <input
-                      type="text"
-                      value={userAnswer}
-                      onChange={(e) => setUserAnswer(e.target.value)}
-                      className="w-full p-3 border rounded-lg"
-                      placeholder="回答を入力してください"
-                    />
-                  </div>
-                )}
+                  {showAnswer && (
+                    <div className="p-4 bg-green-50 rounded-lg">
+                      <h4 className="font-semibold mb-2">解説</h4>
+                      <p>{currentQuestion.explanation}</p>
+                      <Button onClick={moveToNext} className="mt-4">
+                        次へ
+                      </Button>
+                    </div>
+                  )}
 
-                {showAnswer && (
-                  <div className="p-4 bg-green-50 rounded-lg">
-                    <h4 className="font-semibold mb-2">解説</h4>
-                    <p>{currentQuestion.explanation}</p>
-                    <Button onClick={moveToNext} className="mt-4">
-                      次へ
+                  {!showAnswer && (
+                    <Button
+                      onClick={handleQuestionSubmit}
+                      disabled={!userAnswer}
+                      className="w-full"
+                    >
+                      回答する
                     </Button>
-                  </div>
-                )}
-
-                {!showAnswer && (
-                  <Button
-                    onClick={handleQuestionSubmit}
-                    disabled={!userAnswer}
-                    className="w-full"
-                  >
-                    回答する
-                  </Button>
-                )}
-              </div>
-            )}
+                  )}
+                </div>
+              )}
           </CardContent>
         </Card>
       </div>

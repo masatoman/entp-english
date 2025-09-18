@@ -617,7 +617,8 @@ export function NewHome() {
             color="bg-purple-50 border-purple-200 text-purple-800"
             isLocked={!canStartLearning}
             onClick={() =>
-              canStartLearning && navigate("/learning/integrated/intermediate/toeic/mixed")
+              canStartLearning &&
+              navigate("/learning/integrated/intermediate/toeic/mixed")
             }
           />
 
