@@ -8,8 +8,7 @@ import { KnownWordsManager } from "../utils/knownWordsManager";
 import { LearningAnalyzer } from "../utils/learningAnalyzer";
 import { SoundManager } from "../utils/soundManager";
 import {
-  isSpeechSynthesisSupported,
-  speakEnglishWord,
+  SpeechSynthesisManager,
 } from "../utils/speechSynthesis";
 import { calculateVocabularyXP } from "../utils/xpCalculator";
 import { Badge } from "./ui/badge";
@@ -207,11 +206,11 @@ export default function VocabularyCard() {
   };
 
   const handleSpeak = async () => {
-    if (!currentWord || !isSpeechSynthesisSupported()) return;
+    if (!currentWord || !SpeechSynthesisManager.isSupported()) return;
 
     try {
       setIsSpeaking(true);
-      await speakEnglishWord(currentWord.word);
+      await SpeechSynthesisManager.speak(currentWord.word);
     } catch (error) {
       console.error("音声再生エラー:", error);
     } finally {
@@ -452,7 +451,7 @@ export default function VocabularyCard() {
               <Badge variant="outline" className="text-xs">
                 {currentWord.partOfSpeech}
               </Badge>
-              {isSpeechSynthesisSupported() && (
+              {SpeechSynthesisManager.isSupported() && (
                 <Button
                   variant="ghost"
                   size="sm"

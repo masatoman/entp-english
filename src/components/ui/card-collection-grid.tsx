@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import { cn } from "../../lib/utils";
 import { WordCard } from "../../types/gacha";
+import { CardCollectionManager, CardWithCount } from "../../utils/cardCollectionManager";
 import { Badge } from "./badge";
 import { Button } from "./button";
 import { Card, CardContent, CardHeader, CardTitle } from "./card";
@@ -51,6 +52,9 @@ export function CardCollectionGrid({
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [gridColumns, setGridColumns] = useState<GridColumns>("2");
 
+  // 重複カードを統合して所持枚数付きに変換
+  const cardsWithCount = CardCollectionManager.consolidateCards(cards);
+
   // レアリティの順序定義
   const rarityOrder = {
     common: 1,
@@ -60,17 +64,17 @@ export function CardCollectionGrid({
     legendary: 5,
   };
 
-  // カードのフィルタリングとソート
-  const filteredAndSortedCards = cards
-    .filter((card) => {
+  // カードのフィルタリングとソート（重複排除済み）
+  const filteredAndSortedCards = cardsWithCount
+    .filter((cardWithCount) => {
       // 検索フィルター
       const matchesSearch =
-        card.word.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        card.meaning.toLowerCase().includes(searchTerm.toLowerCase());
+        cardWithCount.card.word.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        cardWithCount.card.meaning.toLowerCase().includes(searchTerm.toLowerCase());
 
       // レアリティフィルター
       const matchesRarity =
-        rarityFilter === "all" || card.rarity === rarityFilter;
+        rarityFilter === "all" || cardWithCount.card.rarity === rarityFilter;
 
       return matchesSearch && matchesRarity;
     })
@@ -79,13 +83,13 @@ export function CardCollectionGrid({
 
       switch (sortBy) {
         case "name":
-          comparison = a.word.localeCompare(b.word);
+          comparison = a.card.word.localeCompare(b.card.word);
           break;
         case "rarity":
-          comparison = rarityOrder[a.rarity] - rarityOrder[b.rarity];
+          comparison = rarityOrder[a.card.rarity] - rarityOrder[b.card.rarity];
           break;
         case "recent":
-          comparison = a.id - b.id; // IDが新しいほど最近
+          comparison = a.card.id - b.card.id; // IDが新しいほど最近
           break;
       }
 
@@ -264,11 +268,12 @@ export function CardCollectionGrid({
               : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
           )}
         >
-          {filteredAndSortedCards.map((card, index) => (
+          {filteredAndSortedCards.map((cardWithCount, index) => (
             <GachaCard
-              key={`${card.id}-${index}`}
-              card={card}
-              onClick={() => onCardClick?.(card)}
+              key={`${cardWithCount.card.id}-${index}`}
+              card={cardWithCount.card}
+              count={cardWithCount.count}
+              onClick={() => onCardClick?.(cardWithCount.card)}
               size={
                 viewMode === "grid" ? (gridColumns === "3" ? "sm" : "md") : "md"
               }
@@ -277,7 +282,7 @@ export function CardCollectionGrid({
               isFavorite={false} // TODO: 実際のお気に入り状態を連携
               onFavoriteToggle={() => {
                 // TODO: お気に入り状態の切り替え処理
-                console.log(`Toggle favorite for card: ${card.word}`);
+                console.log(`Toggle favorite for card: ${cardWithCount.card.word}`);
               }}
               className="hover:z-10"
             />

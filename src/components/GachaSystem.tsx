@@ -463,9 +463,8 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
                 <CardCollectionGrid
                   cards={userGachaData.ownedCards}
                   onCardClick={(card) => {
-                    // setSelectedCard(card); // TODO: カード詳細機能実装時に有効化
-                    // setShowCardDetail(true); // TODO: カード詳細機能実装時に有効化
-                    console.log('Card clicked:', card);
+                    // カード詳細画面に遷移
+                    navigate(`/games/gacha/card/${card.id}`);
                   }}
                   title="マイコレクション"
                   showFilters={true}

@@ -14,6 +14,7 @@ interface GachaCardProps {
   isAnimated?: boolean;
   isFavorite?: boolean;
   onFavoriteToggle?: () => void;
+  count?: number; // 所持枚数
 }
 
 export function GachaCard({
@@ -26,6 +27,7 @@ export function GachaCard({
   isAnimated = true,
   isFavorite = false,
   onFavoriteToggle,
+  count,
 }: GachaCardProps) {
   // レアリティに応じた情報を取得
   const getRarityInfo = (rarity: WordCard["rarity"]) => {
@@ -161,11 +163,21 @@ export function GachaCard({
     >
       {/* 背景は純白 - グラデーション装飾なし */}
 
+      {/* 所持枚数表示 */}
+      {count && count > 1 && (
+        <div className="absolute top-2 left-2 z-10">
+          <Badge className="bg-blue-600 text-white text-xs font-bold">
+            ×{count}
+          </Badge>
+        </div>
+      )}
+
       {/* 新しいカードのバッジ */}
       {isNew && (
         <div
           className={cn(
             "absolute top-2 z-10",
+            count && count > 1 ? "right-2" : "right-2",
             onFavoriteToggle ? "right-10" : "right-2"
           )}
         >

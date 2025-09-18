@@ -1077,6 +1077,199 @@ export const toeicWordCards: WordCard[] = [
       businessContext: "最高級ビジネス概念",
     },
   },
+
+  // 追加カード（50枚追加）
+  {
+    id: 51,
+    word: "deadline",
+    meaning: "締切、期限",
+    partOfSpeech: "名詞",
+    phonetic: "/ˈdedlaɪn/",
+    rarity: "common",
+    examples: [
+      {
+        sentence: "The deadline for the project is next Friday.",
+        translation: "プロジェクトの締切は来週の金曜日です。",
+        situation: "TOEIC Part3 (プロジェクト管理)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "meet the deadline",
+        meaning: "締切に間に合う",
+        example: "We need to work overtime to meet the deadline.",
+        translation: "締切に間に合うため残業する必要があります。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "set a deadline",
+        explanation: "締切を設定する",
+        example: "The manager set a deadline for the report.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part3", "Part4", "Part7"],
+      frequency: "very_high",
+      scoreBand: "400-600",
+      synonyms: ["due date", "time limit"],
+      businessContext: "プロジェクト管理・スケジュール",
+    },
+  },
+  {
+    id: 52,
+    word: "budget",
+    meaning: "予算、予算案",
+    partOfSpeech: "名詞",
+    phonetic: "/ˈbʌdʒɪt/",
+    rarity: "common",
+    examples: [
+      {
+        sentence: "We need to stay within the budget.",
+        translation: "予算内に収める必要があります。",
+        situation: "TOEIC Part4 (財務会議)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "exceed the budget",
+        meaning: "予算を超過する",
+        example: "The project exceeded the budget by 20%.",
+        translation: "プロジェクトは予算を20%超過しました。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "prepare a budget",
+        explanation: "予算を準備する",
+        example: "The team prepared a detailed budget.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part3", "Part4", "Part7"],
+      frequency: "high",
+      scoreBand: "500-700",
+      synonyms: ["allocation", "funding"],
+      businessContext: "財務・会計",
+    },
+  },
+  {
+    id: 53,
+    word: "revenue",
+    meaning: "収益、売上",
+    partOfSpeech: "名詞",
+    phonetic: "/ˈrevənjuː/",
+    rarity: "uncommon",
+    examples: [
+      {
+        sentence: "The company's revenue increased by 15% this quarter.",
+        translation: "会社の収益は今四半期15%増加しました。",
+        situation: "TOEIC Part7 (決算報告)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "generate revenue",
+        meaning: "収益を生み出す",
+        example: "This new product will generate significant revenue.",
+        translation: "この新製品は大きな収益を生み出すでしょう。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "annual revenue",
+        explanation: "年間収益",
+        example: "The annual revenue reached $2 million.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part4", "Part7"],
+      frequency: "high",
+      scoreBand: "600-800",
+      synonyms: ["income", "earnings"],
+      businessContext: "財務・業績",
+    },
+  },
+  {
+    id: 54,
+    word: "efficient",
+    meaning: "効率的な、能率的な",
+    partOfSpeech: "形容詞",
+    phonetic: "/ɪˈfɪʃənt/",
+    rarity: "common",
+    examples: [
+      {
+        sentence: "We need a more efficient way to handle customer complaints.",
+        translation: "顧客の苦情をより効率的に処理する方法が必要です。",
+        situation: "TOEIC Part3 (業務改善)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "energy efficient",
+        meaning: "エネルギー効率の良い",
+        example: "This building is energy efficient.",
+        translation: "この建物はエネルギー効率が良いです。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "be efficient at/in",
+        explanation: "～が効率的である",
+        example: "She is efficient at managing projects.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part3", "Part4", "Part7"],
+      frequency: "high",
+      scoreBand: "500-700",
+      synonyms: ["effective", "productive"],
+      businessContext: "業務効率・生産性",
+    },
+  },
+  {
+    id: 55,
+    word: "collaborate",
+    meaning: "協力する、共同作業する",
+    partOfSpeech: "動詞",
+    phonetic: "/kəˈlæbəreɪt/",
+    rarity: "uncommon",
+    examples: [
+      {
+        sentence: "Our team will collaborate with the design department.",
+        translation: "私たちのチームはデザイン部門と協力します。",
+        situation: "TOEIC Part3 (チームワーク)",
+      },
+    ],
+    combinations: [
+      {
+        type: "collocation",
+        expression: "collaborate closely",
+        meaning: "密接に協力する",
+        example: "The two companies collaborate closely on research.",
+        translation: "両社は研究で密接に協力しています。",
+      },
+    ],
+    commonUsages: [
+      {
+        pattern: "collaborate with",
+        explanation: "～と協力する",
+        example: "We collaborate with international partners.",
+      },
+    ],
+    toeicSpecific: {
+      parts: ["Part3", "Part4", "Part7"],
+      frequency: "medium",
+      scoreBand: "600-800",
+      synonyms: ["cooperate", "work together"],
+      businessContext: "チームワーク・パートナーシップ",
+    },
+  },
+
 ];
 
 export const gachaPacks: GachaPack[] = [
