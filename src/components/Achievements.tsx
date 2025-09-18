@@ -264,40 +264,58 @@ export default function Achievements() {
                     <div className="text-2xl font-bold text-emerald-600">
                       {knownWordsStats.total}
                     </div>
-                    <div className="text-sm text-muted-foreground">マスター済み</div>
+                    <div className="text-sm text-muted-foreground">
+                      マスター済み
+                    </div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-blue-600">
                       {knownWordsStats.recentlyMarked.length}
                     </div>
-                    <div className="text-sm text-muted-foreground">今週追加</div>
+                    <div className="text-sm text-muted-foreground">
+                      今週追加
+                    </div>
                   </div>
                 </div>
-                
+
                 {/* レベル別統計 */}
                 <div className="space-y-2">
-                  <div className="text-sm font-medium text-gray-700">レベル別</div>
-                  {Object.entries(knownWordsStats.byLevel).map(([level, count]) => (
-                    <div key={level} className="flex justify-between items-center">
-                      <span className="text-sm capitalize">{level}</span>
-                      <Badge variant="outline" className="text-xs">
-                        {count}語
-                      </Badge>
-                    </div>
-                  ))}
+                  <div className="text-sm font-medium text-gray-700">
+                    レベル別
+                  </div>
+                  {Object.entries(knownWordsStats.byLevel).map(
+                    ([level, count]) => (
+                      <div
+                        key={level}
+                        className="flex justify-between items-center"
+                      >
+                        <span className="text-sm capitalize">{level}</span>
+                        <Badge variant="outline" className="text-xs">
+                          {count}語
+                        </Badge>
+                      </div>
+                    )
+                  )}
                 </div>
-                
+
                 {/* カテゴリ別統計 */}
                 <div className="space-y-2">
-                  <div className="text-sm font-medium text-gray-700">カテゴリ別</div>
-                  {Object.entries(knownWordsStats.byCategory).map(([category, count]) => (
-                    <div key={category} className="flex justify-between items-center">
-                      <span className="text-sm capitalize">{category}</span>
-                      <Badge variant="outline" className="text-xs">
-                        {count}語
-                      </Badge>
-                    </div>
-                  ))}
+                  <div className="text-sm font-medium text-gray-700">
+                    カテゴリ別
+                  </div>
+                  {Object.entries(knownWordsStats.byCategory).map(
+                    ([category, count]) => (
+                      <div
+                        key={category}
+                        className="flex justify-between items-center"
+                      >
+                        <span className="text-sm capitalize">{category}</span>
+                        <Badge variant="outline" className="text-xs">
+                          {count}語
+                        </Badge>
+                      </div>
+                    )
+                  )}
                 </div>
               </CardContent>
             </Card>

@@ -4,13 +4,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { VocabularyWord, getVocabularyWords } from "../data/vocabulary";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { DataManager } from "../utils/dataManager";
+import { KnownWordsManager } from "../utils/knownWordsManager";
+import { LearningAnalyzer } from "../utils/learningAnalyzer";
 import { SoundManager } from "../utils/soundManager";
 import {
   isSpeechSynthesisSupported,
   speakEnglishWord,
 } from "../utils/speechSynthesis";
 import { calculateVocabularyXP } from "../utils/xpCalculator";
-import { KnownWordsManager } from "../utils/knownWordsManager";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader } from "./ui/card";
@@ -60,10 +61,10 @@ export default function VocabularyCard() {
   useEffect(() => {
     // 選択された難易度とカテゴリの単語を取得
     const allWords = getVocabularyWords(actualDifficulty, actualCategory);
-    
+
     // 既知単語を除外
     const filteredWords = KnownWordsManager.filterUnknownWords(allWords);
-    
+
     console.log("VocabularyCard - フィルタリング結果:", {
       actualDifficulty,
       actualCategory,
@@ -133,6 +134,16 @@ export default function VocabularyCard() {
 
       // 実績をチェック・更新
       DataManager.checkAndUpdateAchievements();
+
+      // 学習セッションを記録（パーソナルインサイト用）
+      LearningAnalyzer.recordSession({
+        duration: 10, // 仮の学習時間（分）
+        accuracy:
+          session.knownWords / (session.knownWords + session.unknownWords),
+        category: "vocabulary",
+        difficulty: actualDifficulty,
+        xpGained: xpEarned,
+      });
 
       // 完了状態を設定
       setIsCompleted(true);
@@ -510,9 +521,11 @@ export default function VocabularyCard() {
               KnownWordsManager.markWordAsKnown(currentWord);
               handleAnswer(true);
               SoundManager.sounds.correct();
-              
+
               // ENTPの即効性重視：視覚的フィードバック
-              console.log(`🎯 「${currentWord.word}」を既知単語に追加しました！今後の学習から除外されます。`);
+              console.log(
+                `🎯 「${currentWord.word}」を既知単語に追加しました！今後の学習から除外されます。`
+              );
             }}
             className="h-14 text-base bg-emerald-600 hover:bg-emerald-700 relative overflow-hidden"
           >

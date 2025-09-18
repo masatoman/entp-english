@@ -1,7 +1,7 @@
-import { KnownWord, KnownWordsData } from '../types';
-import { VocabularyWord } from '../data/vocabulary';
+import { VocabularyWord } from "../data/vocabulary";
+import { KnownWord, KnownWordsData } from "../types";
 
-const KNOWN_WORDS_KEY = 'entp-known-words';
+const KNOWN_WORDS_KEY = "entp-known-words";
 
 /**
  * 既知単語管理システム
@@ -24,9 +24,9 @@ export class KnownWordsManager {
         };
       }
     } catch (error) {
-      console.error('既知単語データの読み込みエラー:', error);
+      console.error("既知単語データの読み込みエラー:", error);
     }
-    
+
     return {
       knownWords: [],
       totalKnownCount: 0,
@@ -40,10 +40,10 @@ export class KnownWordsManager {
    */
   static markWordAsKnown(word: VocabularyWord): void {
     const data = this.getKnownWordsData();
-    
+
     // 既に既知としてマークされているかチェック
-    const existingIndex = data.knownWords.findIndex(kw => kw.id === word.id);
-    
+    const existingIndex = data.knownWords.findIndex((kw) => kw.id === word.id);
+
     if (existingIndex === -1) {
       // 新しい既知単語として追加
       const knownWord: KnownWord = {
@@ -55,16 +55,17 @@ export class KnownWordsManager {
         markedAsKnownAt: new Date(),
         reviewCount: 0,
       };
-      
+
       data.knownWords.push(knownWord);
       data.totalKnownCount = data.knownWords.length;
-      
+
       // カテゴリ別統計更新
-      data.categoryStats[word.category] = (data.categoryStats[word.category] || 0) + 1;
+      data.categoryStats[word.category] =
+        (data.categoryStats[word.category] || 0) + 1;
       data.levelStats[word.level] = (data.levelStats[word.level] || 0) + 1;
-      
+
       this.saveKnownWordsData(data);
-      
+
       console.log(`✅ 単語「${word.word}」を既知としてマークしました`);
     } else {
       console.log(`⚠️ 単語「${word.word}」は既に既知としてマークされています`);
@@ -76,7 +77,7 @@ export class KnownWordsManager {
    */
   static isWordKnown(wordId: string): boolean {
     const data = this.getKnownWordsData();
-    return data.knownWords.some(kw => kw.id === wordId);
+    return data.knownWords.some((kw) => kw.id === wordId);
   }
 
   /**
@@ -84,12 +85,16 @@ export class KnownWordsManager {
    */
   static filterUnknownWords(words: VocabularyWord[]): VocabularyWord[] {
     const data = this.getKnownWordsData();
-    const knownWordIds = new Set(data.knownWords.map(kw => kw.id));
-    
-    const filteredWords = words.filter(word => !knownWordIds.has(word.id));
-    
-    console.log(`📊 フィルタリング結果: ${words.length}個 → ${filteredWords.length}個（${words.length - filteredWords.length}個を除外）`);
-    
+    const knownWordIds = new Set(data.knownWords.map((kw) => kw.id));
+
+    const filteredWords = words.filter((word) => !knownWordIds.has(word.id));
+
+    console.log(
+      `📊 フィルタリング結果: ${words.length}個 → ${filteredWords.length}個（${
+        words.length - filteredWords.length
+      }個を除外）`
+    );
+
     return filteredWords;
   }
 
@@ -103,15 +108,15 @@ export class KnownWordsManager {
     recentlyMarked: KnownWord[];
   } {
     const data = this.getKnownWordsData();
-    
+
     // 最近マークされた単語（過去7日間）
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-    
-    const recentlyMarked = data.knownWords.filter(kw => 
-      new Date(kw.markedAsKnownAt) > sevenDaysAgo
+
+    const recentlyMarked = data.knownWords.filter(
+      (kw) => new Date(kw.markedAsKnownAt) > sevenDaysAgo
     );
-    
+
     return {
       total: data.totalKnownCount,
       byCategory: data.categoryStats,
@@ -130,9 +135,9 @@ export class KnownWordsManager {
       categoryStats: {},
       levelStats: {},
     };
-    
+
     this.saveKnownWordsData(emptyData);
-    console.log('🔄 既知単語データをリセットしました');
+    console.log("🔄 既知単語データをリセットしました");
   }
 
   /**
@@ -140,22 +145,28 @@ export class KnownWordsManager {
    */
   static unmarkWordAsKnown(wordId: string): boolean {
     const data = this.getKnownWordsData();
-    const wordIndex = data.knownWords.findIndex(kw => kw.id === wordId);
-    
+    const wordIndex = data.knownWords.findIndex((kw) => kw.id === wordId);
+
     if (wordIndex !== -1) {
       const removedWord = data.knownWords[wordIndex];
       data.knownWords.splice(wordIndex, 1);
       data.totalKnownCount = data.knownWords.length;
-      
+
       // 統計更新
-      data.categoryStats[removedWord.category] = Math.max(0, (data.categoryStats[removedWord.category] || 1) - 1);
-      data.levelStats[removedWord.level] = Math.max(0, (data.levelStats[removedWord.level] || 1) - 1);
-      
+      data.categoryStats[removedWord.category] = Math.max(
+        0,
+        (data.categoryStats[removedWord.category] || 1) - 1
+      );
+      data.levelStats[removedWord.level] = Math.max(
+        0,
+        (data.levelStats[removedWord.level] || 1) - 1
+      );
+
       this.saveKnownWordsData(data);
       console.log(`✅ 単語「${removedWord.word}」を既知から削除しました`);
       return true;
     }
-    
+
     return false;
   }
 
@@ -166,7 +177,7 @@ export class KnownWordsManager {
     try {
       localStorage.setItem(KNOWN_WORDS_KEY, JSON.stringify(data));
     } catch (error) {
-      console.error('既知単語データの保存エラー:', error);
+      console.error("既知単語データの保存エラー:", error);
     }
   }
 }

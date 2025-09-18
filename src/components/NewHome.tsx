@@ -1,5 +1,6 @@
 import {
   BarChart3,
+  Brain,
   Clock,
   Flame,
   Heart,
@@ -32,6 +33,7 @@ import {
 import { GrammarQuizCategorySelection } from "./GrammarQuizCategorySelection";
 import { GrammarQuizDifficultySelection } from "./GrammarQuizDifficultySelection";
 // GrowthDashboardはRouter経由で使用するため、直接importを削除
+import { DailyChallengeCard } from "./DailyChallengeCard";
 import { LearningFeedbackForm } from "./LearningFeedbackForm";
 import { LevelDisplay } from "./LevelDisplay";
 import { StatusAllocationComponent } from "./StatusAllocation";
@@ -413,6 +415,18 @@ export function NewHome() {
               <Button
                 variant="outline"
                 size="sm"
+                onClick={() => navigate("/progress/insights")}
+                className="flex items-center gap-2 bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200 hover:from-purple-100 hover:to-blue-100"
+              >
+                <Brain className="w-4 h-4 text-purple-600" />
+                <span className="hidden sm:inline text-purple-700">
+                  学習分析
+                </span>
+                <span className="sm:hidden text-purple-700">分析</span>
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={() => setShowStatusAllocation(!showStatusAllocation)}
                 className="flex items-center gap-2"
               >
@@ -524,6 +538,11 @@ export function NewHome() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* デイリーチャレンジカード */}
+        <div className="mb-6">
+          <DailyChallengeCard />
         </div>
 
         {/* ステータス配分 */}

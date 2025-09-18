@@ -19,7 +19,6 @@ import {
   notificationManager,
   NotificationSettings,
 } from "../utils/notificationManager";
-import { KnownWordsManager } from "../utils/knownWordsManager";
 import { SoundManager } from "../utils/soundManager";
 import { Button } from "./ui/button";
 import {

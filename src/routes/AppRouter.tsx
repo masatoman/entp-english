@@ -14,6 +14,7 @@ import EssayWriting from "../components/EssayWriting";
 import GachaResultScreen from "../components/GachaResultScreen";
 import GachaSystem from "../components/GachaSystem";
 import GrowthDashboard from "../components/GrowthDashboard";
+import PersonalInsights from "../components/PersonalInsights";
 import Question from "../components/Question";
 import Results from "../components/Results";
 import SimpleTowerDefense from "../components/SimpleTowerDefense";
@@ -93,6 +94,7 @@ export function AppRouter() {
           {/* 進捗・統計 */}
           <Route path="/progress/achievements" element={<Achievements />} />
           <Route path="/progress/dashboard" element={<GrowthDashboard />} />
+          <Route path="/progress/insights" element={<PersonalInsights />} />
 
           {/* 設定 */}
           <Route path="/settings/app" element={<AppSettings />} />

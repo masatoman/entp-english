@@ -130,7 +130,7 @@ export interface KnownWord {
   word: string;
   meaning: string;
   category: string;
-  level: 'beginner' | 'intermediate' | 'advanced';
+  level: "beginner" | "intermediate" | "advanced";
   markedAsKnownAt: Date;
   reviewCount: number; // 復習回数
   lastReviewAt?: Date;
@@ -141,4 +141,65 @@ export interface KnownWordsData {
   totalKnownCount: number;
   categoryStats: Record<string, number>;
   levelStats: Record<string, number>;
+}
+
+// パーソナル学習インサイトシステム
+export interface LearningPattern {
+  preferredDifficulty: "beginner" | "intermediate" | "advanced";
+  preferredCategory: string;
+  averageSessionTime: number; // 分
+  peakPerformanceHour: number; // 0-23時
+  streakLength: number;
+  accuracyRate: number; // 0-1
+  learningVelocity: number; // XP/日
+}
+
+export interface LearningInsight {
+  learnerType: "効率重視型" | "探求型" | "競争型" | "創造型" | "バランス型";
+  primaryStrengths: string[];
+  improvementAreas: string[];
+  personalizedRecommendations: string[];
+  uniquePattern: string;
+  confidenceScore: number; // 0-1
+  lastAnalyzed: Date;
+}
+
+export interface LearningAnalytics {
+  totalStudySessions: number;
+  totalStudyTime: number; // 分
+  averageAccuracy: number;
+  strongestCategories: string[];
+  improvementTrend: "上昇中" | "安定" | "要改善";
+  weeklyProgress: number[];
+  monthlyXpGain: number;
+}
+
+// 今日のスペシャルチャレンジシステム
+export interface DailyChallenge {
+  id: string;
+  date: string; // YYYY-MM-DD
+  name: string;
+  description: string;
+  type: "vocabulary" | "grammar" | "time-attack" | "creative" | "efficiency";
+  rules: ChallengeRule[];
+  bonusXP: number;
+  bonusMultiplier: number; // XP倍率
+  isCompleted: boolean;
+  completedAt?: Date;
+  icon: string;
+  color: string;
+}
+
+export interface ChallengeRule {
+  type: "time-limit" | "accuracy-target" | "word-count" | "special-mode";
+  value: number | string;
+  description: string;
+}
+
+export interface DailyChallengeProgress {
+  currentChallenge: DailyChallenge | null;
+  completedChallenges: string[]; // challenge IDs
+  streakCount: number;
+  totalCompleted: number;
+  lastCompletedDate: string;
 }
