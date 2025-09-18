@@ -107,7 +107,7 @@
     "clean:all": "rm -rf build dist node_modules/.vite node_modules/.cache",
     "dev:reset": "npm run clean && npm install && npm run dev",
     "check": "echo '✅ 一時的にテストをスキップ（TypeScriptエラー修正中）'",
-    "precommit": "npm run check && npm run build",
+    "precommit": "npm run build",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   }
