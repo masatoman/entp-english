@@ -56,6 +56,6 @@ export interface PreStudyProgress {
 }
 
 // 定数
-export const STAR_RECOVERY_TIME = 2 * 60 * 60 * 1000; // 2時間（ミリ秒）
+export const STAR_RECOVERY_TIME = 5 * 60 * 1000; // 5分（ミリ秒）
 export const MAX_STARS_BASE = 3;
 export const STARS_INCREASE_EVERY_LEVELS = 10;
