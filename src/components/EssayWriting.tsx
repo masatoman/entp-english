@@ -92,7 +92,7 @@ export default function EssayWriting() {
     if (!selectedPrompt || !essayText.trim()) return;
 
     const wordCount = essayText.trim().split(/\s+/).length;
-    
+
     // 簡易評価システム
     const evaluation = {
       grammar: Math.min(85 + Math.random() * 15, 100),
@@ -160,13 +160,15 @@ export default function EssayWriting() {
 
     try {
       const success = await EssayShareManager.shareEssay(entry, {
-        platform: 'copy',
+        platform: "copy",
         includePrompt: true,
         includeStats: true,
       });
 
       if (success) {
-        alert("英作文をクリップボードにコピーしました！SNSに貼り付けてシェアしてください。");
+        alert(
+          "英作文をクリップボードにコピーしました！SNSに貼り付けてシェアしてください。"
+        );
       } else {
         alert("シェアに失敗しました。");
       }

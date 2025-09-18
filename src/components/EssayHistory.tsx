@@ -4,19 +4,20 @@ import {
   Download,
   Eye,
   FileText,
-  Heart,
   PenTool,
   Search,
   Share2,
   Star,
-  Tag,
   Target,
   Trash2,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useScrollToTop } from "../hooks/useScrollToTop";
-import { EssayHistoryEntry, EssayHistoryManager } from "../utils/essayHistoryManager";
+import {
+  EssayHistoryEntry,
+  EssayHistoryManager,
+} from "../utils/essayHistoryManager";
 import { EssayShareManager, ShareOptions } from "../utils/essayShareManager";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -29,10 +30,14 @@ export default function EssayHistory() {
   useScrollToTop();
 
   const [history, setHistory] = useState<EssayHistoryEntry[]>([]);
-  const [filteredHistory, setFilteredHistory] = useState<EssayHistoryEntry[]>([]);
+  const [filteredHistory, setFilteredHistory] = useState<EssayHistoryEntry[]>(
+    []
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedEntry, setSelectedEntry] = useState<EssayHistoryEntry | null>(null);
+  const [selectedEntry, setSelectedEntry] = useState<EssayHistoryEntry | null>(
+    null
+  );
   const [showShareModal, setShowShareModal] = useState(false);
   const [stats, setStats] = useState<any>(null);
 
@@ -60,7 +65,9 @@ export default function EssayHistory() {
 
     // カテゴリでフィルタリング
     if (selectedCategory !== "all") {
-      filtered = filtered.filter(entry => entry.prompt.category === selectedCategory);
+      filtered = filtered.filter(
+        (entry) => entry.prompt.category === selectedCategory
+      );
     }
 
     setFilteredHistory(filtered);
@@ -70,7 +77,7 @@ export default function EssayHistory() {
   const handleToggleFavorite = (id: string) => {
     const newState = EssayHistoryManager.toggleFavorite(id);
     setHistory(EssayHistoryManager.getHistory());
-    console.log(`⭐ お気に入り${newState ? '追加' : '削除'}: ${id}`);
+    console.log(`⭐ お気に入り${newState ? "追加" : "削除"}: ${id}`);
   };
 
   // 削除
@@ -145,23 +152,33 @@ export default function EssayHistory() {
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-indigo-600">{stats.totalEssays}</div>
+                  <div className="text-2xl font-bold text-indigo-600">
+                    {stats.totalEssays}
+                  </div>
                   <div className="text-sm text-gray-600">総作文数</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-green-600">{stats.totalWords}</div>
+                  <div className="text-2xl font-bold text-green-600">
+                    {stats.totalWords}
+                  </div>
                   <div className="text-sm text-gray-600">総単語数</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-600">{stats.averageWordCount}</div>
+                  <div className="text-2xl font-bold text-blue-600">
+                    {stats.averageWordCount}
+                  </div>
                   <div className="text-sm text-gray-600">平均単語数</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-yellow-600">{stats.favoriteCount}</div>
+                  <div className="text-2xl font-bold text-yellow-600">
+                    {stats.favoriteCount}
+                  </div>
                   <div className="text-sm text-gray-600">お気に入り</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-600">{stats.shareCount}</div>
+                  <div className="text-2xl font-bold text-purple-600">
+                    {stats.shareCount}
+                  </div>
                   <div className="text-sm text-gray-600">シェア回数</div>
                 </div>
               </div>
@@ -191,11 +208,13 @@ export default function EssayHistory() {
                   className="w-full p-2 border border-gray-300 rounded-md bg-white"
                 >
                   <option value="all">全カテゴリ</option>
-                  {categories.filter(cat => cat !== "all").map(category => (
-                    <option key={category} value={category}>
-                      {category}
-                    </option>
-                  ))}
+                  {categories
+                    .filter((cat) => cat !== "all")
+                    .map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>
@@ -226,10 +245,14 @@ export default function EssayHistory() {
                     size="sm"
                     onClick={() => handleToggleFavorite(entry.id)}
                     className={`${
-                      entry.isFavorite ? 'text-yellow-500' : 'text-gray-400'
+                      entry.isFavorite ? "text-yellow-500" : "text-gray-400"
                     }`}
                   >
-                    <Star className={`w-4 h-4 ${entry.isFavorite ? 'fill-current' : ''}`} />
+                    <Star
+                      className={`w-4 h-4 ${
+                        entry.isFavorite ? "fill-current" : ""
+                      }`}
+                    />
                   </Button>
                 </div>
               </CardHeader>
@@ -246,7 +269,7 @@ export default function EssayHistory() {
                   <div className="flex items-center justify-between text-xs text-gray-500">
                     <div className="flex items-center gap-1">
                       <Calendar className="w-3 h-3" />
-                      {new Date(entry.createdAt).toLocaleDateString('ja-JP')}
+                      {new Date(entry.createdAt).toLocaleDateString("ja-JP")}
                     </div>
                     <div className="flex items-center gap-1">
                       <PenTool className="w-3 h-3" />
@@ -258,7 +281,11 @@ export default function EssayHistory() {
                   {entry.tags.length > 0 && (
                     <div className="flex flex-wrap gap-1">
                       {entry.tags.slice(0, 3).map((tag, index) => (
-                        <Badge key={index} variant="secondary" className="text-xs">
+                        <Badge
+                          key={index}
+                          variant="secondary"
+                          className="text-xs"
+                        >
                           {tag}
                         </Badge>
                       ))}
@@ -319,16 +346,14 @@ export default function EssayHistory() {
               <div className="text-gray-500 mb-4">
                 <FileText className="w-16 h-16 mx-auto mb-4 opacity-50" />
                 <h3 className="text-lg font-medium mb-2">
-                  {searchQuery || selectedCategory !== "all" 
+                  {searchQuery || selectedCategory !== "all"
                     ? "該当する英作文が見つかりません"
-                    : "まだ英作文がありません"
-                  }
+                    : "まだ英作文がありません"}
                 </h3>
                 <p className="text-sm">
                   {searchQuery || selectedCategory !== "all"
                     ? "検索条件を変更してみてください"
-                    : "英作文を書いて学習記録を作成しましょう！"
-                  }
+                    : "英作文を書いて学習記録を作成しましょう！"}
                 </p>
               </div>
               {!searchQuery && selectedCategory === "all" && (
@@ -347,11 +372,19 @@ export default function EssayHistory() {
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div>
-                    <CardTitle className="text-xl">{selectedEntry.prompt.title}</CardTitle>
+                    <CardTitle className="text-xl">
+                      {selectedEntry.prompt.title}
+                    </CardTitle>
                     <div className="flex items-center gap-2 mt-2">
-                      <Badge variant="outline">{selectedEntry.prompt.category}</Badge>
-                      <Badge variant="outline">{selectedEntry.prompt.difficulty}</Badge>
-                      <Badge variant="outline">Level {selectedEntry.prompt.level}</Badge>
+                      <Badge variant="outline">
+                        {selectedEntry.prompt.category}
+                      </Badge>
+                      <Badge variant="outline">
+                        {selectedEntry.prompt.difficulty}
+                      </Badge>
+                      <Badge variant="outline">
+                        Level {selectedEntry.prompt.level}
+                      </Badge>
                     </div>
                   </div>
                   <Button
@@ -371,7 +404,9 @@ export default function EssayHistory() {
                     課題内容
                   </h3>
                   <div className="bg-blue-50 p-4 rounded-lg">
-                    <p className="text-gray-700">{selectedEntry.prompt.instruction}</p>
+                    <p className="text-gray-700">
+                      {selectedEntry.prompt.instruction}
+                    </p>
                     {selectedEntry.prompt.context && (
                       <p className="text-sm text-gray-600 mt-2">
                         💡 {selectedEntry.prompt.context}
@@ -440,11 +475,19 @@ export default function EssayHistory() {
                   <div className="bg-gray-50 p-4 rounded-lg space-y-2">
                     <div className="flex justify-between">
                       <span className="text-gray-600">作成日時:</span>
-                      <span>{new Date(selectedEntry.createdAt).toLocaleString('ja-JP')}</span>
+                      <span>
+                        {new Date(selectedEntry.createdAt).toLocaleString(
+                          "ja-JP"
+                        )}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">最終更新:</span>
-                      <span>{new Date(selectedEntry.updatedAt).toLocaleString('ja-JP')}</span>
+                      <span>
+                        {new Date(selectedEntry.updatedAt).toLocaleString(
+                          "ja-JP"
+                        )}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">単語数:</span>
@@ -469,9 +512,15 @@ export default function EssayHistory() {
                   <Button
                     variant="outline"
                     onClick={() => handleToggleFavorite(selectedEntry.id)}
-                    className={selectedEntry.isFavorite ? 'text-yellow-600' : ''}
+                    className={
+                      selectedEntry.isFavorite ? "text-yellow-600" : ""
+                    }
                   >
-                    <Star className={`w-4 h-4 ${selectedEntry.isFavorite ? 'fill-current' : ''}`} />
+                    <Star
+                      className={`w-4 h-4 ${
+                        selectedEntry.isFavorite ? "fill-current" : ""
+                      }`}
+                    />
                   </Button>
                   <Button
                     variant="outline"
@@ -512,55 +561,65 @@ export default function EssayHistory() {
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                     <Button
                       variant="outline"
-                      onClick={() => handleShareExecute({
-                        platform: 'twitter',
-                        includePrompt: true,
-                        includeStats: true,
-                      })}
+                      onClick={() =>
+                        handleShareExecute({
+                          platform: "twitter",
+                          includePrompt: true,
+                          includeStats: true,
+                        })
+                      }
                       className="flex items-center gap-2"
                     >
                       🐦 Twitter
                     </Button>
                     <Button
                       variant="outline"
-                      onClick={() => handleShareExecute({
-                        platform: 'facebook',
-                        includePrompt: true,
-                        includeStats: true,
-                      })}
+                      onClick={() =>
+                        handleShareExecute({
+                          platform: "facebook",
+                          includePrompt: true,
+                          includeStats: true,
+                        })
+                      }
                       className="flex items-center gap-2"
                     >
                       📘 Facebook
                     </Button>
                     <Button
                       variant="outline"
-                      onClick={() => handleShareExecute({
-                        platform: 'linkedin',
-                        includePrompt: true,
-                        includeStats: true,
-                      })}
+                      onClick={() =>
+                        handleShareExecute({
+                          platform: "linkedin",
+                          includePrompt: true,
+                          includeStats: true,
+                        })
+                      }
                       className="flex items-center gap-2"
                     >
                       💼 LinkedIn
                     </Button>
                     <Button
                       variant="outline"
-                      onClick={() => handleShareExecute({
-                        platform: 'copy',
-                        includePrompt: true,
-                        includeStats: true,
-                      })}
+                      onClick={() =>
+                        handleShareExecute({
+                          platform: "copy",
+                          includePrompt: true,
+                          includeStats: true,
+                        })
+                      }
                       className="flex items-center gap-2"
                     >
                       📋 コピー
                     </Button>
                     <Button
                       variant="outline"
-                      onClick={() => handleShareExecute({
-                        platform: 'image',
-                        includePrompt: true,
-                        includeStats: true,
-                      })}
+                      onClick={() =>
+                        handleShareExecute({
+                          platform: "image",
+                          includePrompt: true,
+                          includeStats: true,
+                        })
+                      }
                       className="flex items-center gap-2"
                     >
                       <Download className="w-3 h-3" />
@@ -570,7 +629,9 @@ export default function EssayHistory() {
                       <Button
                         variant="outline"
                         onClick={async () => {
-                          const success = await EssayShareManager.nativeShare(selectedEntry);
+                          const success = await EssayShareManager.nativeShare(
+                            selectedEntry
+                          );
                           if (success) {
                             setShowShareModal(false);
                             setHistory(EssayHistoryManager.getHistory());
@@ -589,11 +650,13 @@ export default function EssayHistory() {
                   <h4 className="font-medium mb-3">シェア内容プレビュー</h4>
                   <div className="bg-gray-50 p-4 rounded-lg">
                     <pre className="text-sm text-gray-700 whitespace-pre-wrap">
-                      {EssayShareManager.generateShareContent(selectedEntry, {
-                        platform: 'copy',
-                        includePrompt: true,
-                        includeStats: true,
-                      }).text}
+                      {
+                        EssayShareManager.generateShareContent(selectedEntry, {
+                          platform: "copy",
+                          includePrompt: true,
+                          includeStats: true,
+                        }).text
+                      }
                     </pre>
                   </div>
                 </div>

@@ -1,7 +1,7 @@
 import { EssayHistoryEntry } from "./essayHistoryManager";
 
 export interface ShareOptions {
-  platform: 'twitter' | 'facebook' | 'linkedin' | 'copy' | 'image';
+  platform: "twitter" | "facebook" | "linkedin" | "copy" | "image";
   includePrompt: boolean;
   includeStats: boolean;
   customMessage?: string;
@@ -30,7 +30,7 @@ export class EssayShareManager {
     options: ShareOptions
   ): ShareContent {
     const { prompt, submission, wordCount, createdAt } = entry;
-    
+
     let shareText = "";
     const hashtags = ["ENTP英語学習", "英作文", "英語学習"];
 
@@ -53,9 +53,15 @@ export class EssayShareManager {
     if (options.includeStats) {
       shareText += `📊 統計:\n`;
       shareText += `• 単語数: ${wordCount}語\n`;
-      shareText += `• 文法評価: ${submission.evaluation?.grammar || 'N/A'}/100\n`;
-      shareText += `• 語彙評価: ${submission.evaluation?.vocabulary || 'N/A'}/100\n`;
-      shareText += `• 流暢性: ${submission.evaluation?.fluency || 'N/A'}/100\n\n`;
+      shareText += `• 文法評価: ${
+        submission.evaluation?.grammar || "N/A"
+      }/100\n`;
+      shareText += `• 語彙評価: ${
+        submission.evaluation?.vocabulary || "N/A"
+      }/100\n`;
+      shareText += `• 流暢性: ${
+        submission.evaluation?.fluency || "N/A"
+      }/100\n\n`;
     }
 
     // アプリ情報
@@ -95,7 +101,10 @@ export class EssayShareManager {
       text: shareText,
       url: this.APP_URL,
       hashtags,
-      imageData: options.platform === 'image' ? this.generateImageData(entry) : undefined,
+      imageData:
+        options.platform === "image"
+          ? this.generateImageData(entry)
+          : undefined,
     };
   }
 
@@ -105,19 +114,22 @@ export class EssayShareManager {
   static generateShareUrl(content: ShareContent, platform: string): string {
     const encodedText = encodeURIComponent(content.text);
     const encodedUrl = encodeURIComponent(content.url);
-    const hashtagsText = content.hashtags.map(tag => `#${tag}`).join(' ');
+    const hashtagsText = content.hashtags.map((tag) => `#${tag}`).join(" ");
     const encodedHashtags = encodeURIComponent(hashtagsText);
 
     switch (platform) {
-      case 'twitter':
-        return `https://twitter.com/intent/tweet?text=${encodedText}&hashtags=${encodedHashtags.replace('#', '')}`;
-      
-      case 'facebook':
+      case "twitter":
+        return `https://twitter.com/intent/tweet?text=${encodedText}&hashtags=${encodedHashtags.replace(
+          "#",
+          ""
+        )}`;
+
+      case "facebook":
         return `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}`;
-      
-      case 'linkedin':
+
+      case "linkedin":
         return `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}&summary=${encodedText}`;
-      
+
       default:
         return content.url;
     }
@@ -134,22 +146,22 @@ export class EssayShareManager {
       const content = this.generateShareContent(entry, options);
 
       switch (options.platform) {
-        case 'copy':
+        case "copy":
           await this.copyToClipboard(content.text);
           break;
-        
-        case 'image':
+
+        case "image":
           await this.downloadAsImage(entry, content);
           break;
-        
+
         default:
           const shareUrl = this.generateShareUrl(content, options.platform);
-          window.open(shareUrl, '_blank', 'width=600,height=400');
+          window.open(shareUrl, "_blank", "width=600,height=400");
           break;
       }
 
       // シェア回数を増加
-      const { EssayHistoryManager } = await import('./essayHistoryManager');
+      const { EssayHistoryManager } = await import("./essayHistoryManager");
       EssayHistoryManager.incrementShareCount(entry.id);
 
       console.log(`📤 英作文「${entry.id}」を${options.platform}でシェア`);
@@ -168,11 +180,11 @@ export class EssayShareManager {
       await navigator.clipboard.writeText(text);
     } else {
       // フォールバック
-      const textArea = document.createElement('textarea');
+      const textArea = document.createElement("textarea");
       textArea.value = text;
       document.body.appendChild(textArea);
       textArea.select();
-      document.execCommand('copy');
+      document.execCommand("copy");
       document.body.removeChild(textArea);
     }
   }
@@ -185,78 +197,93 @@ export class EssayShareManager {
     content: ShareContent
   ): Promise<void> {
     // Canvas APIを使用して英作文を画像化
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    
-    if (!ctx) throw new Error('Canvas context not available');
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    if (!ctx) throw new Error("Canvas context not available");
 
     // キャンバスサイズ設定
     canvas.width = 800;
     canvas.height = 600;
 
     // 背景
-    ctx.fillStyle = '#f8fafc';
+    ctx.fillStyle = "#f8fafc";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // グラデーション背景
-    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, '#e0e7ff');
-    gradient.addColorStop(1, '#c7d2fe');
+    const gradient = ctx.createLinearGradient(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+    gradient.addColorStop(0, "#e0e7ff");
+    gradient.addColorStop(1, "#c7d2fe");
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // タイトル
-    ctx.fillStyle = '#1e293b';
-    ctx.font = 'bold 24px Arial, sans-serif';
-    ctx.textAlign = 'center';
+    ctx.fillStyle = "#1e293b";
+    ctx.font = "bold 24px Arial, sans-serif";
+    ctx.textAlign = "center";
     ctx.fillText(this.APP_NAME, canvas.width / 2, 50);
 
     // 課題タイトル
-    ctx.fillStyle = '#475569';
-    ctx.font = 'bold 18px Arial, sans-serif';
+    ctx.fillStyle = "#475569";
+    ctx.font = "bold 18px Arial, sans-serif";
     ctx.fillText(`📝 ${entry.prompt.title}`, canvas.width / 2, 90);
 
     // 英作文本文
-    ctx.fillStyle = '#334155';
-    ctx.font = '16px Arial, sans-serif';
-    ctx.textAlign = 'left';
-    
+    ctx.fillStyle = "#334155";
+    ctx.font = "16px Arial, sans-serif";
+    ctx.textAlign = "left";
+
     const lines = this.wrapText(ctx, entry.submission.text, canvas.width - 80);
     lines.forEach((line, index) => {
-      ctx.fillText(line, 40, 140 + (index * 25));
+      ctx.fillText(line, 40, 140 + index * 25);
     });
 
     // 統計情報
-    const statsY = 140 + (lines.length * 25) + 40;
-    ctx.fillStyle = '#64748b';
-    ctx.font = '14px Arial, sans-serif';
-    ctx.fillText(`📊 単語数: ${entry.wordCount}語 | 作成日: ${new Date(entry.createdAt).toLocaleDateString('ja-JP')}`, 40, statsY);
+    const statsY = 140 + lines.length * 25 + 40;
+    ctx.fillStyle = "#64748b";
+    ctx.font = "14px Arial, sans-serif";
+    ctx.fillText(
+      `📊 単語数: ${entry.wordCount}語 | 作成日: ${new Date(
+        entry.createdAt
+      ).toLocaleDateString("ja-JP")}`,
+      40,
+      statsY
+    );
 
     // アプリURL
-    ctx.fillStyle = '#6366f1';
-    ctx.font = '12px Arial, sans-serif';
-    ctx.textAlign = 'center';
+    ctx.fillStyle = "#6366f1";
+    ctx.font = "12px Arial, sans-serif";
+    ctx.textAlign = "center";
     ctx.fillText(this.APP_URL, canvas.width / 2, canvas.height - 30);
 
     // 画像をダウンロード
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.download = `essay-${entry.id}.png`;
-    link.href = canvas.toDataURL('image/png');
+    link.href = canvas.toDataURL("image/png");
     link.click();
   }
 
   /**
    * テキストを行に分割
    */
-  private static wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
-    const words = text.split(' ');
+  private static wrapText(
+    ctx: CanvasRenderingContext2D,
+    text: string,
+    maxWidth: number
+  ): string[] {
+    const words = text.split(" ");
     const lines: string[] = [];
-    let currentLine = '';
+    let currentLine = "";
 
     for (const word of words) {
-      const testLine = currentLine + (currentLine ? ' ' : '') + word;
+      const testLine = currentLine + (currentLine ? " " : "") + word;
       const metrics = ctx.measureText(testLine);
-      
+
       if (metrics.width > maxWidth && currentLine) {
         lines.push(currentLine);
         currentLine = word;
@@ -264,7 +291,7 @@ export class EssayShareManager {
         currentLine = testLine;
       }
     }
-    
+
     if (currentLine) {
       lines.push(currentLine);
     }
@@ -277,22 +304,24 @@ export class EssayShareManager {
    */
   private static generateImageData(entry: EssayHistoryEntry): string {
     // 将来的にOGP画像生成などに使用
-    return '';
+    return "";
   }
 
   /**
    * シェア可能かチェック
    */
   static canShare(): boolean {
-    return typeof navigator !== 'undefined' && 
-           (navigator.share !== undefined || navigator.clipboard !== undefined);
+    return (
+      typeof navigator !== "undefined" &&
+      (navigator.share !== undefined || navigator.clipboard !== undefined)
+    );
   }
 
   /**
    * Web Share API対応チェック
    */
   static supportsWebShare(): boolean {
-    return typeof navigator !== 'undefined' && navigator.share !== undefined;
+    return typeof navigator !== "undefined" && navigator.share !== undefined;
   }
 
   /**
@@ -303,7 +332,7 @@ export class EssayShareManager {
 
     try {
       const content = this.generateShareContent(entry, {
-        platform: 'copy',
+        platform: "copy",
         includePrompt: true,
         includeStats: true,
       });
@@ -315,7 +344,7 @@ export class EssayShareManager {
       });
 
       // シェア回数を増加
-      const { EssayHistoryManager } = await import('./essayHistoryManager');
+      const { EssayHistoryManager } = await import("./essayHistoryManager");
       EssayHistoryManager.incrementShareCount(entry.id);
 
       return true;

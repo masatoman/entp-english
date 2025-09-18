@@ -10,8 +10,8 @@ import CategorySelection from "../components/CategorySelection";
 import CombinedTest from "../components/CombinedTest";
 import DifficultySelection from "../components/DifficultySelection";
 import EnhancedGrammarQuiz from "../components/EnhancedGrammarQuiz";
-import EssayWriting from "../components/EssayWriting";
 import EssayHistory from "../components/EssayHistory";
+import EssayWriting from "../components/EssayWriting";
 import GachaResultScreen from "../components/GachaResultScreen";
 import GachaSystem from "../components/GachaSystem";
 import GrowthDashboard from "../components/GrowthDashboard";
@@ -91,7 +91,10 @@ export function AppRouter() {
             <Route path="/learning/combined-test" element={<CombinedTest />} />
             <Route path="/learning/time-attack" element={<TimeAttackMode />} />
             <Route path="/learning/essay-writing" element={<EssayWriting />} />
-            <Route path="/learning/essay-writing/history" element={<EssayHistory />} />
+            <Route
+              path="/learning/essay-writing/history"
+              element={<EssayHistory />}
+            />
 
             {/* ゲーム機能 */}
             <Route

@@ -86,7 +86,7 @@ export class EssayHistoryManager {
    */
   static getEssayById(id: string): EssayHistoryEntry | null {
     const history = this.getHistory();
-    return history.find(entry => entry.id === id) || null;
+    return history.find((entry) => entry.id === id) || null;
   }
 
   /**
@@ -94,7 +94,7 @@ export class EssayHistoryManager {
    */
   static updateEssay(id: string, updates: Partial<EssayHistoryEntry>): boolean {
     const history = this.getHistory();
-    const index = history.findIndex(entry => entry.id === id);
+    const index = history.findIndex((entry) => entry.id === id);
 
     if (index === -1) return false;
 
@@ -114,7 +114,7 @@ export class EssayHistoryManager {
    */
   static toggleFavorite(id: string): boolean {
     const history = this.getHistory();
-    const entry = history.find(e => e.id === id);
+    const entry = history.find((e) => e.id === id);
 
     if (!entry) return false;
 
@@ -131,7 +131,7 @@ export class EssayHistoryManager {
    */
   static incrementShareCount(id: string): void {
     const history = this.getHistory();
-    const entry = history.find(e => e.id === id);
+    const entry = history.find((e) => e.id === id);
 
     if (entry) {
       entry.shareCount++;
@@ -146,7 +146,7 @@ export class EssayHistoryManager {
    */
   static deleteEssay(id: string): boolean {
     const history = this.getHistory();
-    const filteredHistory = history.filter(entry => entry.id !== id);
+    const filteredHistory = history.filter((entry) => entry.id !== id);
 
     if (filteredHistory.length === history.length) return false;
 
@@ -159,21 +159,25 @@ export class EssayHistoryManager {
    * カテゴリ別履歴取得
    */
   static getHistoryByCategory(category: string): EssayHistoryEntry[] {
-    return this.getHistory().filter(entry => entry.prompt.category === category);
+    return this.getHistory().filter(
+      (entry) => entry.prompt.category === category
+    );
   }
 
   /**
    * 難易度別履歴取得
    */
   static getHistoryByDifficulty(difficulty: string): EssayHistoryEntry[] {
-    return this.getHistory().filter(entry => entry.prompt.difficulty === difficulty);
+    return this.getHistory().filter(
+      (entry) => entry.prompt.difficulty === difficulty
+    );
   }
 
   /**
    * お気に入り履歴取得
    */
   static getFavoriteHistory(): EssayHistoryEntry[] {
-    return this.getHistory().filter(entry => entry.isFavorite);
+    return this.getHistory().filter((entry) => entry.isFavorite);
   }
 
   /**
@@ -192,10 +196,14 @@ export class EssayHistoryManager {
     const stats: EssayStats = {
       totalEssays: history.length,
       totalWords: history.reduce((sum, entry) => sum + entry.wordCount, 0),
-      averageWordCount: history.length > 0 
-        ? Math.round(history.reduce((sum, entry) => sum + entry.wordCount, 0) / history.length)
-        : 0,
-      favoriteCount: history.filter(entry => entry.isFavorite).length,
+      averageWordCount:
+        history.length > 0
+          ? Math.round(
+              history.reduce((sum, entry) => sum + entry.wordCount, 0) /
+                history.length
+            )
+          : 0,
+      favoriteCount: history.filter((entry) => entry.isFavorite).length,
       shareCount: history.reduce((sum, entry) => sum + entry.shareCount, 0),
       byCategory: {},
       byDifficulty: {},
@@ -203,15 +211,16 @@ export class EssayHistoryManager {
     };
 
     // カテゴリ別統計
-    history.forEach(entry => {
+    history.forEach((entry) => {
       const category = entry.prompt.category;
       stats.byCategory[category] = (stats.byCategory[category] || 0) + 1;
     });
 
     // 難易度別統計
-    history.forEach(entry => {
+    history.forEach((entry) => {
       const difficulty = entry.prompt.difficulty;
-      stats.byDifficulty[difficulty] = (stats.byDifficulty[difficulty] || 0) + 1;
+      stats.byDifficulty[difficulty] =
+        (stats.byDifficulty[difficulty] || 0) + 1;
     });
 
     return stats;
@@ -247,7 +256,10 @@ export class EssayHistoryManager {
    * 単語数をカウント
    */
   private static countWords(text: string): number {
-    return text.trim().split(/\s+/).filter(word => word.length > 0).length;
+    return text
+      .trim()
+      .split(/\s+/)
+      .filter((word) => word.length > 0).length;
   }
 
   /**
@@ -257,10 +269,11 @@ export class EssayHistoryManager {
     const history = this.getHistory();
     const lowerQuery = query.toLowerCase();
 
-    return history.filter(entry => 
-      entry.prompt.title.toLowerCase().includes(lowerQuery) ||
-      entry.submission.text.toLowerCase().includes(lowerQuery) ||
-      entry.tags.some(tag => tag.toLowerCase().includes(lowerQuery))
+    return history.filter(
+      (entry) =>
+        entry.prompt.title.toLowerCase().includes(lowerQuery) ||
+        entry.submission.text.toLowerCase().includes(lowerQuery) ||
+        entry.tags.some((tag) => tag.toLowerCase().includes(lowerQuery))
     );
   }
 
@@ -269,7 +282,7 @@ export class EssayHistoryManager {
    */
   static addTag(id: string, tag: string): boolean {
     const history = this.getHistory();
-    const entry = history.find(e => e.id === id);
+    const entry = history.find((e) => e.id === id);
 
     if (!entry || entry.tags.includes(tag)) return false;
 
@@ -285,11 +298,11 @@ export class EssayHistoryManager {
    */
   static removeTag(id: string, tag: string): boolean {
     const history = this.getHistory();
-    const entry = history.find(e => e.id === id);
+    const entry = history.find((e) => e.id === id);
 
     if (!entry) return false;
 
-    entry.tags = entry.tags.filter(t => t !== tag);
+    entry.tags = entry.tags.filter((t) => t !== tag);
     entry.updatedAt = Date.now();
     this.saveHistory(history);
     console.log(`🏷️ 英作文「${id}」からタグ「${tag}」を削除`);
@@ -301,7 +314,7 @@ export class EssayHistoryManager {
    */
   static getAllTags(): string[] {
     const history = this.getHistory();
-    const allTags = history.flatMap(entry => entry.tags);
+    const allTags = history.flatMap((entry) => entry.tags);
     return [...new Set(allTags)].sort();
   }
 }
