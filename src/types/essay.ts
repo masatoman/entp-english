@@ -55,6 +55,14 @@ export interface EssaySubmission {
     vocabularyUsage: number; // 1-5
   };
 
+  // システム評価
+  evaluation?: {
+    grammar: number; // 0-100
+    vocabulary: number; // 0-100
+    fluency: number; // 0-100
+    creativity: number; // 0-100
+  };
+
   // システム分析
   analysis?: {
     wordCount: number;
