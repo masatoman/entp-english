@@ -288,3 +288,4 @@ import Component from "./Component";
   - Lazy Loading 問題の分析と対策
   - Playwright MCP 必須化
   - Router 対応の徹底
+  - **Git Push エラー対応ルール確立**

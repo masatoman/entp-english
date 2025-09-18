@@ -4,7 +4,7 @@ import { AppRouter } from "./routes/AppRouter.tsx";
 import "./styles/gacha-animations.css";
 
 // PWA Service Worker registration (only in production)
-if ("serviceWorker" in navigator && import.meta.env.PROD) {
+if ("serviceWorker" in navigator && (import.meta as any).env?.PROD) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
       .register("/sw.js")
