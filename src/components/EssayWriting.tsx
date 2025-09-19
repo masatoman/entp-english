@@ -65,21 +65,25 @@ export default function EssayWriting() {
   const userVocabulary = userGachaData.ownedCards.map((card) => card.word);
   const preStudyProgress = DataManager.getPreStudyProgress();
   const completedGrammarCategories = ["basic-grammar", "tenses"]; // TODO: 実際の文法クイズ進捗と連携
-  
+
   // 語彙統合分析
-  const vocabularyAnalysis = VocabularyIntegration.analyzeUserVocabulary(userGachaData.ownedCards);
-  const vocabularyCompatiblePrompts = VocabularyIntegration.getVocabularyCompatiblePrompts(
-    availablePrompts, 
-    userVocabulary
+  const vocabularyAnalysis = VocabularyIntegration.analyzeUserVocabulary(
+    userGachaData.ownedCards
   );
+  const vocabularyCompatiblePrompts =
+    VocabularyIntegration.getVocabularyCompatiblePrompts(
+      availablePrompts,
+      userVocabulary
+    );
   const essayHistory = EssayHistoryManager.getHistory();
-  const vocabularyUtilization = VocabularyIntegration.calculateVocabularyUtilizationScore(
-    userGachaData.ownedCards,
-    essayHistory.map(entry => ({ text: entry.submission.text }))
-  );
+  const vocabularyUtilization =
+    VocabularyIntegration.calculateVocabularyUtilizationScore(
+      userGachaData.ownedCards,
+      essayHistory.map((entry) => ({ text: entry.submission.text }))
+    );
   const unusedVocabulary = VocabularyIntegration.getUnusedVocabulary(
     userGachaData.ownedCards,
-    essayHistory.map(entry => ({ text: entry.submission.text }))
+    essayHistory.map((entry) => ({ text: entry.submission.text }))
   );
 
   // 推奨プロンプト計算
@@ -88,11 +92,11 @@ export default function EssayWriting() {
   const grammarRecommendations = getRecommendedPromptsForGrammar(
     completedGrammarCategories
   );
-  
+
   // 語彙活用可能な課題を優先的に推奨
   const vocabularyCompatibleRecommendations = vocabularyCompatiblePrompts
     .slice(0, 3)
-    .map(result => result.prompt);
+    .map((result) => result.prompt);
 
   const recommendedPrompts = [
     ...vocabularyCompatibleRecommendations.slice(0, 2),
@@ -236,9 +240,7 @@ export default function EssayWriting() {
           {/* 語彙活用状況 */}
           <Card className="mb-6 bg-white shadow-sm border">
             <CardHeader className="pb-3">
-              <CardTitle className="text-lg">
-                🔗 語彙活用状況
-              </CardTitle>
+              <CardTitle className="text-lg">🔗 語彙活用状況</CardTitle>
             </CardHeader>
             <CardContent className="pt-0">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-3 text-center">
@@ -267,7 +269,7 @@ export default function EssayWriting() {
                   </div>
                 </div>
               </div>
-              
+
               {/* 詳細情報 */}
               {vocabularyCompatiblePrompts.length > 0 && (
                 <div className="mt-4 p-3 bg-purple-50 rounded-lg">
@@ -275,18 +277,27 @@ export default function EssayWriting() {
                     💡 あなたの語彙を活用できる課題があります
                   </div>
                   <div className="text-xs text-purple-600">
-                    獲得済み語彙「{vocabularyCompatiblePrompts[0].matchingWords.slice(0, 3).join(', ')}」等を使える課題が見つかりました
+                    獲得済み語彙「
+                    {vocabularyCompatiblePrompts[0].matchingWords
+                      .slice(0, 3)
+                      .join(", ")}
+                    」等を使える課題が見つかりました
                   </div>
                 </div>
               )}
-              
+
               {unusedVocabulary.length > 0 && (
                 <div className="mt-2 p-3 bg-orange-50 rounded-lg">
                   <div className="text-sm text-orange-800 font-medium mb-2">
                     🎯 チャレンジ提案
                   </div>
                   <div className="text-xs text-orange-600">
-                    未使用語彙「{unusedVocabulary.slice(0, 3).map(card => card.word).join(', ')}」等を使って英作文に挑戦してみませんか？
+                    未使用語彙「
+                    {unusedVocabulary
+                      .slice(0, 3)
+                      .map((card) => card.word)
+                      .join(", ")}
+                    」等を使って英作文に挑戦してみませんか？
                   </div>
                 </div>
               )}
@@ -303,10 +314,10 @@ export default function EssayWriting() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {recommendedPrompts.map((prompt) => {
                   const vocabMatch = vocabularyCompatiblePrompts.find(
-                    v => v.prompt.id === prompt.id
+                    (v) => v.prompt.id === prompt.id
                   );
                   const isVocabCompatible = !!vocabMatch;
-                  
+
                   return (
                     <SelectionCard
                       key={prompt.id}
@@ -314,16 +325,23 @@ export default function EssayWriting() {
                       title={prompt.title}
                       description={prompt.instruction}
                       detail={`${prompt.category} | ${prompt.difficulty}`}
-                      keyPoints={isVocabCompatible ? [
-                        `語彙活用: ${vocabMatch.matchingWords.slice(0, 2).join(', ')}等`,
-                        `マッチ数: ${vocabMatch.matchCount}語`
-                      ] : undefined}
+                      keyPoints={
+                        isVocabCompatible
+                          ? [
+                              `語彙活用: ${vocabMatch.matchingWords
+                                .slice(0, 2)
+                                .join(", ")}等`,
+                              `マッチ数: ${vocabMatch.matchCount}語`,
+                            ]
+                          : undefined
+                      }
                       icon={isVocabCompatible ? "🎯" : "✨"}
                       difficulty={prompt.difficulty}
                       level={prompt.level}
-                      color={isVocabCompatible 
-                        ? "bg-purple-50 border-purple-200" 
-                        : "bg-yellow-50 border-yellow-200"
+                      color={
+                        isVocabCompatible
+                          ? "bg-purple-50 border-purple-200"
+                          : "bg-yellow-50 border-yellow-200"
                       }
                       isRecommended={true}
                       onClick={() => handlePromptSelect(prompt)}

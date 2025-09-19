@@ -8,17 +8,51 @@ export const preStudyContents: PreStudyContent[] = [
   // 基本文型 (basic-grammar)
   {
     id: "basic-grammar-theory",
-    title: "英文の基本構造",
+    title: "英文の基本構造：SVO完全マスター",
     category: "grammar",
     subcategory: "basic-grammar",
     level: 1,
     contentType: "theory",
-    duration: 300, // 5分
+    duration: 480, // 8分
     difficulty: "beginner",
-    content: `# 英文の基本構造
+    content: `# 英文の基本構造：SVO完全マスター
 
 ## 英語の語順：SVO
 英語は**主語（S）→ 動詞（V）→ 目的語（O）**の順番が基本です。
+
+### 文の要素とは？
+英文は以下の5つの要素で構成されます：
+- **S (Subject)**: 主語 - 「だれが・なにが」
+- **V (Verb)**: 動詞 - 「どうする・どんなだ」
+- **O (Object)**: 目的語 - 「だれを・なにを」
+- **C (Complement)**: 補語 - 「どんな・なに」
+- **M (Modifier)**: 修飾語 - 「いつ・どこで・どのように」
+
+### 基本5文型
+#### 第1文型：SV
+- **構造**: 主語 + 動詞
+- **例**: I sleep. (私は眠る)
+- **特徴**: 動詞だけで意味が完結
+
+#### 第2文型：SVC
+- **構造**: 主語 + 動詞 + 補語
+- **例**: She is beautiful. (彼女は美しい)
+- **特徴**: S = C の関係が成り立つ
+
+#### 第3文型：SVO
+- **構造**: 主語 + 動詞 + 目的語
+- **例**: I study English. (私は英語を勉強する)
+- **特徴**: 最も基本的で頻出のパターン
+
+#### 第4文型：SVOO
+- **構造**: 主語 + 動詞 + 間接目的語 + 直接目的語
+- **例**: I gave him a book. (私は彼に本を与えた)
+- **特徴**: 「だれに・なにを」の関係
+
+#### 第5文型：SVOC
+- **構造**: 主語 + 動詞 + 目的語 + 補語
+- **例**: We call him Tom. (私たちは彼をトムと呼ぶ)
+- **特徴**: O = C の関係が成り立つ
 
 ### be動詞の文
 - **肯定文**: I am a student. (私は学生です)
@@ -30,27 +64,78 @@ export const preStudyContents: PreStudyContent[] = [
 - **否定文**: I don't play soccer. (私はサッカーをしません)
 - **疑問文**: Do you like music? (あなたは音楽が好きですか？)
 
+## ビジネス英語での応用
+- **会議**: The manager **explained** the new policy. (第3文型)
+- **報告**: Sales **are** increasing. (第2文型)
+- **提案**: I **suggest** we **discuss** this matter. (第3文型の複合)
+
 ## なぜ大切？
 この基本構造を理解することで：
 - ✅ 文法クイズの基本文型問題が解けるようになります
 - ✅ 英作文で正しい語順で書けるようになります
-- ✅ TOEICのPart5-6での語順問題に強くなります`,
+- ✅ TOEICのPart5-6での語順問題に強くなります
+- ✅ 複雑な文の構造を理解できるようになります`,
     keyPoints: [
       "英語の基本語順はSVO",
+      "5文型の理解と使い分け",
+      "主語・動詞・目的語・補語の役割",
       "be動詞と一般動詞の使い分け",
       "疑問文・否定文の作り方",
-      "文法クイズ・英作文の基礎",
     ],
     examples: [
       {
         english: "She is a teacher.",
         japanese: "彼女は先生です。",
-        explanation: "be動詞の基本形（主語 + be動詞 + 補語）",
+        explanation: "第2文型（SVC）：be動詞の基本形（主語 + be動詞 + 補語）",
       },
       {
         english: "They study English every day.",
         japanese: "彼らは毎日英語を勉強します。",
-        explanation: "一般動詞の基本形（主語 + 動詞 + 目的語）",
+        explanation: "第3文型（SVO）：一般動詞の基本形（主語 + 動詞 + 目的語）",
+      },
+      {
+        english: "I gave him a present.",
+        japanese: "私は彼にプレゼントを渡しました。",
+        explanation: "第4文型（SVOO）：間接目的語（him）と直接目的語（present）",
+      },
+      {
+        english: "The news made me happy.",
+        japanese: "そのニュースは私を幸せにしました。",
+        explanation: "第5文型（SVOC）：目的語（me）と補語（happy）の関係",
+      },
+    ],
+    toeicExamples: [
+      {
+        part: 5,
+        type: "語順問題",
+        question: "The company _____ its employees excellent benefits.",
+        choices: ["provides", "providing", "provided", "to provide"],
+        correctAnswer: 0,
+        explanation: "第4文型（SVOO）の構造。companyが主語、providesが動詞、employeesが間接目的語、benefitsが直接目的語。"
+      },
+      {
+        part: 5,
+        type: "文型判定",
+        question: "The presentation was _____ by all attendees.",
+        choices: ["impressed", "impressive", "impress", "impressing"],
+        correctAnswer: 1,
+        explanation: "第2文型（SVC）の構造。wasがbe動詞、impressiveが補語（形容詞）として主語presentationの性質を表す。"
+      },
+      {
+        part: 6,
+        type: "語順・文型",
+        question: "Our manager _____ the project successful.",
+        choices: ["considered", "considering", "considers", "consideration"],
+        correctAnswer: 0,
+        explanation: "第5文型（SVOC）の構造。managerが主語、consideredが動詞、projectが目的語、successfulが補語。"
+      },
+      {
+        part: 5,
+        type: "基本文型",
+        question: "The meeting _____ at 3 PM yesterday.",
+        choices: ["started", "starting", "starts", "to start"],
+        correctAnswer: 0,
+        explanation: "第1文型（SV）の構造。meetingが主語、startedが動詞。時制は過去を示すyesterdayに合わせる。"
       },
     ],
     relatedProblems: ["basic-grammar"],
@@ -106,6 +191,42 @@ export const preStudyContents: PreStudyContent[] = [
         english: "You should try this.",
         japanese: "これを試してみるべきです。",
         explanation: "shouldで助言・推奨を表現",
+      },
+      {
+        english: "Could you please send me the report?",
+        japanese: "レポートを送っていただけませんか？",
+        explanation: "couldは丁寧な依頼を表す助動詞",
+      },
+      {
+        english: "We must finish this project by Friday.",
+        japanese: "金曜日までにこのプロジェクトを終わらせなければなりません。",
+        explanation: "mustは強い義務・必要性を表す助動詞",
+      },
+    ],
+    toeicExamples: [
+      {
+        part: 5,
+        type: "助動詞選択",
+        question: "Employees _____ submit their reports by 5 PM today.",
+        choices: ["can", "must", "might", "would"],
+        correctAnswer: 1,
+        explanation: "文脈から「義務・必要性」を表すmustが適切。締切があるため強い義務を示す。"
+      },
+      {
+        part: 5,
+        type: "丁寧表現",
+        question: "_____ you please review this document?",
+        choices: ["Can", "Could", "May", "Might"],
+        correctAnswer: 1,
+        explanation: "Couldは最も丁寧な依頼表現。ビジネスシーンでは特に重要。"
+      },
+      {
+        part: 6,
+        type: "助動詞の意味",
+        question: "The system _____ be updated to improve security.",
+        choices: ["should", "could", "would", "might"],
+        correctAnswer: 0,
+        explanation: "shouldは「〜すべきである」という推奨・義務を表し、セキュリティ改善の必要性を示す。"
       },
     ],
     relatedProblems: ["modals"],
@@ -344,72 +465,6 @@ export const preStudyContents: PreStudyContent[] = [
     prerequisites: ["basic-grammar-theory"],
   },
 
-  // 助動詞 (modals)
-  {
-    id: "modals-theory",
-    title: "助動詞の意味と使い方",
-    category: "grammar",
-    subcategory: "modals",
-    level: 3,
-    contentType: "theory",
-    duration: 360, // 6分
-    difficulty: "intermediate",
-    content: `# 助動詞の意味と使い方
-
-## 助動詞とは？
-動詞に**意味を付け加える**単語です。
-
-### 能力・可能性
-- **can**: できる、可能性がある
-- **could**: できた、可能性があった（過去・丁寧）
-- **例**: I can speak English. (英語を話せます)
-
-### 意志・予測
-- **will**: ～するつもり、～でしょう
-- **would**: ～するつもりだった（過去・丁寧）
-- **例**: It will rain tomorrow. (明日雨が降るでしょう)
-
-### 義務・必要性
-- **must**: ～しなければならない（強い義務）
-- **should**: ～すべき（アドバイス）
-- **have to**: ～しなければならない（外的義務）
-- **例**: You must submit the report. (レポートを提出しなければなりません)
-
-### 許可・依頼
-- **may**: ～してもよい（許可）、～かもしれない（推量）
-- **might**: ～かもしれない（弱い推量）
-- **例**: May I use your phone? (電話をお借りしてもよいですか？)
-
-## ビジネス英語での重要性
-TOEICでは**丁寧な表現**が頻出：
-- Could you help me? (手伝っていただけますか？)
-- Would you like some coffee? (コーヒーはいかがですか？)
-
-## 実践への活用
-- ✅ 文法クイズの助動詞問題で満点
-- ✅ 英作文で適切な丁寧さレベル
-- ✅ TOEICのビジネス場面で高得点`,
-    keyPoints: [
-      "can/could: 能力・可能性",
-      "will/would: 意志・予測",
-      "must/should: 義務・アドバイス",
-      "may/might: 許可・推量",
-    ],
-    examples: [
-      {
-        english: "Could you please send me the document?",
-        japanese: "書類を送っていただけませんか？",
-        explanation: "ビジネスでの丁寧な依頼表現",
-      },
-      {
-        english: "You should check your email regularly.",
-        japanese: "定期的にメールをチェックすべきです。",
-        explanation: "アドバイスを表すshould",
-      },
-    ],
-    relatedProblems: ["modals"],
-    prerequisites: ["basic-grammar-theory", "tenses-theory"],
-  },
 
   // 受動態 (passive)
   {
@@ -476,6 +531,42 @@ TOEICでは**丁寧な表現**が頻出：
         english: "All employees are required to attend the training.",
         japanese: "全従業員は研修への参加が義務付けられています。",
         explanation: "義務を表す受動態",
+      },
+      {
+        english: "The report has been completed by the team.",
+        japanese: "レポートはチームによって完成されました。",
+        explanation: "現在完了の受動態（has been + 過去分詞）",
+      },
+      {
+        english: "The meeting was postponed due to bad weather.",
+        japanese: "悪天候のため会議は延期されました。",
+        explanation: "過去形の受動態（was + 過去分詞）",
+      },
+    ],
+    toeicExamples: [
+      {
+        part: 5,
+        type: "受動態の時制",
+        question: "The new software _____ by the IT department last week.",
+        choices: ["installed", "was installed", "has installed", "will install"],
+        correctAnswer: 1,
+        explanation: "last weekにより過去形が必要。受動態なのでwas installedが正解。"
+      },
+      {
+        part: 6,
+        type: "受動態の形",
+        question: "All documents must _____ before the deadline.",
+        choices: ["submit", "be submitted", "submitting", "to submit"],
+        correctAnswer: 1,
+        explanation: "must + be + 過去分詞で「〜されなければならない」という受動態の義務表現。"
+      },
+      {
+        part: 5,
+        type: "現在完了受動態",
+        question: "The project _____ successfully completed.",
+        choices: ["has", "has been", "have", "have been"],
+        correctAnswer: 1,
+        explanation: "現在完了の受動態はhas/have been + 過去分詞。主語projectは単数なのでhas been。"
       },
     ],
     relatedProblems: ["passive"],
@@ -549,6 +640,42 @@ TOEICでは**丁寧な表現**が頻出：
         japanese: "私たちが使用するソフトウェアはとても効率的です。",
         explanation: "物を修飾するwhich",
       },
+      {
+        english: "This is the office where I work.",
+        japanese: "これは私が働いているオフィスです。",
+        explanation: "場所を修飾する関係副詞where",
+      },
+      {
+        english: "The day when we met was unforgettable.",
+        japanese: "私たちが出会った日は忘れられませんでした。",
+        explanation: "時を修飾する関係副詞when",
+      },
+    ],
+    toeicExamples: [
+      {
+        part: 5,
+        type: "関係代名詞選択",
+        question: "The manager _____ is responsible for sales will attend the meeting.",
+        choices: ["who", "which", "whose", "where"],
+        correctAnswer: 0,
+        explanation: "人（manager）を修飾するのでwhoが正解。関係代名詞が主語の役割を果たす。"
+      },
+      {
+        part: 6,
+        type: "関係詞の省略",
+        question: "The project _____ we completed last month was very successful.",
+        choices: ["that", "what", "who", "where"],
+        correctAnswer: 0,
+        explanation: "物（project）を修飾し、関係代名詞が目的語の役割。thatまたはwhichが使えるが、選択肢にはthatのみ。"
+      },
+      {
+        part: 5,
+        type: "関係副詞",
+        question: "This is the conference room _____ we hold our weekly meetings.",
+        choices: ["that", "which", "where", "when"],
+        correctAnswer: 2,
+        explanation: "場所（conference room）を修飾する関係副詞whereが適切。"
+      },
     ],
     relatedProblems: ["relative"],
     prerequisites: ["basic-grammar-theory", "tenses-theory"],
@@ -621,6 +748,42 @@ TOEICでは**丁寧な表現**が頻出：
         japanese: "その会議に参加できればいいのですが。",
         explanation: "wishを使った願望の表現",
       },
+      {
+        english: "If we had started earlier, we would have finished on time.",
+        japanese: "もっと早く始めていれば、時間通りに終わっていたでしょう。",
+        explanation: "仮定法過去完了：過去の非現実的な仮定",
+      },
+      {
+        english: "I would appreciate it if you could help me.",
+        japanese: "手伝っていただければ幸いです。",
+        explanation: "ビジネスでの丁寧な依頼表現",
+      },
+    ],
+    toeicExamples: [
+      {
+        part: 5,
+        type: "仮定法の時制",
+        question: "If I _____ more time, I would review the proposal again.",
+        choices: ["have", "had", "will have", "would have"],
+        correctAnswer: 1,
+        explanation: "仮定法過去の構文。If + 主語 + 過去形, 主語 + would + 動詞の原形。"
+      },
+      {
+        part: 6,
+        type: "wish構文",
+        question: "I wish the meeting _____ shorter.",
+        choices: ["is", "was", "were", "will be"],
+        correctAnswer: 2,
+        explanation: "I wish + 仮定法過去。主語がthe meetingでも仮定法ではwereを使用。"
+      },
+      {
+        part: 5,
+        type: "丁寧な依頼",
+        question: "I would appreciate it if you _____ send me the data.",
+        choices: ["can", "could", "will", "would"],
+        correctAnswer: 1,
+        explanation: "I would appreciate if + 仮定法過去。丁寧な依頼表現でcouldを使用。"
+      },
     ],
     relatedProblems: ["subjunctive"],
     prerequisites: ["basic-grammar-theory", "tenses-theory", "modals-theory"],
@@ -691,6 +854,42 @@ TOEICでは**丁寧な表現**が頻出：
         english: "This is the best solution we can offer.",
         japanese: "これは私たちが提供できる最良の解決策です。",
         explanation: "最上級での強調表現",
+      },
+      {
+        english: "The new system is as efficient as the old one.",
+        japanese: "新システムは旧システムと同じくらい効率的です。",
+        explanation: "同等比較（as...as）の表現",
+      },
+      {
+        english: "The more we practice, the better we become.",
+        japanese: "練習すればするほど、上達します。",
+        explanation: "the + 比較級, the + 比較級の構文",
+      },
+    ],
+    toeicExamples: [
+      {
+        part: 5,
+        type: "比較級選択",
+        question: "Our new product is _____ than our competitors'.",
+        choices: ["more popular", "most popular", "popular", "popularity"],
+        correctAnswer: 0,
+        explanation: "thanがあるので比較級が必要。popularは3音節なのでmore popularが正解。"
+      },
+      {
+        part: 6,
+        type: "最上級",
+        question: "This is _____ important project of the year.",
+        choices: ["more", "most", "the more", "the most"],
+        correctAnswer: 3,
+        explanation: "最上級はthe + mostまたはthe + -est。importantは3音節なのでthe most important。"
+      },
+      {
+        part: 5,
+        type: "同等比較",
+        question: "The new office is _____ spacious _____ the old one.",
+        choices: ["as...as", "more...than", "so...as", "too...to"],
+        correctAnswer: 0,
+        explanation: "同等比較はas + 形容詞 + asの構文。「〜と同じくらい」を表す。"
       },
     ],
     relatedProblems: ["comparison"],
@@ -770,6 +969,42 @@ TOEICでは**丁寧な表現**が頻出：
         japanese: "新しいスキルを学ぶことに興味があります。",
         explanation: "前置詞の後の動名詞",
       },
+      {
+        english: "Having finished the report, she went home.",
+        japanese: "レポートを完成させてから、彼女は帰宅しました。",
+        explanation: "完了を表す分詞構文（Having + 過去分詞）",
+      },
+      {
+        english: "The broken computer needs to be repaired.",
+        japanese: "壊れたコンピューターは修理される必要があります。",
+        explanation: "過去分詞の形容詞的用法",
+      },
+    ],
+    toeicExamples: [
+      {
+        part: 5,
+        type: "分詞の選択",
+        question: "The _____ presentation impressed all the clients.",
+        choices: ["prepared", "preparing", "preparation", "preparatory"],
+        correctAnswer: 0,
+        explanation: "過去分詞preparedが名詞presentationを修飾。「準備された」という受動的な意味。"
+      },
+      {
+        part: 6,
+        type: "動名詞vs不定詞",
+        question: "Thank you for _____ us with this project.",
+        choices: ["help", "helping", "to help", "helped"],
+        correctAnswer: 1,
+        explanation: "前置詞forの後は動名詞。Thank you for + 動名詞は感謝の定型表現。"
+      },
+      {
+        part: 5,
+        type: "分詞構文",
+        question: "_____ the meeting early, I had time to review the documents.",
+        choices: ["Finish", "Finished", "Finishing", "To finish"],
+        correctAnswer: 2,
+        explanation: "分詞構文で時間的前後関係を表現。主語Iが動作の主体なので現在分詞Finishing。"
+      },
     ],
     relatedProblems: ["participle"],
     prerequisites: ["basic-grammar-theory", "tenses-theory", "passive-theory"],
@@ -843,6 +1078,42 @@ TOEICでは**丁寧な表現**が頻出：
         japanese: "予算について話し合う会議があります。",
         explanation: "形容詞的用法：meetingを修飾",
       },
+      {
+        english: "To succeed in business, you need good communication skills.",
+        japanese: "ビジネスで成功するには、良いコミュニケーションスキルが必要です。",
+        explanation: "副詞的用法：目的を表す不定詞",
+      },
+      {
+        english: "It's important to meet the deadline.",
+        japanese: "締切を守ることが重要です。",
+        explanation: "It is + 形容詞 + to不定詞の構文",
+      },
+    ],
+    toeicExamples: [
+      {
+        part: 5,
+        type: "不定詞の用法",
+        question: "The company decided _____ a new branch office.",
+        choices: ["open", "to open", "opening", "opened"],
+        correctAnswer: 1,
+        explanation: "decide to doの構文。「〜することを決める」という意味で不定詞を使用。"
+      },
+      {
+        part: 6,
+        type: "目的の不定詞",
+        question: "We hired a consultant _____ improve our marketing strategy.",
+        choices: ["for", "to", "so", "in order"],
+        correctAnswer: 1,
+        explanation: "目的を表す不定詞。「〜するために」という意味でto + 動詞の原形。"
+      },
+      {
+        part: 5,
+        type: "It is...to構文",
+        question: "It is essential _____ the instructions carefully.",
+        choices: ["follow", "to follow", "following", "followed"],
+        correctAnswer: 1,
+        explanation: "It is + 形容詞 + to不定詞の構文。「〜することは...だ」という意味。"
+      },
     ],
     relatedProblems: ["infinitive"],
     prerequisites: ["basic-grammar-theory", "tenses-theory"],
@@ -912,6 +1183,42 @@ TOEICでは**丁寧な表現**が頻出：
         english: "We need to optimize our workflow.",
         japanese: "ワークフローを最適化する必要があります。",
         explanation: "中級語彙optimizeの実用例",
+      },
+      {
+        english: "The acquisition of new technology will enhance productivity.",
+        japanese: "新技術の習得は生産性を向上させるでしょう。",
+        explanation: "上級語彙acquisition, enhanceの使用例",
+      },
+      {
+        english: "We implemented an innovative solution to reduce costs.",
+        japanese: "コストを削減するために革新的な解決策を実装しました。",
+        explanation: "ビジネス語彙implemented, innovative, solutionの使用例",
+      },
+    ],
+    toeicExamples: [
+      {
+        part: 5,
+        type: "語彙選択",
+        question: "The new software will _____ our efficiency significantly.",
+        choices: ["enhance", "increase", "improve", "develop"],
+        correctAnswer: 0,
+        explanation: "enhanceは「質を高める・向上させる」という意味で、効率性の文脈に最適。"
+      },
+      {
+        part: 6,
+        type: "ビジネス語彙",
+        question: "The company's _____ of the new technology was successful.",
+        choices: ["implementation", "implement", "implementing", "implemented"],
+        correctAnswer: 0,
+        explanation: "所有格（company's）の後には名詞が必要。implementationが正解。"
+      },
+      {
+        part: 5,
+        type: "類義語選択",
+        question: "The _____ report provided detailed analysis of market trends.",
+        choices: ["comprehensive", "complete", "total", "whole"],
+        correctAnswer: 0,
+        explanation: "comprehensiveは「包括的な・詳細な」という意味で、レポートの文脈に最適。"
       },
     ],
     relatedProblems: ["vocabulary"],
@@ -993,6 +1300,37 @@ TOEICでは**丁寧な表現**が頻出：
         japanese:
           "私たちのチームが作成した包括的なレポートは、貴重な洞察を提供します。",
         explanation: "関係詞 + 上級語彙での複雑な文構造",
+      },
+      {
+        english: "To achieve our goals, we must collaborate effectively.",
+        japanese: "目標を達成するために、効果的に協力しなければなりません。",
+        explanation: "目的の不定詞 + ビジネス語彙の組み合わせ",
+      },
+    ],
+    toeicExamples: [
+      {
+        part: 1,
+        type: "英作文基礎",
+        question: "Write a sentence describing a business meeting using past tense.",
+        choices: ["The meeting was held yesterday.", "The meeting is holding yesterday.", "The meeting will hold yesterday.", "The meeting holds yesterday."],
+        correctAnswer: 0,
+        explanation: "過去の出来事なので過去形was heldが正解。meetingは「開催される」ので受動態を使用。"
+      },
+      {
+        part: 2,
+        type: "文章構成",
+        question: "Choose the best way to combine these ideas: 'The project was successful.' 'We completed it on time.'",
+        choices: ["The project was successful, and we completed it on time.", "The project was successful because we completed it on time.", "We completed the successful project on time.", "The project, which we completed on time, was successful."],
+        correctAnswer: 3,
+        explanation: "関係詞を使って2つの文を自然に結合。「時間通りに完成させたプロジェクトは成功だった」"
+      },
+      {
+        part: 3,
+        type: "語彙活用",
+        question: "Write a sentence using 'implement' and 'strategy' in a business context.",
+        choices: ["We will implement the new strategy next month.", "The strategy implements next month.", "Implementation strategy next month.", "Strategy implementing next month."],
+        correctAnswer: 0,
+        explanation: "implementは他動詞で「実行する」。主語 + implement + 目的語の第3文型が正解。"
       },
     ],
     relatedProblems: ["writing"],
