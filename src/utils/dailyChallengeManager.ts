@@ -1,4 +1,5 @@
 import { DailyChallenge, DailyChallengeProgress } from "../types";
+import { DataManager } from "./dataManager";
 
 const DAILY_CHALLENGE_KEY = "entp-daily-challenge";
 
@@ -364,6 +365,9 @@ export class DailyChallengeManager {
   } {
     const progress = this.getProgress();
     const today = this.getTodayString();
+
+    // ユーザー統計を取得
+    const userStats = DataManager.getUserStats();
 
     // 完了率計算（過去30日間）
     const thirtyDaysAgo = new Date();
