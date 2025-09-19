@@ -23,6 +23,7 @@ import { EssayHistoryManager } from "../utils/essayHistoryManager";
 import { EssayShareManager } from "../utils/essayShareManager";
 import { GachaSystem } from "../utils/gachaSystem";
 import { getLevelManager } from "../utils/levelManager";
+import { VocabularyIntegration } from "../utils/vocabularyIntegration";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
@@ -64,6 +65,22 @@ export default function EssayWriting() {
   const userVocabulary = userGachaData.ownedCards.map((card) => card.word);
   const preStudyProgress = DataManager.getPreStudyProgress();
   const completedGrammarCategories = ["basic-grammar", "tenses"]; // TODO: 実際の文法クイズ進捗と連携
+  
+  // 語彙統合分析
+  const vocabularyAnalysis = VocabularyIntegration.analyzeUserVocabulary(userGachaData.ownedCards);
+  const vocabularyCompatiblePrompts = VocabularyIntegration.getVocabularyCompatiblePrompts(
+    availablePrompts, 
+    userVocabulary
+  );
+  const essayHistory = EssayHistoryManager.getHistory();
+  const vocabularyUtilization = VocabularyIntegration.calculateVocabularyUtilizationScore(
+    userGachaData.ownedCards,
+    essayHistory.map(entry => ({ text: entry.submission.text }))
+  );
+  const unusedVocabulary = VocabularyIntegration.getUnusedVocabulary(
+    userGachaData.ownedCards,
+    essayHistory.map(entry => ({ text: entry.submission.text }))
+  );
 
   // 推奨プロンプト計算
   const vocabularyRecommendations =
@@ -71,10 +88,16 @@ export default function EssayWriting() {
   const grammarRecommendations = getRecommendedPromptsForGrammar(
     completedGrammarCategories
   );
+  
+  // 語彙活用可能な課題を優先的に推奨
+  const vocabularyCompatibleRecommendations = vocabularyCompatiblePrompts
+    .slice(0, 3)
+    .map(result => result.prompt);
 
   const recommendedPrompts = [
-    ...vocabularyRecommendations.slice(0, 2),
-    ...grammarRecommendations.slice(0, 2),
+    ...vocabularyCompatibleRecommendations.slice(0, 2),
+    ...vocabularyRecommendations.slice(0, 1),
+    ...grammarRecommendations.slice(0, 1),
   ].filter(
     (prompt, index, self) => self.findIndex((p) => p.id === prompt.id) === index
   );
@@ -210,31 +233,64 @@ export default function EssayWriting() {
             </Button>
           </div>
 
-          {/* 相乗効果統計 */}
-          <Card className="mb-8 p-6 bg-white shadow-sm border">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">
-              🔗 学習連携状況
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-              <div>
-                <div className="text-gray-600">獲得語彙カード</div>
-                <div className="font-bold text-purple-600">
-                  {userGachaData.ownedCards.length}枚
+          {/* 語彙活用状況 */}
+          <Card className="mb-6 bg-white shadow-sm border">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">
+                🔗 語彙活用状況
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-3 text-center">
+                <div>
+                  <div className="text-xs text-gray-600">活用可能課題</div>
+                  <div className="font-bold text-purple-600">
+                    {vocabularyCompatiblePrompts.length}件
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs text-gray-600">語彙活用率</div>
+                  <div className="font-bold text-blue-600">
+                    {vocabularyUtilization.utilizationRate.toFixed(1)}%
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs text-gray-600">未使用語彙</div>
+                  <div className="font-bold text-orange-600">
+                    {unusedVocabulary.length}語
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs text-gray-600">最近使用</div>
+                  <div className="font-bold text-green-600">
+                    {vocabularyUtilization.recentlyUsed.length}語
+                  </div>
                 </div>
               </div>
-              <div>
-                <div className="text-gray-600">完了した事前学習</div>
-                <div className="font-bold text-blue-600">
-                  {preStudyProgress.completedContents.length}件
+              
+              {/* 詳細情報 */}
+              {vocabularyCompatiblePrompts.length > 0 && (
+                <div className="mt-4 p-3 bg-purple-50 rounded-lg">
+                  <div className="text-sm text-purple-800 font-medium mb-2">
+                    💡 あなたの語彙を活用できる課題があります
+                  </div>
+                  <div className="text-xs text-purple-600">
+                    獲得済み語彙「{vocabularyCompatiblePrompts[0].matchingWords.slice(0, 3).join(', ')}」等を使える課題が見つかりました
+                  </div>
                 </div>
-              </div>
-              <div>
-                <div className="text-gray-600">文法カテゴリー</div>
-                <div className="font-bold text-green-600">
-                  {completedGrammarCategories.length}分野
+              )}
+              
+              {unusedVocabulary.length > 0 && (
+                <div className="mt-2 p-3 bg-orange-50 rounded-lg">
+                  <div className="text-sm text-orange-800 font-medium mb-2">
+                    🎯 チャレンジ提案
+                  </div>
+                  <div className="text-xs text-orange-600">
+                    未使用語彙「{unusedVocabulary.slice(0, 3).map(card => card.word).join(', ')}」等を使って英作文に挑戦してみませんか？
+                  </div>
                 </div>
-              </div>
-            </div>
+              )}
+            </CardContent>
           </Card>
 
           {/* 推奨プロンプト */}
@@ -245,21 +301,35 @@ export default function EssayWriting() {
                 あなたにおすすめの英作文
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {recommendedPrompts.map((prompt) => (
-                  <SelectionCard
-                    key={prompt.id}
-                    id={prompt.id}
-                    title={prompt.title}
-                    description={prompt.instruction}
-                    detail={`${prompt.category} | ${prompt.difficulty}`}
-                    icon="✨"
-                    difficulty={prompt.difficulty}
-                    level={prompt.level}
-                    color="bg-yellow-50 border-yellow-200"
-                    isRecommended={true}
-                    onClick={() => handlePromptSelect(prompt)}
-                  />
-                ))}
+                {recommendedPrompts.map((prompt) => {
+                  const vocabMatch = vocabularyCompatiblePrompts.find(
+                    v => v.prompt.id === prompt.id
+                  );
+                  const isVocabCompatible = !!vocabMatch;
+                  
+                  return (
+                    <SelectionCard
+                      key={prompt.id}
+                      id={prompt.id}
+                      title={prompt.title}
+                      description={prompt.instruction}
+                      detail={`${prompt.category} | ${prompt.difficulty}`}
+                      keyPoints={isVocabCompatible ? [
+                        `語彙活用: ${vocabMatch.matchingWords.slice(0, 2).join(', ')}等`,
+                        `マッチ数: ${vocabMatch.matchCount}語`
+                      ] : undefined}
+                      icon={isVocabCompatible ? "🎯" : "✨"}
+                      difficulty={prompt.difficulty}
+                      level={prompt.level}
+                      color={isVocabCompatible 
+                        ? "bg-purple-50 border-purple-200" 
+                        : "bg-yellow-50 border-yellow-200"
+                      }
+                      isRecommended={true}
+                      onClick={() => handlePromptSelect(prompt)}
+                    />
+                  );
+                })}
               </div>
             </div>
           )}

@@ -142,44 +142,44 @@ export default function EssayHistory() {
 
         {/* 統計サマリー */}
         {stats && (
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="w-5 h-5 text-indigo-600" />
+          <Card className="mb-4">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <FileText className="w-4 h-4 text-indigo-600" />
                 学習統計
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <CardContent className="pt-0">
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-indigo-600">
+                  <div className="text-xl font-bold text-indigo-600">
                     {stats.totalEssays}
                   </div>
-                  <div className="text-sm text-gray-600">総作文数</div>
+                  <div className="text-xs text-gray-600">総作文数</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-green-600">
+                  <div className="text-xl font-bold text-green-600">
                     {stats.totalWords}
                   </div>
-                  <div className="text-sm text-gray-600">総単語数</div>
+                  <div className="text-xs text-gray-600">総単語数</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-600">
+                  <div className="text-xl font-bold text-blue-600">
                     {stats.averageWordCount}
                   </div>
-                  <div className="text-sm text-gray-600">平均単語数</div>
+                  <div className="text-xs text-gray-600">平均単語数</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-yellow-600">
+                  <div className="text-xl font-bold text-yellow-600">
                     {stats.favoriteCount}
                   </div>
-                  <div className="text-sm text-gray-600">お気に入り</div>
+                  <div className="text-xs text-gray-600">お気に入り</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-600">
+                  <div className="text-xl font-bold text-purple-600">
                     {stats.shareCount}
                   </div>
-                  <div className="text-sm text-gray-600">シェア回数</div>
+                  <div className="text-xs text-gray-600">シェア回数</div>
                 </div>
               </div>
             </CardContent>
