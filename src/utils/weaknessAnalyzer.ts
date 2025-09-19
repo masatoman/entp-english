@@ -3,19 +3,19 @@
  * ユーザーの学習データを詳細分析し、具体的な弱点と改善策を提供
  */
 
-import { UserStats } from '../data/achievements';
-import { LearningProgress } from '../types/learningItem';
-import { logLearning, logDebug } from './logger';
-import { handleLearningError } from './errorHandler';
+import { UserStats } from "../data/achievements";
+import { LearningProgress } from "../types/learningItem";
+import { handleLearningError } from "./errorHandler";
+import { logLearning } from "./logger";
 
 export interface WeaknessArea {
   category: string;
   subcategory?: string;
-  severity: 'mild' | 'moderate' | 'severe';
+  severity: "mild" | "moderate" | "severe";
   confidence: number; // 0-100の分析信頼度
   accuracy: number; // この分野での正答率
   frequency: number; // 間違いの頻度
-  recentTrend: 'improving' | 'stable' | 'worsening';
+  recentTrend: "improving" | "stable" | "worsening";
   specificIssues: string[];
   recommendations: string[];
 }
@@ -26,15 +26,15 @@ export interface StrengthArea {
   proficiency: number; // 0-100の習熟度
   consistency: number; // 一貫性スコア
   recentPerformance: number;
-  masteryLevel: 'basic' | 'intermediate' | 'advanced' | 'expert';
+  masteryLevel: "basic" | "intermediate" | "advanced" | "expert";
 }
 
 export interface LearningPattern {
   preferredTimeOfDay: number[]; // 最適な学習時間帯
   optimalSessionLength: number; // 最適なセッション長（分）
-  learningSpeed: 'slow' | 'normal' | 'fast';
+  learningSpeed: "slow" | "normal" | "fast";
   retentionRate: number; // 記憶保持率
-  difficultyProgression: 'gradual' | 'normal' | 'aggressive';
+  difficultyProgression: "gradual" | "normal" | "aggressive";
   motivationalFactors: string[];
 }
 
@@ -51,17 +51,17 @@ export interface ComprehensiveAnalysis {
 }
 
 export interface PrioritizedAction {
-  priority: 'high' | 'medium' | 'low';
+  priority: "high" | "medium" | "low";
   category: string;
   action: string;
   reason: string;
-  estimatedEffort: 'low' | 'medium' | 'high';
-  expectedImpact: 'low' | 'medium' | 'high';
+  estimatedEffort: "low" | "medium" | "high";
+  expectedImpact: "low" | "medium" | "high";
   timeframe: string;
 }
 
 export class WeaknessAnalyzer {
-  private static readonly ANALYSIS_KEY = 'entp-weakness-analysis';
+  private static readonly ANALYSIS_KEY = "entp-weakness-analysis";
   private static readonly MIN_DATA_POINTS = 10; // 分析に必要な最小データ数
   private static readonly WEAKNESS_THRESHOLD = 60; // 弱点判定の閾値（正答率%）
 
@@ -75,27 +75,48 @@ export class WeaknessAnalyzer {
     recentSessions: any[]
   ): ComprehensiveAnalysis {
     try {
-      logLearning(`包括的分析開始: ${userId}`, { 
+      logLearning(`包括的分析開始: ${userId}`, {
         progressItems: learningProgress.length,
-        sessions: recentSessions.length 
+        sessions: recentSessions.length,
       });
 
       const analysisDate = new Date().toISOString();
 
       // 各分析を実行
-      const weaknessAreas = this.analyzeWeaknessAreas(userStats, learningProgress, recentSessions);
-      const strengthAreas = this.analyzeStrengthAreas(userStats, learningProgress, recentSessions);
+      const weaknessAreas = this.analyzeWeaknessAreas(
+        userStats,
+        learningProgress,
+        recentSessions
+      );
+      const strengthAreas = this.analyzeStrengthAreas(
+        userStats,
+        learningProgress,
+        recentSessions
+      );
       const learningPattern = this.analyzeLearningPattern(recentSessions);
-      const overallScore = this.calculateOverallScore(userStats, weaknessAreas, strengthAreas);
-      
+      const overallScore = this.calculateOverallScore(
+        userStats,
+        weaknessAreas,
+        strengthAreas
+      );
+
       // 優先アクションを生成
-      const prioritizedActions = this.generatePrioritizedActions(weaknessAreas, strengthAreas, learningPattern);
-      
+      const prioritizedActions = this.generatePrioritizedActions(
+        weaknessAreas,
+        strengthAreas,
+        learningPattern
+      );
+
       // 長期目標を設定
-      const longTermGoals = this.generateLongTermGoals(weaknessAreas, strengthAreas, overallScore);
-      
+      const longTermGoals = this.generateLongTermGoals(
+        weaknessAreas,
+        strengthAreas,
+        overallScore
+      );
+
       // 改善予想時間を計算
-      const estimatedImprovementTime = this.estimateImprovementTime(weaknessAreas);
+      const estimatedImprovementTime =
+        this.estimateImprovementTime(weaknessAreas);
 
       const analysis: ComprehensiveAnalysis = {
         userId,
@@ -106,21 +127,25 @@ export class WeaknessAnalyzer {
         learningPattern,
         prioritizedActions,
         longTermGoals,
-        estimatedImprovementTime
+        estimatedImprovementTime,
       };
 
       this.saveAnalysis(userId, analysis);
-      
+
       logLearning(`包括的分析完了: ${userId}`, {
         overallScore,
         weaknessCount: weaknessAreas.length,
         strengthCount: strengthAreas.length,
-        highPriorityActions: prioritizedActions.filter(a => a.priority === 'high').length
+        highPriorityActions: prioritizedActions.filter(
+          (a) => a.priority === "high"
+        ).length,
       });
 
       return analysis;
     } catch (error) {
-      handleLearningError('perform comprehensive analysis', error as Error, { userId });
+      handleLearningError("perform comprehensive analysis", error as Error, {
+        userId,
+      });
       return this.getDefaultAnalysis(userId);
     }
   }
@@ -137,12 +162,20 @@ export class WeaknessAnalyzer {
 
     try {
       // カテゴリー別の成績分析
-      const categoryPerformance = this.analyzeCategoryPerformance(recentSessions);
-      
+      const categoryPerformance =
+        this.analyzeCategoryPerformance(recentSessions);
+
       // 各カテゴリーの弱点を特定
       Object.entries(categoryPerformance).forEach(([category, performance]) => {
-        if (performance.accuracy < this.WEAKNESS_THRESHOLD && performance.sampleSize >= 5) {
-          const weakness = this.createWeaknessArea(category, performance, recentSessions);
+        if (
+          performance.accuracy < this.WEAKNESS_THRESHOLD &&
+          performance.sampleSize >= 5
+        ) {
+          const weakness = this.createWeaknessArea(
+            category,
+            performance,
+            recentSessions
+          );
           if (weakness) {
             weaknessAreas.push(weakness);
           }
@@ -154,7 +187,8 @@ export class WeaknessAnalyzer {
       weaknessAreas.push(...grammarWeaknesses);
 
       // 語彙特有の弱点分析
-      const vocabularyWeaknesses = this.analyzeVocabularyWeaknesses(learningProgress);
+      const vocabularyWeaknesses =
+        this.analyzeVocabularyWeaknesses(learningProgress);
       weaknessAreas.push(...vocabularyWeaknesses);
 
       // 重要度でソート
@@ -165,7 +199,7 @@ export class WeaknessAnalyzer {
 
       return weaknessAreas.slice(0, 8); // 上位8つの弱点
     } catch (error) {
-      handleLearningError('analyze weakness areas', error as Error);
+      handleLearningError("analyze weakness areas", error as Error);
       return [];
     }
   }
@@ -181,7 +215,8 @@ export class WeaknessAnalyzer {
     const strengthAreas: StrengthArea[] = [];
 
     try {
-      const categoryPerformance = this.analyzeCategoryPerformance(recentSessions);
+      const categoryPerformance =
+        this.analyzeCategoryPerformance(recentSessions);
 
       Object.entries(categoryPerformance).forEach(([category, performance]) => {
         if (performance.accuracy >= 80 && performance.sampleSize >= 5) {
@@ -190,7 +225,10 @@ export class WeaknessAnalyzer {
             proficiency: performance.accuracy,
             consistency: performance.consistency,
             recentPerformance: performance.recentTrend,
-            masteryLevel: this.determineMasteryLevel(performance.accuracy, performance.consistency)
+            masteryLevel: this.determineMasteryLevel(
+              performance.accuracy,
+              performance.consistency
+            ),
           };
           strengthAreas.push(strength);
         }
@@ -201,7 +239,7 @@ export class WeaknessAnalyzer {
 
       return strengthAreas.slice(0, 5); // 上位5つの強み
     } catch (error) {
-      handleLearningError('analyze strength areas', error as Error);
+      handleLearningError("analyze strength areas", error as Error);
       return [];
     }
   }
@@ -216,11 +254,14 @@ export class WeaknessAnalyzer {
       const preferredTimeOfDay = Object.entries(timePerformance)
         .filter(([, performance]) => performance.accuracy > 75)
         .map(([hour]) => parseInt(hour))
-        .sort((a, b) => timePerformance[b].accuracy - timePerformance[a].accuracy)
+        .sort(
+          (a, b) => timePerformance[b].accuracy - timePerformance[a].accuracy
+        )
         .slice(0, 3);
 
       // セッション長分析
-      const optimalSessionLength = this.analyzeOptimalSessionLength(recentSessions);
+      const optimalSessionLength =
+        this.analyzeOptimalSessionLength(recentSessions);
 
       // 学習速度分析
       const learningSpeed = this.analyzeLearningSpeed(recentSessions);
@@ -229,10 +270,12 @@ export class WeaknessAnalyzer {
       const retentionRate = this.analyzeRetentionRate(recentSessions);
 
       // 難易度進行分析
-      const difficultyProgression = this.analyzeDifficultyProgression(recentSessions);
+      const difficultyProgression =
+        this.analyzeDifficultyProgression(recentSessions);
 
       // モチベーション要因分析
-      const motivationalFactors = this.analyzeMotivationalFactors(recentSessions);
+      const motivationalFactors =
+        this.analyzeMotivationalFactors(recentSessions);
 
       return {
         preferredTimeOfDay,
@@ -240,10 +283,10 @@ export class WeaknessAnalyzer {
         learningSpeed,
         retentionRate,
         difficultyProgression,
-        motivationalFactors
+        motivationalFactors,
       };
     } catch (error) {
-      handleLearningError('analyze learning pattern', error as Error);
+      handleLearningError("analyze learning pattern", error as Error);
       return this.getDefaultLearningPattern();
     }
   }
@@ -261,31 +304,31 @@ export class WeaknessAnalyzer {
     try {
       // 重大な弱点への対応
       weaknessAreas
-        .filter(w => w.severity === 'severe')
-        .forEach(weakness => {
+        .filter((w) => w.severity === "severe")
+        .forEach((weakness) => {
           actions.push({
-            priority: 'high',
+            priority: "high",
             category: weakness.category,
             action: `${weakness.category}の基礎を重点的に復習する`,
             reason: `正答率${weakness.accuracy}%と大幅に低下しています`,
-            estimatedEffort: 'high',
-            expectedImpact: 'high',
-            timeframe: '2-3週間'
+            estimatedEffort: "high",
+            expectedImpact: "high",
+            timeframe: "2-3週間",
           });
         });
 
       // 中程度の弱点への対応
       weaknessAreas
-        .filter(w => w.severity === 'moderate')
-        .forEach(weakness => {
+        .filter((w) => w.severity === "moderate")
+        .forEach((weakness) => {
           actions.push({
-            priority: 'medium',
+            priority: "medium",
             category: weakness.category,
             action: `${weakness.category}の問題練習を増やす`,
             reason: `改善の余地があります（正答率${weakness.accuracy}%）`,
-            estimatedEffort: 'medium',
-            expectedImpact: 'medium',
-            timeframe: '3-4週間'
+            estimatedEffort: "medium",
+            expectedImpact: "medium",
+            timeframe: "3-4週間",
           });
         });
 
@@ -293,26 +336,26 @@ export class WeaknessAnalyzer {
       if (strengthAreas.length > 0) {
         const topStrength = strengthAreas[0];
         actions.push({
-          priority: 'medium',
+          priority: "medium",
           category: topStrength.category,
           action: `${topStrength.category}の上級問題に挑戦する`,
           reason: `この分野は得意なので更なる向上が期待できます`,
-          estimatedEffort: 'low',
-          expectedImpact: 'medium',
-          timeframe: '1-2週間'
+          estimatedEffort: "low",
+          expectedImpact: "medium",
+          timeframe: "1-2週間",
         });
       }
 
       // 学習パターンに基づく改善
       if (learningPattern.retentionRate < 70) {
         actions.push({
-          priority: 'high',
-          category: 'study-method',
-          action: '復習間隔を短くして記憶定着を改善する',
+          priority: "high",
+          category: "study-method",
+          action: "復習間隔を短くして記憶定着を改善する",
           reason: `記憶保持率が${learningPattern.retentionRate}%と低めです`,
-          estimatedEffort: 'low',
-          expectedImpact: 'high',
-          timeframe: '継続的'
+          estimatedEffort: "low",
+          expectedImpact: "high",
+          timeframe: "継続的",
         });
       }
 
@@ -322,7 +365,7 @@ export class WeaknessAnalyzer {
         return priorityWeight[b.priority] - priorityWeight[a.priority];
       });
     } catch (error) {
-      handleLearningError('generate prioritized actions', error as Error);
+      handleLearningError("generate prioritized actions", error as Error);
       return [];
     }
   }
@@ -340,11 +383,11 @@ export class WeaknessAnalyzer {
     try {
       // 全体スコアに基づく目標
       if (overallScore < 60) {
-        goals.push('3ヶ月以内に全体的な成績を70%以上に向上させる');
+        goals.push("3ヶ月以内に全体的な成績を70%以上に向上させる");
       } else if (overallScore < 80) {
-        goals.push('2ヶ月以内に全体的な成績を85%以上に向上させる');
+        goals.push("2ヶ月以内に全体的な成績を85%以上に向上させる");
       } else {
-        goals.push('現在の高いレベルを維持しながら、さらなる専門性を追求する');
+        goals.push("現在の高いレベルを維持しながら、さらなる専門性を追求する");
       }
 
       // 弱点に基づく目標
@@ -356,30 +399,34 @@ export class WeaknessAnalyzer {
       // 強みに基づく目標
       if (strengthAreas.length > 0) {
         const topStrength = strengthAreas[0];
-        if (topStrength.masteryLevel !== 'expert') {
-          goals.push(`${topStrength.category}分野でエキスパートレベルに到達する`);
+        if (topStrength.masteryLevel !== "expert") {
+          goals.push(
+            `${topStrength.category}分野でエキスパートレベルに到達する`
+          );
         }
       }
 
       // 総合的な目標
-      goals.push('学習の一貫性を保ち、週3回以上の学習習慣を確立する');
-      goals.push('1日平均15分以上の効率的な学習を継続する');
+      goals.push("学習の一貫性を保ち、週3回以上の学習習慣を確立する");
+      goals.push("1日平均15分以上の効率的な学習を継続する");
 
       return goals.slice(0, 5); // 上位5つの目標
     } catch (error) {
-      handleLearningError('generate long term goals', error as Error);
-      return ['継続的な学習習慣の確立'];
+      handleLearningError("generate long term goals", error as Error);
+      return ["継続的な学習習慣の確立"];
     }
   }
 
   /**
    * カテゴリー別成績分析
    */
-  private static analyzeCategoryPerformance(sessions: any[]): Record<string, any> {
+  private static analyzeCategoryPerformance(
+    sessions: any[]
+  ): Record<string, any> {
     const performance: Record<string, any> = {};
 
-    sessions.forEach(session => {
-      const category = session.category || 'unknown';
+    sessions.forEach((session) => {
+      const category = session.category || "unknown";
       if (!performance[category]) {
         performance[category] = {
           correct: 0,
@@ -388,7 +435,7 @@ export class WeaknessAnalyzer {
           recentScores: [],
           sampleSize: 0,
           consistency: 0,
-          recentTrend: 0
+          recentTrend: 0,
         };
       }
 
@@ -423,9 +470,16 @@ export class WeaknessAnalyzer {
     sessions: any[]
   ): WeaknessArea | null {
     try {
-      const severity = this.determineSeverity(performance.accuracy, performance.consistency);
+      const severity = this.determineSeverity(
+        performance.accuracy,
+        performance.consistency
+      );
       const specificIssues = this.identifySpecificIssues(category, sessions);
-      const recommendations = this.generateRecommendations(category, performance, specificIssues);
+      const recommendations = this.generateRecommendations(
+        category,
+        performance,
+        specificIssues
+      );
 
       return {
         category,
@@ -433,13 +487,17 @@ export class WeaknessAnalyzer {
         confidence: Math.min(90, performance.sampleSize * 10),
         accuracy: performance.accuracy,
         frequency: (100 - performance.accuracy) / 100,
-        recentTrend: performance.recentTrend > 0 ? 'improving' : 
-                     performance.recentTrend < -5 ? 'worsening' : 'stable',
+        recentTrend:
+          performance.recentTrend > 0
+            ? "improving"
+            : performance.recentTrend < -5
+            ? "worsening"
+            : "stable",
         specificIssues,
-        recommendations
+        recommendations,
       };
     } catch (error) {
-      handleLearningError('create weakness area', error as Error, { category });
+      handleLearningError("create weakness area", error as Error, { category });
       return null;
     }
   }
@@ -449,17 +507,27 @@ export class WeaknessAnalyzer {
    */
   private static analyzeGrammarWeaknesses(sessions: any[]): WeaknessArea[] {
     const grammarWeaknesses: WeaknessArea[] = [];
-    
+
     // 文法特有の分析ロジック
     const grammarCategories = [
-      'basic-grammar', 'tenses', 'modals', 'passive', 
-      'relative', 'subjunctive', 'comparison', 'participle', 'infinitive'
+      "basic-grammar",
+      "tenses",
+      "modals",
+      "passive",
+      "relative",
+      "subjunctive",
+      "comparison",
+      "participle",
+      "infinitive",
     ];
 
-    grammarCategories.forEach(category => {
-      const categoryData = sessions.filter(s => s.category === category);
+    grammarCategories.forEach((category) => {
+      const categoryData = sessions.filter((s) => s.category === category);
       if (categoryData.length >= 3) {
-        const accuracy = (categoryData.filter(s => s.isCorrect).length / categoryData.length) * 100;
+        const accuracy =
+          (categoryData.filter((s) => s.isCorrect).length /
+            categoryData.length) *
+          100;
         if (accuracy < this.WEAKNESS_THRESHOLD) {
           // 具体的な文法弱点を作成
           // 実装は簡略化
@@ -473,25 +541,31 @@ export class WeaknessAnalyzer {
   /**
    * 語彙弱点の分析
    */
-  private static analyzeVocabularyWeaknesses(learningProgress: LearningProgress[]): WeaknessArea[] {
+  private static analyzeVocabularyWeaknesses(
+    learningProgress: LearningProgress[]
+  ): WeaknessArea[] {
     const vocabularyWeaknesses: WeaknessArea[] = [];
-    
+
     // 語彙特有の分析ロジック
-    const vocabProgress = learningProgress.filter(p => p.itemId.includes('vocab'));
-    
+    const vocabProgress = learningProgress.filter((p) =>
+      p.itemId.includes("vocab")
+    );
+
     if (vocabProgress.length > 0) {
-      const avgMastery = vocabProgress.reduce((sum, p) => sum + p.masteryLevel, 0) / vocabProgress.length;
-      
+      const avgMastery =
+        vocabProgress.reduce((sum, p) => sum + p.masteryLevel, 0) /
+        vocabProgress.length;
+
       if (avgMastery < 60) {
         vocabularyWeaknesses.push({
-          category: 'vocabulary',
-          severity: 'moderate',
+          category: "vocabulary",
+          severity: "moderate",
           confidence: 80,
           accuracy: avgMastery,
           frequency: 0.4,
-          recentTrend: 'stable',
-          specificIssues: ['単語の記憶定着が不十分', '使用場面の理解不足'],
-          recommendations: ['間隔反復学習の実施', '文脈での使用練習']
+          recentTrend: "stable",
+          specificIssues: ["単語の記憶定着が不十分", "使用場面の理解不足"],
+          recommendations: ["間隔反復学習の実施", "文脈での使用練習"],
         });
       }
     }
@@ -500,18 +574,22 @@ export class WeaknessAnalyzer {
   }
 
   // ヘルパーメソッド（実装は簡略化）
-  private static calculateOverallScore(userStats: UserStats, weaknesses: WeaknessArea[], strengths: StrengthArea[]): number {
+  private static calculateOverallScore(
+    userStats: UserStats,
+    weaknesses: WeaknessArea[],
+    strengths: StrengthArea[]
+  ): number {
     // 総合スコアの計算ロジック
     let score = 70; // ベーススコア
-    
+
     // 弱点による減点
-    weaknesses.forEach(w => {
+    weaknesses.forEach((w) => {
       const penalty = { severe: 15, moderate: 10, mild: 5 }[w.severity];
       score -= penalty;
     });
 
     // 強みによる加点
-    strengths.forEach(s => {
+    strengths.forEach((s) => {
       const bonus = Math.min(10, (s.proficiency - 80) * 0.5);
       score += bonus;
     });
@@ -519,23 +597,31 @@ export class WeaknessAnalyzer {
     return Math.max(0, Math.min(100, score));
   }
 
-  private static determineSeverity(accuracy: number, consistency: number): 'mild' | 'moderate' | 'severe' {
-    if (accuracy < 40 || consistency < 30) return 'severe';
-    if (accuracy < 55 || consistency < 50) return 'moderate';
-    return 'mild';
+  private static determineSeverity(
+    accuracy: number,
+    consistency: number
+  ): "mild" | "moderate" | "severe" {
+    if (accuracy < 40 || consistency < 30) return "severe";
+    if (accuracy < 55 || consistency < 50) return "moderate";
+    return "mild";
   }
 
-  private static determineMasteryLevel(proficiency: number, consistency: number): 'basic' | 'intermediate' | 'advanced' | 'expert' {
-    if (proficiency >= 95 && consistency >= 90) return 'expert';
-    if (proficiency >= 85 && consistency >= 80) return 'advanced';
-    if (proficiency >= 70 && consistency >= 60) return 'intermediate';
-    return 'basic';
+  private static determineMasteryLevel(
+    proficiency: number,
+    consistency: number
+  ): "basic" | "intermediate" | "advanced" | "expert" {
+    if (proficiency >= 95 && consistency >= 90) return "expert";
+    if (proficiency >= 85 && consistency >= 80) return "advanced";
+    if (proficiency >= 70 && consistency >= 60) return "intermediate";
+    return "basic";
   }
 
   private static calculateConsistency(scores: number[]): number {
     if (scores.length < 2) return 50;
     const mean = scores.reduce((sum, score) => sum + score, 0) / scores.length;
-    const variance = scores.reduce((sum, score) => sum + Math.pow(score - mean, 2), 0) / scores.length;
+    const variance =
+      scores.reduce((sum, score) => sum + Math.pow(score - mean, 2), 0) /
+      scores.length;
     return Math.max(0, 100 - Math.sqrt(variance));
   }
 
@@ -543,25 +629,36 @@ export class WeaknessAnalyzer {
     if (scores.length < 3) return 0;
     const firstHalf = scores.slice(0, Math.floor(scores.length / 2));
     const secondHalf = scores.slice(Math.floor(scores.length / 2));
-    const firstAvg = firstHalf.reduce((sum, score) => sum + score, 0) / firstHalf.length;
-    const secondAvg = secondHalf.reduce((sum, score) => sum + score, 0) / secondHalf.length;
+    const firstAvg =
+      firstHalf.reduce((sum, score) => sum + score, 0) / firstHalf.length;
+    const secondAvg =
+      secondHalf.reduce((sum, score) => sum + score, 0) / secondHalf.length;
     return secondAvg - firstAvg;
   }
 
-  private static identifySpecificIssues(category: string, sessions: any[]): string[] {
+  private static identifySpecificIssues(
+    category: string,
+    sessions: any[]
+  ): string[] {
     // カテゴリー別の具体的問題特定（簡略化）
-    return ['詳細な問題分析が必要'];
+    return ["詳細な問題分析が必要"];
   }
 
-  private static generateRecommendations(category: string, performance: any, issues: string[]): string[] {
+  private static generateRecommendations(
+    category: string,
+    performance: any,
+    issues: string[]
+  ): string[] {
     // カテゴリー別推奨事項生成（簡略化）
-    return [`${category}の基礎練習を強化する`, '定期的な復習を行う'];
+    return [`${category}の基礎練習を強化する`, "定期的な復習を行う"];
   }
 
-  private static analyzeTimeOfDayPerformance(sessions: any[]): Record<number, any> {
+  private static analyzeTimeOfDayPerformance(
+    sessions: any[]
+  ): Record<number, any> {
     const timePerformance: Record<number, any> = {};
-    
-    sessions.forEach(session => {
+
+    sessions.forEach((session) => {
       const hour = new Date(session.timestamp || Date.now()).getHours();
       if (!timePerformance[hour]) {
         timePerformance[hour] = { correct: 0, total: 0, accuracy: 0 };
@@ -586,9 +683,11 @@ export class WeaknessAnalyzer {
     return 15; // 分
   }
 
-  private static analyzeLearningSpeed(sessions: any[]): 'slow' | 'normal' | 'fast' {
+  private static analyzeLearningSpeed(
+    sessions: any[]
+  ): "slow" | "normal" | "fast" {
     // 学習速度分析（簡略化）
-    return 'normal';
+    return "normal";
   }
 
   private static analyzeRetentionRate(sessions: any[]): number {
@@ -596,23 +695,29 @@ export class WeaknessAnalyzer {
     return 75;
   }
 
-  private static analyzeDifficultyProgression(sessions: any[]): 'gradual' | 'normal' | 'aggressive' {
+  private static analyzeDifficultyProgression(
+    sessions: any[]
+  ): "gradual" | "normal" | "aggressive" {
     // 難易度進行分析（簡略化）
-    return 'normal';
+    return "normal";
   }
 
   private static analyzeMotivationalFactors(sessions: any[]): string[] {
     // モチベーション要因分析（簡略化）
-    return ['即座のフィードバック', '達成感', '進捗の可視化'];
+    return ["即座のフィードバック", "達成感", "進捗の可視化"];
   }
 
-  private static estimateImprovementTime(weaknessAreas: WeaknessArea[]): Record<string, number> {
+  private static estimateImprovementTime(
+    weaknessAreas: WeaknessArea[]
+  ): Record<string, number> {
     const estimations: Record<string, number> = {};
-    
-    weaknessAreas.forEach(weakness => {
+
+    weaknessAreas.forEach((weakness) => {
       const baseTime = { severe: 8, moderate: 4, mild: 2 }[weakness.severity];
       const confidenceAdjustment = (100 - weakness.confidence) * 0.02;
-      estimations[weakness.category] = Math.ceil(baseTime + confidenceAdjustment);
+      estimations[weakness.category] = Math.ceil(
+        baseTime + confidenceAdjustment
+      );
     });
 
     return estimations;
@@ -627,8 +732,8 @@ export class WeaknessAnalyzer {
       strengthAreas: [],
       learningPattern: this.getDefaultLearningPattern(),
       prioritizedActions: [],
-      longTermGoals: ['継続的な学習習慣の確立'],
-      estimatedImprovementTime: {}
+      longTermGoals: ["継続的な学習習慣の確立"],
+      estimatedImprovementTime: {},
     };
   }
 
@@ -636,19 +741,22 @@ export class WeaknessAnalyzer {
     return {
       preferredTimeOfDay: [9, 14, 19],
       optimalSessionLength: 15,
-      learningSpeed: 'normal',
+      learningSpeed: "normal",
       retentionRate: 70,
-      difficultyProgression: 'normal',
-      motivationalFactors: ['達成感', '進捗の可視化']
+      difficultyProgression: "normal",
+      motivationalFactors: ["達成感", "進捗の可視化"],
     };
   }
 
-  private static saveAnalysis(userId: string, analysis: ComprehensiveAnalysis): void {
+  private static saveAnalysis(
+    userId: string,
+    analysis: ComprehensiveAnalysis
+  ): void {
     try {
       const key = `${this.ANALYSIS_KEY}-${userId}`;
       localStorage.setItem(key, JSON.stringify(analysis));
     } catch (error) {
-      handleLearningError('save analysis', error as Error, { userId });
+      handleLearningError("save analysis", error as Error, { userId });
     }
   }
 
@@ -661,7 +769,7 @@ export class WeaknessAnalyzer {
       const stored = localStorage.getItem(key);
       return stored ? JSON.parse(stored) : null;
     } catch (error) {
-      handleLearningError('get stored analysis', error as Error, { userId });
+      handleLearningError("get stored analysis", error as Error, { userId });
       return null;
     }
   }

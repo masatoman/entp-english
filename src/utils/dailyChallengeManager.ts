@@ -393,14 +393,19 @@ export class DailyChallengeManager {
   /**
    * ユーザーの好みのタイプを計算
    */
-  private static calculateFavoriteType(userStats: any): "vocabulary" | "grammar" | "combined" {
+  private static calculateFavoriteType(
+    userStats: any
+  ): "vocabulary" | "grammar" | "combined" {
     if (!userStats) return "vocabulary";
-    
+
     const vocabStudied = userStats.vocabularyStudied || 0;
     const grammarCompleted = userStats.grammarQuizzesCompleted || 0;
     const combinedCompleted = userStats.combinedTestsCompleted || 0;
-    
-    if (combinedCompleted > vocabStudied && combinedCompleted > grammarCompleted) {
+
+    if (
+      combinedCompleted > vocabStudied &&
+      combinedCompleted > grammarCompleted
+    ) {
       return "combined";
     } else if (grammarCompleted > vocabStudied) {
       return "grammar";

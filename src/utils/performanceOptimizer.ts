@@ -3,8 +3,8 @@
  * バンドルサイズ最適化、遅延読み込み、メモリ管理
  */
 
-import { logPerformance, logDebug } from './logger';
-import { handleError } from './errorHandler';
+import { handleError } from "./errorHandler";
+import { logDebug, logPerformance } from "./logger";
 
 export interface PerformanceMetrics {
   bundleSize: number;
@@ -24,7 +24,7 @@ export interface OptimizationResult {
 export class PerformanceOptimizer {
   private static performanceObserver: PerformanceObserver | null = null;
   private static metrics: Map<string, number> = new Map();
-  private static readonly STORAGE_KEY = 'entp-performance-metrics';
+  private static readonly STORAGE_KEY = "entp-performance-metrics";
 
   /**
    * パフォーマンス監視を開始
@@ -32,16 +32,21 @@ export class PerformanceOptimizer {
   static initializePerformanceMonitoring(): void {
     try {
       // Performance Observer の設定
-      if (typeof PerformanceObserver !== 'undefined') {
+      if (typeof PerformanceObserver !== "undefined") {
         this.performanceObserver = new PerformanceObserver((list) => {
           const entries = list.getEntries();
-          entries.forEach(entry => {
+          entries.forEach((entry) => {
             this.recordMetric(entry.name, entry.duration || entry.startTime);
           });
         });
 
-        this.performanceObserver.observe({ 
-          entryTypes: ['navigation', 'paint', 'largest-contentful-paint', 'first-input'] 
+        this.performanceObserver.observe({
+          entryTypes: [
+            "navigation",
+            "paint",
+            "largest-contentful-paint",
+            "first-input",
+          ],
         });
       }
 
@@ -51,9 +56,9 @@ export class PerformanceOptimizer {
       // メモリ使用量の監視
       this.monitorMemoryUsage();
 
-      logPerformance('パフォーマンス監視を開始');
+      logPerformance("パフォーマンス監視を開始");
     } catch (error) {
-      handleError(error as Error, { component: 'PerformanceOptimizer' });
+      handleError(error as Error, { component: "PerformanceOptimizer" });
     }
   }
 
@@ -65,22 +70,22 @@ export class PerformanceOptimizer {
     componentName: string
   ): Promise<T> {
     const startTime = performance.now();
-    
+
     try {
       logDebug(`遅延読み込み開始: ${componentName}`);
-      
+
       const module = await importFunction();
       const loadTime = performance.now() - startTime;
-      
+
       this.recordMetric(`lazy-load-${componentName}`, loadTime);
       logPerformance(`${componentName} 読み込み完了: ${loadTime.toFixed(2)}ms`);
-      
+
       return module.default;
     } catch (error) {
-      handleError(error as Error, { 
-        component: 'PerformanceOptimizer',
-        action: 'lazy-load',
-        componentName 
+      handleError(error as Error, {
+        component: "PerformanceOptimizer",
+        action: "lazy-load",
+        componentName,
       });
       throw error;
     }
@@ -89,32 +94,34 @@ export class PerformanceOptimizer {
   /**
    * リソースの事前読み込み
    */
-  static preloadResources(resources: Array<{ url: string; type: 'script' | 'style' | 'image' }>): void {
-    resources.forEach(resource => {
+  static preloadResources(
+    resources: Array<{ url: string; type: "script" | "style" | "image" }>
+  ): void {
+    resources.forEach((resource) => {
       try {
-        const link = document.createElement('link');
-        link.rel = 'preload';
+        const link = document.createElement("link");
+        link.rel = "preload";
         link.href = resource.url;
-        
+
         switch (resource.type) {
-          case 'script':
-            link.as = 'script';
+          case "script":
+            link.as = "script";
             break;
-          case 'style':
-            link.as = 'style';
+          case "style":
+            link.as = "style";
             break;
-          case 'image':
-            link.as = 'image';
+          case "image":
+            link.as = "image";
             break;
         }
-        
+
         document.head.appendChild(link);
         logDebug(`リソース事前読み込み: ${resource.url}`);
       } catch (error) {
-        handleError(error as Error, { 
-          component: 'PerformanceOptimizer',
-          action: 'preload',
-          resourceUrl: resource.url 
+        handleError(error as Error, {
+          component: "PerformanceOptimizer",
+          action: "preload",
+          resourceUrl: resource.url,
         });
       }
     });
@@ -125,18 +132,18 @@ export class PerformanceOptimizer {
    */
   static setupLazyImageLoading(): void {
     try {
-      if ('IntersectionObserver' in window) {
+      if ("IntersectionObserver" in window) {
         const imageObserver = new IntersectionObserver((entries, observer) => {
-          entries.forEach(entry => {
+          entries.forEach((entry) => {
             if (entry.isIntersecting) {
               const img = entry.target as HTMLImageElement;
               const src = img.dataset.src;
-              
+
               if (src) {
                 img.src = src;
-                img.classList.remove('lazy');
+                img.classList.remove("lazy");
                 observer.unobserve(img);
-                
+
                 logDebug(`遅延画像読み込み: ${src}`);
               }
             }
@@ -144,16 +151,16 @@ export class PerformanceOptimizer {
         });
 
         // 既存の遅延画像を観察
-        document.querySelectorAll('img[data-src]').forEach(img => {
+        document.querySelectorAll("img[data-src]").forEach((img) => {
           imageObserver.observe(img);
         });
 
-        logPerformance('遅延画像読み込みを設定');
+        logPerformance("遅延画像読み込みを設定");
       }
     } catch (error) {
-      handleError(error as Error, { 
-        component: 'PerformanceOptimizer',
-        action: 'setup-lazy-images' 
+      handleError(error as Error, {
+        component: "PerformanceOptimizer",
+        action: "setup-lazy-images",
       });
     }
   }
@@ -170,27 +177,31 @@ export class PerformanceOptimizer {
 
     try {
       // イベントリスナーのクリーンアップ
-      const elements = document.querySelectorAll('[data-cleanup-required]');
-      elements.forEach(element => {
+      const elements = document.querySelectorAll("[data-cleanup-required]");
+      elements.forEach((element) => {
         // カスタムイベントリスナーのクリーンアップ
-        const events = element.getAttribute('data-events')?.split(',') || [];
-        events.forEach(eventType => {
+        const events = element.getAttribute("data-events")?.split(",") || [];
+        events.forEach((eventType) => {
           element.removeEventListener(eventType, () => {});
         });
-        
-        element.removeAttribute('data-cleanup-required');
-        element.removeAttribute('data-events');
+
+        element.removeAttribute("data-cleanup-required");
+        element.removeAttribute("data-events");
         leaksDetected++;
       });
 
       if (leaksDetected > 0) {
-        fixesApplied.push(`${leaksDetected}個のイベントリスナーをクリーンアップ`);
+        fixesApplied.push(
+          `${leaksDetected}個のイベントリスナーをクリーンアップ`
+        );
       }
 
       // 不要なDOM要素の削除
-      const unusedElements = document.querySelectorAll('.unused, .hidden-permanent');
+      const unusedElements = document.querySelectorAll(
+        ".unused, .hidden-permanent"
+      );
       if (unusedElements.length > 0) {
-        unusedElements.forEach(element => element.remove());
+        unusedElements.forEach((element) => element.remove());
         fixesApplied.push(`${unusedElements.length}個の不要な要素を削除`);
         leaksDetected += unusedElements.length;
       }
@@ -203,14 +214,14 @@ export class PerformanceOptimizer {
       }
 
       if (fixesApplied.length > 0) {
-        logPerformance('メモリリーク修正完了', { fixesApplied });
+        logPerformance("メモリリーク修正完了", { fixesApplied });
       }
 
       return { leaksDetected, fixesApplied };
     } catch (error) {
-      handleError(error as Error, { 
-        component: 'PerformanceOptimizer',
-        action: 'detect-memory-leaks' 
+      handleError(error as Error, {
+        component: "PerformanceOptimizer",
+        action: "detect-memory-leaks",
       });
       return { leaksDetected: 0, fixesApplied: [] };
     }
@@ -229,37 +240,49 @@ export class PerformanceOptimizer {
 
     try {
       // パフォーマンスエントリーからリソースサイズを取得
-      const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+      const resources = performance.getEntriesByType(
+        "resource"
+      ) as PerformanceResourceTiming[];
       let totalSize = 0;
 
-      resources.forEach(resource => {
+      resources.forEach((resource) => {
         if (resource.transferSize) {
           const category = this.categorizeResource(resource.name);
-          breakdown[category] = (breakdown[category] || 0) + resource.transferSize;
+          breakdown[category] =
+            (breakdown[category] || 0) + resource.transferSize;
           totalSize += resource.transferSize;
         }
       });
 
       // 推奨事項の生成
-      if (breakdown['javascript'] > 500000) { // 500KB超
-        recommendations.push('JavaScriptバンドルサイズが大きいため、コード分割を検討してください');
+      if (breakdown["javascript"] > 500000) {
+        // 500KB超
+        recommendations.push(
+          "JavaScriptバンドルサイズが大きいため、コード分割を検討してください"
+        );
       }
 
-      if (breakdown['css'] > 100000) { // 100KB超
-        recommendations.push('CSSファイルサイズが大きいため、未使用スタイルの削除を検討してください');
+      if (breakdown["css"] > 100000) {
+        // 100KB超
+        recommendations.push(
+          "CSSファイルサイズが大きいため、未使用スタイルの削除を検討してください"
+        );
       }
 
-      if (breakdown['images'] > 1000000) { // 1MB超
-        recommendations.push('画像ファイルサイズが大きいため、WebP形式や圧縮を検討してください');
+      if (breakdown["images"] > 1000000) {
+        // 1MB超
+        recommendations.push(
+          "画像ファイルサイズが大きいため、WebP形式や圧縮を検討してください"
+        );
       }
 
-      logPerformance('バンドルサイズ分析完了', { totalSize, breakdown });
+      logPerformance("バンドルサイズ分析完了", { totalSize, breakdown });
 
       return { totalSize, breakdown, recommendations };
     } catch (error) {
-      handleError(error as Error, { 
-        component: 'PerformanceOptimizer',
-        action: 'analyze-bundle-size' 
+      handleError(error as Error, {
+        component: "PerformanceOptimizer",
+        action: "analyze-bundle-size",
       });
       return { totalSize: 0, breakdown: {}, recommendations: [] };
     }
@@ -277,42 +300,49 @@ export class PerformanceOptimizer {
 
     try {
       // 仮想スクロールの実装提案
-      const longLists = document.querySelectorAll('[data-long-list]');
+      const longLists = document.querySelectorAll("[data-long-list]");
       if (longLists.length > 0) {
-        longLists.forEach(list => {
+        longLists.forEach((list) => {
           const itemCount = list.children.length;
           if (itemCount > 100) {
             // 仮想スクロールの実装を提案
-            list.setAttribute('data-virtualization-suggested', 'true');
-            optimizationsApplied.push(`${itemCount}項目のリストに仮想スクロールを提案`);
+            list.setAttribute("data-virtualization-suggested", "true");
+            optimizationsApplied.push(
+              `${itemCount}項目のリストに仮想スクロールを提案`
+            );
           }
         });
       }
 
       // 画像最適化の提案
-      const images = document.querySelectorAll('img:not([loading])');
+      const images = document.querySelectorAll("img:not([loading])");
       if (images.length > 0) {
-        images.forEach(img => {
-          (img as HTMLImageElement).loading = 'lazy';
+        images.forEach((img) => {
+          (img as HTMLImageElement).loading = "lazy";
         });
-        optimizationsApplied.push(`${images.length}個の画像に遅延読み込みを適用`);
+        optimizationsApplied.push(
+          `${images.length}個の画像に遅延読み込みを適用`
+        );
       }
 
       // CSS最適化
       this.optimizeCSS();
-      optimizationsApplied.push('CSS最適化を実行');
+      optimizationsApplied.push("CSS最適化を実行");
 
       const performanceGain = performance.now() - startTime;
-      
+
       if (optimizationsApplied.length > 0) {
-        logPerformance('レンダリング最適化完了', { optimizationsApplied, performanceGain });
+        logPerformance("レンダリング最適化完了", {
+          optimizationsApplied,
+          performanceGain,
+        });
       }
 
       return { optimizationsApplied, performanceGain };
     } catch (error) {
-      handleError(error as Error, { 
-        component: 'PerformanceOptimizer',
-        action: 'optimize-rendering' 
+      handleError(error as Error, {
+        component: "PerformanceOptimizer",
+        action: "optimize-rendering",
       });
       return { optimizationsApplied: [], performanceGain: 0 };
     }
@@ -327,34 +357,37 @@ export class PerformanceOptimizer {
       new PerformanceObserver((entryList) => {
         const entries = entryList.getEntries();
         const lastEntry = entries[entries.length - 1];
-        this.recordMetric('LCP', lastEntry.startTime);
-      }).observe({ type: 'largest-contentful-paint', buffered: true });
+        this.recordMetric("LCP", lastEntry.startTime);
+      }).observe({ type: "largest-contentful-paint", buffered: true });
 
       // FID (First Input Delay)
       new PerformanceObserver((entryList) => {
         const entries = entryList.getEntries();
-        entries.forEach(entry => {
-          this.recordMetric('FID', (entry as any).processingStart - entry.startTime);
+        entries.forEach((entry) => {
+          this.recordMetric(
+            "FID",
+            (entry as any).processingStart - entry.startTime
+          );
         });
-      }).observe({ type: 'first-input', buffered: true });
+      }).observe({ type: "first-input", buffered: true });
 
       // CLS (Cumulative Layout Shift)
       let clsValue = 0;
       new PerformanceObserver((entryList) => {
         const entries = entryList.getEntries();
-        entries.forEach(entry => {
+        entries.forEach((entry) => {
           if (!(entry as any).hadRecentInput) {
             clsValue += (entry as any).value;
           }
         });
-        this.recordMetric('CLS', clsValue);
-      }).observe({ type: 'layout-shift', buffered: true });
+        this.recordMetric("CLS", clsValue);
+      }).observe({ type: "layout-shift", buffered: true });
 
-      logDebug('Core Web Vitals監視を開始');
+      logDebug("Core Web Vitals監視を開始");
     } catch (error) {
-      handleError(error as Error, { 
-        component: 'PerformanceOptimizer',
-        action: 'monitor-core-web-vitals' 
+      handleError(error as Error, {
+        component: "PerformanceOptimizer",
+        action: "monitor-core-web-vitals",
       });
     }
   }
@@ -364,18 +397,18 @@ export class PerformanceOptimizer {
    */
   private static monitorMemoryUsage(): void {
     try {
-      if ('memory' in performance) {
+      if ("memory" in performance) {
         const memInfo = (performance as any).memory;
-        this.recordMetric('memory-used', memInfo.usedJSHeapSize);
-        this.recordMetric('memory-total', memInfo.totalJSHeapSize);
-        this.recordMetric('memory-limit', memInfo.jsHeapSizeLimit);
-        
-        logDebug('メモリ使用量を記録', memInfo);
+        this.recordMetric("memory-used", memInfo.usedJSHeapSize);
+        this.recordMetric("memory-total", memInfo.totalJSHeapSize);
+        this.recordMetric("memory-limit", memInfo.jsHeapSizeLimit);
+
+        logDebug("メモリ使用量を記録", memInfo);
       }
     } catch (error) {
-      handleError(error as Error, { 
-        component: 'PerformanceOptimizer',
-        action: 'monitor-memory' 
+      handleError(error as Error, {
+        component: "PerformanceOptimizer",
+        action: "monitor-memory",
       });
     }
   }
@@ -384,11 +417,11 @@ export class PerformanceOptimizer {
    * リソースの分類
    */
   private static categorizeResource(url: string): string {
-    if (url.includes('.js')) return 'javascript';
-    if (url.includes('.css')) return 'css';
-    if (url.match(/\.(png|jpg|jpeg|gif|webp|svg)$/)) return 'images';
-    if (url.includes('.woff') || url.includes('.ttf')) return 'fonts';
-    return 'other';
+    if (url.includes(".js")) return "javascript";
+    if (url.includes(".css")) return "css";
+    if (url.match(/\.(png|jpg|jpeg|gif|webp|svg)$/)) return "images";
+    if (url.includes(".woff") || url.includes(".ttf")) return "fonts";
+    return "other";
   }
 
   /**
@@ -407,15 +440,15 @@ export class PerformanceOptimizer {
             const item = localStorage.getItem(key);
             if (item) {
               const data = JSON.parse(item);
-              
+
               // タイムスタンプがある場合の期限チェック
-              if (data.timestamp && (now - data.timestamp) > maxAge) {
+              if (data.timestamp && now - data.timestamp > maxAge) {
                 localStorage.removeItem(key);
                 cleanedItems++;
               }
-              
+
               // 一時的なデータのクリーンアップ
-              if (key.includes('temp-') || key.includes('cache-')) {
+              if (key.includes("temp-") || key.includes("cache-")) {
                 localStorage.removeItem(key);
                 cleanedItems++;
               }
@@ -426,9 +459,9 @@ export class PerformanceOptimizer {
         }
       }
     } catch (error) {
-      handleError(error as Error, { 
-        component: 'PerformanceOptimizer',
-        action: 'cleanup-localstorage' 
+      handleError(error as Error, {
+        component: "PerformanceOptimizer",
+        action: "cleanup-localstorage",
       });
     }
 
@@ -443,10 +476,10 @@ export class PerformanceOptimizer {
       // 未使用CSSクラスの検出（簡易版）
       const stylesheets = document.styleSheets;
       const usedClasses = new Set<string>();
-      
+
       // DOM内で使用されているクラスを収集
-      document.querySelectorAll('*').forEach(element => {
-        element.classList.forEach(className => {
+      document.querySelectorAll("*").forEach((element) => {
+        element.classList.forEach((className) => {
           usedClasses.add(className);
         });
       });
@@ -455,9 +488,9 @@ export class PerformanceOptimizer {
       // ここでは基本的な最適化のみ実装
       logDebug(`使用中のCSSクラス: ${usedClasses.size}個`);
     } catch (error) {
-      handleError(error as Error, { 
-        component: 'PerformanceOptimizer',
-        action: 'optimize-css' 
+      handleError(error as Error, {
+        component: "PerformanceOptimizer",
+        action: "optimize-css",
       });
     }
   }
@@ -467,7 +500,7 @@ export class PerformanceOptimizer {
    */
   private static recordMetric(name: string, value: number): void {
     this.metrics.set(name, value);
-    
+
     // 定期的にメトリクスを保存
     if (this.metrics.size % 10 === 0) {
       this.saveMetrics();
@@ -480,14 +513,17 @@ export class PerformanceOptimizer {
   private static saveMetrics(): void {
     try {
       const metricsObject = Object.fromEntries(this.metrics);
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify({
-        metrics: metricsObject,
-        timestamp: Date.now()
-      }));
+      localStorage.setItem(
+        this.STORAGE_KEY,
+        JSON.stringify({
+          metrics: metricsObject,
+          timestamp: Date.now(),
+        })
+      );
     } catch (error) {
-      handleError(error as Error, { 
-        component: 'PerformanceOptimizer',
-        action: 'save-metrics' 
+      handleError(error as Error, {
+        component: "PerformanceOptimizer",
+        action: "save-metrics",
       });
     }
   }
@@ -503,9 +539,9 @@ export class PerformanceOptimizer {
         return data.metrics || {};
       }
     } catch (error) {
-      handleError(error as Error, { 
-        component: 'PerformanceOptimizer',
-        action: 'get-stored-metrics' 
+      handleError(error as Error, {
+        component: "PerformanceOptimizer",
+        action: "get-stored-metrics",
       });
     }
     return {};
@@ -520,13 +556,13 @@ export class PerformanceOptimizer {
         this.performanceObserver.disconnect();
         this.performanceObserver = null;
       }
-      
+
       this.saveMetrics();
-      logPerformance('パフォーマンス監視を停止');
+      logPerformance("パフォーマンス監視を停止");
     } catch (error) {
-      handleError(error as Error, { 
-        component: 'PerformanceOptimizer',
-        action: 'stop-monitoring' 
+      handleError(error as Error, {
+        component: "PerformanceOptimizer",
+        action: "stop-monitoring",
       });
     }
   }

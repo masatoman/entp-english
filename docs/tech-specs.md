@@ -53,6 +53,20 @@
 - **Local State**: コンポーネント内での状態管理
 - **DataManager**: 学習データの永続化
 
+#### インテリジェント学習システム（2025年9月新規追加）
+
+- **個人化学習**: ユーザー履歴に基づく最適コンテンツ推奨
+- **適応的難易度**: リアルタイム難易度調整（目標正答率75%）
+- **弱点分析**: 包括的分析・具体的改善策・予想改善時間
+- **パフォーマンス最適化**: Core Web Vitals監視・メモリリーク検出
+
+#### 品質管理システム（2025年9月新規追加）
+
+- **統一ログシステム**: 開発環境専用・本番最適化
+- **エラーハンドリング**: AppErrorクラス・重要度別処理
+- **型安全性**: 型ガード・バリデーション・定数管理
+- **パフォーマンス監視**: 自動監視・最適化・レポート
+
 ## 2. プロジェクト構造
 
 ```
@@ -85,6 +99,13 @@ src/
 │   ├── dataManager.ts   # データ管理
 │   ├── xpCalculator.ts  # XP計算
 │   ├── tower-defense-data.ts # ゲームデータ
+│   ├── logger.ts        # 統一ログシステム (NEW)
+│   ├── errorHandler.ts  # エラーハンドリング (NEW)
+│   ├── personalizedLearning.ts # 個人化学習 (NEW)
+│   ├── adaptiveDifficulty.ts # 適応的難易度 (NEW)
+│   ├── performanceOptimizer.ts # パフォーマンス最適化 (NEW)
+│   ├── weaknessAnalyzer.ts # 弱点分析 (NEW)
+│   ├── intelligentLearningService.ts # 統合サービス (NEW)
 │   └── ...
 ├── styles/              # スタイルファイル
 │   └── globals.css

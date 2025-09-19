@@ -3,14 +3,20 @@
  * 個人化学習、適応的難易度、弱点分析を統合した高度な学習支援システム
  */
 
-import { UserStats } from '../data/achievements';
-import { LearningItem, LearningProgress } from '../types/learningItem';
-import { PersonalizedLearningSystem, RecommendationResult } from './personalizedLearning';
-import { AdaptiveDifficultySystem, AdaptiveSession } from './adaptiveDifficulty';
-import { WeaknessAnalyzer, ComprehensiveAnalysis } from './weaknessAnalyzer';
-import { PerformanceOptimizer } from './performanceOptimizer';
-import { logLearning, logInfo } from './logger';
-import { handleLearningError } from './errorHandler';
+import { UserStats } from "../data/achievements";
+import { LearningItem, LearningProgress } from "../types/learningItem";
+import {
+  AdaptiveDifficultySystem,
+  AdaptiveSession,
+} from "./adaptiveDifficulty";
+import { handleLearningError } from "./errorHandler";
+import { logInfo, logLearning } from "./logger";
+import { PerformanceOptimizer } from "./performanceOptimizer";
+import {
+  PersonalizedLearningSystem,
+  RecommendationResult,
+} from "./personalizedLearning";
+import { ComprehensiveAnalysis, WeaknessAnalyzer } from "./weaknessAnalyzer";
 
 export interface IntelligentRecommendation {
   personalizedContent: RecommendationResult;
@@ -37,7 +43,7 @@ export interface LearningSession {
 }
 
 export class IntelligentLearningService {
-  private static readonly SESSION_KEY = 'entp-intelligent-sessions';
+  private static readonly SESSION_KEY = "entp-intelligent-sessions";
   private static activeSessions: Map<string, LearningSession> = new Map();
 
   /**
@@ -47,13 +53,16 @@ export class IntelligentLearningService {
     try {
       // パフォーマンス監視を開始
       PerformanceOptimizer.initializePerformanceMonitoring();
-      
+
       // 遅延画像読み込みを設定
       PerformanceOptimizer.setupLazyImageLoading();
 
-      logInfo('インテリジェント学習システムを初期化');
+      logInfo("インテリジェント学習システムを初期化");
     } catch (error) {
-      handleLearningError('initialize intelligent learning service', error as Error);
+      handleLearningError(
+        "initialize intelligent learning service",
+        error as Error
+      );
     }
   }
 
@@ -66,31 +75,43 @@ export class IntelligentLearningService {
     availableItems: LearningItem[],
     learningProgress: LearningProgress[],
     recentSessions: any[],
-    requestedType?: 'vocabulary' | 'grammar' | 'mixed'
+    requestedType?: "vocabulary" | "grammar" | "mixed"
   ): Promise<IntelligentRecommendation> {
     try {
       logLearning(`インテリジェント推奨生成開始: ${userId}`, {
         availableItems: availableItems.length,
         progressItems: learningProgress.length,
-        recentSessions: recentSessions.length
+        recentSessions: recentSessions.length,
       });
 
       // 1. 個人化プロファイルを更新
-      const personalizedProfile = PersonalizedLearningSystem.updatePersonalizationProfile(
-        userId, userStats, recentSessions
-      );
+      const personalizedProfile =
+        PersonalizedLearningSystem.updatePersonalizationProfile(
+          userId,
+          userStats,
+          recentSessions
+        );
 
       // 2. 個人化コンテンツを推奨
       const personalizedContent = PersonalizedLearningSystem.recommendContent(
-        userId, availableItems, requestedType, 10
+        userId,
+        availableItems,
+        requestedType,
+        10
       );
 
       // 3. 適応的難易度を計算
-      const adaptiveDifficulty = this.calculateAdaptiveDifficulty(userId, recentSessions);
+      const adaptiveDifficulty = this.calculateAdaptiveDifficulty(
+        userId,
+        recentSessions
+      );
 
       // 4. 包括的な弱点分析を実行
       const weaknessAnalysis = WeaknessAnalyzer.performComprehensiveAnalysis(
-        userId, userStats, learningProgress, recentSessions
+        userId,
+        userStats,
+        learningProgress,
+        recentSessions
       );
 
       // 5. パフォーマンス最適化を実行
@@ -118,21 +139,25 @@ export class IntelligentLearningService {
         weaknessAnalysis,
         performanceInsights: {
           optimizationsApplied: performanceResult.optimizationsApplied,
-          currentMetrics
+          currentMetrics,
         },
         combinedScore,
-        nextSteps
+        nextSteps,
       };
 
       logLearning(`インテリジェント推奨生成完了: ${userId}`, {
         combinedScore,
         itemCount: personalizedContent.items.length,
-        confidence: personalizedContent.confidence
+        confidence: personalizedContent.confidence,
       });
 
       return recommendation;
     } catch (error) {
-      handleLearningError('generate intelligent recommendation', error as Error, { userId });
+      handleLearningError(
+        "generate intelligent recommendation",
+        error as Error,
+        { userId }
+      );
       return this.getFallbackRecommendation(userId, availableItems);
     }
   }
@@ -146,7 +171,7 @@ export class IntelligentLearningService {
   ): LearningSession {
     try {
       const sessionId = `intelligent_${Date.now()}_${userId}`;
-      
+
       // 適応セッションを開始
       const adaptiveSession = AdaptiveDifficultySystem.startAdaptiveSession(
         userId,
@@ -162,20 +187,22 @@ export class IntelligentLearningService {
         adaptiveSession,
         performanceMetrics: {},
         learningGains: 0,
-        satisfactionScore: 0
+        satisfactionScore: 0,
       };
 
       this.activeSessions.set(sessionId, session);
-      
+
       logLearning(`インテリジェントセッション開始: ${userId}`, {
         sessionId,
         itemCount: session.personalizedItems.length,
-        initialDifficulty: recommendation.adaptiveDifficulty
+        initialDifficulty: recommendation.adaptiveDifficulty,
       });
 
       return session;
     } catch (error) {
-      handleLearningError('start intelligent session', error as Error, { userId });
+      handleLearningError("start intelligent session", error as Error, {
+        userId,
+      });
       throw error;
     }
   }
@@ -217,22 +244,24 @@ export class IntelligentLearningService {
       const result = {
         difficultyAdjusted: adjustment !== null,
         newDifficulty: adjustment?.recommendedDifficulty,
-        feedback: this.generateRealTimeFeedback(session, isCorrect, adjustment)
+        feedback: this.generateRealTimeFeedback(session, isCorrect, adjustment),
       };
 
       logLearning(`学習回答記録: ${session.userId}`, {
         sessionId,
         isCorrect,
         difficultyAdjusted: result.difficultyAdjusted,
-        newDifficulty: result.newDifficulty
+        newDifficulty: result.newDifficulty,
       });
 
       return result;
     } catch (error) {
-      handleLearningError('record learning answer', error as Error, { sessionId });
+      handleLearningError("record learning answer", error as Error, {
+        sessionId,
+      });
       return {
         difficultyAdjusted: false,
-        feedback: 'エラーが発生しました。継続してください。'
+        feedback: "エラーが発生しました。継続してください。",
       };
     }
   }
@@ -253,10 +282,12 @@ export class IntelligentLearningService {
       }
 
       session.endTime = new Date().toISOString();
-      
+
       // セッション評価を実行
-      const evaluation = AdaptiveDifficultySystem.evaluateSessionEffectiveness(session.adaptiveSession);
-      
+      const evaluation = AdaptiveDifficultySystem.evaluateSessionEffectiveness(
+        session.adaptiveSession
+      );
+
       // 学習効果を計算
       session.learningGains = evaluation.learningGain;
       session.satisfactionScore = evaluation.overallScore;
@@ -274,22 +305,24 @@ export class IntelligentLearningService {
         sessionId,
         duration: this.calculateSessionDuration(session),
         learningGains: session.learningGains,
-        satisfactionScore: session.satisfactionScore
+        satisfactionScore: session.satisfactionScore,
       });
 
       return {
         sessionSummary: session,
         achievements,
         recommendations,
-        nextSessionPreview
+        nextSessionPreview,
       };
     } catch (error) {
-      handleLearningError('finish intelligent session', error as Error, { sessionId });
+      handleLearningError("finish intelligent session", error as Error, {
+        sessionId,
+      });
       return {
         sessionSummary: {} as LearningSession,
         achievements: [],
-        recommendations: ['次回も継続して学習してください'],
-        nextSessionPreview: []
+        recommendations: ["次回も継続して学習してください"],
+        nextSessionPreview: [],
       };
     }
   }
@@ -298,49 +331,61 @@ export class IntelligentLearningService {
    * 学習進捗の長期分析
    */
   static analyzeLongTermProgress(userId: string): {
-    progressTrend: 'excellent' | 'good' | 'steady' | 'concerning';
+    progressTrend: "excellent" | "good" | "steady" | "concerning";
     keyInsights: string[];
     milestones: string[];
     futureProjections: string[];
   } {
     try {
       // 長期適応パターンを分析
-      const adaptationAnalysis = AdaptiveDifficultySystem.analyzeLongTermAdaptation(userId);
-      
+      const adaptationAnalysis =
+        AdaptiveDifficultySystem.analyzeLongTermAdaptation(userId);
+
       // 保存された弱点分析を取得
       const weaknessAnalysis = WeaknessAnalyzer.getStoredAnalysis(userId);
-      
+
       // 進捗トレンドを判定
-      const progressTrend = this.determineProgressTrend(adaptationAnalysis, weaknessAnalysis);
-      
+      const progressTrend = this.determineProgressTrend(
+        adaptationAnalysis,
+        weaknessAnalysis
+      );
+
       // 主要洞察を生成
-      const keyInsights = this.generateKeyInsights(adaptationAnalysis, weaknessAnalysis);
-      
+      const keyInsights = this.generateKeyInsights(
+        adaptationAnalysis,
+        weaknessAnalysis
+      );
+
       // マイルストーンを特定
       const milestones = this.identifyMilestones(adaptationAnalysis);
-      
+
       // 将来予測を生成
-      const futureProjections = this.generateFutureProjections(adaptationAnalysis, weaknessAnalysis);
+      const futureProjections = this.generateFutureProjections(
+        adaptationAnalysis,
+        weaknessAnalysis
+      );
 
       logLearning(`長期進捗分析完了: ${userId}`, {
         progressTrend,
         insightCount: keyInsights.length,
-        milestoneCount: milestones.length
+        milestoneCount: milestones.length,
       });
 
       return {
         progressTrend,
         keyInsights,
         milestones,
-        futureProjections
+        futureProjections,
       };
     } catch (error) {
-      handleLearningError('analyze long term progress', error as Error, { userId });
+      handleLearningError("analyze long term progress", error as Error, {
+        userId,
+      });
       return {
-        progressTrend: 'steady',
-        keyInsights: ['分析に必要なデータが不足しています'],
+        progressTrend: "steady",
+        keyInsights: ["分析に必要なデータが不足しています"],
         milestones: [],
-        futureProjections: ['継続的な学習で改善が期待できます']
+        futureProjections: ["継続的な学習で改善が期待できます"],
       };
     }
   }
@@ -349,7 +394,7 @@ export class IntelligentLearningService {
    * システムの健全性チェック
    */
   static performSystemHealthCheck(): {
-    status: 'healthy' | 'warning' | 'error';
+    status: "healthy" | "warning" | "error";
     issues: string[];
     recommendations: string[];
     performanceMetrics: Record<string, number>;
@@ -361,47 +406,58 @@ export class IntelligentLearningService {
       // メモリリークチェック
       const memoryResult = PerformanceOptimizer.detectAndFixMemoryLeaks();
       if (memoryResult.leaksDetected > 0) {
-        issues.push(`${memoryResult.leaksDetected}個のメモリリークを検出・修正`);
+        issues.push(
+          `${memoryResult.leaksDetected}個のメモリリークを検出・修正`
+        );
       }
 
       // バンドルサイズチェック
       const bundleAnalysis = PerformanceOptimizer.analyzeBundleSize();
-      if (bundleAnalysis.totalSize > 2000000) { // 2MB
-        issues.push('バンドルサイズが大きすぎます');
+      if (bundleAnalysis.totalSize > 2000000) {
+        // 2MB
+        issues.push("バンドルサイズが大きすぎます");
         recommendations.push(...bundleAnalysis.recommendations);
       }
 
       // パフォーマンスメトリクス取得
       const performanceMetrics = PerformanceOptimizer.getStoredMetrics();
 
-      const status = issues.length === 0 ? 'healthy' : 
-                    issues.length <= 2 ? 'warning' : 'error';
+      const status =
+        issues.length === 0
+          ? "healthy"
+          : issues.length <= 2
+          ? "warning"
+          : "error";
 
       return {
         status,
         issues,
         recommendations,
-        performanceMetrics
+        performanceMetrics,
       };
     } catch (error) {
-      handleLearningError('perform system health check', error as Error);
+      handleLearningError("perform system health check", error as Error);
       return {
-        status: 'error',
-        issues: ['システムヘルスチェックでエラーが発生しました'],
-        recommendations: ['システム管理者に連絡してください'],
-        performanceMetrics: {}
+        status: "error",
+        issues: ["システムヘルスチェックでエラーが発生しました"],
+        recommendations: ["システム管理者に連絡してください"],
+        performanceMetrics: {},
       };
     }
   }
 
   // プライベートヘルパーメソッド
 
-  private static calculateAdaptiveDifficulty(userId: string, recentSessions: any[]): number {
+  private static calculateAdaptiveDifficulty(
+    userId: string,
+    recentSessions: any[]
+  ): number {
     if (recentSessions.length === 0) return 50;
 
-    const recentAccuracy = recentSessions.slice(-5).reduce((sum, session) => {
-      return sum + (session.isCorrect ? 100 : 0);
-    }, 0) / Math.min(5, recentSessions.length);
+    const recentAccuracy =
+      recentSessions.slice(-5).reduce((sum, session) => {
+        return sum + (session.isCorrect ? 100 : 0);
+      }, 0) / Math.min(5, recentSessions.length);
 
     // 正答率に基づく難易度調整
     if (recentAccuracy > 85) return 70;
@@ -418,9 +474,9 @@ export class IntelligentLearningService {
   ): number {
     return Math.round(
       personalizedConfidence * 0.3 +
-      (adaptiveDifficulty / 100 * 100) * 0.2 +
-      overallScore * 0.3 +
-      consistencyScore * 0.2
+        (adaptiveDifficulty / 100) * 100 * 0.2 +
+        overallScore * 0.3 +
+        consistencyScore * 0.2
     );
   }
 
@@ -433,9 +489,9 @@ export class IntelligentLearningService {
 
     // 個人化コンテンツに基づくステップ
     if (personalizedContent.confidence > 70) {
-      steps.push('推奨された学習コンテンツに取り組む');
+      steps.push("推奨された学習コンテンツに取り組む");
     } else {
-      steps.push('基礎的な内容から段階的に学習する');
+      steps.push("基礎的な内容から段階的に学習する");
     }
 
     // 弱点分析に基づくステップ
@@ -446,7 +502,9 @@ export class IntelligentLearningService {
 
     // 学習パターンに基づくステップ
     if (personalizedProfile.optimalStudyTime) {
-      steps.push(`${personalizedProfile.optimalStudyTime}分間の集中学習を継続する`);
+      steps.push(
+        `${personalizedProfile.optimalStudyTime}分間の集中学習を継続する`
+      );
     }
 
     return steps.slice(0, 4);
@@ -463,18 +521,19 @@ export class IntelligentLearningService {
         totalQuestions: 0,
         correctAnswers: 0,
         totalTime: 0,
-        avgConfidence: 0
+        avgConfidence: 0,
       };
     }
 
     session.performanceMetrics.totalQuestions++;
     if (isCorrect) session.performanceMetrics.correctAnswers++;
     session.performanceMetrics.totalTime += timeToAnswer;
-    
+
     // 平均自信度を更新
     const prevAvg = session.performanceMetrics.avgConfidence;
     const count = session.performanceMetrics.totalQuestions;
-    session.performanceMetrics.avgConfidence = (prevAvg * (count - 1) + confidence) / count;
+    session.performanceMetrics.avgConfidence =
+      (prevAvg * (count - 1) + confidence) / count;
   }
 
   private static generateRealTimeFeedback(
@@ -484,62 +543,80 @@ export class IntelligentLearningService {
   ): string {
     if (adjustment) {
       if (adjustment.adjustment > 0) {
-        return '素晴らしい！正答率が高いので、難易度を上げました。';
+        return "素晴らしい！正答率が高いので、難易度を上げました。";
       } else {
-        return '大丈夫です。理解を深めるために難易度を調整しました。';
+        return "大丈夫です。理解を深めるために難易度を調整しました。";
       }
     }
 
-    return isCorrect ? 'よくできました！' : '次回がんばりましょう！';
+    return isCorrect ? "よくできました！" : "次回がんばりましょう！";
   }
 
-  private static generateAchievements(session: LearningSession, evaluation: any): string[] {
+  private static generateAchievements(
+    session: LearningSession,
+    evaluation: any
+  ): string[] {
     const achievements = [];
 
     if (evaluation.overallScore > 80) {
-      achievements.push('優秀な学習成果を達成しました！');
+      achievements.push("優秀な学習成果を達成しました！");
     }
 
     if (evaluation.learningGain > 10) {
-      achievements.push('学習中に大幅な改善を示しました！');
+      achievements.push("学習中に大幅な改善を示しました！");
     }
 
     if (session.performanceMetrics.avgConfidence > 70) {
-      achievements.push('高い自信度を維持して学習できました！');
+      achievements.push("高い自信度を維持して学習できました！");
     }
 
-    return achievements.length > 0 ? achievements : ['学習セッションを完了しました！'];
+    return achievements.length > 0
+      ? achievements
+      : ["学習セッションを完了しました！"];
   }
 
-  private static generateNextSessionPreview(session: LearningSession): string[] {
+  private static generateNextSessionPreview(
+    session: LearningSession
+  ): string[] {
     return [
-      '前回の成果を基に最適化されたコンテンツ',
-      '弱点エリアの重点強化',
-      'より効果的な学習体験'
+      "前回の成果を基に最適化されたコンテンツ",
+      "弱点エリアの重点強化",
+      "より効果的な学習体験",
     ];
   }
 
   private static calculateSessionDuration(session: LearningSession): number {
     if (!session.endTime) return 0;
-    return (new Date(session.endTime).getTime() - new Date(session.startTime).getTime()) / 60000; // 分
+    return (
+      (new Date(session.endTime).getTime() -
+        new Date(session.startTime).getTime()) /
+      60000
+    ); // 分
   }
 
-  private static determineProgressTrend(adaptationAnalysis: any, weaknessAnalysis: any): 'excellent' | 'good' | 'steady' | 'concerning' {
+  private static determineProgressTrend(
+    adaptationAnalysis: any,
+    weaknessAnalysis: any
+  ): "excellent" | "good" | "steady" | "concerning" {
     const velocity = adaptationAnalysis.learningVelocity;
     const adaptability = adaptationAnalysis.adaptabilityScore;
     const overallScore = weaknessAnalysis?.overallScore || 50;
 
-    if (velocity > 2 && adaptability > 80 && overallScore > 80) return 'excellent';
-    if (velocity > 1 && adaptability > 60 && overallScore > 65) return 'good';
-    if (velocity > 0 && adaptability > 40 && overallScore > 50) return 'steady';
-    return 'concerning';
+    if (velocity > 2 && adaptability > 80 && overallScore > 80)
+      return "excellent";
+    if (velocity > 1 && adaptability > 60 && overallScore > 65) return "good";
+    if (velocity > 0 && adaptability > 40 && overallScore > 50) return "steady";
+    return "concerning";
   }
 
-  private static generateKeyInsights(adaptationAnalysis: any, weaknessAnalysis: any): string[] {
+  private static generateKeyInsights(
+    adaptationAnalysis: any,
+    weaknessAnalysis: any
+  ): string[] {
     const insights = [];
 
     if (adaptationAnalysis.learningVelocity > 1) {
-      insights.push('学習速度が順調に向上しています');
+      insights.push("学習速度が順調に向上しています");
     }
 
     if (weaknessAnalysis && weaknessAnalysis.weaknessAreas.length > 0) {
@@ -548,7 +625,7 @@ export class IntelligentLearningService {
     }
 
     if (adaptationAnalysis.adaptabilityScore > 70) {
-      insights.push('適応的学習が効果的に機能しています');
+      insights.push("適応的学習が効果的に機能しています");
     }
 
     return insights;
@@ -556,52 +633,73 @@ export class IntelligentLearningService {
 
   private static identifyMilestones(adaptationAnalysis: any): string[] {
     const milestones = [];
-    const [minDifficulty, maxDifficulty] = adaptationAnalysis.preferredDifficultyRange;
+    const [minDifficulty, maxDifficulty] =
+      adaptationAnalysis.preferredDifficultyRange;
 
     if (maxDifficulty > 70) {
-      milestones.push('高難易度問題への対応力を獲得');
+      milestones.push("高難易度問題への対応力を獲得");
     }
 
     if (adaptationAnalysis.adaptabilityScore > 80) {
-      milestones.push('優秀な学習適応能力を達成');
+      milestones.push("優秀な学習適応能力を達成");
     }
 
     return milestones;
   }
 
-  private static generateFutureProjections(adaptationAnalysis: any, weaknessAnalysis: any): string[] {
+  private static generateFutureProjections(
+    adaptationAnalysis: any,
+    weaknessAnalysis: any
+  ): string[] {
     const projections = [];
 
     if (adaptationAnalysis.learningVelocity > 0) {
-      projections.push('継続的な改善が期待できます');
+      projections.push("継続的な改善が期待できます");
     }
 
-    if (weaknessAnalysis && Object.keys(weaknessAnalysis.estimatedImprovementTime).length > 0) {
-      const timeEstimates = Object.values(weaknessAnalysis.estimatedImprovementTime);
-      const avgTime = timeEstimates.reduce((sum: number, time: any) => sum + time, 0) / timeEstimates.length;
-      projections.push(`約${Math.ceil(avgTime)}週間で主要な弱点改善が期待されます`);
+    if (
+      weaknessAnalysis &&
+      Object.keys(weaknessAnalysis.estimatedImprovementTime).length > 0
+    ) {
+      const timeEstimates = Object.values(
+        weaknessAnalysis.estimatedImprovementTime
+      );
+      const avgTime =
+        timeEstimates.reduce((sum: number, time: any) => sum + time, 0) /
+        timeEstimates.length;
+      projections.push(
+        `約${Math.ceil(avgTime)}週間で主要な弱点改善が期待されます`
+      );
     }
 
     return projections;
   }
 
-  private static getFallbackRecommendation(userId: string, availableItems: LearningItem[]): IntelligentRecommendation {
+  private static getFallbackRecommendation(
+    userId: string,
+    availableItems: LearningItem[]
+  ): IntelligentRecommendation {
     return {
       personalizedContent: {
         items: availableItems.slice(0, 5),
-        reason: 'データ不足のため標準的なコンテンツを提供',
+        reason: "データ不足のため標準的なコンテンツを提供",
         confidence: 30,
         estimatedDifficulty: 50,
-        expectedAccuracy: 70
+        expectedAccuracy: 70,
       },
       adaptiveDifficulty: 50,
-      weaknessAnalysis: WeaknessAnalyzer.performComprehensiveAnalysis(userId, {} as UserStats, [], []),
+      weaknessAnalysis: WeaknessAnalyzer.performComprehensiveAnalysis(
+        userId,
+        {} as UserStats,
+        [],
+        []
+      ),
       performanceInsights: {
         optimizationsApplied: [],
-        currentMetrics: {}
+        currentMetrics: {},
       },
       combinedScore: 50,
-      nextSteps: ['基礎的な学習から開始してください']
+      nextSteps: ["基礎的な学習から開始してください"],
     };
   }
 
@@ -618,7 +716,9 @@ export class IntelligentLearningService {
 
       localStorage.setItem(this.SESSION_KEY, JSON.stringify(sessions));
     } catch (error) {
-      handleLearningError('save session', error as Error, { sessionId: session.sessionId });
+      handleLearningError("save session", error as Error, {
+        sessionId: session.sessionId,
+      });
     }
   }
 }
