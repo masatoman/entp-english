@@ -102,61 +102,106 @@ export interface ItemRelation {
 }
 
 // 型安全性のための定数定義
-export const LEARNING_ITEM_TYPES = ['vocabulary', 'grammar', 'phrase', 'sentence'] as const;
-export const DIFFICULTY_LEVELS = ['beginner', 'intermediate', 'advanced'] as const;
-export const QUESTION_TYPES = ['multiple_choice', 'fill_blank', 'translation', 'listening', 'usage', 'matching'] as const;
-export const SOURCE_TYPES = ['standard', 'gacha', 'generated', 'user_created'] as const;
-export const RARITY_LEVELS = ['common', 'uncommon', 'rare', 'epic', 'legendary'] as const;
+export const LEARNING_ITEM_TYPES = [
+  "vocabulary",
+  "grammar",
+  "phrase",
+  "sentence",
+] as const;
+export const DIFFICULTY_LEVELS = [
+  "beginner",
+  "intermediate",
+  "advanced",
+] as const;
+export const QUESTION_TYPES = [
+  "multiple_choice",
+  "fill_blank",
+  "translation",
+  "listening",
+  "usage",
+  "matching",
+] as const;
+export const SOURCE_TYPES = [
+  "standard",
+  "gacha",
+  "generated",
+  "user_created",
+] as const;
+export const RARITY_LEVELS = [
+  "common",
+  "uncommon",
+  "rare",
+  "epic",
+  "legendary",
+] as const;
 
 // 型ガード関数
-export const isValidLearningItemType = (type: string): type is LearningItem['type'] => {
+export const isValidLearningItemType = (
+  type: string
+): type is LearningItem["type"] => {
   return LEARNING_ITEM_TYPES.includes(type as any);
 };
 
-export const isValidDifficultyLevel = (level: string): level is LearningItem['level'] => {
+export const isValidDifficultyLevel = (
+  level: string
+): level is LearningItem["level"] => {
   return DIFFICULTY_LEVELS.includes(level as any);
 };
 
-export const isValidQuestionType = (type: string): type is LearningQuestion['type'] => {
+export const isValidQuestionType = (
+  type: string
+): type is LearningQuestion["type"] => {
   return QUESTION_TYPES.includes(type as any);
 };
 
 // バリデーション関数
 export const validateLearningItem = (item: Partial<LearningItem>): string[] => {
   const errors: string[] = [];
-  
-  if (!item.id || typeof item.id !== 'string') {
-    errors.push('ID is required and must be a string');
+
+  if (!item.id || typeof item.id !== "string") {
+    errors.push("ID is required and must be a string");
   }
-  
+
   if (!item.type || !isValidLearningItemType(item.type)) {
-    errors.push('Valid type is required');
+    errors.push("Valid type is required");
   }
-  
-  if (!item.content || typeof item.content !== 'string') {
-    errors.push('Content is required and must be a string');
+
+  if (!item.content || typeof item.content !== "string") {
+    errors.push("Content is required and must be a string");
   }
-  
-  if (!item.meaning || typeof item.meaning !== 'string') {
-    errors.push('Meaning is required and must be a string');
+
+  if (!item.meaning || typeof item.meaning !== "string") {
+    errors.push("Meaning is required and must be a string");
   }
-  
+
   if (!item.level || !isValidDifficultyLevel(item.level)) {
-    errors.push('Valid level is required');
+    errors.push("Valid level is required");
   }
-  
-  if (typeof item.difficulty !== 'number' || item.difficulty < 0 || item.difficulty > 100) {
-    errors.push('Difficulty must be a number between 0 and 100');
+
+  if (
+    typeof item.difficulty !== "number" ||
+    item.difficulty < 0 ||
+    item.difficulty > 100
+  ) {
+    errors.push("Difficulty must be a number between 0 and 100");
   }
-  
-  if (typeof item.importance !== 'number' || item.importance < 0 || item.importance > 100) {
-    errors.push('Importance must be a number between 0 and 100');
+
+  if (
+    typeof item.importance !== "number" ||
+    item.importance < 0 ||
+    item.importance > 100
+  ) {
+    errors.push("Importance must be a number between 0 and 100");
   }
-  
-  if (typeof item.frequency !== 'number' || item.frequency < 0 || item.frequency > 100) {
-    errors.push('Frequency must be a number between 0 and 100');
+
+  if (
+    typeof item.frequency !== "number" ||
+    item.frequency < 0 ||
+    item.frequency > 100
+  ) {
+    errors.push("Frequency must be a number between 0 and 100");
   }
-  
+
   return errors;
 };
 
