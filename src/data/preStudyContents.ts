@@ -96,7 +96,8 @@ export const preStudyContents: PreStudyContent[] = [
       {
         english: "I gave him a present.",
         japanese: "私は彼にプレゼントを渡しました。",
-        explanation: "第4文型（SVOO）：間接目的語（him）と直接目的語（present）",
+        explanation:
+          "第4文型（SVOO）：間接目的語（him）と直接目的語（present）",
       },
       {
         english: "The news made me happy.",
@@ -111,7 +112,8 @@ export const preStudyContents: PreStudyContent[] = [
         question: "The company _____ its employees excellent benefits.",
         choices: ["provides", "providing", "provided", "to provide"],
         correctAnswer: 0,
-        explanation: "第4文型（SVOO）の構造。companyが主語、providesが動詞、employeesが間接目的語、benefitsが直接目的語。"
+        explanation:
+          "第4文型（SVOO）の構造。companyが主語、providesが動詞、employeesが間接目的語、benefitsが直接目的語。",
       },
       {
         part: 5,
@@ -119,7 +121,8 @@ export const preStudyContents: PreStudyContent[] = [
         question: "The presentation was _____ by all attendees.",
         choices: ["impressed", "impressive", "impress", "impressing"],
         correctAnswer: 1,
-        explanation: "第2文型（SVC）の構造。wasがbe動詞、impressiveが補語（形容詞）として主語presentationの性質を表す。"
+        explanation:
+          "第2文型（SVC）の構造。wasがbe動詞、impressiveが補語（形容詞）として主語presentationの性質を表す。",
       },
       {
         part: 6,
@@ -127,7 +130,8 @@ export const preStudyContents: PreStudyContent[] = [
         question: "Our manager _____ the project successful.",
         choices: ["considered", "considering", "considers", "consideration"],
         correctAnswer: 0,
-        explanation: "第5文型（SVOC）の構造。managerが主語、consideredが動詞、projectが目的語、successfulが補語。"
+        explanation:
+          "第5文型（SVOC）の構造。managerが主語、consideredが動詞、projectが目的語、successfulが補語。",
       },
       {
         part: 5,
@@ -135,7 +139,8 @@ export const preStudyContents: PreStudyContent[] = [
         question: "The meeting _____ at 3 PM yesterday.",
         choices: ["started", "starting", "starts", "to start"],
         correctAnswer: 0,
-        explanation: "第1文型（SV）の構造。meetingが主語、startedが動詞。時制は過去を示すyesterdayに合わせる。"
+        explanation:
+          "第1文型（SV）の構造。meetingが主語、startedが動詞。時制は過去を示すyesterdayに合わせる。",
       },
     ],
     relatedProblems: ["basic-grammar"],
@@ -210,7 +215,8 @@ export const preStudyContents: PreStudyContent[] = [
         question: "Employees _____ submit their reports by 5 PM today.",
         choices: ["can", "must", "might", "would"],
         correctAnswer: 1,
-        explanation: "文脈から「義務・必要性」を表すmustが適切。締切があるため強い義務を示す。"
+        explanation:
+          "文脈から「義務・必要性」を表すmustが適切。締切があるため強い義務を示す。",
       },
       {
         part: 5,
@@ -218,7 +224,7 @@ export const preStudyContents: PreStudyContent[] = [
         question: "_____ you please review this document?",
         choices: ["Can", "Could", "May", "Might"],
         correctAnswer: 1,
-        explanation: "Couldは最も丁寧な依頼表現。ビジネスシーンでは特に重要。"
+        explanation: "Couldは最も丁寧な依頼表現。ビジネスシーンでは特に重要。",
       },
       {
         part: 6,
@@ -226,7 +232,8 @@ export const preStudyContents: PreStudyContent[] = [
         question: "The system _____ be updated to improve security.",
         choices: ["should", "could", "would", "might"],
         correctAnswer: 0,
-        explanation: "shouldは「〜すべきである」という推奨・義務を表し、セキュリティ改善の必要性を示す。"
+        explanation:
+          "shouldは「〜すべきである」という推奨・義務を表し、セキュリティ改善の必要性を示す。",
       },
     ],
     relatedProblems: ["modals"],
@@ -465,7 +472,6 @@ export const preStudyContents: PreStudyContent[] = [
     prerequisites: ["basic-grammar-theory"],
   },
 
-
   // 受動態 (passive)
   {
     id: "passive-theory",
@@ -548,9 +554,15 @@ export const preStudyContents: PreStudyContent[] = [
         part: 5,
         type: "受動態の時制",
         question: "The new software _____ by the IT department last week.",
-        choices: ["installed", "was installed", "has installed", "will install"],
+        choices: [
+          "installed",
+          "was installed",
+          "has installed",
+          "will install",
+        ],
         correctAnswer: 1,
-        explanation: "last weekにより過去形が必要。受動態なのでwas installedが正解。"
+        explanation:
+          "last weekにより過去形が必要。受動態なのでwas installedが正解。",
       },
       {
         part: 6,
@@ -558,7 +570,8 @@ export const preStudyContents: PreStudyContent[] = [
         question: "All documents must _____ before the deadline.",
         choices: ["submit", "be submitted", "submitting", "to submit"],
         correctAnswer: 1,
-        explanation: "must + be + 過去分詞で「〜されなければならない」という受動態の義務表現。"
+        explanation:
+          "must + be + 過去分詞で「〜されなければならない」という受動態の義務表現。",
       },
       {
         part: 5,
@@ -566,7 +579,8 @@ export const preStudyContents: PreStudyContent[] = [
         question: "The project _____ successfully completed.",
         choices: ["has", "has been", "have", "have been"],
         correctAnswer: 1,
-        explanation: "現在完了の受動態はhas/have been + 過去分詞。主語projectは単数なのでhas been。"
+        explanation:
+          "現在完了の受動態はhas/have been + 過去分詞。主語projectは単数なのでhas been。",
       },
     ],
     relatedProblems: ["passive"],
@@ -655,26 +669,31 @@ export const preStudyContents: PreStudyContent[] = [
       {
         part: 5,
         type: "関係代名詞選択",
-        question: "The manager _____ is responsible for sales will attend the meeting.",
+        question:
+          "The manager _____ is responsible for sales will attend the meeting.",
         choices: ["who", "which", "whose", "where"],
         correctAnswer: 0,
-        explanation: "人（manager）を修飾するのでwhoが正解。関係代名詞が主語の役割を果たす。"
+        explanation:
+          "人（manager）を修飾するのでwhoが正解。関係代名詞が主語の役割を果たす。",
       },
       {
         part: 6,
         type: "関係詞の省略",
-        question: "The project _____ we completed last month was very successful.",
+        question:
+          "The project _____ we completed last month was very successful.",
         choices: ["that", "what", "who", "where"],
         correctAnswer: 0,
-        explanation: "物（project）を修飾し、関係代名詞が目的語の役割。thatまたはwhichが使えるが、選択肢にはthatのみ。"
+        explanation:
+          "物（project）を修飾し、関係代名詞が目的語の役割。thatまたはwhichが使えるが、選択肢にはthatのみ。",
       },
       {
         part: 5,
         type: "関係副詞",
-        question: "This is the conference room _____ we hold our weekly meetings.",
+        question:
+          "This is the conference room _____ we hold our weekly meetings.",
         choices: ["that", "which", "where", "when"],
         correctAnswer: 2,
-        explanation: "場所（conference room）を修飾する関係副詞whereが適切。"
+        explanation: "場所（conference room）を修飾する関係副詞whereが適切。",
       },
     ],
     relatedProblems: ["relative"],
@@ -766,7 +785,8 @@ export const preStudyContents: PreStudyContent[] = [
         question: "If I _____ more time, I would review the proposal again.",
         choices: ["have", "had", "will have", "would have"],
         correctAnswer: 1,
-        explanation: "仮定法過去の構文。If + 主語 + 過去形, 主語 + would + 動詞の原形。"
+        explanation:
+          "仮定法過去の構文。If + 主語 + 過去形, 主語 + would + 動詞の原形。",
       },
       {
         part: 6,
@@ -774,7 +794,8 @@ export const preStudyContents: PreStudyContent[] = [
         question: "I wish the meeting _____ shorter.",
         choices: ["is", "was", "were", "will be"],
         correctAnswer: 2,
-        explanation: "I wish + 仮定法過去。主語がthe meetingでも仮定法ではwereを使用。"
+        explanation:
+          "I wish + 仮定法過去。主語がthe meetingでも仮定法ではwereを使用。",
       },
       {
         part: 5,
@@ -782,7 +803,8 @@ export const preStudyContents: PreStudyContent[] = [
         question: "I would appreciate it if you _____ send me the data.",
         choices: ["can", "could", "will", "would"],
         correctAnswer: 1,
-        explanation: "I would appreciate if + 仮定法過去。丁寧な依頼表現でcouldを使用。"
+        explanation:
+          "I would appreciate if + 仮定法過去。丁寧な依頼表現でcouldを使用。",
       },
     ],
     relatedProblems: ["subjunctive"],
@@ -873,7 +895,8 @@ export const preStudyContents: PreStudyContent[] = [
         question: "Our new product is _____ than our competitors'.",
         choices: ["more popular", "most popular", "popular", "popularity"],
         correctAnswer: 0,
-        explanation: "thanがあるので比較級が必要。popularは3音節なのでmore popularが正解。"
+        explanation:
+          "thanがあるので比較級が必要。popularは3音節なのでmore popularが正解。",
       },
       {
         part: 6,
@@ -881,7 +904,8 @@ export const preStudyContents: PreStudyContent[] = [
         question: "This is _____ important project of the year.",
         choices: ["more", "most", "the more", "the most"],
         correctAnswer: 3,
-        explanation: "最上級はthe + mostまたはthe + -est。importantは3音節なのでthe most important。"
+        explanation:
+          "最上級はthe + mostまたはthe + -est。importantは3音節なのでthe most important。",
       },
       {
         part: 5,
@@ -889,7 +913,8 @@ export const preStudyContents: PreStudyContent[] = [
         question: "The new office is _____ spacious _____ the old one.",
         choices: ["as...as", "more...than", "so...as", "too...to"],
         correctAnswer: 0,
-        explanation: "同等比較はas + 形容詞 + asの構文。「〜と同じくらい」を表す。"
+        explanation:
+          "同等比較はas + 形容詞 + asの構文。「〜と同じくらい」を表す。",
       },
     ],
     relatedProblems: ["comparison"],
@@ -987,7 +1012,8 @@ export const preStudyContents: PreStudyContent[] = [
         question: "The _____ presentation impressed all the clients.",
         choices: ["prepared", "preparing", "preparation", "preparatory"],
         correctAnswer: 0,
-        explanation: "過去分詞preparedが名詞presentationを修飾。「準備された」という受動的な意味。"
+        explanation:
+          "過去分詞preparedが名詞presentationを修飾。「準備された」という受動的な意味。",
       },
       {
         part: 6,
@@ -995,15 +1021,18 @@ export const preStudyContents: PreStudyContent[] = [
         question: "Thank you for _____ us with this project.",
         choices: ["help", "helping", "to help", "helped"],
         correctAnswer: 1,
-        explanation: "前置詞forの後は動名詞。Thank you for + 動名詞は感謝の定型表現。"
+        explanation:
+          "前置詞forの後は動名詞。Thank you for + 動名詞は感謝の定型表現。",
       },
       {
         part: 5,
         type: "分詞構文",
-        question: "_____ the meeting early, I had time to review the documents.",
+        question:
+          "_____ the meeting early, I had time to review the documents.",
         choices: ["Finish", "Finished", "Finishing", "To finish"],
         correctAnswer: 2,
-        explanation: "分詞構文で時間的前後関係を表現。主語Iが動作の主体なので現在分詞Finishing。"
+        explanation:
+          "分詞構文で時間的前後関係を表現。主語Iが動作の主体なので現在分詞Finishing。",
       },
     ],
     relatedProblems: ["participle"],
@@ -1080,7 +1109,8 @@ export const preStudyContents: PreStudyContent[] = [
       },
       {
         english: "To succeed in business, you need good communication skills.",
-        japanese: "ビジネスで成功するには、良いコミュニケーションスキルが必要です。",
+        japanese:
+          "ビジネスで成功するには、良いコミュニケーションスキルが必要です。",
         explanation: "副詞的用法：目的を表す不定詞",
       },
       {
@@ -1096,7 +1126,8 @@ export const preStudyContents: PreStudyContent[] = [
         question: "The company decided _____ a new branch office.",
         choices: ["open", "to open", "opening", "opened"],
         correctAnswer: 1,
-        explanation: "decide to doの構文。「〜することを決める」という意味で不定詞を使用。"
+        explanation:
+          "decide to doの構文。「〜することを決める」という意味で不定詞を使用。",
       },
       {
         part: 6,
@@ -1104,7 +1135,8 @@ export const preStudyContents: PreStudyContent[] = [
         question: "We hired a consultant _____ improve our marketing strategy.",
         choices: ["for", "to", "so", "in order"],
         correctAnswer: 1,
-        explanation: "目的を表す不定詞。「〜するために」という意味でto + 動詞の原形。"
+        explanation:
+          "目的を表す不定詞。「〜するために」という意味でto + 動詞の原形。",
       },
       {
         part: 5,
@@ -1112,7 +1144,8 @@ export const preStudyContents: PreStudyContent[] = [
         question: "It is essential _____ the instructions carefully.",
         choices: ["follow", "to follow", "following", "followed"],
         correctAnswer: 1,
-        explanation: "It is + 形容詞 + to不定詞の構文。「〜することは...だ」という意味。"
+        explanation:
+          "It is + 形容詞 + to不定詞の構文。「〜することは...だ」という意味。",
       },
     ],
     relatedProblems: ["infinitive"],
@@ -1202,7 +1235,8 @@ export const preStudyContents: PreStudyContent[] = [
         question: "The new software will _____ our efficiency significantly.",
         choices: ["enhance", "increase", "improve", "develop"],
         correctAnswer: 0,
-        explanation: "enhanceは「質を高める・向上させる」という意味で、効率性の文脈に最適。"
+        explanation:
+          "enhanceは「質を高める・向上させる」という意味で、効率性の文脈に最適。",
       },
       {
         part: 6,
@@ -1210,15 +1244,18 @@ export const preStudyContents: PreStudyContent[] = [
         question: "The company's _____ of the new technology was successful.",
         choices: ["implementation", "implement", "implementing", "implemented"],
         correctAnswer: 0,
-        explanation: "所有格（company's）の後には名詞が必要。implementationが正解。"
+        explanation:
+          "所有格（company's）の後には名詞が必要。implementationが正解。",
       },
       {
         part: 5,
         type: "類義語選択",
-        question: "The _____ report provided detailed analysis of market trends.",
+        question:
+          "The _____ report provided detailed analysis of market trends.",
         choices: ["comprehensive", "complete", "total", "whole"],
         correctAnswer: 0,
-        explanation: "comprehensiveは「包括的な・詳細な」という意味で、レポートの文脈に最適。"
+        explanation:
+          "comprehensiveは「包括的な・詳細な」という意味で、レポートの文脈に最適。",
       },
     ],
     relatedProblems: ["vocabulary"],
@@ -1311,26 +1348,47 @@ export const preStudyContents: PreStudyContent[] = [
       {
         part: 1,
         type: "英作文基礎",
-        question: "Write a sentence describing a business meeting using past tense.",
-        choices: ["The meeting was held yesterday.", "The meeting is holding yesterday.", "The meeting will hold yesterday.", "The meeting holds yesterday."],
+        question:
+          "Write a sentence describing a business meeting using past tense.",
+        choices: [
+          "The meeting was held yesterday.",
+          "The meeting is holding yesterday.",
+          "The meeting will hold yesterday.",
+          "The meeting holds yesterday.",
+        ],
         correctAnswer: 0,
-        explanation: "過去の出来事なので過去形was heldが正解。meetingは「開催される」ので受動態を使用。"
+        explanation:
+          "過去の出来事なので過去形was heldが正解。meetingは「開催される」ので受動態を使用。",
       },
       {
         part: 2,
         type: "文章構成",
-        question: "Choose the best way to combine these ideas: 'The project was successful.' 'We completed it on time.'",
-        choices: ["The project was successful, and we completed it on time.", "The project was successful because we completed it on time.", "We completed the successful project on time.", "The project, which we completed on time, was successful."],
+        question:
+          "Choose the best way to combine these ideas: 'The project was successful.' 'We completed it on time.'",
+        choices: [
+          "The project was successful, and we completed it on time.",
+          "The project was successful because we completed it on time.",
+          "We completed the successful project on time.",
+          "The project, which we completed on time, was successful.",
+        ],
         correctAnswer: 3,
-        explanation: "関係詞を使って2つの文を自然に結合。「時間通りに完成させたプロジェクトは成功だった」"
+        explanation:
+          "関係詞を使って2つの文を自然に結合。「時間通りに完成させたプロジェクトは成功だった」",
       },
       {
         part: 3,
         type: "語彙活用",
-        question: "Write a sentence using 'implement' and 'strategy' in a business context.",
-        choices: ["We will implement the new strategy next month.", "The strategy implements next month.", "Implementation strategy next month.", "Strategy implementing next month."],
+        question:
+          "Write a sentence using 'implement' and 'strategy' in a business context.",
+        choices: [
+          "We will implement the new strategy next month.",
+          "The strategy implements next month.",
+          "Implementation strategy next month.",
+          "Strategy implementing next month.",
+        ],
         correctAnswer: 0,
-        explanation: "implementは他動詞で「実行する」。主語 + implement + 目的語の第3文型が正解。"
+        explanation:
+          "implementは他動詞で「実行する」。主語 + implement + 目的語の第3文型が正解。",
       },
     ],
     relatedProblems: ["writing"],

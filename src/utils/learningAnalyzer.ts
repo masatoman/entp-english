@@ -225,7 +225,7 @@ export class LearningAnalyzer {
     userStats: any
   ): LearningPattern["preferredDifficulty"] {
     // 実際の選択履歴から判定（仮実装）
-    return "beginner"; // TODO: 実際の選択履歴から分析
+    return this.analyzeDifficultyPreference(sessions);
   }
 
   /**
@@ -233,7 +233,7 @@ export class LearningAnalyzer {
    */
   private static getPreferredCategory(userStats: any): string {
     // 最も多く学習したカテゴリを返す（仮実装）
-    return "grammar"; // TODO: 実際の学習履歴から分析
+    return this.analyzeContentPreference(sessions);
   }
 
   /**
@@ -255,7 +255,7 @@ export class LearningAnalyzer {
   private static findPeakPerformanceHour(sessions: any[]): number {
     // 時間別の正解率を分析（仮実装）
     const currentHour = new Date().getHours();
-    return currentHour; // TODO: 実際の時間別パフォーマンス分析
+    return this.analyzeBestStudyTime(sessions);
   }
 
   /**
@@ -296,11 +296,11 @@ export class LearningAnalyzer {
 
     return {
       totalStudySessions: userStats.totalQuestions || 0,
-      totalStudyTime: 0, // TODO: 実際の学習時間追跡
+      totalStudyTime: this.calculateTotalStudyTime(sessions),
       averageAccuracy: this.calculateOverallAccuracy(userStats),
-      strongestCategories: ["grammar", "vocabulary"], // TODO: 実際の分析
+      strongestCategories: this.analyzeStrongestCategories(sessions),
       improvementTrend: userStats.currentStreak > 3 ? "上昇中" : "安定",
-      weeklyProgress: [10, 15, 20, 25, 30, 35, 40], // TODO: 実際の週次進捗
+      weeklyProgress: this.calculateWeeklyProgress(sessions),
       monthlyXpGain: userStats.totalXP || 0,
     };
   }
@@ -346,5 +346,130 @@ export class LearningAnalyzer {
     } catch {
       return { sessions: [] };
     }
+  }
+
+  /**
+   * 難易度選択傾向を分析
+   */
+  private static analyzeDifficultyPreference(sessions: any[]): string {
+    if (sessions.length === 0) return "beginner";
+    
+    const difficultyCounts = sessions.reduce((acc, session) => {
+      const difficulty = session.difficulty || "normal";
+      acc[difficulty] = (acc[difficulty] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+    
+    const mostUsed = Object.entries(difficultyCounts)
+      .sort(([,a], [,b]) => b - a)[0];
+    
+    return mostUsed ? mostUsed[0] : "beginner";
+  }
+
+  /**
+   * コンテンツ選択傾向を分析
+   */
+  private static analyzeContentPreference(sessions: any[]): string {
+    if (sessions.length === 0) return "grammar";
+    
+    const contentCounts = sessions.reduce((acc, session) => {
+      const type = session.type || "grammar";
+      acc[type] = (acc[type] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+    
+    const mostUsed = Object.entries(contentCounts)
+      .sort(([,a], [,b]) => b - a)[0];
+    
+    return mostUsed ? mostUsed[0] : "grammar";
+  }
+
+  /**
+   * 最適な学習時間を分析
+   */
+  private static analyzeBestStudyTime(sessions: any[]): number {
+    if (sessions.length === 0) return new Date().getHours();
+    
+    const hourPerformance = sessions.reduce((acc, session) => {
+      const hour = session.hour || new Date().getHours();
+      const score = session.score || 0;
+      
+      if (!acc[hour]) {
+        acc[hour] = { totalScore: 0, count: 0 };
+      }
+      acc[hour].totalScore += score;
+      acc[hour].count += 1;
+      return acc;
+    }, {} as Record<number, { totalScore: number; count: number }>);
+    
+    let bestHour = new Date().getHours();
+    let bestAverage = 0;
+    
+    Object.entries(hourPerformance).forEach(([hour, data]) => {
+      const average = data.totalScore / data.count;
+      if (average > bestAverage) {
+        bestAverage = average;
+        bestHour = parseInt(hour);
+      }
+    });
+    
+    return bestHour;
+  }
+
+  /**
+   * 総学習時間を計算
+   */
+  private static calculateTotalStudyTime(sessions: any[]): number {
+    return sessions.reduce((total, session) => {
+      return total + (session.studyTime || 0);
+    }, 0);
+  }
+
+  /**
+   * 最も強いカテゴリを分析
+   */
+  private static analyzeStrongestCategories(sessions: any[]): string[] {
+    if (sessions.length === 0) return ["grammar", "vocabulary"];
+    
+    const categoryPerformance = sessions.reduce((acc, session) => {
+      const category = session.category || "grammar";
+      const score = session.score || 0;
+      
+      if (!acc[category]) {
+        acc[category] = { totalScore: 0, count: 0 };
+      }
+      acc[category].totalScore += score;
+      acc[category].count += 1;
+      return acc;
+    }, {} as Record<string, { totalScore: number; count: number }>);
+    
+    const averages = Object.entries(categoryPerformance)
+      .map(([category, data]) => ({
+        category,
+        average: data.totalScore / data.count
+      }))
+      .sort((a, b) => b.average - a.average);
+    
+    return averages.slice(0, 2).map(item => item.category);
+  }
+
+  /**
+   * 週次進捗を計算
+   */
+  private static calculateWeeklyProgress(sessions: any[]): number[] {
+    const weeklyData = new Array(7).fill(0);
+    const now = new Date();
+    
+    sessions.forEach(session => {
+      const sessionDate = new Date(session.timestamp || now);
+      const daysDiff = Math.floor((now.getTime() - sessionDate.getTime()) / (1000 * 60 * 60 * 24));
+      
+      if (daysDiff < 7) {
+        const dayIndex = 6 - daysDiff; // 今日を6、昨日を5...
+        weeklyData[dayIndex] += session.score || 0;
+      }
+    });
+    
+    return weeklyData;
   }
 }

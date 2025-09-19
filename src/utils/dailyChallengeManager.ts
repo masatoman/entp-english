@@ -382,7 +382,26 @@ export class DailyChallengeManager {
       currentStreak: progress.streakCount,
       totalCompleted: progress.totalCompleted,
       completionRate: Math.min(completionRate, 1),
-      favoriteType: "vocabulary", // TODO: 実際の統計から計算
+      favoriteType: this.calculateFavoriteType(userStats),
     };
+  }
+
+  /**
+   * ユーザーの好みのタイプを計算
+   */
+  private static calculateFavoriteType(userStats: any): "vocabulary" | "grammar" | "combined" {
+    if (!userStats) return "vocabulary";
+    
+    const vocabStudied = userStats.vocabularyStudied || 0;
+    const grammarCompleted = userStats.grammarQuizzesCompleted || 0;
+    const combinedCompleted = userStats.combinedTestsCompleted || 0;
+    
+    if (combinedCompleted > vocabStudied && combinedCompleted > grammarCompleted) {
+      return "combined";
+    } else if (grammarCompleted > vocabStudied) {
+      return "grammar";
+    } else {
+      return "vocabulary";
+    }
   }
 }

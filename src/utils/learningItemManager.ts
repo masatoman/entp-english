@@ -7,6 +7,7 @@ import {
   LearningProgress,
   LearningQuestion,
 } from "../types/learningItem";
+import { logError } from './logger';
 
 /**
  * 統合学習項目管理システム
@@ -70,7 +71,7 @@ export class LearningItemManager {
       examples,
       explanations,
       questions,
-      relations: [], // TODO: 関連性の自動生成
+      relations: this.generateRelationsForCard(card),
       rarity: card.rarity,
       source: "gacha",
       tags: [
@@ -285,7 +286,7 @@ export class LearningItemManager {
       type: "multiple_choice",
       difficulty: "easy",
       prompt: `"${word.word}"の意味として最も適切なものを選んでください。`,
-      options: [word.meaning, "選択肢2", "選択肢3", "選択肢4"], // TODO: より適切な選択肢生成
+        options: this.generateChoicesForWord(word),
       correctAnswer: word.meaning,
       explanation: `"${word.word}"は「${word.meaning}」という意味です。`,
       learningItemId: `vocab-${word.id}`,
@@ -414,6 +415,102 @@ export class LearningItemManager {
   }
 
   /**
+   * カードの関連性を自動生成
+   */
+  private static generateRelationsForCard(card: WordCard): string[] {
+    const relations: string[] = [];
+    
+    // 品詞が同じ単語との関連性
+    relations.push(`pos:${card.partOfSpeech}`);
+    
+    // ビジネスコンテキストでの関連性
+    if (card.toeicSpecific?.businessContext) {
+      relations.push(`business:${card.toeicSpecific.businessContext}`);
+    }
+    
+    // TOEICパートでの関連性
+    if (card.toeicSpecific?.parts) {
+      card.toeicSpecific.parts.forEach(part => {
+        relations.push(`toeic:${part}`);
+      });
+    }
+    
+    // 頻度レベルでの関連性
+    if (card.toeicSpecific?.frequency) {
+      relations.push(`frequency:${card.toeicSpecific.frequency}`);
+    }
+    
+    return relations;
+  }
+
+  /**
+   * 単語の選択肢を生成
+   */
+  private static generateChoicesForWord(word: VocabularyWord): string[] {
+    const choices = [word.meaning];
+    
+    // 類似の品詞から間違った選択肢を生成
+    const similarMeanings = this.getSimilarMeanings(word.partOfSpeech, word.meaning);
+    choices.push(...similarMeanings.slice(0, 3));
+    
+    // 4つに満たない場合は汎用的な選択肢を追加
+    while (choices.length < 4) {
+      const genericChoices = this.getGenericChoices(word.partOfSpeech);
+      const unusedChoice = genericChoices.find(choice => !choices.includes(choice));
+      if (unusedChoice) {
+        choices.push(unusedChoice);
+      } else {
+        choices.push(`選択肢${choices.length}`);
+      }
+    }
+    
+    // 正解以外をシャッフル
+    const correctAnswer = choices[0];
+    const incorrectChoices = choices.slice(1);
+    this.shuffleArray(incorrectChoices);
+    
+    return [correctAnswer, ...incorrectChoices];
+  }
+
+  /**
+   * 類似の意味を取得
+   */
+  private static getSimilarMeanings(partOfSpeech: string, originalMeaning: string): string[] {
+    const similarMeanings: Record<string, string[]> = {
+      "動詞": ["実行する", "完成する", "開始する", "終了する", "継続する"],
+      "名詞": ["結果", "過程", "目標", "計画", "方法"],
+      "形容詞": ["重要な", "必要な", "効果的な", "適切な", "有用な"],
+      "副詞": ["効率的に", "適切に", "完全に", "部分的に", "継続的に"]
+    };
+    
+    return similarMeanings[partOfSpeech] || ["関連する意味1", "関連する意味2", "関連する意味3"];
+  }
+
+  /**
+   * 汎用的な選択肢を取得
+   */
+  private static getGenericChoices(partOfSpeech: string): string[] {
+    const genericChoices: Record<string, string[]> = {
+      "動詞": ["行う", "作る", "見る", "言う", "考える"],
+      "名詞": ["物", "事", "人", "場所", "時間"],
+      "形容詞": ["良い", "悪い", "大きい", "小さい", "新しい"],
+      "副詞": ["よく", "悪く", "早く", "遅く", "静かに"]
+    };
+    
+    return genericChoices[partOfSpeech] || ["選択肢A", "選択肢B", "選択肢C"];
+  }
+
+  /**
+   * 配列をシャッフル
+   */
+  private static shuffleArray<T>(array: T[]): void {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  /**
    * 全ての学習項目を取得
    */
   static getAllLearningItems(): LearningItem[] {
@@ -423,7 +520,7 @@ export class LearningItemManager {
         return JSON.parse(stored);
       }
     } catch (error) {
-      console.error("Error loading learning items:", error);
+      logError("Error loading learning items", error);
     }
     return [];
   }
@@ -435,7 +532,7 @@ export class LearningItemManager {
     try {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(items));
     } catch (error) {
-      console.error("Error saving learning items:", error);
+      logError("Error saving learning items", error);
     }
   }
 
@@ -475,7 +572,7 @@ export class LearningItemManager {
         return allProgress.find((p) => p.itemId === itemId) || null;
       }
     } catch (error) {
-      console.error("Error loading learning progress:", error);
+      logError("Error loading learning progress", error);
     }
     return null;
   }
@@ -499,7 +596,7 @@ export class LearningItemManager {
 
       localStorage.setItem(this.PROGRESS_KEY, JSON.stringify(allProgress));
     } catch (error) {
-      console.error("Error saving learning progress:", error);
+      logError("Error saving learning progress", error);
     }
   }
 }
