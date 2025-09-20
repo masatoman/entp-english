@@ -8,6 +8,7 @@ import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Category } from "../types";
 import { getLevelManager } from "../utils/levelManager";
 import { questionStatsManager } from "../utils/questionStatsManager";
+import { skillTreeManager } from "../utils/skillTreeManager";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
@@ -70,6 +71,47 @@ export default function Question() {
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [userInput, setUserInput] = useState<string>("");
   const [startTime, setStartTime] = useState<Date | null>(null);
+
+  // スキルツリー進捗更新関数
+  const updateSkillTreeProgress = () => {
+    if (!category || !difficulty) return;
+
+    const masteryLevel = Math.round((score / questions.length) * 100);
+    const timeSpent = Math.round((new Date().getTime() - (startTime?.getTime() || 0)) / 60000); // 分
+
+    // カテゴリーに応じたスキルノードIDを決定
+    let skillNodeId = "";
+    
+    if (category === "basic-grammar" && urlPattern) {
+      // 基本文型の場合
+      skillNodeId = `${urlPattern}-basic`;
+    } else {
+      // その他のカテゴリー
+      const categoryMapping: Record<string, string> = {
+        "tenses": "tenses-present", // 時制は現在時制ノードに統合
+        "modals": "modals-basic",
+        "passive": "passive-basic",
+        "relative": "relative-basic",
+        "subjunctive": "subjunctive-basic",
+        "comparison": "comparison-basic",
+        "participle": "participle-basic",
+        "infinitive": "infinitive-basic"
+      };
+      skillNodeId = categoryMapping[category] || category;
+    }
+
+    // スキルツリーの進捗を更新
+    if (skillNodeId) {
+      skillTreeManager.updateNodeProgress(
+        skillNodeId,
+        score,
+        questions.length,
+        timeSpent
+      );
+      
+      console.log(`🎯 スキルツリー更新: ${skillNodeId} - 習熟度${masteryLevel}%`);
+    }
+  };
 
   // 問題データを取得
   useEffect(() => {
@@ -223,6 +265,9 @@ export default function Question() {
       const levelManager = getLevelManager();
       const xpReward = Math.round(score * 10 + totalQuestions * 2);
       levelManager.addXP(xpReward);
+
+      // スキルツリーの進捗を更新
+      updateSkillTreeProgress();
     }
   };
 

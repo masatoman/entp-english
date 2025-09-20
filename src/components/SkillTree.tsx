@@ -237,11 +237,11 @@ export default function SkillTree() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="relative">
+                <div className="relative overflow-auto max-h-[600px] lg:max-h-none">
                   {/* SVG for connections */}
                   <svg
                     className="absolute inset-0 w-full h-full pointer-events-none"
-                    style={{ height: "1500px" }}
+                    style={{ height: "1500px", minWidth: "500px" }}
                   >
                     {GRAMMAR_SKILL_TREE.map((node) =>
                       node.unlocks.map((unlockId) =>
@@ -251,7 +251,7 @@ export default function SkillTree() {
                   </svg>
 
                   {/* Skill Nodes */}
-                  <div className="relative" style={{ height: "1500px" }}>
+                  <div className="relative" style={{ height: "1500px", minWidth: "500px" }}>
                     {GRAMMAR_SKILL_TREE.map((node) => {
                       const status = getNodeStatus(node);
                       const progress = skillTreeState.progress[node.id];
@@ -260,14 +260,14 @@ export default function SkillTree() {
                         <TooltipProvider key={node.id}>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <div
-                                className={`absolute w-32 h-20 rounded-lg border-2 p-2 cursor-pointer transition-all duration-200 ${getStatusColor(
-                                  status
-                                )} ${
-                                  status === "locked"
-                                    ? "cursor-not-allowed"
-                                    : "hover:scale-105"
-                                }`}
+                                <div
+                                 className={`absolute w-28 h-16 sm:w-32 sm:h-20 rounded-lg border-2 p-1 sm:p-2 cursor-pointer transition-all duration-200 ${getStatusColor(
+                                   status
+                                 )} ${
+                                   status === "locked"
+                                     ? "cursor-not-allowed"
+                                     : "hover:scale-105"
+                                 }`}
                                 style={{
                                   left: node.position.x,
                                   top: node.position.y,
@@ -278,7 +278,7 @@ export default function SkillTree() {
                                   <span className="text-lg">{node.icon}</span>
                                   {getStatusIcon(status)}
                                 </div>
-                                <div className="text-xs font-semibold truncate">
+                                <div className="text-xs sm:text-sm font-semibold truncate">
                                   {node.name}
                                 </div>
                                 {progress && (

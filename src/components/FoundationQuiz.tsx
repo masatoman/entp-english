@@ -11,6 +11,7 @@ import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Textarea } from "./ui/textarea";
+import SkillUnlockNotification, { useSkillUnlockNotification } from "./SkillUnlockNotification";
 
 const categoryLabels: Record<string, string> = {
   "parts-of-speech": "品詞の理解",
@@ -49,6 +50,14 @@ export default function FoundationQuiz() {
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [userInput, setUserInput] = useState<string>("");
   const [startTime, setStartTime] = useState<Date | null>(null);
+  
+  // スキル解放通知
+  const {
+    unlockedSkills,
+    showNotification,
+    checkForNewUnlocks,
+    handleCloseNotification
+  } = useSkillUnlockNotification();
 
   // 問題データを取得
   useEffect(() => {
@@ -112,7 +121,7 @@ export default function FoundationQuiz() {
 
   const handleQuizComplete = () => {
     const masteryLevel = Math.round((score / questions.length) * 100);
-    const timeSpent = questions.length * 2; // 概算時間
+    const timeSpent = Math.round((new Date().getTime() - (startTime?.getTime() || 0)) / 60000); // 分
 
     // スキルツリーの進捗を更新
     if (category) {
@@ -122,6 +131,13 @@ export default function FoundationQuiz() {
         questions.length,
         timeSpent
       );
+      
+      console.log(`🎯 基礎スキル更新: ${category} - 習熟度${masteryLevel}%`);
+      
+      // 習熟度80%以上で解放通知
+      if (masteryLevel >= 80) {
+        console.log(`🔓 ${category}で習熟度80%達成！新しいスキルが解放される可能性があります。`);
+      }
     }
 
     // XP報酬を計算
@@ -130,6 +146,11 @@ export default function FoundationQuiz() {
     levelManager.addXP(xpReward);
 
     setIsComplete(true);
+    
+    // 新しく解放されたスキルをチェック
+    setTimeout(() => {
+      checkForNewUnlocks();
+    }, 1000);
   };
 
   const handleBack = () => {
@@ -361,6 +382,14 @@ export default function FoundationQuiz() {
           </CardContent>
         </Card>
       </div>
+
+      {/* スキル解放通知 */}
+      {showNotification && unlockedSkills.length > 0 && (
+        <SkillUnlockNotification
+          unlockedSkills={unlockedSkills}
+          onClose={handleCloseNotification}
+        />
+      )}
     </div>
   );
 }
