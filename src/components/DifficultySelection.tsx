@@ -22,9 +22,9 @@ const categoryLabels: Record<Category, string> = {
 
 export default function DifficultySelection() {
   const navigate = useNavigate();
-  const { category: urlCategory, pattern: urlPattern } = useParams<{ 
-    category: Category; 
-    pattern?: string; 
+  const { category: urlCategory, pattern: urlPattern } = useParams<{
+    category: Category;
+    pattern?: string;
   }>();
   const actualCategory = urlCategory || "basic-grammar";
   const pattern = urlPattern;
@@ -75,7 +75,9 @@ export default function DifficultySelection() {
             onClick={() => {
               console.log("Easy difficulty clicked");
               if (pattern) {
-                navigate(`/learning/grammar/sets/${actualCategory}/${pattern}/easy`);
+                navigate(
+                  `/learning/grammar/sets/${actualCategory}/${pattern}/easy`
+                );
               } else {
                 navigate(`/learning/grammar/question/${actualCategory}/easy`);
               }
@@ -93,7 +95,9 @@ export default function DifficultySelection() {
             onClick={() => {
               console.log("Normal difficulty clicked");
               if (pattern) {
-                navigate(`/learning/grammar/sets/${actualCategory}/${pattern}/normal`);
+                navigate(
+                  `/learning/grammar/sets/${actualCategory}/${pattern}/normal`
+                );
               } else {
                 navigate(`/learning/grammar/question/${actualCategory}/normal`);
               }
@@ -111,7 +115,9 @@ export default function DifficultySelection() {
             onClick={() => {
               console.log("Hard difficulty clicked");
               if (pattern) {
-                navigate(`/learning/grammar/sets/${actualCategory}/${pattern}/hard`);
+                navigate(
+                  `/learning/grammar/sets/${actualCategory}/${pattern}/hard`
+                );
               } else {
                 navigate(`/learning/grammar/question/${actualCategory}/hard`);
               }

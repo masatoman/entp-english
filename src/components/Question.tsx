@@ -203,7 +203,9 @@ export default function Question() {
       navigate(`/learning/grammar/list/${category}/${difficulty}`);
     } else if (urlSetId && urlPattern) {
       // 問題集から戻る場合は問題集選択へ
-      navigate(`/learning/grammar/sets/${category}/${urlPattern}/${difficulty}`);
+      navigate(
+        `/learning/grammar/sets/${category}/${urlPattern}/${difficulty}`
+      );
     } else if (urlPattern) {
       // 文型が指定されている場合は難易度選択へ
       navigate(`/learning/grammar/difficulty/${category}/${urlPattern}`);

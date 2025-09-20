@@ -24,6 +24,7 @@ import QuestionListView from "../components/QuestionListView";
 import QuestionSetSelection from "../components/QuestionSetSelection";
 import Results from "../components/Results";
 import SentencePatternSelection from "../components/SentencePatternSelection";
+import SynergyDashboard from "../components/SynergyDashboard";
 import SimpleTowerDefense from "../components/SimpleTowerDefense";
 import PreStudyContentViewer from "../components/starSystem/PreStudyContentViewer";
 import PreStudyMenu from "../components/starSystem/PreStudyMenu";
@@ -101,6 +102,16 @@ export function AppRouter() {
             <Route
               path="/learning/grammar/results/:category/:difficulty"
               element={<Results />}
+            />
+
+            {/* シナジーダッシュボード */}
+            <Route
+              path="/learning/synergy"
+              element={<SynergyDashboard />}
+            />
+            <Route
+              path="/learning/synergy/:category"
+              element={<SynergyDashboard />}
             />
 
             {/* 事前学習 */}

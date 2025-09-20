@@ -766,6 +766,14 @@ export function NewHome() {
             <Star className="w-4 h-4" />
             <span>学習フィードバック</span>
           </Button>
+          <Button
+            variant="outline"
+            onClick={() => navigate("/learning/synergy")}
+            className="flex items-center space-x-2"
+          >
+            <Brain className="w-4 h-4" />
+            <span>シナジー効果</span>
+          </Button>
         </div>
 
         {/* 統計情報 */}

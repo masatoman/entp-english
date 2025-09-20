@@ -2,10 +2,10 @@ import { ArrowLeft, BookOpen, Star, TrendingUp } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Category } from "../types";
+import { questionStatsManager } from "../utils/questionStatsManager";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { SelectionCard } from "./ui/selection-card";
-import { questionStatsManager } from "../utils/questionStatsManager";
 
 const categoryLabels: Record<Category, string> = {
   "basic-grammar": "基本文型",
@@ -36,16 +36,20 @@ interface QuestionSetInfo {
 
 export default function QuestionSetSelection() {
   const navigate = useNavigate();
-  const { category: urlCategory, pattern: urlPattern, difficulty: urlDifficulty } = useParams<{
+  const {
+    category: urlCategory,
+    pattern: urlPattern,
+    difficulty: urlDifficulty,
+  } = useParams<{
     category: Category;
     pattern: string;
     difficulty: "easy" | "normal" | "hard";
   }>();
-  
+
   const category = urlCategory!;
   const pattern = urlPattern!;
   const difficulty = urlDifficulty!;
-  
+
   useScrollToTop();
 
   // 問題集の定義
@@ -61,7 +65,7 @@ export default function QuestionSetSelection() {
           questionCount: 5,
         },
         {
-          id: "set-b", 
+          id: "set-b",
           name: "問題集B",
           description: "SV文型集中トレーニング",
           icon: "📋",
@@ -70,7 +74,7 @@ export default function QuestionSetSelection() {
         },
         {
           id: "set-c",
-          name: "問題集C", 
+          name: "問題集C",
           description: "SVOC文型集中トレーニング",
           icon: "📄",
           color: "bg-purple-50 border-purple-200 text-purple-800",
@@ -79,7 +83,7 @@ export default function QuestionSetSelection() {
         {
           id: "set-d",
           name: "問題集D",
-          description: "SVOO文型集中トレーニング", 
+          description: "SVOO文型集中トレーニング",
           icon: "📃",
           color: "bg-orange-50 border-orange-200 text-orange-800",
           questionCount: 5,
@@ -106,7 +110,7 @@ export default function QuestionSetSelection() {
         },
         {
           id: "set-b",
-          name: "問題集B", 
+          name: "問題集B",
           description: "応用レベルの問題",
           icon: "📋",
           color: "bg-green-50 border-green-200 text-green-800",
@@ -130,7 +134,9 @@ export default function QuestionSetSelection() {
   };
 
   const handleSetSelect = (setId: string) => {
-    navigate(`/learning/grammar/question-set/${category}/${pattern}/${difficulty}/${setId}`);
+    navigate(
+      `/learning/grammar/question-set/${category}/${pattern}/${difficulty}/${setId}`
+    );
   };
 
   const handleBack = () => {
@@ -172,8 +178,10 @@ export default function QuestionSetSelection() {
         <div className="space-y-4">
           {questionSets.map((set) => {
             const stats = getSetStats(set.id);
-            const progressPercentage = Math.round((stats.completed / stats.total) * 100);
-            
+            const progressPercentage = Math.round(
+              (stats.completed / stats.total) * 100
+            );
+
             return (
               <SelectionCard
                 key={set.id}
@@ -202,7 +210,7 @@ export default function QuestionSetSelection() {
                       </span>
                     </div>
                   </div>
-                  
+
                   {stats.completed > 0 && (
                     <div className="flex items-center space-x-2">
                       <Star className="w-4 h-4 text-yellow-500" />
@@ -224,7 +232,11 @@ export default function QuestionSetSelection() {
             問題集について
           </h3>
           <div className="text-sm text-muted-foreground space-y-2">
-            <p>• 各問題集は{category === "basic-grammar" && "5問（総合問題は10問）"}の連続問題です</p>
+            <p>
+              • 各問題集は
+              {category === "basic-grammar" && "5問（総合問題は10問）"}
+              の連続問題です
+            </p>
             <p>• 問題集を完了すると統計が記録されます</p>
             <p>• 苦手な問題集は何度でも挑戦できます</p>
             <p>• 全問題集をクリアして文法をマスターしましょう</p>

@@ -31,7 +31,7 @@ export default function SentencePatternSelection() {
   const navigate = useNavigate();
   const { category: urlCategory } = useParams<{ category: Category }>();
   const category = urlCategory!;
-  
+
   useScrollToTop();
 
   // 基本文型の場合のみ文型選択を表示
@@ -46,7 +46,7 @@ export default function SentencePatternSelection() {
     },
     {
       id: "sv",
-      name: "SV", 
+      name: "SV",
       description: "主語 + 動詞",
       example: "I sleep.",
       icon: "📋",
@@ -63,7 +63,7 @@ export default function SentencePatternSelection() {
     {
       id: "svoo",
       name: "SVOO",
-      description: "主語 + 動詞 + 間接目的語 + 直接目的語", 
+      description: "主語 + 動詞 + 間接目的語 + 直接目的語",
       example: "I gave him a book.",
       icon: "📃",
       color: "bg-orange-50 border-orange-200 text-orange-800",
