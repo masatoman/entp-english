@@ -114,8 +114,8 @@ export class DailyChallengeManager {
             description: "英語で50文字以上のストーリー",
           },
         ],
-        bonusXP: 100,
-        bonusMultiplier: 2.5,
+        bonusXP: 200,
+        bonusMultiplier: 5.0,
         icon: "✨",
         color: "bg-purple-500",
       },
@@ -204,46 +204,6 @@ export class DailyChallengeManager {
         color: "bg-indigo-500",
       },
     ];
-  }
-
-  /**
-   * チャレンジを完了としてマーク
-   */
-  static completeChallenge(challengeId: string): boolean {
-    const progress = this.getProgress();
-
-    if (
-      !progress.currentChallenge ||
-      progress.currentChallenge.id !== challengeId
-    ) {
-      return false;
-    }
-
-    const today = this.getTodayString();
-    const updatedChallenge = {
-      ...progress.currentChallenge,
-      isCompleted: true,
-      completedAt: new Date(),
-    };
-
-    // ストリーク計算
-    let newStreakCount = progress.streakCount;
-    if (progress.lastCompletedDate === this.getYesterdayString()) {
-      newStreakCount += 1;
-    } else if (progress.lastCompletedDate !== today) {
-      newStreakCount = 1; // ストリーク開始
-    }
-
-    const updatedProgress: DailyChallengeProgress = {
-      currentChallenge: updatedChallenge,
-      completedChallenges: [...progress.completedChallenges, challengeId],
-      streakCount: newStreakCount,
-      totalCompleted: progress.totalCompleted + 1,
-      lastCompletedDate: today,
-    };
-
-    this.saveProgress(updatedProgress);
-    return true;
   }
 
   /**
@@ -344,6 +304,44 @@ export class DailyChallengeManager {
   }
 
   /**
+   * チャレンジを完了
+   */
+  static completeChallenge(sessionData: {
+    xpEarned: number;
+    timeSpent: number;
+    wordsUsed?: number;
+    storyLength?: number;
+    accuracy?: number;
+    questionsAnswered?: number;
+  }): void {
+    const progress = this.getProgress();
+    const today = this.getTodayString();
+
+    if (progress.currentChallenge && progress.currentChallenge.date === today) {
+      // チャレンジを完了状態に
+      progress.currentChallenge.isCompleted = true;
+      progress.completedChallenges.push({
+        ...progress.currentChallenge,
+        completedAt: new Date().toISOString(),
+        sessionData,
+      });
+
+      // 統計更新
+      progress.totalCompleted += 1;
+      progress.lastCompletedDate = today;
+
+      // 連続日数計算
+      if (progress.lastCompletedDate === this.getYesterdayString()) {
+        progress.streakCount += 1;
+      } else {
+        progress.streakCount = 1;
+      }
+
+      this.saveProgress(progress);
+    }
+  }
+
+  /**
    * 進捗を保存
    */
   private static saveProgress(progress: DailyChallengeProgress): void {
@@ -374,8 +372,14 @@ export class DailyChallengeManager {
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
     const recentChallenges = progress.completedChallenges.filter(
-      (challengeId) => {
-        const challengeDate = challengeId.split("-")[1];
+      (challenge) => {
+        // challengeがオブジェクトの場合はdateプロパティを、文字列の場合はsplitを使用
+        let challengeDate: string;
+        if (typeof challenge === "string") {
+          challengeDate = challenge.split("-")[1] || challenge;
+        } else {
+          challengeDate = challenge.date || "";
+        }
         return challengeDate >= thirtyDaysAgo.toISOString().split("T")[0];
       }
     );

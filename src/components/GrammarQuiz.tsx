@@ -11,6 +11,7 @@ import { GrammarQuizQuestion, getGrammarQuizQuestions } from "../data/grammarQui
 import { Badge } from "./ui/badge";
 import { DataManager } from "../utils/dataManager";
 import { SoundManager } from "../utils/soundManager";
+import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 
 interface GrammarQuizProps {
   onBack: () => void;
@@ -99,6 +100,15 @@ export function GrammarQuiz({ onBack, difficulty = 'intermediate' }: GrammarQuiz
   const [shuffledOptions, setShuffledOptions] = useState<string[]>([]);
 
   useEffect(() => {
+    // ハートを消費して学習を開始
+    const levelManager = getLevelManager();
+    if (!levelManager.consumeHeart()) {
+      alert("体力が不足しています。回復を待ってから再試行してください。");
+      onBack();
+      return;
+    }
+    saveLevelManager();
+
     const allQuestions = getGrammarQuizQuestions(difficulty);
     const shuffled = shuffleArray(allQuestions);
     

@@ -13,6 +13,7 @@ import { calculateVocabularyXP } from "../utils/xpCalculator";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
+import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 
 /**
  * 統合学習コンポーネント
@@ -50,6 +51,15 @@ export default function IntegratedLearning() {
   }, [level, category, mode]);
 
   const initializeSession = () => {
+    // ハートを消費して学習を開始
+    const levelManager = getLevelManager();
+    if (!levelManager.consumeHeart()) {
+      alert("体力が不足しています。回復を待ってから再試行してください。");
+      navigate("/");
+      return;
+    }
+    saveLevelManager();
+
     const actualLevel = level as "beginner" | "intermediate" | "advanced";
     const actualMode = (mode as "card" | "question" | "mixed") || "mixed";
 
@@ -380,7 +390,8 @@ export default function IntegratedLearning() {
           </CardHeader>
 
           <CardContent>
-            {(session.mode === "card" || session.mode === "mixed") && (
+            {/* 単語学習モード: 意味と例文を表示 */}
+            {(session.mode === "card" || (session.mode === "mixed" && !currentQuestion)) && (
               <div className="space-y-4">
                 <div className="text-center p-6 bg-gray-50 rounded-lg">
                   <h3 className="text-2xl font-bold mb-2">
@@ -419,7 +430,8 @@ export default function IntegratedLearning() {
               </div>
             )}
 
-            {(session.mode === "question" || session.mode === "mixed") &&
+            {/* 問題モード: 意味・例文を隠して問題のみ表示 */}
+            {(session.mode === "question" || (session.mode === "mixed" && currentQuestion)) &&
               currentQuestion && (
                 <div className="space-y-4">
                   <div className="p-4 bg-yellow-50 rounded-lg">
@@ -460,7 +472,14 @@ export default function IntegratedLearning() {
                   {showAnswer && (
                     <div className="p-4 bg-green-50 rounded-lg">
                       <h4 className="font-semibold mb-2">解説</h4>
-                      <p>{currentQuestion.explanation}</p>
+                      <p>"{currentItem.content}"は「{currentItem.meaning}」という意味です。</p>
+                      {currentItem.examples.length > 0 && (
+                        <div className="mt-3">
+                          <p className="font-medium">例文:</p>
+                          <p className="italic">"{currentItem.examples[0].sentence}"</p>
+                          <p className="text-sm text-gray-600">{currentItem.examples[0].translation}</p>
+                        </div>
+                      )}
                       <Button onClick={moveToNext} className="mt-4">
                         次へ
                       </Button>

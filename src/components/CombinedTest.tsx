@@ -219,20 +219,53 @@ export default function CombinedTest() {
     // 完全一致チェック
     if (userNormalized === correctNormalized) return true;
 
-    // キーワードベースのチェック（テキスト入力の場合）
+    // 英作文の場合の厳格なチェック
     if (currentQuestion.type === "text-input") {
+      // 空文字や短すぎる入力は不正解
+      if (userNormalized.length < 5) return false;
+
+      // 単語数チェック（最低3単語以上）
+      const userWords = userNormalized.split(/\s+/).filter((w) => w.length > 0);
+      if (userWords.length < 3) return false;
+
       const correctWords = correctNormalized
         .split(/\s+/)
-        .filter((w) => w.length > 2);
-      const userWords = userNormalized.split(/\s+/);
+        .filter((w) => w.length > 1); // 全ての単語をチェック対象に
 
+      // 重要な単語が含まれているかチェック（完全一致のみ）
       const matchedWords = correctWords.filter((word) =>
-        userWords.some(
-          (userWord) => userWord.includes(word) || word.includes(userWord)
-        )
+        userWords.includes(word)
       );
 
-      return matchedWords.length >= Math.ceil(correctWords.length * 0.7);
+      // 必須キーワードの存在確認（問題で指定された語彙）
+      const requiredVocabulary = currentQuestion.vocabulary || [];
+      const vocabularyMatches = requiredVocabulary.filter((vocab) =>
+        userNormalized.includes(vocab.toLowerCase())
+      );
+
+      // 基本条件：
+      // 1. 80%以上の単語が一致
+      // 2. 指定された語彙の80%以上を使用
+      const wordMatchRate = matchedWords.length / correctWords.length;
+      const vocabMatchRate =
+        requiredVocabulary.length > 0
+          ? vocabularyMatches.length / requiredVocabulary.length
+          : 1;
+
+      console.log("英作文判定:", {
+        userInput: userAns,
+        correctAnswer: correctAns,
+        userWords,
+        correctWords,
+        matchedWords,
+        requiredVocabulary,
+        vocabularyMatches,
+        wordMatchRate,
+        vocabMatchRate,
+        isCorrect: wordMatchRate >= 0.8 && vocabMatchRate >= 0.8,
+      });
+
+      return wordMatchRate >= 0.8 && vocabMatchRate >= 0.8;
     }
 
     return false;

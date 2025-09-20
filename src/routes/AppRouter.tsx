@@ -8,6 +8,7 @@ import AppSettings from "../components/AppSettings";
 import CardDetailContent from "../components/CardDetailContent";
 import CategorySelection from "../components/CategorySelection";
 import CombinedTest from "../components/CombinedTest";
+import CreativeWritingChallenge from "../components/CreativeWritingChallenge";
 import DifficultySelection from "../components/DifficultySelection";
 import EnhancedGrammarQuiz from "../components/EnhancedGrammarQuiz";
 import EssayHistory from "../components/EssayHistory";
@@ -27,6 +28,7 @@ import TimeAttackMode from "../components/TimeAttackMode";
 import VocabularyCard from "../components/VocabularyCard";
 import VocabularyCategorySelection from "../components/VocabularyCategorySelection";
 import VocabularyDifficultySelection from "../components/VocabularyDifficultySelection";
+import XPShopPage from "../components/XPShopPage";
 
 export function AppRouter() {
   return (
@@ -92,6 +94,10 @@ export function AppRouter() {
             <Route path="/learning/time-attack" element={<TimeAttackMode />} />
             <Route path="/learning/essay-writing" element={<EssayWriting />} />
             <Route
+              path="/learning/creative-writing"
+              element={<CreativeWritingChallenge />}
+            />
+            <Route
               path="/learning/essay-writing/history"
               element={<EssayHistory />}
             />
@@ -107,6 +113,9 @@ export function AppRouter() {
               path="/games/gacha/card/:cardId"
               element={<CardDetailContent />}
             />
+
+            {/* ショップ機能 */}
+            <Route path="/shop/xp" element={<XPShopPage />} />
 
             {/* 進捗・統計 */}
             <Route path="/progress/achievements" element={<Achievements />} />

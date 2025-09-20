@@ -33,9 +33,9 @@ import { GrammarQuizCategorySelection } from "./GrammarQuizCategorySelection";
 import { GrammarQuizDifficultySelection } from "./GrammarQuizDifficultySelection";
 // GrowthDashboardはRouter経由で使用するため、直接importを削除
 import { DailyChallengeCard } from "./DailyChallengeCard";
-import { PWAInstallButton } from "./PWAInstallButton";
 import { LearningFeedbackForm } from "./LearningFeedbackForm";
 import { LevelDisplay } from "./LevelDisplay";
+import { PWAInstallButton } from "./PWAInstallButton";
 import { StatusAllocationComponent } from "./StatusAllocation";
 // PreStudyContentViewerはRouter経由で使用するため、直接importを削除
 import { Button } from "./ui/button";
