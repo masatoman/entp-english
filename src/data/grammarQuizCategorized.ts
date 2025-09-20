@@ -212,8 +212,132 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     level: "advanced",
     category: "tenses",
   },
+  // 追加の時制問題（事前学習連携）
   {
     id: 12,
+    sentence: "I ___ to work by train ___ day.",
+    blanks: [
+      { id: "blank1", position: 2, correctAnswer: "go" },
+      { id: "blank2", position: 6, correctAnswer: "every" },
+    ],
+    options: ["go", "goes", "went", "will go", "every", "each", "all", "go"],
+    explanation:
+      "【事前学習連携】習慣を表すevery dayと一人称の現在形goが正解。事前学習前編の基本時制で学習した内容です。",
+    level: "beginner",
+    category: "tenses",
+    source: "prestudy",
+    preStudyContentId: "tenses-theory-part1",
+  },
+  {
+    id: 13,
+    sentence: "She ___ in Tokyo ___ 2018.",
+    blanks: [
+      { id: "blank1", position: 2, correctAnswer: "has lived" },
+      { id: "blank2", position: 5, correctAnswer: "since" },
+    ],
+    options: ["has lived", "lived", "lives", "will live", "since", "for", "from", "has lived"],
+    explanation:
+      "【事前学習連携】起点を表すsinceと現在完了形has livedが正解。事前学習後編の現在完了形で学習した内容です。",
+    level: "intermediate",
+    category: "tenses",
+    source: "prestudy",
+    preStudyContentId: "tenses-theory-part2",
+  },
+  {
+    id: 14,
+    sentence: "When I ___ home, my family ___ already dinner.",
+    blanks: [
+      { id: "blank1", position: 3, correctAnswer: "got" },
+      { id: "blank2", position: 7, correctAnswer: "had finished" },
+    ],
+    options: ["got", "get", "was getting", "have got", "had finished", "finished", "have finished", "got"],
+    explanation:
+      "【事前学習連携】過去の時点gotより前に完了していた行動はhad finished（過去完了形）で表現します。",
+    level: "advanced",
+    category: "tenses",
+    source: "prestudy",
+    preStudyContentId: "tenses-theory-part2",
+  },
+  {
+    id: 15,
+    sentence: "Look at those clouds! It ___ rain soon.",
+    blanks: [{ id: "blank1", position: 6, correctAnswer: "is going to" }],
+    options: ["is going to", "will", "rains", "rained", "would"],
+    explanation:
+      "【事前学習連携】根拠のある予測はbe going toで表現。Look at those cloudsが根拠を示しています。",
+    level: "beginner",
+    category: "tenses",
+    source: "prestudy",
+    preStudyContentId: "tenses-theory-part1",
+  },
+  {
+    id: 16,
+    sentence: "I ___ this book ___ last week.",
+    blanks: [
+      { id: "blank1", position: 2, correctAnswer: "have been reading" },
+      { id: "blank2", position: 5, correctAnswer: "since" },
+    ],
+    options: ["have been reading", "read", "am reading", "was reading", "since", "for", "from", "have been reading"],
+    explanation:
+      "【事前学習連携】先週から現在まで継続している行動は現在完了進行形have been readingで表現します。",
+    level: "intermediate",
+    category: "tenses",
+    source: "prestudy",
+    preStudyContentId: "tenses-theory-part2",
+  },
+  {
+    id: 17,
+    sentence: "By next month, we ___ this project.",
+    blanks: [{ id: "blank1", position: 5, correctAnswer: "will have completed" }],
+    options: ["will have completed", "will complete", "complete", "completed", "have completed"],
+    explanation:
+      "【事前学習連携】未来のある時点（来月）までに完了している行動は未来完了形will have completedで表現します。",
+    level: "advanced",
+    category: "tenses",
+    source: "prestudy",
+    preStudyContentId: "tenses-theory-part2",
+  },
+  {
+    id: 18,
+    sentence: "___ you ever ___ to Japan?",
+    blanks: [
+      { id: "blank1", position: 1, correctAnswer: "Have" },
+      { id: "blank2", position: 4, correctAnswer: "been" },
+    ],
+    options: ["Have", "Did", "Do", "Are", "been", "gone", "went", "Have"],
+    explanation:
+      "【事前学習連携】経験を表すHave you ever been...?の構文。現在完了形の経験用法です。",
+    level: "intermediate",
+    category: "tenses",
+    source: "prestudy",
+    preStudyContentId: "tenses-theory-part2",
+  },
+  {
+    id: 19,
+    sentence: "The meeting ___ at 2 PM tomorrow.",
+    blanks: [{ id: "blank1", position: 3, correctAnswer: "starts" }],
+    options: ["starts", "will start", "started", "is starting", "start"],
+    explanation:
+      "【事前学習連携】スケジュール・時刻表を表すときは現在形startsを使用。確定した予定の表現です。",
+    level: "beginner",
+    category: "tenses",
+    source: "prestudy",
+    preStudyContentId: "tenses-theory-part1",
+  },
+  {
+    id: 20,
+    sentence: "She said that she ___ busy.",
+    blanks: [{ id: "blank1", position: 4, correctAnswer: "was" }],
+    options: ["was", "is", "will be", "has been", "would be"],
+    explanation:
+      "【事前学習連携】時制の一致：主節が過去形（said）なので従属節も過去形wasを使用します。",
+    level: "intermediate",
+    category: "tenses",
+    source: "prestudy",
+    preStudyContentId: "tenses-theory-part2",
+  },
+  {
+    id: 21,
     sentence: "The children ___ playing in the park ___ it started raining.",
     blanks: [
       { id: "blank1", position: 3, correctAnswer: "were" },
@@ -234,7 +358,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     category: "tenses",
   },
   {
-    id: 13,
+    id: 22,
     sentence: "I ___ this book three times already.",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "have read" }],
     options: ["have read", "read", "am reading", "will read"],
@@ -243,7 +367,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     category: "tenses",
   },
   {
-    id: 14,
+    id: 23,
     sentence: "He ___ to Japan next month.",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "will go" }],
     options: ["will go", "goes", "is going", "went"],
