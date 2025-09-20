@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getGrammarQuizQuestions } from "../data/grammarQuizCategorized";
 import { getQuestions } from "../data/questions";
+import { sentencePatternQuestions } from "../data/sentencePatternQuestions";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Category } from "../types";
 import { getLevelManager } from "../utils/levelManager";
@@ -74,8 +75,25 @@ export default function Question() {
   useEffect(() => {
     if (category && difficulty) {
       try {
-        // 標準問題を取得
-        const standardQuestions = getQuestions(category, difficulty);
+        let standardQuestions;
+        
+        // 基本文型の場合は文型別問題を取得
+        if (category === "basic-grammar" && urlPattern && urlSetId) {
+          const patternKey = urlPattern as keyof typeof sentencePatternQuestions;
+          const difficultyKey = urlSetId as "easy" | "normal" | "hard";
+          
+          if (sentencePatternQuestions[patternKey] && sentencePatternQuestions[patternKey][difficultyKey]) {
+            standardQuestions = sentencePatternQuestions[patternKey][difficultyKey];
+            console.log(`📝 文型別問題取得: ${patternKey.toUpperCase()} ${difficultyKey} - ${standardQuestions.length}問`);
+          } else {
+            // フォールバック: 標準問題を取得
+            standardQuestions = getQuestions(category, difficulty);
+            console.log(`⚠️ フォールバック: 標準問題 ${standardQuestions.length}問`);
+          }
+        } else {
+          // 標準問題を取得
+          standardQuestions = getQuestions(category, difficulty);
+        }
 
         // 事前学習由来の問題も取得（時制カテゴリの場合）
         let allQuestions = standardQuestions;

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Category } from "../types";
 import { questionStatsManager } from "../utils/questionStatsManager";
+import { sentencePatternQuestions } from "../data/sentencePatternQuestions";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { SelectionCard } from "./ui/selection-card";
@@ -55,46 +56,50 @@ export default function QuestionSetSelection() {
   // 問題集の定義
   const getQuestionSets = (): QuestionSetInfo[] => {
     if (category === "basic-grammar") {
+      // 選択された文型に応じた問題集を定義
+      const patternNames: Record<string, string> = {
+        svo: "SVO（主語+動詞+目的語）",
+        sv: "SV（主語+動詞）", 
+        svc: "SVC（主語+動詞+補語）",
+        svoo: "SVOO（主語+動詞+間接目的語+直接目的語）",
+        svoc: "SVOC（主語+動詞+目的語+補語）",
+        comprehensive: "全文型総合"
+      };
+
+      const patternName = patternNames[pattern] || pattern.toUpperCase();
+
       return [
         {
-          id: "set-a",
-          name: "問題集A",
-          description: "SVO文型集中トレーニング",
+          id: "easy",
+          name: `${patternName}基礎`,
+          description: `${patternName}文型の基本問題`,
           icon: "📝",
           color: "bg-blue-50 border-blue-200 text-blue-800",
           questionCount: 5,
         },
         {
-          id: "set-b",
-          name: "問題集B",
-          description: "SV文型集中トレーニング",
+          id: "normal", 
+          name: `${patternName}応用`,
+          description: `${patternName}文型の応用問題`,
           icon: "📋",
-          color: "bg-green-50 border-green-200 text-green-800",
+          color: "bg-green-50 border-green-200 text-green-800", 
           questionCount: 5,
         },
         {
-          id: "set-c",
-          name: "問題集C",
-          description: "SVOC文型集中トレーニング",
+          id: "hard",
+          name: `${patternName}上級`,
+          description: `${patternName}文型の上級問題`,
           icon: "📄",
           color: "bg-purple-50 border-purple-200 text-purple-800",
           questionCount: 5,
         },
         {
-          id: "set-d",
-          name: "問題集D",
-          description: "SVOO文型集中トレーニング",
-          icon: "📃",
-          color: "bg-orange-50 border-orange-200 text-orange-800",
-          questionCount: 5,
-        },
-        {
           id: "comprehensive",
           name: "総合問題",
-          description: "全文型の総合演習",
+          description: `${patternName}の総合演習`,
           icon: "🎯",
           color: "bg-red-50 border-red-200 text-red-800",
-          questionCount: 10,
+          questionCount: 15,
         },
       ];
     } else {
