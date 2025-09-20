@@ -6,6 +6,7 @@ import { getQuestions } from "../data/questions";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Category } from "../types";
 import { getLevelManager } from "../utils/levelManager";
+import { questionStatsManager } from "../utils/questionStatsManager";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
@@ -41,9 +42,10 @@ const difficultyLabels = {
 
 export default function Question() {
   const navigate = useNavigate();
-  const { category: urlCategory, difficulty: urlDifficulty } = useParams<{
+  const { category: urlCategory, difficulty: urlDifficulty, questionId: urlQuestionId } = useParams<{
     category: string;
     difficulty: string;
+    questionId?: string;
   }>();
 
   useScrollToTop();
@@ -58,6 +60,7 @@ export default function Question() {
   const [isComplete, setIsComplete] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [userInput, setUserInput] = useState<string>("");
+  const [startTime, setStartTime] = useState<Date | null>(null);
 
   // 問題データを取得
   useEffect(() => {
@@ -99,13 +102,28 @@ export default function Question() {
           );
         }
 
-        setQuestions(allQuestions);
+        // 特定の問題IDが指定されている場合、その問題のみを表示
+        if (urlQuestionId) {
+          const specificQuestion = allQuestions.find(q => q.id === parseInt(urlQuestionId));
+          if (specificQuestion) {
+            setQuestions([specificQuestion]);
+            setCurrentQuestionIndex(0);
+          } else {
+            console.error("Question not found:", urlQuestionId);
+            setQuestions([]);
+          }
+        } else {
+          setQuestions(allQuestions);
+        }
+
+        // 問題開始時間を記録
+        setStartTime(new Date());
       } catch (error) {
         console.error("問題データの取得に失敗:", error);
         navigate("/learning/grammar/category");
       }
     }
-  }, [category, difficulty, navigate]);
+  }, [category, difficulty, urlQuestionId, navigate]);
 
   if (!category || !difficulty || questions.length === 0) {
     return (
@@ -134,8 +152,21 @@ export default function Question() {
       setScore(score + 1);
     }
 
+    // 統計を記録
+    const timeSpent = startTime ? Math.round((new Date().getTime() - startTime.getTime()) / 1000) : undefined;
+    questionStatsManager.updateQuestionStats(currentQuestion.id, isCorrect, timeSpent);
+
+    // 単一問題の場合は問題一覧に戻る
+    if (urlQuestionId) {
+      setTimeout(() => {
+        navigate(`/learning/grammar/list/${category}/${difficulty}`);
+      }, 2000); // 2秒後に自動で戻る
+      return;
+    }
+
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setStartTime(new Date()); // 次の問題の開始時間をリセット
     } else {
       setIsComplete(true);
 
@@ -147,7 +178,13 @@ export default function Question() {
   };
 
   const handleBack = () => {
-    navigate(`/learning/grammar/difficulty/${category}`);
+    if (urlQuestionId) {
+      // 特定問題から戻る場合は問題一覧へ
+      navigate(`/learning/grammar/list/${category}/${difficulty}`);
+    } else {
+      // 通常の場合は難易度選択へ
+      navigate(`/learning/grammar/difficulty/${category}`);
+    }
   };
 
   const handleSubmit = () => {

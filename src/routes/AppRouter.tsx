@@ -20,6 +20,7 @@ import IntegratedLearning from "../components/IntegratedLearning";
 import { MigrationProvider } from "../components/MigrationProvider";
 import PersonalInsights from "../components/PersonalInsights";
 import Question from "../components/Question";
+import QuestionListView from "../components/QuestionListView";
 import Results from "../components/Results";
 import SimpleTowerDefense from "../components/SimpleTowerDefense";
 import PreStudyContentViewer from "../components/starSystem/PreStudyContentViewer";
@@ -70,11 +71,15 @@ export function AppRouter() {
               element={<DifficultySelection />}
             />
             <Route
+              path="/learning/grammar/list/:category/:difficulty"
+              element={<QuestionListView />}
+            />
+            <Route
               path="/learning/grammar/quiz/:category/:difficulty"
               element={<EnhancedGrammarQuiz />}
             />
             <Route
-              path="/learning/grammar/question/:category/:difficulty"
+              path="/learning/grammar/question/:category/:difficulty/:questionId?"
               element={<Question />}
             />
             <Route
