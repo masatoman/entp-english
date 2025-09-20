@@ -76,19 +76,30 @@ export default function Question() {
     if (category && difficulty) {
       try {
         let standardQuestions;
-        
+
         // 基本文型の場合は文型別問題を取得
         if (category === "basic-grammar" && urlPattern && urlSetId) {
-          const patternKey = urlPattern as keyof typeof sentencePatternQuestions;
+          const patternKey =
+            urlPattern as keyof typeof sentencePatternQuestions;
           const difficultyKey = urlSetId as "easy" | "normal" | "hard";
-          
-          if (sentencePatternQuestions[patternKey] && sentencePatternQuestions[patternKey][difficultyKey]) {
-            standardQuestions = sentencePatternQuestions[patternKey][difficultyKey];
-            console.log(`📝 文型別問題取得: ${patternKey.toUpperCase()} ${difficultyKey} - ${standardQuestions.length}問`);
+
+          if (
+            sentencePatternQuestions[patternKey] &&
+            sentencePatternQuestions[patternKey][difficultyKey]
+          ) {
+            standardQuestions =
+              sentencePatternQuestions[patternKey][difficultyKey];
+            console.log(
+              `📝 文型別問題取得: ${patternKey.toUpperCase()} ${difficultyKey} - ${
+                standardQuestions.length
+              }問`
+            );
           } else {
             // フォールバック: 標準問題を取得
             standardQuestions = getQuestions(category, difficulty);
-            console.log(`⚠️ フォールバック: 標準問題 ${standardQuestions.length}問`);
+            console.log(
+              `⚠️ フォールバック: 標準問題 ${standardQuestions.length}問`
+            );
           }
         } else {
           // 標準問題を取得

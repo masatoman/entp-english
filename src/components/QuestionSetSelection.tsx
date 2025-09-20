@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Category } from "../types";
 import { questionStatsManager } from "../utils/questionStatsManager";
-import { sentencePatternQuestions } from "../data/sentencePatternQuestions";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { SelectionCard } from "./ui/selection-card";
@@ -59,11 +58,11 @@ export default function QuestionSetSelection() {
       // 選択された文型に応じた問題集を定義
       const patternNames: Record<string, string> = {
         svo: "SVO（主語+動詞+目的語）",
-        sv: "SV（主語+動詞）", 
+        sv: "SV（主語+動詞）",
         svc: "SVC（主語+動詞+補語）",
         svoo: "SVOO（主語+動詞+間接目的語+直接目的語）",
         svoc: "SVOC（主語+動詞+目的語+補語）",
-        comprehensive: "全文型総合"
+        comprehensive: "全文型総合",
       };
 
       const patternName = patternNames[pattern] || pattern.toUpperCase();
@@ -78,11 +77,11 @@ export default function QuestionSetSelection() {
           questionCount: 5,
         },
         {
-          id: "normal", 
+          id: "normal",
           name: `${patternName}応用`,
           description: `${patternName}文型の応用問題`,
           icon: "📋",
-          color: "bg-green-50 border-green-200 text-green-800", 
+          color: "bg-green-50 border-green-200 text-green-800",
           questionCount: 5,
         },
         {

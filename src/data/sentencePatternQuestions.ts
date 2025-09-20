@@ -212,12 +212,7 @@ export const sentencePatternQuestions: SentencePatternQuestions = {
         japanese: "私は眠ります。",
         correctAnswer: "I sleep.",
         explanation: "SV文型：主語(I) + 動詞(sleep)。目的語は不要です。",
-        choices: [
-          "I am sleep.",
-          "I sleep.",
-          "I sleeping.",
-          "I sleeps.",
-        ],
+        choices: ["I am sleep.", "I sleep.", "I sleeping.", "I sleeps."],
       },
       {
         id: 202,
@@ -260,12 +255,7 @@ export const sentencePatternQuestions: SentencePatternQuestions = {
         japanese: "雨が降ります。",
         correctAnswer: "It rains.",
         explanation: "天候のitは三人称単数扱い",
-        choices: [
-          "It rain.",
-          "It is rain.",
-          "It rains.",
-          "It raining.",
-        ],
+        choices: ["It rain.", "It is rain.", "It rains.", "It raining."],
       },
     ],
     normal: [
@@ -591,7 +581,8 @@ export const sentencePatternQuestions: SentencePatternQuestions = {
         id: 401,
         japanese: "私は彼に本を渡しました。",
         correctAnswer: "I gave him a book.",
-        explanation: "SVOO文型：I(主語) + gave(動詞) + him(間接目的語) + a book(直接目的語)",
+        explanation:
+          "SVOO文型：I(主語) + gave(動詞) + him(間接目的語) + a book(直接目的語)",
         choices: [
           "I gave a book him.",
           "I gave him a book.",
@@ -781,7 +772,8 @@ export const sentencePatternQuestions: SentencePatternQuestions = {
         id: 501,
         japanese: "私たちは彼をトムと呼びます。",
         correctAnswer: "We call him Tom.",
-        explanation: "SVOC文型：We(主語) + call(動詞) + him(目的語) + Tom(補語)",
+        explanation:
+          "SVOC文型：We(主語) + call(動詞) + him(目的語) + Tom(補語)",
         choices: [
           "We call him as Tom.",
           "We call him Tom.",

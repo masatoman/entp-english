@@ -24,6 +24,7 @@ import QuestionListView from "../components/QuestionListView";
 import QuestionSetSelection from "../components/QuestionSetSelection";
 import Results from "../components/Results";
 import SentencePatternSelection from "../components/SentencePatternSelection";
+import SkillTree from "../components/SkillTree";
 import SynergyDashboard from "../components/SynergyDashboard";
 import SimpleTowerDefense from "../components/SimpleTowerDefense";
 import PreStudyContentViewer from "../components/starSystem/PreStudyContentViewer";
@@ -112,6 +113,12 @@ export function AppRouter() {
             <Route
               path="/learning/synergy/:category"
               element={<SynergyDashboard />}
+            />
+
+            {/* スキルツリー */}
+            <Route
+              path="/learning/skill-tree"
+              element={<SkillTree />}
             />
 
             {/* 事前学習 */}
