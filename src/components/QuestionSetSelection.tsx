@@ -36,12 +36,14 @@ interface QuestionSetInfo {
 
 export default function QuestionSetSelection() {
   const navigate = useNavigate();
-  const { category: urlCategory, difficulty: urlDifficulty } = useParams<{
+  const { category: urlCategory, pattern: urlPattern, difficulty: urlDifficulty } = useParams<{
     category: Category;
+    pattern: string;
     difficulty: "easy" | "normal" | "hard";
   }>();
   
   const category = urlCategory!;
+  const pattern = urlPattern!;
   const difficulty = urlDifficulty!;
   
   useScrollToTop();
@@ -128,11 +130,11 @@ export default function QuestionSetSelection() {
   };
 
   const handleSetSelect = (setId: string) => {
-    navigate(`/learning/grammar/question-set/${category}/${difficulty}/${setId}`);
+    navigate(`/learning/grammar/question-set/${category}/${pattern}/${difficulty}/${setId}`);
   };
 
   const handleBack = () => {
-    navigate(`/learning/grammar/difficulty/${category}`);
+    navigate(`/learning/grammar/difficulty/${category}/${pattern}`);
   };
 
   return (

@@ -23,6 +23,7 @@ import Question from "../components/Question";
 import QuestionListView from "../components/QuestionListView";
 import QuestionSetSelection from "../components/QuestionSetSelection";
 import Results from "../components/Results";
+import SentencePatternSelection from "../components/SentencePatternSelection";
 import SimpleTowerDefense from "../components/SimpleTowerDefense";
 import PreStudyContentViewer from "../components/starSystem/PreStudyContentViewer";
 import PreStudyMenu from "../components/starSystem/PreStudyMenu";
@@ -67,14 +68,20 @@ export function AppRouter() {
               path="/learning/grammar/category"
               element={<CategorySelection />}
             />
+            {/* 基本文型の場合：カテゴリー → 文型選択 → 難易度選択 → 問題集選択 */}
             <Route
-              path="/learning/grammar/difficulty/:category"
+              path="/learning/grammar/pattern/:category"
+              element={<SentencePatternSelection />}
+            />
+            <Route
+              path="/learning/grammar/difficulty/:category/:pattern?"
               element={<DifficultySelection />}
             />
             <Route
-              path="/learning/grammar/sets/:category/:difficulty"
+              path="/learning/grammar/sets/:category/:pattern/:difficulty"
               element={<QuestionSetSelection />}
             />
+            {/* 従来の問題一覧（統計用） */}
             <Route
               path="/learning/grammar/list/:category/:difficulty"
               element={<QuestionListView />}
@@ -84,7 +91,7 @@ export function AppRouter() {
               element={<EnhancedGrammarQuiz />}
             />
             <Route
-              path="/learning/grammar/question-set/:category/:difficulty/:setId"
+              path="/learning/grammar/question-set/:category/:pattern/:difficulty/:setId"
               element={<Question />}
             />
             <Route

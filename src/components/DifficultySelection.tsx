@@ -22,8 +22,12 @@ const categoryLabels: Record<Category, string> = {
 
 export default function DifficultySelection() {
   const navigate = useNavigate();
-  const { category: urlCategory } = useParams<{ category: Category }>();
+  const { category: urlCategory, pattern: urlPattern } = useParams<{ 
+    category: Category; 
+    pattern?: string; 
+  }>();
   const actualCategory = urlCategory || "basic-grammar";
+  const pattern = urlPattern;
   useScrollToTop();
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
@@ -32,7 +36,13 @@ export default function DifficultySelection() {
         <div className="flex items-center justify-between mb-6">
           <Button
             variant="outline"
-            onClick={() => navigate("/learning/grammar/category")}
+            onClick={() => {
+              if (pattern) {
+                navigate(`/learning/grammar/pattern/${actualCategory}`);
+              } else {
+                navigate("/learning/grammar/category");
+              }
+            }}
             className="flex items-center"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -64,7 +74,11 @@ export default function DifficultySelection() {
             color="bg-green-50 border-green-200 text-green-800"
             onClick={() => {
               console.log("Easy difficulty clicked");
-              navigate(`/learning/grammar/sets/${actualCategory}/easy`);
+              if (pattern) {
+                navigate(`/learning/grammar/sets/${actualCategory}/${pattern}/easy`);
+              } else {
+                navigate(`/learning/grammar/question/${actualCategory}/easy`);
+              }
             }}
           />
 
@@ -78,7 +92,11 @@ export default function DifficultySelection() {
             color="bg-yellow-50 border-yellow-200 text-yellow-800"
             onClick={() => {
               console.log("Normal difficulty clicked");
-              navigate(`/learning/grammar/sets/${actualCategory}/normal`);
+              if (pattern) {
+                navigate(`/learning/grammar/sets/${actualCategory}/${pattern}/normal`);
+              } else {
+                navigate(`/learning/grammar/question/${actualCategory}/normal`);
+              }
             }}
           />
 
@@ -92,7 +110,11 @@ export default function DifficultySelection() {
             color="bg-red-50 border-red-200 text-red-800"
             onClick={() => {
               console.log("Hard difficulty clicked");
-              navigate(`/learning/grammar/sets/${actualCategory}/hard`);
+              if (pattern) {
+                navigate(`/learning/grammar/sets/${actualCategory}/${pattern}/hard`);
+              } else {
+                navigate(`/learning/grammar/question/${actualCategory}/hard`);
+              }
             }}
           />
         </div>

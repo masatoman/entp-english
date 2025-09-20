@@ -47,11 +47,13 @@ export default function Question() {
     difficulty: urlDifficulty,
     questionId: urlQuestionId,
     setId: urlSetId,
+    pattern: urlPattern,
   } = useParams<{
     category: string;
     difficulty: string;
     questionId?: string;
     setId?: string;
+    pattern?: string;
   }>();
 
   useScrollToTop();
@@ -135,7 +137,7 @@ export default function Question() {
         navigate("/learning/grammar/category");
       }
     }
-  }, [category, difficulty, urlQuestionId, urlSetId, navigate]);
+  }, [category, difficulty, urlQuestionId, urlSetId, urlPattern, navigate]);
 
   if (!category || !difficulty || questions.length === 0) {
     return (
@@ -199,9 +201,12 @@ export default function Question() {
     if (urlQuestionId) {
       // 特定問題から戻る場合は問題一覧へ
       navigate(`/learning/grammar/list/${category}/${difficulty}`);
-    } else if (urlSetId) {
+    } else if (urlSetId && urlPattern) {
       // 問題集から戻る場合は問題集選択へ
-      navigate(`/learning/grammar/sets/${category}/${difficulty}`);
+      navigate(`/learning/grammar/sets/${category}/${urlPattern}/${difficulty}`);
+    } else if (urlPattern) {
+      // 文型が指定されている場合は難易度選択へ
+      navigate(`/learning/grammar/difficulty/${category}/${urlPattern}`);
     } else {
       // 通常の場合は難易度選択へ
       navigate(`/learning/grammar/difficulty/${category}`);

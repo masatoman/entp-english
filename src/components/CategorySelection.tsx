@@ -118,7 +118,11 @@ export default function CategorySelection() {
               color={category.color}
               onClick={(id) => {
                 console.log("Category clicked:", id);
-                navigate(`/learning/grammar/difficulty/${id}`);
+                if (id === "basic-grammar") {
+                  navigate(`/learning/grammar/pattern/${id}`);
+                } else {
+                  navigate(`/learning/grammar/difficulty/${id}`);
+                }
               }}
             />
           ))}
