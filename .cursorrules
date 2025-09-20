@@ -202,6 +202,15 @@ src/
 - **通常のPlaywright禁止**: コマンドラインのPlaywrightは使用禁止
 - **MCP経由必須**: 必ずPlaywright MCPサーバー経由で実行
 
+### コードベース分析（Serena MCP必須）
+- **Serena MCP必須**: 全てのコードベース分析はSerena MCPを使用すること
+- **ファイル検索**: `mcp_serena_search_for_pattern`を使用
+- **シンボル検索**: `mcp_serena_find_symbol`を使用  
+- **概要取得**: `mcp_serena_get_symbols_overview`を使用
+- **参照検索**: `mcp_serena_find_referencing_symbols`を使用
+- **従来ツール禁止**: `codebase_search`、`grep`は使用禁止
+- **効率的分析**: Serenaの高度な検索機能を活用
+
 ## ドキュメントルール
 
 ### 更新必須

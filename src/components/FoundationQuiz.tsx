@@ -1,27 +1,32 @@
 import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getFoundationQuestions } from "../data/foundationQuestions";
+import {
+  getFoundationQuestions,
+  getFoundationQuestionsBySet,
+} from "../data/foundationQuestions";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { getLevelManager } from "../utils/levelManager";
 import { questionStatsManager } from "../utils/questionStatsManager";
 import { skillTreeManager } from "../utils/skillTreeManager";
+import SkillUnlockNotification, {
+  useSkillUnlockNotification,
+} from "./SkillUnlockNotification";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Textarea } from "./ui/textarea";
-import SkillUnlockNotification, { useSkillUnlockNotification } from "./SkillUnlockNotification";
 
 const categoryLabels: Record<string, string> = {
   "parts-of-speech": "品詞の理解",
   "word-order": "語順の基本",
-  "pronouns": "代名詞",
-  "articles": "冠詞",
-  "plurals": "複数形",
+  pronouns: "代名詞",
+  articles: "冠詞",
+  plurals: "複数形",
   "questions-negations": "疑問文・否定文",
-  "prepositions": "前置詞",
-  "conjunctions": "接続詞",
+  prepositions: "前置詞",
+  conjunctions: "接続詞",
 };
 
 const difficultyLabels = {
@@ -32,12 +37,10 @@ const difficultyLabels = {
 
 export default function FoundationQuiz() {
   const navigate = useNavigate();
-  const { 
-    category, 
-    difficulty 
-  } = useParams<{
+  const { category, difficulty, setId } = useParams<{
     category: string;
     difficulty: string;
+    setId?: string;
   }>();
 
   useScrollToTop();
@@ -50,30 +53,48 @@ export default function FoundationQuiz() {
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [userInput, setUserInput] = useState<string>("");
   const [startTime, setStartTime] = useState<Date | null>(null);
-  
+
   // スキル解放通知
   const {
     unlockedSkills,
     showNotification,
     checkForNewUnlocks,
-    handleCloseNotification
+    handleCloseNotification,
   } = useSkillUnlockNotification();
 
   // 問題データを取得
   useEffect(() => {
     if (category && difficulty) {
       try {
-        const foundationQuestions = getFoundationQuestions(
-          category as any,
-          difficulty as "easy" | "normal" | "hard"
-        );
-        
+        let foundationQuestions;
+
+        if (setId) {
+          // セット別の問題取得（5問）
+          foundationQuestions = getFoundationQuestionsBySet(
+            category as any,
+            difficulty as "easy" | "normal" | "hard",
+            setId
+          );
+        } else {
+          // 全問題取得（従来の動作）
+          foundationQuestions = getFoundationQuestions(
+            category as any,
+            difficulty as "easy" | "normal" | "hard"
+          );
+        }
+
         if (foundationQuestions.length > 0) {
           setQuestions(foundationQuestions);
           setStartTime(new Date());
-          console.log(`📚 基礎問題取得: ${category} ${difficulty} - ${foundationQuestions.length}問`);
+          console.log(
+            `📚 基礎問題取得: ${category} ${difficulty} ${
+              setId ? `(${setId}セット)` : ""
+            } - ${foundationQuestions.length}問`
+          );
         } else {
-          console.warn(`⚠️ 問題が見つかりません: ${category} ${difficulty}`);
+          console.warn(
+            `⚠️ 問題が見つかりません: ${category} ${difficulty} ${setId || ""}`
+          );
           navigate("/learning/foundation/category");
         }
       } catch (error) {
@@ -81,7 +102,7 @@ export default function FoundationQuiz() {
         navigate("/learning/foundation/category");
       }
     }
-  }, [category, difficulty, navigate]);
+  }, [category, difficulty, setId, navigate]);
 
   const currentQuestion = questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
@@ -89,8 +110,12 @@ export default function FoundationQuiz() {
   const handleAnswer = (answer: string) => {
     if (!currentQuestion || !startTime) return;
 
-    const isCorrect = answer.trim().toLowerCase() === currentQuestion.correctAnswer.toLowerCase();
-    const timeSpent = Math.round((new Date().getTime() - startTime.getTime()) / 1000);
+    const isCorrect =
+      answer.trim().toLowerCase() ===
+      currentQuestion.correctAnswer.toLowerCase();
+    const timeSpent = Math.round(
+      (new Date().getTime() - startTime.getTime()) / 1000
+    );
 
     if (isCorrect) {
       setScore(score + 1);
@@ -121,7 +146,9 @@ export default function FoundationQuiz() {
 
   const handleQuizComplete = () => {
     const masteryLevel = Math.round((score / questions.length) * 100);
-    const timeSpent = Math.round((new Date().getTime() - (startTime?.getTime() || 0)) / 60000); // 分
+    const timeSpent = Math.round(
+      (new Date().getTime() - (startTime?.getTime() || 0)) / 60000
+    ); // 分
 
     // スキルツリーの進捗を更新
     if (category) {
@@ -131,12 +158,14 @@ export default function FoundationQuiz() {
         questions.length,
         timeSpent
       );
-      
+
       console.log(`🎯 基礎スキル更新: ${category} - 習熟度${masteryLevel}%`);
-      
+
       // 習熟度80%以上で解放通知
       if (masteryLevel >= 80) {
-        console.log(`🔓 ${category}で習熟度80%達成！新しいスキルが解放される可能性があります。`);
+        console.log(
+          `🔓 ${category}で習熟度80%達成！新しいスキルが解放される可能性があります。`
+        );
       }
     }
 
@@ -146,7 +175,7 @@ export default function FoundationQuiz() {
     levelManager.addXP(xpReward);
 
     setIsComplete(true);
-    
+
     // 新しく解放されたスキルをチェック
     setTimeout(() => {
       checkForNewUnlocks();
@@ -154,7 +183,13 @@ export default function FoundationQuiz() {
   };
 
   const handleBack = () => {
-    navigate(`/learning/foundation/difficulty/${category}`);
+    if (setId) {
+      // セット選択画面に戻る
+      navigate(`/learning/foundation/sets/${category}/${difficulty}`);
+    } else {
+      // 難易度選択画面に戻る
+      navigate(`/learning/foundation/difficulty/${category}`);
+    }
   };
 
   const handleSubmit = () => {
@@ -178,22 +213,22 @@ export default function FoundationQuiz() {
 
   if (isComplete) {
     const masteryLevel = Math.round((score / questions.length) * 100);
-    
+
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-100 p-4">
         <div className="max-w-4xl mx-auto">
           <Card className="shadow-lg">
             <CardHeader>
-              <CardTitle className="text-center text-2xl">🎉 学習完了！</CardTitle>
+              <CardTitle className="text-center text-2xl">
+                🎉 学習完了！
+              </CardTitle>
             </CardHeader>
             <CardContent className="text-center">
               <div className="mb-6">
                 <p className="text-xl mb-2">
                   正解数: {score} / {questions.length}
                 </p>
-                <p className="text-lg text-gray-600">
-                  習熟度: {masteryLevel}%
-                </p>
+                <p className="text-lg text-gray-600">習熟度: {masteryLevel}%</p>
                 <Badge className="mt-2">
                   +{Math.round(score * 15 + questions.length * 3)} XP獲得！
                 </Badge>
@@ -205,7 +240,8 @@ export default function FoundationQuiz() {
                   📈 スキルツリー更新
                 </h3>
                 <p className="text-sm text-blue-700">
-                  {categoryLabels[category]}の習熟度が{masteryLevel}%に更新されました！
+                  {categoryLabels[category]}の習熟度が{masteryLevel}
+                  %に更新されました！
                 </p>
                 {masteryLevel >= 80 && (
                   <p className="text-sm text-green-700 font-semibold mt-1">
@@ -278,7 +314,9 @@ export default function FoundationQuiz() {
             </div>
             <div className="text-sm font-medium">スコア: {score}</div>
           </div>
-          <Progress value={((currentQuestionIndex + 1) / questions.length) * 100} />
+          <Progress
+            value={((currentQuestionIndex + 1) / questions.length) * 100}
+          />
         </div>
 
         {/* 問題表示 */}
@@ -294,16 +332,20 @@ export default function FoundationQuiz() {
                 {difficulty === "easy" ? (
                   // 4択問題
                   <div className="grid grid-cols-1 gap-3">
-                    {currentQuestion?.choices?.map((choice: string, index: number) => (
-                      <Button
-                        key={index}
-                        variant={selectedAnswer === choice ? "default" : "outline"}
-                        onClick={() => setSelectedAnswer(choice)}
-                        className="p-4 text-left justify-start h-auto"
-                      >
-                        {choice}
-                      </Button>
-                    ))}
+                    {currentQuestion?.choices?.map(
+                      (choice: string, index: number) => (
+                        <Button
+                          key={index}
+                          variant={
+                            selectedAnswer === choice ? "default" : "outline"
+                          }
+                          onClick={() => setSelectedAnswer(choice)}
+                          className="p-4 text-left justify-start h-auto"
+                        >
+                          {choice}
+                        </Button>
+                      )
+                    )}
                   </div>
                 ) : (
                   // 記述問題
@@ -317,7 +359,9 @@ export default function FoundationQuiz() {
                     {difficulty === "normal" && (
                       <div className="p-3 bg-blue-50 border border-blue-200 rounded">
                         <p className="text-sm text-blue-700">
-                          💡 ヒント: {currentQuestion?.explanation?.split('：')[0] || '文法ルールを思い出してください'}
+                          💡 ヒント:{" "}
+                          {currentQuestion?.explanation?.split("：")[0] ||
+                            "文法ルールを思い出してください"}
                         </p>
                       </div>
                     )}
@@ -338,23 +382,27 @@ export default function FoundationQuiz() {
             ) : (
               // フィードバック表示
               <div className="text-center space-y-4">
-                <div className={`text-2xl font-bold ${
-                  selectedAnswer === currentQuestion.correctAnswer || 
-                  userInput.trim().toLowerCase() === currentQuestion.correctAnswer.toLowerCase()
-                    ? "text-green-600" 
-                    : "text-red-600"
-                }`}>
-                  {selectedAnswer === currentQuestion.correctAnswer || 
-                   userInput.trim().toLowerCase() === currentQuestion.correctAnswer.toLowerCase()
-                    ? "正解！" 
+                <div
+                  className={`text-2xl font-bold ${
+                    selectedAnswer === currentQuestion.correctAnswer ||
+                    userInput.trim().toLowerCase() ===
+                      currentQuestion.correctAnswer.toLowerCase()
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {selectedAnswer === currentQuestion.correctAnswer ||
+                  userInput.trim().toLowerCase() ===
+                    currentQuestion.correctAnswer.toLowerCase()
+                    ? "正解！"
                     : "不正解"}
                 </div>
-                
+
                 <div className="p-4 bg-gray-50 rounded-lg">
                   <p className="font-semibold mb-2">正解:</p>
                   <p className="text-lg">{currentQuestion.correctAnswer}</p>
                 </div>
-                
+
                 <div className="p-4 bg-blue-50 rounded-lg">
                   <p className="font-semibold mb-2">解説:</p>
                   <p className="text-sm">{currentQuestion.explanation}</p>

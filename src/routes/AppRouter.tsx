@@ -13,6 +13,10 @@ import DifficultySelection from "../components/DifficultySelection";
 import EnhancedGrammarQuiz from "../components/EnhancedGrammarQuiz";
 import EssayHistory from "../components/EssayHistory";
 import EssayWriting from "../components/EssayWriting";
+import FoundationCategorySelection from "../components/FoundationCategorySelection";
+import FoundationDifficultySelection from "../components/FoundationDifficultySelection";
+import FoundationQuestionSetSelection from "../components/FoundationQuestionSetSelection";
+import FoundationQuiz from "../components/FoundationQuiz";
 import GachaResultScreen from "../components/GachaResultScreen";
 import GachaSystem from "../components/GachaSystem";
 import GrowthDashboard from "../components/GrowthDashboard";
@@ -24,14 +28,11 @@ import QuestionListView from "../components/QuestionListView";
 import QuestionSetSelection from "../components/QuestionSetSelection";
 import Results from "../components/Results";
 import SentencePatternSelection from "../components/SentencePatternSelection";
-import SkillTree from "../components/SkillTree";
-import SynergyDashboard from "../components/SynergyDashboard";
-import FoundationCategorySelection from "../components/FoundationCategorySelection";
-import FoundationDifficultySelection from "../components/FoundationDifficultySelection";
-import FoundationQuiz from "../components/FoundationQuiz";
 import SimpleTowerDefense from "../components/SimpleTowerDefense";
+import SkillTree from "../components/SkillTree";
 import PreStudyContentViewer from "../components/starSystem/PreStudyContentViewer";
 import PreStudyMenu from "../components/starSystem/PreStudyMenu";
+import SynergyDashboard from "../components/SynergyDashboard";
 import TimeAttackMode from "../components/TimeAttackMode";
 import VocabularyCard from "../components/VocabularyCard";
 import VocabularyCategorySelection from "../components/VocabularyCategorySelection";
@@ -109,20 +110,14 @@ export function AppRouter() {
             />
 
             {/* シナジーダッシュボード */}
-            <Route
-              path="/learning/synergy"
-              element={<SynergyDashboard />}
-            />
+            <Route path="/learning/synergy" element={<SynergyDashboard />} />
             <Route
               path="/learning/synergy/:category"
               element={<SynergyDashboard />}
             />
 
             {/* スキルツリー */}
-            <Route
-              path="/learning/skill-tree"
-              element={<SkillTree />}
-            />
+            <Route path="/learning/skill-tree" element={<SkillTree />} />
 
             {/* 基礎英語学習 */}
             <Route
@@ -132,6 +127,14 @@ export function AppRouter() {
             <Route
               path="/learning/foundation/difficulty/:category"
               element={<FoundationDifficultySelection />}
+            />
+            <Route
+              path="/learning/foundation/sets/:category/:difficulty"
+              element={<FoundationQuestionSetSelection />}
+            />
+            <Route
+              path="/learning/foundation/quiz/:category/:difficulty/:setId"
+              element={<FoundationQuiz />}
             />
             <Route
               path="/learning/foundation/quiz/:category/:difficulty"

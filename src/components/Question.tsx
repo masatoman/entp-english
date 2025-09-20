@@ -77,25 +77,27 @@ export default function Question() {
     if (!category || !difficulty) return;
 
     const masteryLevel = Math.round((score / questions.length) * 100);
-    const timeSpent = Math.round((new Date().getTime() - (startTime?.getTime() || 0)) / 60000); // 分
+    const timeSpent = Math.round(
+      (new Date().getTime() - (startTime?.getTime() || 0)) / 60000
+    ); // 分
 
     // カテゴリーに応じたスキルノードIDを決定
     let skillNodeId = "";
-    
+
     if (category === "basic-grammar" && urlPattern) {
       // 基本文型の場合
       skillNodeId = `${urlPattern}-basic`;
     } else {
       // その他のカテゴリー
       const categoryMapping: Record<string, string> = {
-        "tenses": "tenses-present", // 時制は現在時制ノードに統合
-        "modals": "modals-basic",
-        "passive": "passive-basic",
-        "relative": "relative-basic",
-        "subjunctive": "subjunctive-basic",
-        "comparison": "comparison-basic",
-        "participle": "participle-basic",
-        "infinitive": "infinitive-basic"
+        tenses: "tenses-present", // 時制は現在時制ノードに統合
+        modals: "modals-basic",
+        passive: "passive-basic",
+        relative: "relative-basic",
+        subjunctive: "subjunctive-basic",
+        comparison: "comparison-basic",
+        participle: "participle-basic",
+        infinitive: "infinitive-basic",
       };
       skillNodeId = categoryMapping[category] || category;
     }
@@ -108,8 +110,10 @@ export default function Question() {
         questions.length,
         timeSpent
       );
-      
-      console.log(`🎯 スキルツリー更新: ${skillNodeId} - 習熟度${masteryLevel}%`);
+
+      console.log(
+        `🎯 スキルツリー更新: ${skillNodeId} - 習熟度${masteryLevel}%`
+      );
     }
   };
 

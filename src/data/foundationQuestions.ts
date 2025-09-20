@@ -8,12 +8,12 @@ import { QuestionData } from "../components/Question";
 export interface FoundationQuestions {
   "parts-of-speech": Record<"easy" | "normal" | "hard", QuestionData[]>;
   "word-order": Record<"easy" | "normal" | "hard", QuestionData[]>;
-  "pronouns": Record<"easy" | "normal" | "hard", QuestionData[]>;
-  "articles": Record<"easy" | "normal" | "hard", QuestionData[]>;
-  "plurals": Record<"easy" | "normal" | "hard", QuestionData[]>;
+  pronouns: Record<"easy" | "normal" | "hard", QuestionData[]>;
+  articles: Record<"easy" | "normal" | "hard", QuestionData[]>;
+  plurals: Record<"easy" | "normal" | "hard", QuestionData[]>;
   "questions-negations": Record<"easy" | "normal" | "hard", QuestionData[]>;
-  "prepositions": Record<"easy" | "normal" | "hard", QuestionData[]>;
-  "conjunctions": Record<"easy" | "normal" | "hard", QuestionData[]>;
+  prepositions: Record<"easy" | "normal" | "hard", QuestionData[]>;
+  conjunctions: Record<"easy" | "normal" | "hard", QuestionData[]>;
 }
 
 export const foundationQuestions: FoundationQuestions = {
@@ -27,7 +27,7 @@ export const foundationQuestions: FoundationQuestions = {
         explanation: "student は「名詞」です。人や物の名前を表します。",
         choices: [
           "I am a student.", // student(名詞)
-          "I am study.", // study(動詞) 
+          "I am study.", // study(動詞)
           "I am studying.", // studying(動名詞)
           "I am studied.", // studied(過去分詞)
         ],
@@ -78,6 +78,312 @@ export const foundationQuestions: FoundationQuestions = {
           "The housing is big.", // housing(動名詞)
           "The housed is big.", // housed(過去分詞)
           "The houses is big.", // houses(複数形名詞・文法エラー)
+        ],
+      },
+      // === 追加問題：品詞の理解を深める（15問→50問） ===
+      // 名詞問題の拡張
+      {
+        id: 1006,
+        japanese: "私の（　）は新しいです。",
+        correctAnswer: "My car is new.",
+        explanation: "car は「名詞」です。乗り物を表す名詞です。",
+        choices: [
+          "My car is new.",
+          "My care is new.",
+          "My caring is new.",
+          "My cared is new.",
+        ],
+      },
+      {
+        id: 1007,
+        japanese: "その（　）は親切です。",
+        correctAnswer: "The teacher is kind.",
+        explanation: "teacher は「名詞」です。職業を表す名詞です。",
+        choices: [
+          "The teacher is kind.",
+          "The teach is kind.",
+          "The teaching is kind.",
+          "The taught is kind.",
+        ],
+      },
+      {
+        id: 1008,
+        japanese: "この（　）は甘いです。",
+        correctAnswer: "This apple is sweet.",
+        explanation: "apple は「名詞」です。果物を表す名詞です。",
+        choices: [
+          "This apple is sweet.",
+          "This apply is sweet.",
+          "This applied is sweet.",
+          "This applying is sweet.",
+        ],
+      },
+      {
+        id: 1009,
+        japanese: "あの（　）は高いです。",
+        correctAnswer: "That mountain is high.",
+        explanation: "mountain は「名詞」です。地形を表す名詞です。",
+        choices: [
+          "That mountain is high.",
+          "That mount is high.",
+          "That mounting is high.",
+          "That mounted is high.",
+        ],
+      },
+      {
+        id: 1010,
+        japanese: "私の（　）は小さいです。",
+        correctAnswer: "My dog is small.",
+        explanation: "dog は「名詞」です。動物を表す名詞です。",
+        choices: [
+          "My dog is small.",
+          "My dogging is small.",
+          "My dogged is small.",
+          "My dogs is small.",
+        ],
+      },
+      // 動詞問題の拡張
+      {
+        id: 1021,
+        japanese: "私は毎朝（　）。",
+        correctAnswer: "I run every morning.",
+        explanation: "run は「動詞」です。走る動作を表します。",
+        choices: [
+          "I run every morning.",
+          "I runner every morning.",
+          "I running every morning.",
+          "I runs every morning.",
+        ],
+      },
+      {
+        id: 1022,
+        japanese: "彼女は上手に（　）。",
+        correctAnswer: "She dances well.",
+        explanation: "dances は「動詞」です。踊る動作を表します。",
+        choices: [
+          "She dances well.",
+          "She dance well.",
+          "She dancer well.",
+          "She dancing well.",
+        ],
+      },
+      {
+        id: 1023,
+        japanese: "私たちは公園で（　）。",
+        correctAnswer: "We play in the park.",
+        explanation: "play は「動詞」です。遊ぶ動作を表します。",
+        choices: [
+          "We play in the park.",
+          "We player in the park.",
+          "We playing in the park.",
+          "We plays in the park.",
+        ],
+      },
+      {
+        id: 1024,
+        japanese: "彼は朝早く（　）。",
+        correctAnswer: "He wakes up early.",
+        explanation: "wakes は「動詞」です。起きる動作を表します。",
+        choices: [
+          "He wakes up early.",
+          "He wake up early.",
+          "He waking up early.",
+          "He waked up early.",
+        ],
+      },
+      {
+        id: 1025,
+        japanese: "私は友達と（　）。",
+        correctAnswer: "I talk with friends.",
+        explanation: "talk は「動詞」です。話す動作を表します。",
+        choices: [
+          "I talk with friends.",
+          "I talker with friends.",
+          "I talking with friends.",
+          "I talks with friends.",
+        ],
+      },
+      // 形容詞問題の拡張
+      {
+        id: 1031,
+        japanese: "その部屋は（　）です。",
+        correctAnswer: "The room is clean.",
+        explanation: "clean は「形容詞」です。状態を表します。",
+        choices: [
+          "The room is clean.",
+          "The room is cleaner.",
+          "The room is cleaning.",
+          "The room is cleaned.",
+        ],
+      },
+      {
+        id: 1032,
+        japanese: "この問題は（　）です。",
+        correctAnswer: "This problem is difficult.",
+        explanation: "difficult は「形容詞」です。性質を表します。",
+        choices: [
+          "This problem is difficult.",
+          "This problem is difficulty.",
+          "This problem is difficultly.",
+          "This problem is difficulted.",
+        ],
+      },
+      {
+        id: 1033,
+        japanese: "あの犬は（　）です。",
+        correctAnswer: "That dog is friendly.",
+        explanation: "friendly は「形容詞」です。性格を表します。",
+        choices: [
+          "That dog is friendly.",
+          "That dog is friend.",
+          "That dog is friending.",
+          "That dog is friended.",
+        ],
+      },
+      {
+        id: 1034,
+        japanese: "この映画は（　）です。",
+        correctAnswer: "This movie is interesting.",
+        explanation: "interesting は「形容詞」です。特徴を表します。",
+        choices: [
+          "This movie is interesting.",
+          "This movie is interest.",
+          "This movie is interested.",
+          "This movie is interestingly.",
+        ],
+      },
+      {
+        id: 1035,
+        japanese: "その料理は（　）です。",
+        correctAnswer: "The food is delicious.",
+        explanation: "delicious は「形容詞」です。味を表します。",
+        choices: [
+          "The food is delicious.",
+          "The food is deliciousness.",
+          "The food is deliciously.",
+          "The food is delicioused.",
+        ],
+      },
+      // 副詞問題の拡張
+      {
+        id: 1041,
+        japanese: "彼は（　）走ります。",
+        correctAnswer: "He runs quickly.",
+        explanation: "quickly は「副詞」です。動詞を修飾します。",
+        choices: [
+          "He runs quickly.",
+          "He runs quick.",
+          "He runs quickness.",
+          "He runs quicked.",
+        ],
+      },
+      {
+        id: 1042,
+        japanese: "私は（　）勉強します。",
+        correctAnswer: "I study hard.",
+        explanation: "hard は「副詞」です。程度を表します。",
+        choices: [
+          "I study hard.",
+          "I study hardly.",
+          "I study hardness.",
+          "I study harder.",
+        ],
+      },
+      {
+        id: 1043,
+        japanese: "彼女は（　）話します。",
+        correctAnswer: "She speaks softly.",
+        explanation: "softly は「副詞」です。動詞を修飾します。",
+        choices: [
+          "She speaks softly.",
+          "She speaks soft.",
+          "She speaks softness.",
+          "She speaks softer.",
+        ],
+      },
+      {
+        id: 1044,
+        japanese: "私たちは（　）待ちます。",
+        correctAnswer: "We wait patiently.",
+        explanation: "patiently は「副詞」です。動詞を修飾します。",
+        choices: [
+          "We wait patiently.",
+          "We wait patient.",
+          "We wait patience.",
+          "We wait patiented.",
+        ],
+      },
+      {
+        id: 1045,
+        japanese: "彼は（　）答えました。",
+        correctAnswer: "He answered correctly.",
+        explanation: "correctly は「副詞」です。動詞を修飾します。",
+        choices: [
+          "He answered correctly.",
+          "He answered correct.",
+          "He answered correction.",
+          "He answered corrected.",
+        ],
+      },
+      // 混合・応用問題
+      {
+        id: 1051,
+        japanese: "その（　）は非常に（　）です。",
+        correctAnswer: "The book is very interesting.",
+        explanation: "book は「名詞」、interesting は「形容詞」です。",
+        choices: [
+          "The book is very interesting.",
+          "The booking is very interest.",
+          "The booked is very interested.",
+          "The books is very interestingly.",
+        ],
+      },
+      {
+        id: 1052,
+        japanese: "私は（　）その（　）を読みます。",
+        correctAnswer: "I carefully read the newspaper.",
+        explanation: "carefully は「副詞」、newspaper は「名詞」です。",
+        choices: [
+          "I carefully read the newspaper.",
+          "I careful read the news.",
+          "I care read the newsing.",
+          "I cared read the newser.",
+        ],
+      },
+      {
+        id: 1053,
+        japanese: "彼女は（　）（　）ます。",
+        correctAnswer: "She sings beautifully.",
+        explanation: "sings は「動詞」、beautifully は「副詞」です。",
+        choices: [
+          "She sings beautifully.",
+          "She singer beautiful.",
+          "She singing beauty.",
+          "She sang beautify.",
+        ],
+      },
+      {
+        id: 1054,
+        japanese: "この（　）は（　）価値があります。",
+        correctAnswer: "This painting has great value.",
+        explanation: "painting は「名詞」、great は「形容詞」です。",
+        choices: [
+          "This painting has great value.",
+          "This paint has greatly valued.",
+          "This painted has greatness valuing.",
+          "This painter has greatest values.",
+        ],
+      },
+      {
+        id: 1055,
+        japanese: "私たちは（　）その（　）を見ました。",
+        correctAnswer: "We watched the movie quietly.",
+        explanation: "watched は「動詞」、quietly は「副詞」です。",
+        choices: [
+          "We watched the movie quietly.",
+          "We watcher the movies quiet.",
+          "We watching the moving quietness.",
+          "We watches the moved quieter.",
         ],
       },
     ],
@@ -148,7 +454,8 @@ export const foundationQuestions: FoundationQuestions = {
         id: 1021,
         japanese: "彼の（　）は印象的でした。",
         correctAnswer: "His presentation was impressive.",
-        explanation: "presentation は名詞。動詞 present から派生した名詞形です。",
+        explanation:
+          "presentation は名詞。動詞 present から派生した名詞形です。",
         choices: [
           "His present was impressive.", // present(動詞・名詞)
           "His presenting was impressive.", // presenting(動名詞)
@@ -160,7 +467,8 @@ export const foundationQuestions: FoundationQuestions = {
         id: 1022,
         japanese: "この研究は（　）に行われました。",
         correctAnswer: "This research was conducted systematically.",
-        explanation: "systematically は副詞。形容詞 systematic から派生した副詞形です。",
+        explanation:
+          "systematically は副詞。形容詞 systematic から派生した副詞形です。",
         choices: [
           "This research was conducted systematic.", // systematic(形容詞)
           "This research was conducted systematically.", // systematically(副詞)
@@ -276,7 +584,8 @@ export const foundationQuestions: FoundationQuestions = {
         id: 2011,
         japanese: "私は友達に手紙を書きました。",
         correctAnswer: "I wrote a letter to my friend.",
-        explanation: "間接目的語がある場合：動詞 + 直接目的語 + to + 間接目的語",
+        explanation:
+          "間接目的語がある場合：動詞 + 直接目的語 + to + 間接目的語",
         choices: [
           "I wrote to my friend a letter.",
           "I wrote a letter to my friend.",
@@ -337,7 +646,8 @@ export const foundationQuestions: FoundationQuestions = {
       {
         id: 2021,
         japanese: "彼女は毎朝早く起きて、ジョギングをして、朝食を作ります。",
-        correctAnswer: "She gets up early every morning, goes jogging, and makes breakfast.",
+        correctAnswer:
+          "She gets up early every morning, goes jogging, and makes breakfast.",
         explanation: "複数の動作の並列：動詞1, 動詞2, and 動詞3",
         choices: [
           "She every morning gets up early, goes jogging, and makes breakfast.",
@@ -348,8 +658,10 @@ export const foundationQuestions: FoundationQuestions = {
       },
       {
         id: 2022,
-        japanese: "私は彼に、その重要な書類を、明日までに、提出するよう依頼しました。",
-        correctAnswer: "I asked him to submit the important documents by tomorrow.",
+        japanese:
+          "私は彼に、その重要な書類を、明日までに、提出するよう依頼しました。",
+        correctAnswer:
+          "I asked him to submit the important documents by tomorrow.",
         explanation: "複雑な文での語順：主語 + 動詞 + 間接目的語 + to不定詞句",
         choices: [
           "I asked him by tomorrow to submit the important documents.",
@@ -361,7 +673,8 @@ export const foundationQuestions: FoundationQuestions = {
       {
         id: 2023,
         japanese: "その会社は、効率的に、新しい技術を、市場に導入しました。",
-        correctAnswer: "The company efficiently introduced new technology to the market.",
+        correctAnswer:
+          "The company efficiently introduced new technology to the market.",
         explanation: "副詞の位置：主語 + 副詞 + 動詞 + 目的語 + 前置詞句",
         choices: [
           "The company introduced efficiently new technology to the market.",
@@ -372,8 +685,10 @@ export const foundationQuestions: FoundationQuestions = {
       },
       {
         id: 2024,
-        japanese: "彼らは、その複雑で困難な問題を、創造的かつ効果的に解決しました。",
-        correctAnswer: "They solved the complex and difficult problem creatively and effectively.",
+        japanese:
+          "彼らは、その複雑で困難な問題を、創造的かつ効果的に解決しました。",
+        correctAnswer:
+          "They solved the complex and difficult problem creatively and effectively.",
         explanation: "形容詞の並列 + 副詞の並列：and で接続",
         choices: [
           "They creatively and effectively solved the complex and difficult problem.",
@@ -385,7 +700,8 @@ export const foundationQuestions: FoundationQuestions = {
       {
         id: 2025,
         japanese: "私は、昨日買った新しい本を、今朝、注意深く読み始めました。",
-        correctAnswer: "I carefully started reading the new book I bought yesterday this morning.",
+        correctAnswer:
+          "I carefully started reading the new book I bought yesterday this morning.",
         explanation: "関係詞句 + 時間表現 + 副詞 + 動詞の複雑な語順",
         choices: [
           "I started reading carefully the new book I bought yesterday this morning.",
@@ -398,7 +714,7 @@ export const foundationQuestions: FoundationQuestions = {
   },
 
   // 代名詞
-  "pronouns": {
+  pronouns: {
     easy: [
       {
         id: 3001,
@@ -588,7 +904,7 @@ export const foundationQuestions: FoundationQuestions = {
   },
 
   // 冠詞
-  "articles": {
+  articles: {
     easy: [
       {
         id: 4001,
@@ -680,7 +996,8 @@ export const foundationQuestions: FoundationQuestions = {
         id: 4013,
         japanese: "彼は（　）大学で英語を教えています。",
         correctAnswer: "He teaches English at university.",
-        explanation: "一般的な機関としての大学には冠詞を使わないことがあります。",
+        explanation:
+          "一般的な機関としての大学には冠詞を使わないことがあります。",
         choices: [
           "He teaches English at a university.",
           "He teaches English at an university.",
@@ -692,7 +1009,8 @@ export const foundationQuestions: FoundationQuestions = {
         id: 4014,
         japanese: "私たちは（　）夕食を一緒に食べました。",
         correctAnswer: "We had dinner together.",
-        explanation: "食事名（breakfast, lunch, dinner）には通常冠詞を使いません。",
+        explanation:
+          "食事名（breakfast, lunch, dinner）には通常冠詞を使いません。",
         choices: [
           "We had a dinner together.",
           "We had an dinner together.",
@@ -778,7 +1096,7 @@ export const foundationQuestions: FoundationQuestions = {
   },
 
   // 複数形
-  "plurals": {
+  plurals: {
     easy: [
       {
         id: 5001,
@@ -1158,7 +1476,7 @@ export const foundationQuestions: FoundationQuestions = {
   },
 
   // 前置詞（基本的なもののみ、詳細は後で追加）
-  "prepositions": {
+  prepositions: {
     easy: [
       {
         id: 7001,
@@ -1348,7 +1666,7 @@ export const foundationQuestions: FoundationQuestions = {
   },
 
   // 接続詞
-  "conjunctions": {
+  conjunctions: {
     easy: [
       {
         id: 8001,
@@ -1546,4 +1864,112 @@ export function getFoundationQuestions(
   difficulty: "easy" | "normal" | "hard"
 ): QuestionData[] {
   return foundationQuestions[category]?.[difficulty] || [];
+}
+
+/**
+ * セット別の基礎問題を取得（5問ずつ）
+ */
+export function getFoundationQuestionsBySet(
+  category: keyof FoundationQuestions,
+  difficulty: "easy" | "normal" | "hard",
+  setId: string
+): QuestionData[] {
+  try {
+    const allQuestions = getFoundationQuestions(category, difficulty);
+
+    if (category === "parts-of-speech") {
+      // 品詞問題のセット別分割
+      const setRanges: Record<string, [number, number]> = {
+        basic: [1001, 1005], // 基本編
+        nouns: [1006, 1010], // 名詞編
+        verbs: [1021, 1025], // 動詞編
+        adjectives: [1031, 1035], // 形容詞編
+        adverbs: [1041, 1045], // 副詞編
+        mixed: [1051, 1055], // 応用編
+      };
+
+      const range = setRanges[setId];
+      if (range) {
+        const [startId, endId] = range;
+        const setQuestions = allQuestions.filter(
+          (q) => q.id >= startId && q.id <= endId
+        );
+
+        console.log(
+          `📚 基礎問題セット取得: ${category} ${difficulty} ${setId} - ${setQuestions.length}問`
+        );
+        return setQuestions;
+      }
+    }
+
+    // デフォルト：最初の5問を返す
+    const defaultQuestions = allQuestions.slice(0, 5);
+    console.log(
+      `📚 基礎問題デフォルトセット: ${category} ${difficulty} - ${defaultQuestions.length}問`
+    );
+    return defaultQuestions;
+  } catch (error) {
+    console.error("Error getting foundation questions by set:", error);
+    return [];
+  }
+}
+
+/**
+ * カテゴリー別の利用可能セットを取得
+ */
+export function getAvailableFoundationSets(
+  category: keyof FoundationQuestions
+) {
+  if (category === "parts-of-speech") {
+    return [
+      {
+        id: "basic",
+        name: "基本編",
+        description: "基本的な品詞識別",
+        icon: "📝",
+      },
+      {
+        id: "nouns",
+        name: "名詞編",
+        description: "名詞に特化した問題",
+        icon: "🏠",
+      },
+      {
+        id: "verbs",
+        name: "動詞編",
+        description: "動詞に特化した問題",
+        icon: "🏃",
+      },
+      {
+        id: "adjectives",
+        name: "形容詞編",
+        description: "形容詞に特化した問題",
+        icon: "🌟",
+      },
+      {
+        id: "adverbs",
+        name: "副詞編",
+        description: "副詞に特化した問題",
+        icon: "⚡",
+      },
+      {
+        id: "mixed",
+        name: "応用編",
+        description: "混合・応用問題",
+        icon: "🎯",
+      },
+    ];
+  }
+
+  // 他のカテゴリーはデフォルトセット
+  return [
+    { id: "basic", name: "基本編", description: "基本的な問題", icon: "📝" },
+    { id: "advanced", name: "応用編", description: "応用問題", icon: "🎯" },
+    {
+      id: "comprehensive",
+      name: "総合編",
+      description: "総合問題",
+      icon: "👑",
+    },
+  ];
 }

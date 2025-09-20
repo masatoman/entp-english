@@ -51,10 +51,16 @@ export default function SkillTree() {
   const handleStartLearning = (node: SkillNode) => {
     // ノードに応じて適切な学習ページに遷移
     const foundationCategories = [
-      "parts-of-speech", "word-order", "pronouns", "articles", 
-      "plurals", "questions-negations", "prepositions", "conjunctions"
+      "parts-of-speech",
+      "word-order",
+      "pronouns",
+      "articles",
+      "plurals",
+      "questions-negations",
+      "prepositions",
+      "conjunctions",
     ];
-    
+
     if (foundationCategories.includes(node.category)) {
       // 基礎カテゴリーの場合
       navigate(`/learning/foundation/difficulty/${node.category}`);
@@ -251,7 +257,10 @@ export default function SkillTree() {
                   </svg>
 
                   {/* Skill Nodes */}
-                  <div className="relative" style={{ height: "1500px", minWidth: "500px" }}>
+                  <div
+                    className="relative"
+                    style={{ height: "1500px", minWidth: "500px" }}
+                  >
                     {GRAMMAR_SKILL_TREE.map((node) => {
                       const status = getNodeStatus(node);
                       const progress = skillTreeState.progress[node.id];
@@ -260,14 +269,14 @@ export default function SkillTree() {
                         <TooltipProvider key={node.id}>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                                <div
-                                 className={`absolute w-28 h-16 sm:w-32 sm:h-20 rounded-lg border-2 p-1 sm:p-2 cursor-pointer transition-all duration-200 ${getStatusColor(
-                                   status
-                                 )} ${
-                                   status === "locked"
-                                     ? "cursor-not-allowed"
-                                     : "hover:scale-105"
-                                 }`}
+                              <div
+                                className={`absolute w-28 h-16 sm:w-32 sm:h-20 rounded-lg border-2 p-1 sm:p-2 cursor-pointer transition-all duration-200 ${getStatusColor(
+                                  status
+                                )} ${
+                                  status === "locked"
+                                    ? "cursor-not-allowed"
+                                    : "hover:scale-105"
+                                }`}
                                 style={{
                                   left: node.position.x,
                                   top: node.position.y,

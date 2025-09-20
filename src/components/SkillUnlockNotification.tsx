@@ -1,6 +1,10 @@
+import { Star, Trophy, X, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
-import { X, Star, Trophy, Zap } from "lucide-react";
-import { skillTreeManager, SkillNode, GRAMMAR_SKILL_TREE } from "../utils/skillTreeManager";
+import {
+  GRAMMAR_SKILL_TREE,
+  SkillNode,
+  skillTreeManager,
+} from "../utils/skillTreeManager";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
@@ -10,15 +14,15 @@ interface SkillUnlockNotificationProps {
   unlockedSkills: string[];
 }
 
-export default function SkillUnlockNotification({ 
-  onClose, 
-  unlockedSkills 
+export default function SkillUnlockNotification({
+  onClose,
+  unlockedSkills,
 }: SkillUnlockNotificationProps) {
   const [currentSkillIndex, setCurrentSkillIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
 
   const unlockedNodes = unlockedSkills
-    .map(skillId => GRAMMAR_SKILL_TREE.find(node => node.id === skillId))
+    .map((skillId) => GRAMMAR_SKILL_TREE.find((node) => node.id === skillId))
     .filter((node): node is SkillNode => node !== undefined);
 
   useEffect(() => {
@@ -63,12 +67,16 @@ export default function SkillUnlockNotification({
   const currentNode = unlockedNodes[currentSkillIndex];
 
   return (
-    <div className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-300 ${
-      isVisible ? 'opacity-100' : 'opacity-0'
-    }`}>
-      <Card className={`max-w-md mx-4 transform transition-transform duration-300 ${
-        isVisible ? 'scale-100' : 'scale-95'
-      }`}>
+    <div
+      className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-300 ${
+        isVisible ? "opacity-100" : "opacity-0"
+      }`}
+    >
+      <Card
+        className={`max-w-md mx-4 transform transition-transform duration-300 ${
+          isVisible ? "scale-100" : "scale-95"
+        }`}
+      >
         <CardHeader className="relative">
           <Button
             variant="ghost"
@@ -78,7 +86,7 @@ export default function SkillUnlockNotification({
           >
             <X className="w-4 h-4" />
           </Button>
-          
+
           <div className="text-center">
             <div className="text-4xl mb-2">🎉</div>
             <CardTitle className="text-xl text-green-800">
@@ -89,7 +97,7 @@ export default function SkillUnlockNotification({
             </p>
           </div>
         </CardHeader>
-        
+
         <CardContent className="space-y-4">
           {/* 解放されたスキルの詳細 */}
           <div className="text-center">
@@ -100,7 +108,7 @@ export default function SkillUnlockNotification({
             <p className="text-sm text-gray-600 mb-3">
               {currentNode.description}
             </p>
-            
+
             <div className="flex justify-center space-x-2 mb-4">
               <Badge variant="outline">Level {currentNode.level}</Badge>
               <Badge variant="outline">{currentNode.difficulty}</Badge>
@@ -119,8 +127,11 @@ export default function SkillUnlockNotification({
                 <Zap className="w-3 h-3 mr-2" />
                 {currentNode.rewards.xp} XP
               </div>
-              {currentNode.rewards.badges.map(badge => (
-                <div key={badge} className="flex items-center text-sm text-yellow-700">
+              {currentNode.rewards.badges.map((badge) => (
+                <div
+                  key={badge}
+                  className="flex items-center text-sm text-yellow-700"
+                >
                   <Star className="w-3 h-3 mr-2" />
                   {badge}
                 </div>
@@ -135,7 +146,7 @@ export default function SkillUnlockNotification({
                 🔓 解放される機能
               </h4>
               <ul className="text-sm text-blue-700 space-y-1">
-                {currentNode.rewards.unlockedFeatures.map(feature => (
+                {currentNode.rewards.unlockedFeatures.map((feature) => (
                   <li key={feature}>• {feature}</li>
                 ))}
               </ul>
@@ -152,22 +163,19 @@ export default function SkillUnlockNotification({
             >
               前へ
             </Button>
-            
+
             <div className="flex space-x-2">
               {unlockedNodes.map((_, index) => (
                 <div
                   key={index}
                   className={`w-2 h-2 rounded-full ${
-                    index === currentSkillIndex ? 'bg-blue-600' : 'bg-gray-300'
+                    index === currentSkillIndex ? "bg-blue-600" : "bg-gray-300"
                   }`}
                 />
               ))}
             </div>
-            
-            <Button
-              onClick={handleNext}
-              size="sm"
-            >
+
+            <Button onClick={handleNext} size="sm">
               {currentSkillIndex < unlockedNodes.length - 1 ? "次へ" : "完了"}
             </Button>
           </div>
@@ -189,18 +197,18 @@ export function useSkillUnlockNotification() {
     const previousUnlocked = JSON.parse(
       localStorage.getItem("previous-unlocked-skills") || "[]"
     );
-    
+
     const newUnlocks = state.unlockedNodes.filter(
-      nodeId => !previousUnlocked.includes(nodeId)
+      (nodeId) => !previousUnlocked.includes(nodeId)
     );
 
     if (newUnlocks.length > 0) {
       setUnlockedSkills(newUnlocks);
       setShowNotification(true);
-      
+
       // 現在の解放状態を保存
       localStorage.setItem(
-        "previous-unlocked-skills", 
+        "previous-unlocked-skills",
         JSON.stringify(state.unlockedNodes)
       );
     }
@@ -215,6 +223,6 @@ export function useSkillUnlockNotification() {
     unlockedSkills,
     showNotification,
     checkForNewUnlocks,
-    handleCloseNotification
+    handleCloseNotification,
   };
 }
