@@ -349,10 +349,12 @@ export function NewHome() {
       forceRefreshHearts();
       // スターシステムも更新（変更があった場合のみ）
       const updatedStarSystem = levelManager.getStarSystem();
-      setStarSystem(prevStars => {
+      setStarSystem((prevStars) => {
         // 変更がない場合は更新しない（再レンダリング防止）
-        if (prevStars.current === updatedStarSystem.current && 
-            prevStars.max === updatedStarSystem.max) {
+        if (
+          prevStars.current === updatedStarSystem.current &&
+          prevStars.max === updatedStarSystem.max
+        ) {
           return prevStars;
         }
         return updatedStarSystem;

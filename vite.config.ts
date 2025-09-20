@@ -45,16 +45,16 @@ export default defineConfig({
             short_name: "文法",
             description: "文法問題に挑戦",
             url: "/learning/grammar/category",
-            icons: [{ src: "pwa-192x192.png", sizes: "192x192" }]
+            icons: [{ src: "pwa-192x192.png", sizes: "192x192" }],
           },
           {
             name: "語彙学習",
             short_name: "語彙",
             description: "単語を学習",
             url: "/learning/vocabulary",
-            icons: [{ src: "pwa-192x192.png", sizes: "192x192" }]
-          }
-        ]
+            icons: [{ src: "pwa-192x192.png", sizes: "192x192" }],
+          },
+        ],
       },
     }),
   ],
