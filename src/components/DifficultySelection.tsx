@@ -64,7 +64,7 @@ export default function DifficultySelection() {
             color="bg-green-50 border-green-200 text-green-800"
             onClick={() => {
               console.log("Easy difficulty clicked");
-              navigate(`/learning/grammar/list/${actualCategory}/easy`);
+              navigate(`/learning/grammar/sets/${actualCategory}/easy`);
             }}
           />
 
@@ -78,7 +78,7 @@ export default function DifficultySelection() {
             color="bg-yellow-50 border-yellow-200 text-yellow-800"
             onClick={() => {
               console.log("Normal difficulty clicked");
-              navigate(`/learning/grammar/list/${actualCategory}/normal`);
+              navigate(`/learning/grammar/sets/${actualCategory}/normal`);
             }}
           />
 
@@ -92,7 +92,7 @@ export default function DifficultySelection() {
             color="bg-red-50 border-red-200 text-red-800"
             onClick={() => {
               console.log("Hard difficulty clicked");
-              navigate(`/learning/grammar/list/${actualCategory}/hard`);
+              navigate(`/learning/grammar/sets/${actualCategory}/hard`);
             }}
           />
         </div>

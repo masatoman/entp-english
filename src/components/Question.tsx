@@ -42,10 +42,16 @@ const difficultyLabels = {
 
 export default function Question() {
   const navigate = useNavigate();
-  const { category: urlCategory, difficulty: urlDifficulty, questionId: urlQuestionId } = useParams<{
+  const {
+    category: urlCategory,
+    difficulty: urlDifficulty,
+    questionId: urlQuestionId,
+    setId: urlSetId,
+  } = useParams<{
     category: string;
     difficulty: string;
     questionId?: string;
+    setId?: string;
   }>();
 
   useScrollToTop();
@@ -104,7 +110,9 @@ export default function Question() {
 
         // 特定の問題IDが指定されている場合、その問題のみを表示
         if (urlQuestionId) {
-          const specificQuestion = allQuestions.find(q => q.id === parseInt(urlQuestionId));
+          const specificQuestion = allQuestions.find(
+            (q) => q.id === parseInt(urlQuestionId)
+          );
           if (specificQuestion) {
             setQuestions([specificQuestion]);
             setCurrentQuestionIndex(0);
@@ -112,6 +120,10 @@ export default function Question() {
             console.error("Question not found:", urlQuestionId);
             setQuestions([]);
           }
+        } else if (urlSetId) {
+          // 問題集が指定されている場合、問題集に応じた問題数を制限
+          const questionCount = urlSetId === "comprehensive" ? 10 : 5;
+          setQuestions(allQuestions.slice(0, questionCount));
         } else {
           setQuestions(allQuestions);
         }
@@ -123,7 +135,7 @@ export default function Question() {
         navigate("/learning/grammar/category");
       }
     }
-  }, [category, difficulty, urlQuestionId, navigate]);
+  }, [category, difficulty, urlQuestionId, urlSetId, navigate]);
 
   if (!category || !difficulty || questions.length === 0) {
     return (
@@ -153,8 +165,14 @@ export default function Question() {
     }
 
     // 統計を記録
-    const timeSpent = startTime ? Math.round((new Date().getTime() - startTime.getTime()) / 1000) : undefined;
-    questionStatsManager.updateQuestionStats(currentQuestion.id, isCorrect, timeSpent);
+    const timeSpent = startTime
+      ? Math.round((new Date().getTime() - startTime.getTime()) / 1000)
+      : undefined;
+    questionStatsManager.updateQuestionStats(
+      currentQuestion.id,
+      isCorrect,
+      timeSpent
+    );
 
     // 単一問題の場合は問題一覧に戻る
     if (urlQuestionId) {
@@ -181,6 +199,9 @@ export default function Question() {
     if (urlQuestionId) {
       // 特定問題から戻る場合は問題一覧へ
       navigate(`/learning/grammar/list/${category}/${difficulty}`);
+    } else if (urlSetId) {
+      // 問題集から戻る場合は問題集選択へ
+      navigate(`/learning/grammar/sets/${category}/${difficulty}`);
     } else {
       // 通常の場合は難易度選択へ
       navigate(`/learning/grammar/difficulty/${category}`);

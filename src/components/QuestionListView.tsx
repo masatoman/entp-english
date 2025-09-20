@@ -1,30 +1,30 @@
-import { useState, useEffect } from "react";
-import { ArrowLeft, RotateCcw, TrendingUp, Clock, Target } from "lucide-react";
-import { Card, CardContent, CardHeader } from "./ui/card";
-import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
-import { Progress } from "./ui/progress";
+import { ArrowLeft, Clock, RotateCcw, Target, TrendingUp } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getQuestions } from "../data/questions";
-import { questionStatsManager } from "../utils/questionStatsManager";
 import { Category } from "../types";
+import { questionStatsManager } from "../utils/questionStatsManager";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader } from "./ui/card";
+import { Progress } from "./ui/progress";
 
 interface QuestionListItemProps {
   questionId: number;
   japanese: string;
   index: number;
   category: Category;
-  difficulty: 'easy' | 'normal' | 'hard';
+  difficulty: "easy" | "normal" | "hard";
   onQuestionSelect: (questionId: number) => void;
 }
 
-function QuestionListItem({ 
-  questionId, 
-  japanese, 
-  index, 
-  category, 
-  difficulty, 
-  onQuestionSelect 
+function QuestionListItem({
+  questionId,
+  japanese,
+  index,
+  category,
+  difficulty,
+  onQuestionSelect,
 }: QuestionListItemProps) {
   const stats = questionStatsManager.getQuestionStats(questionId);
   const successRate = questionStatsManager.getSuccessRate(questionId);
@@ -38,16 +38,19 @@ function QuestionListItem({
   };
 
   const getStatusBadge = () => {
-    if (!stats || stats.attempts === 0) return { text: "未挑戦", variant: "secondary" as const };
-    if (successRate >= 80) return { text: "習得済み", variant: "default" as const };
-    if (successRate >= 60) return { text: "要復習", variant: "outline" as const };
+    if (!stats || stats.attempts === 0)
+      return { text: "未挑戦", variant: "secondary" as const };
+    if (successRate >= 80)
+      return { text: "習得済み", variant: "default" as const };
+    if (successRate >= 60)
+      return { text: "要復習", variant: "outline" as const };
     return { text: "要強化", variant: "destructive" as const };
   };
 
   const statusBadge = getStatusBadge();
 
   return (
-    <Card 
+    <Card
       className={`cursor-pointer transition-all duration-200 hover:shadow-md ${getStatusColor()}`}
       onClick={() => onQuestionSelect(questionId)}
     >
@@ -69,10 +72,8 @@ function QuestionListItem({
             </div>
           )}
         </div>
-        
-        <p className="text-sm font-medium mb-3 text-foreground">
-          {japanese}
-        </p>
+
+        <p className="text-sm font-medium mb-3 text-foreground">{japanese}</p>
 
         {stats && stats.attempts > 0 && (
           <div className="space-y-2">
@@ -81,7 +82,7 @@ function QuestionListItem({
               <span>{successRate}%</span>
             </div>
             <Progress value={successRate} className="h-1" />
-            
+
             <div className="flex justify-between items-center text-xs text-muted-foreground">
               <div className="flex items-center space-x-1">
                 <RotateCcw className="w-3 h-3" />
@@ -103,9 +104,16 @@ function QuestionListItem({
 
 export default function QuestionListView() {
   const navigate = useNavigate();
-  const { category, difficulty } = useParams<{ category: Category; difficulty: 'easy' | 'normal' | 'hard' }>();
+  const { category, difficulty } = useParams<{
+    category: Category;
+    difficulty: "easy" | "normal" | "hard";
+  }>();
   const [questions, setQuestions] = useState<any[]>([]);
-  const [overallStats, setOverallStats] = useState({ total: 0, completed: 0, averageSuccess: 0 });
+  const [overallStats, setOverallStats] = useState({
+    total: 0,
+    completed: 0,
+    averageSuccess: 0,
+  });
 
   useEffect(() => {
     if (category && difficulty) {
@@ -115,21 +123,30 @@ export default function QuestionListView() {
       // 全体統計を計算
       const stats = questionStatsManager.getCategoryStats(category, difficulty);
       const totalQuestions = questionData.length;
-      const completedQuestions = stats.filter(s => s.attempts > 0).length;
-      const averageSuccess = stats.length > 0 
-        ? Math.round(stats.reduce((sum, s) => sum + questionStatsManager.getSuccessRate(s.questionId), 0) / stats.length)
-        : 0;
+      const completedQuestions = stats.filter((s) => s.attempts > 0).length;
+      const averageSuccess =
+        stats.length > 0
+          ? Math.round(
+              stats.reduce(
+                (sum, s) =>
+                  sum + questionStatsManager.getSuccessRate(s.questionId),
+                0
+              ) / stats.length
+            )
+          : 0;
 
       setOverallStats({
         total: totalQuestions,
         completed: completedQuestions,
-        averageSuccess: completedQuestions > 0 ? averageSuccess : 0
+        averageSuccess: completedQuestions > 0 ? averageSuccess : 0,
       });
     }
   }, [category, difficulty]);
 
   const handleQuestionSelect = (questionId: number) => {
-    navigate(`/learning/grammar/question/${category}/${difficulty}/${questionId}`);
+    navigate(
+      `/learning/grammar/question/${category}/${difficulty}/${questionId}`
+    );
   };
 
   const handleBack = () => {
@@ -137,7 +154,11 @@ export default function QuestionListView() {
   };
 
   const handleResetStats = () => {
-    if (category && difficulty && window.confirm('この難易度の全ての統計をリセットしますか？')) {
+    if (
+      category &&
+      difficulty &&
+      window.confirm("この難易度の全ての統計をリセットしますか？")
+    ) {
       questionStatsManager.resetCategoryStats(category, difficulty);
       window.location.reload();
     }
@@ -145,24 +166,24 @@ export default function QuestionListView() {
 
   const getCategoryTitle = (cat: Category) => {
     const titles: Record<Category, string> = {
-      'basic-grammar': '基本文型',
-      'tenses': '時制',
-      'modals': '助動詞',
-      'passive': '受動態',
-      'relative': '関係詞',
-      'subjunctive': '仮定法',
-      'comparison': '比較',
-      'participle': '分詞・動名詞',
-      'infinitive': '不定詞'
+      "basic-grammar": "基本文型",
+      tenses: "時制",
+      modals: "助動詞",
+      passive: "受動態",
+      relative: "関係詞",
+      subjunctive: "仮定法",
+      comparison: "比較",
+      participle: "分詞・動名詞",
+      infinitive: "不定詞",
     };
     return titles[cat] || cat;
   };
 
-  const getDifficultyTitle = (diff: 'easy' | 'normal' | 'hard') => {
+  const getDifficultyTitle = (diff: "easy" | "normal" | "hard") => {
     const titles = {
-      'easy': '簡単',
-      'normal': '普通', 
-      'hard': '難しい'
+      easy: "簡単",
+      normal: "普通",
+      hard: "難しい",
     };
     return titles[diff];
   };
@@ -203,26 +224,37 @@ export default function QuestionListView() {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
-                <div className="text-2xl font-bold text-blue-600">{overallStats.completed}</div>
+                <div className="text-2xl font-bold text-blue-600">
+                  {overallStats.completed}
+                </div>
                 <div className="text-xs text-muted-foreground">挑戦済み</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-green-600">{overallStats.total}</div>
+                <div className="text-2xl font-bold text-green-600">
+                  {overallStats.total}
+                </div>
                 <div className="text-xs text-muted-foreground">総問題数</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-purple-600">{overallStats.averageSuccess}%</div>
+                <div className="text-2xl font-bold text-purple-600">
+                  {overallStats.averageSuccess}%
+                </div>
                 <div className="text-xs text-muted-foreground">平均正答率</div>
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span>進捗率</span>
-                <span>{Math.round((overallStats.completed / overallStats.total) * 100)}%</span>
+                <span>
+                  {Math.round(
+                    (overallStats.completed / overallStats.total) * 100
+                  )}
+                  %
+                </span>
               </div>
-              <Progress 
-                value={(overallStats.completed / overallStats.total) * 100} 
+              <Progress
+                value={(overallStats.completed / overallStats.total) * 100}
                 className="h-2"
               />
             </div>
@@ -235,7 +267,7 @@ export default function QuestionListView() {
             <Target className="w-5 h-5" />
             <span>問題を選択</span>
           </h3>
-          
+
           {questions.map((question, index) => (
             <QuestionListItem
               key={question.id}
