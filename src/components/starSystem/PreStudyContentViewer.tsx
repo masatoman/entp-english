@@ -15,9 +15,11 @@ import remarkGfm from "remark-gfm";
 import { preStudyContents } from "../../data/preStudyContents";
 import { getLevelManager, saveLevelManager } from "../../utils/levelManager";
 import { PreStudyProgressManager } from "../../utils/preStudyProgressManager";
+import { contentTagManager } from "../../utils/contentTagManager";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import RecommendedContentSelector from "../RecommendedContentSelector";
 
 // Router対応のため、PropsInterfaceは不要
 
@@ -77,10 +79,28 @@ function PreStudyContentViewer() {
   const handleNavigateToPractice = () => {
     // 理解度評価が0の場合は3（普通）として扱う
     const finalRating = comprehensionRating > 0 ? comprehensionRating : 3;
-    // 学習進捗保存処理をここに追加
-    // カテゴリに基づいて適切な問題演習に遷移
-    if (content.category) {
-      navigate(`/learning/grammar/category`);
+    
+    // 学習進捗保存処理
+    if (contentId) {
+      PreStudyProgressManager.markContentAsCompleted(contentId);
+    }
+    
+    // タグベースで最適な次のコンテンツを決定
+    if (contentId) {
+      const optimalNext = contentTagManager.getOptimalNextContent(contentId);
+      if (optimalNext) {
+        navigate(optimalNext.url);
+        return;
+      }
+    }
+    
+    // フォールバック: カテゴリに基づく従来の遷移
+    if (content?.category === 'vocabulary') {
+      navigate('/learning/vocabulary/actualCategory');
+    } else if (content?.category === 'writing') {
+      navigate('/learning/writing/category');
+    } else {
+      navigate('/learning/grammar/category');
     }
   };
 
@@ -177,20 +197,14 @@ function PreStudyContentViewer() {
                 </CardContent>
               </Card>
 
-              {/* 実践推奨 */}
-              <Card className="bg-green-50 border-green-200">
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Target className="w-5 h-5 text-green-600" />
-                    <h5 className="font-semibold text-green-800">
-                      関連問題で実践してみませんか？
-                    </h5>
-                  </div>
-                  <p className="text-sm text-green-700">
-                    今学んだ内容を問題演習で定着させましょう。
-                  </p>
-                </CardContent>
-              </Card>
+              {/* 推奨コンテンツ */}
+              {contentId && (
+                <RecommendedContentSelector
+                  currentContentId={contentId}
+                  maxRecommendations={4}
+                  showTags={true}
+                />
+              )}
 
               {/* アクションボタン */}
               <div className="flex gap-3">
@@ -199,7 +213,7 @@ function PreStudyContentViewer() {
                   className="flex-1"
                   size="lg"
                 >
-                  ♥ 問題演習へ
+                  🎯 最適な学習へ
                 </Button>
                 <Button
                   onClick={handleBack}
