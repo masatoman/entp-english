@@ -110,7 +110,7 @@ export function DailyChallengeCard() {
       {/* カラーバー */}
       <div className={`h-2 ${challenge.color}`} />
 
-      <CardHeader className="pb-3">
+      <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="text-2xl">{challenge.icon}</div>
