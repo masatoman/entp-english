@@ -6,7 +6,7 @@ import { getQuestions } from "../data/questions";
 import { sentencePatternQuestions } from "../data/sentencePatternQuestions";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Category } from "../types";
-import { getLevelManager } from "../utils/levelManager";
+import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 import { questionStatsManager } from "../utils/questionStatsManager";
 import { skillTreeManager } from "../utils/skillTreeManager";
 import { Badge } from "./ui/badge";
@@ -123,6 +123,15 @@ export default function Question() {
   // 問題データを取得
   useEffect(() => {
     if (category && difficulty) {
+      // ハートを消費して学習を開始
+      const levelManager = getLevelManager();
+      if (!levelManager.consumeHeart()) {
+        alert("体力が不足しています。回復を待ってから再試行してください。");
+        navigate("/");
+        return;
+      }
+      saveLevelManager();
+
       try {
         let standardQuestions;
 
@@ -243,7 +252,7 @@ export default function Question() {
     setIsCorrect(correct);
     setCurrentAnswer(answer);
     setShowExplanation(true);
-    
+
     if (correct) {
       setScore(score + 1);
     }
@@ -451,21 +460,31 @@ export default function Question() {
                     </div>
                   )}
                 </div>
-                
+
                 {!isCorrect && (
                   <div className="mb-3 p-3 bg-green-50 border border-green-200 rounded">
-                    <div className="text-sm font-medium text-green-800 mb-1">正解:</div>
-                    <div className="text-green-700">{currentQuestion.correctAnswer}</div>
+                    <div className="text-sm font-medium text-green-800 mb-1">
+                      正解:
+                    </div>
+                    <div className="text-green-700">
+                      {currentQuestion.correctAnswer}
+                    </div>
                   </div>
                 )}
-                
+
                 <div className="mb-4 p-3 bg-white border rounded">
-                  <div className="text-sm font-medium text-blue-800 mb-1">解説:</div>
-                  <div className="text-blue-700 text-sm">{currentQuestion.explanation}</div>
+                  <div className="text-sm font-medium text-blue-800 mb-1">
+                    解説:
+                  </div>
+                  <div className="text-blue-700 text-sm">
+                    {currentQuestion.explanation}
+                  </div>
                 </div>
 
                 <Button onClick={handleNext} className="w-full">
-                  {currentQuestionIndex < questions.length - 1 ? '次の問題' : '完了'}
+                  {currentQuestionIndex < questions.length - 1
+                    ? "次の問題"
+                    : "完了"}
                 </Button>
               </div>
             )}
