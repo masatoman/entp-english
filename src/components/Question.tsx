@@ -71,6 +71,9 @@ export default function Question() {
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [userInput, setUserInput] = useState<string>("");
   const [startTime, setStartTime] = useState<Date | null>(null);
+  const [showExplanation, setShowExplanation] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
+  const [currentAnswer, setCurrentAnswer] = useState<string>("");
 
   // スキルツリー進捗更新関数
   const updateSkillTreeProgress = () => {
@@ -236,8 +239,12 @@ export default function Question() {
   const totalQuestions = questions.length;
 
   const handleAnswer = (answer: string) => {
-    const isCorrect = answer === currentQuestion.correctAnswer;
-    if (isCorrect) {
+    const correct = answer === currentQuestion.correctAnswer;
+    setIsCorrect(correct);
+    setCurrentAnswer(answer);
+    setShowExplanation(true);
+    
+    if (correct) {
       setScore(score + 1);
     }
 
@@ -247,15 +254,20 @@ export default function Question() {
       : undefined;
     questionStatsManager.updateQuestionStats(
       currentQuestion.id,
-      isCorrect,
+      correct,
       timeSpent
     );
+  };
+
+  const handleNext = () => {
+    setShowExplanation(false);
+    setSelectedAnswer("");
+    setUserInput("");
+    setCurrentAnswer("");
 
     // 単一問題の場合は問題一覧に戻る
     if (urlQuestionId) {
-      setTimeout(() => {
-        navigate(`/learning/grammar/list/${category}/${difficulty}`);
-      }, 2000); // 2秒後に自動で戻る
+      navigate(`/learning/grammar/list/${category}/${difficulty}`);
       return;
     }
 
@@ -297,8 +309,6 @@ export default function Question() {
     const answer = difficulty === "easy" ? selectedAnswer : userInput;
     if (answer.trim()) {
       handleAnswer(answer);
-      setSelectedAnswer("");
-      setUserInput("");
     }
   };
 
@@ -425,15 +435,52 @@ export default function Question() {
               </div>
             )}
 
-            <div className="mt-6 pt-4 border-t">
-              <Button
-                onClick={handleSubmit}
-                disabled={!canSubmit}
-                className="w-full"
-              >
-                回答する
-              </Button>
-            </div>
+            {/* 解説表示 */}
+            {showExplanation && (
+              <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="flex items-center justify-center mb-3">
+                  {isCorrect ? (
+                    <div className="flex items-center text-green-600">
+                      <span className="text-2xl mr-2">✓</span>
+                      <span className="text-lg font-semibold">正解！</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center text-red-600">
+                      <span className="text-2xl mr-2">✗</span>
+                      <span className="text-lg font-semibold">不正解</span>
+                    </div>
+                  )}
+                </div>
+                
+                {!isCorrect && (
+                  <div className="mb-3 p-3 bg-green-50 border border-green-200 rounded">
+                    <div className="text-sm font-medium text-green-800 mb-1">正解:</div>
+                    <div className="text-green-700">{currentQuestion.correctAnswer}</div>
+                  </div>
+                )}
+                
+                <div className="mb-4 p-3 bg-white border rounded">
+                  <div className="text-sm font-medium text-blue-800 mb-1">解説:</div>
+                  <div className="text-blue-700 text-sm">{currentQuestion.explanation}</div>
+                </div>
+
+                <Button onClick={handleNext} className="w-full">
+                  {currentQuestionIndex < questions.length - 1 ? '次の問題' : '完了'}
+                </Button>
+              </div>
+            )}
+
+            {!showExplanation && (
+              <div className="mt-6 pt-4 border-t">
+                <Button
+                  onClick={handleSubmit}
+                  disabled={!canSubmit}
+                  className="w-full"
+                >
+                  回答する
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
