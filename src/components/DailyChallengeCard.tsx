@@ -115,10 +115,10 @@ export function DailyChallengeCard() {
           <div className="flex items-center space-x-3">
             <div className="text-2xl">{challenge.icon}</div>
             <div>
-              <h3 className="font-bold text-lg">{challenge.name}</h3>
+              <h3 className="font-bold text-lg">スペシャルミッション</h3>
               <div className="flex items-center space-x-2">
                 <Badge variant="outline" className="text-xs">
-                  {getChallengeTypeLabel(challenge.type)}
+                  {challenge.name}
                 </Badge>
                 <Badge variant="secondary" className="text-xs">
                   今日限定
