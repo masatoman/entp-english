@@ -1,6 +1,7 @@
 import { ArrowLeft, Clock, Lock, Star, Trophy, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 import {
   GRAMMAR_SKILL_TREE,
   SkillNode,
@@ -17,12 +18,6 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Progress } from "./ui/progress";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "./ui/tooltip";
 
 export default function SkillTree() {
   const navigate = useNavigate();
@@ -49,6 +44,14 @@ export default function SkillTree() {
   };
 
   const handleStartLearning = (node: SkillNode) => {
+    // ハートを消費して学習を開始
+    const levelManager = getLevelManager();
+    if (!levelManager.consumeHeart()) {
+      alert("体力が不足しています。回復を待ってから再試行してください。");
+      return;
+    }
+    saveLevelManager();
+
     // ノードに応じて適切な学習ページに遷移
     const foundationCategories = [
       "parts-of-speech",
@@ -224,13 +227,19 @@ export default function SkillTree() {
                 {GRAMMAR_SKILL_TREE.map((node) => {
                   const status = getNodeStatus(node);
                   const progress = skillTreeState.progress[node.id];
-                  const isAvailable = skillTreeState.availableNodes.includes(node.id);
+                  const isAvailable = skillTreeState.availableNodes.includes(
+                    node.id
+                  );
 
                   return (
                     <Card
                       key={node.id}
-                      className={`cursor-pointer transition-all duration-200 ${getStatusColor(status)} ${
-                        status === "locked" ? "cursor-not-allowed" : "hover:scale-105"
+                      className={`cursor-pointer transition-all duration-200 ${getStatusColor(
+                        status
+                      )} ${
+                        status === "locked"
+                          ? "cursor-not-allowed"
+                          : "hover:scale-105"
                       }`}
                       onClick={() => handleNodeClick(node)}
                     >
@@ -238,8 +247,12 @@ export default function SkillTree() {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
                             <span className="text-xl">{node.icon}</span>
-                            <CardTitle className="text-lg">{node.name}</CardTitle>
-                            {status === "locked" && <span className="text-gray-400">🔒</span>}
+                            <CardTitle className="text-lg">
+                              {node.name}
+                            </CardTitle>
+                            {status === "locked" && (
+                              <span className="text-gray-400">🔒</span>
+                            )}
                           </div>
                           <div className="flex gap-2">
                             <Badge variant="outline" className="text-xs">
@@ -248,7 +261,9 @@ export default function SkillTree() {
                             {getStatusIcon(status)}
                           </div>
                         </div>
-                        <CardDescription className={status === "locked" ? "text-gray-400" : ""}>
+                        <CardDescription
+                          className={status === "locked" ? "text-gray-400" : ""}
+                        >
                           {node.description}
                         </CardDescription>
                       </CardHeader>
@@ -262,7 +277,7 @@ export default function SkillTree() {
                             <Progress value={progress.masteryLevel} />
                           </div>
                         )}
-                        
+
                         <div className="flex items-center justify-between text-sm text-gray-600">
                           <div className="flex items-center">
                             <Clock className="w-4 h-4 mr-1" />
@@ -352,9 +367,14 @@ export default function SkillTree() {
                   ).length;
 
                   return (
-                    <div key={level} className="flex items-center justify-between">
+                    <div
+                      key={level}
+                      className="flex items-center justify-between"
+                    >
                       <div className="flex items-center space-x-2">
-                        <span className="text-sm font-medium">Level {level}</span>
+                        <span className="text-sm font-medium">
+                          Level {level}
+                        </span>
                         <span className="text-xs text-gray-600">
                           {completedAtLevel}/{nodesAtLevel.length}
                         </span>
