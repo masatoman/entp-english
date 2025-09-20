@@ -13,10 +13,10 @@ export const questionsByCategory: Record<
         correctAnswer: "I am a student.",
         explanation: '「私は～です」は "I am ~" で表現します。',
         choices: [
-          "I am a student.",
           "I am student.",
-          "I'm the student.",
+          "I am a student.",
           "I was a student.",
+          "I'm the student.",
         ],
       },
       {
@@ -25,10 +25,10 @@ export const questionsByCategory: Record<
         correctAnswer: "He is a doctor.",
         explanation: '三人称単数の主語には "is" を使います。',
         choices: [
-          "He is a doctor.",
           "He are a doctor.",
-          "He am a doctor.",
           "He was a doctor.",
+          "He is a doctor.",
+          "He am a doctor.",
         ],
       },
       {
@@ -37,10 +37,10 @@ export const questionsByCategory: Record<
         correctAnswer: "We are friends.",
         explanation: '複数の主語には "are" を使います。',
         choices: [
-          "We are friends.",
           "We is friends.",
-          "We am friends.",
           "We were friends.",
+          "We am friends.",
+          "We are friends.",
         ],
       },
       {
@@ -49,10 +49,10 @@ export const questionsByCategory: Record<
         correctAnswer: "She is busy.",
         explanation: "形容詞を使った文では be動詞が必要です。",
         choices: [
-          "She is busy.",
           "She busy.",
-          "She are busy.",
           "She has busy.",
+          "She is busy.",
+          "She are busy.",
         ],
       },
       {
@@ -61,10 +61,10 @@ export const questionsByCategory: Record<
         correctAnswer: "I read a book.",
         explanation: "一般動詞の現在形では、一人称は動詞の原形を使います。",
         choices: [
-          "I read a book.",
           "I reads a book.",
           "I am read a book.",
           "I reading a book.",
+          "I read a book.",
         ],
       },
     ],
@@ -153,10 +153,10 @@ export const questionsByCategory: Record<
         explanation:
           '過去のことは過去形を使います。"watch" の過去形は "watched" です。',
         choices: [
-          "I watched a movie yesterday.",
           "I watch a movie yesterday.",
-          "I am watching a movie yesterday.",
           "I have watched a movie yesterday.",
+          "I watched a movie yesterday.",
+          "I am watching a movie yesterday.",
         ],
       },
       {
@@ -165,10 +165,10 @@ export const questionsByCategory: Record<
         correctAnswer: "She will go to Tokyo tomorrow.",
         explanation: '未来のことは "will + 動詞の原形" で表現します。',
         choices: [
-          "She will go to Tokyo tomorrow.",
           "She goes to Tokyo tomorrow.",
-          "She went to Tokyo tomorrow.",
           "She is going to Tokyo tomorrow.",
+          "She went to Tokyo tomorrow.",
+          "She will go to Tokyo tomorrow.",
         ],
       },
       {
@@ -177,10 +177,10 @@ export const questionsByCategory: Record<
         correctAnswer: "We are watching TV now.",
         explanation: '現在進行形は "be動詞 + 動詞のing形" で表現します。',
         choices: [
-          "We are watching TV now.",
           "We watch TV now.",
-          "We watched TV now.",
+          "We are watching TV now.",
           "We will watch TV now.",
+          "We watched TV now.",
         ],
       },
       {
@@ -189,10 +189,10 @@ export const questionsByCategory: Record<
         correctAnswer: "He got up early this morning.",
         explanation: '"get up" の過去形は "got up" です。',
         choices: [
-          "He got up early this morning.",
           "He gets up early this morning.",
-          "He is getting up early this morning.",
           "He will get up early this morning.",
+          "He got up early this morning.",
+          "He is getting up early this morning.",
         ],
       },
       {
@@ -201,10 +201,10 @@ export const questionsByCategory: Record<
         correctAnswer: "I will meet my friend next week.",
         explanation: '未来の予定は "will" で表現できます。',
         choices: [
-          "I will meet my friend next week.",
           "I meet my friend next week.",
-          "I met my friend next week.",
           "I am meeting my friend next week.",
+          "I will meet my friend next week.",
+          "I met my friend next week.",
         ],
       },
     ],
@@ -296,10 +296,10 @@ export const questionsByCategory: Record<
         correctAnswer: "I can swim.",
         explanation: '能力を表すときは "can" を使います。',
         choices: [
-          "I can swim.",
           "I can to swim.",
-          "I can swimming.",
           "I am can swim.",
+          "I can swim.",
+          "I can swimming.",
         ],
       },
       {
@@ -308,10 +308,10 @@ export const questionsByCategory: Record<
         correctAnswer: "Can you speak Japanese?",
         explanation: '能力について質問するときは "Can you...?" を使います。',
         choices: [
-          "Can you speak Japanese?",
           "Do you can speak Japanese?",
-          "Are you can speak Japanese?",
+          "Can you speak Japanese?",
           "You can speak Japanese?",
+          "Are you can speak Japanese?",
         ],
       },
       {
@@ -320,9 +320,9 @@ export const questionsByCategory: Record<
         correctAnswer: "I cannot drive a car.",
         explanation: '否定形は "cannot" または "can\'t" を使います。',
         choices: [
-          "I cannot drive a car.",
           "I can not drive a car.",
           "I don't can drive a car.",
+          "I cannot drive a car.",
           "I am not can drive a car.",
         ],
       },
@@ -332,10 +332,10 @@ export const questionsByCategory: Record<
         correctAnswer: "She can sing.",
         explanation: '三人称単数でも "can" の形は変わりません。',
         choices: [
-          "She can sing.",
           "She cans sing.",
-          "She can to sing.",
           "She can singing.",
+          "She can to sing.",
+          "She can sing.",
         ],
       },
       {
@@ -344,10 +344,10 @@ export const questionsByCategory: Record<
         correctAnswer: "We can speak English.",
         explanation: '複数の主語でも "can" の形は変わりません。',
         choices: [
-          "We can speak English.",
           "We cans speak English.",
-          "We can to speak English.",
+          "We can speak English.",
           "We are can speak English.",
+          "We can to speak English.",
         ],
       },
     ],
@@ -436,10 +436,10 @@ export const questionsByCategory: Record<
         correctAnswer: "This book is read by many people.",
         explanation: '受動態は "be動詞 + 過去分詞" で作ります。',
         choices: [
-          "This book is read by many people.",
           "This book reads by many people.",
-          "This book is reading by many people.",
           "This book was read by many people.",
+          "This book is read by many people.",
+          "This book is reading by many people.",
         ],
       },
       {
@@ -448,9 +448,9 @@ export const questionsByCategory: Record<
         correctAnswer: "English is spoken all over the world.",
         explanation: '現在の受動態では "is/are + 過去分詞" を使います。',
         choices: [
-          "English is spoken all over the world.",
           "English speaks all over the world.",
           "English is speaking all over the world.",
+          "English is spoken all over the world.",
           "English was spoken all over the world.",
         ],
       },
@@ -460,10 +460,10 @@ export const questionsByCategory: Record<
         correctAnswer: "This car was made in Japan.",
         explanation: '過去の受動態では "was/were + 過去分詞" を使います。',
         choices: [
-          "This car was made in Japan.",
           "This car made in Japan.",
-          "This car is made in Japan.",
           "This car makes in Japan.",
+          "This car is made in Japan.",
+          "This car was made in Japan.",
         ],
       },
       {
@@ -472,10 +472,10 @@ export const questionsByCategory: Record<
         correctAnswer: "The letter was written by him.",
         explanation: '動作の主体を表すときは "by" を使います。',
         choices: [
-          "The letter was written by him.",
           "The letter wrote by him.",
-          "The letter is written by him.",
+          "The letter was written by him.",
           "The letter was writing by him.",
+          "The letter is written by him.",
         ],
       },
       {
@@ -485,10 +485,10 @@ export const questionsByCategory: Record<
         explanation:
           '助動詞がある受動態では "助動詞 + be + 過去分詞" を使います。',
         choices: [
-          "This problem can be solved easily.",
           "This problem can solve easily.",
-          "This problem can solved easily.",
           "This problem is can solved easily.",
+          "This problem can solved easily.",
+          "This problem can be solved easily.",
         ],
       },
     ],
@@ -575,10 +575,10 @@ export const questionsByCategory: Record<
         correctAnswer: "I have a friend who speaks English.",
         explanation: '人を修飾するときは関係代名詞 "who" を使います。',
         choices: [
-          "I have a friend who speaks English.",
           "I have a friend which speaks English.",
-          "I have a friend that speak English.",
           "I have a friend who speak English.",
+          "I have a friend who speaks English.",
+          "I have a friend that speak English.",
         ],
       },
       {
@@ -587,10 +587,10 @@ export const questionsByCategory: Record<
         correctAnswer: "This is the book which I bought.",
         explanation: '物を修飾するときは関係代名詞 "which" を使います。',
         choices: [
-          "This is the book which I bought.",
           "This is the book who I bought.",
-          "This is the book what I bought.",
           "This is the book that I buy.",
+          "This is the book which I bought.",
+          "This is the book what I bought.",
         ],
       },
       {
@@ -599,10 +599,10 @@ export const questionsByCategory: Record<
         correctAnswer: "She is a person who is kind.",
         explanation: '人の性質を説明するときも "who" を使います。',
         choices: [
-          "She is a person who is kind.",
           "She is a person which is kind.",
-          "She is a person what is kind.",
           "She is a person that are kind.",
+          "She is a person what is kind.",
+          "She is a person who is kind.",
         ],
       },
       {
@@ -611,10 +611,10 @@ export const questionsByCategory: Record<
         correctAnswer: "I have a car that is red.",
         explanation: '"that" は人にも物にも使える関係代名詞です。',
         choices: [
-          "I have a car that is red.",
           "I have a car who is red.",
-          "I have a car what is red.",
           "I have a car which are red.",
+          "I have a car that is red.",
+          "I have a car what is red.",
         ],
       },
       {
@@ -623,10 +623,10 @@ export const questionsByCategory: Record<
         correctAnswer: "Do you know the man who is standing over there?",
         explanation: "現在進行形も関係代名詞で修飾できます。",
         choices: [
-          "Do you know the man who is standing over there?",
           "Do you know the man which is standing over there?",
-          "Do you know the man what is standing over there?",
+          "Do you know the man who is standing over there?",
           "Do you know the man that are standing over there?",
+          "Do you know the man what is standing over there?",
         ],
       },
     ],
@@ -713,10 +713,10 @@ export const questionsByCategory: Record<
         correctAnswer: "If it rains tomorrow, I will stay at home.",
         explanation: "現在の仮定では、if節は現在形、主節は未来形を使います。",
         choices: [
-          "If it rains tomorrow, I will stay at home.",
           "If it will rain tomorrow, I stay at home.",
-          "If it rained tomorrow, I will stay at home.",
           "If it rains tomorrow, I stayed at home.",
+          "If it rains tomorrow, I will stay at home.",
+          "If it rained tomorrow, I will stay at home.",
         ],
       },
       {
@@ -725,10 +725,10 @@ export const questionsByCategory: Record<
         correctAnswer: "If I have time, I will go to see a movie.",
         explanation: "条件を表すif節では現在形を使います。",
         choices: [
-          "If I have time, I will go to see a movie.",
           "If I will have time, I go to see a movie.",
-          "If I had time, I will go to see a movie.",
           "If I have time, I went to see a movie.",
+          "If I had time, I will go to see a movie.",
+          "If I have time, I will go to see a movie.",
         ],
       },
       {
@@ -737,10 +737,10 @@ export const questionsByCategory: Record<
         correctAnswer: "If he doesn't come, we will be in trouble.",
         explanation: "否定の条件でも現在形を使います。",
         choices: [
-          "If he doesn't come, we will be in trouble.",
           "If he won't come, we are in trouble.",
-          "If he didn't come, we will be in trouble.",
+          "If he doesn't come, we will be in trouble.",
           "If he doesn't come, we were in trouble.",
+          "If he didn't come, we will be in trouble.",
         ],
       },
       {
@@ -749,10 +749,10 @@ export const questionsByCategory: Record<
         correctAnswer: "If I were rich, I would travel around the world.",
         explanation: "現在の事実と反対の仮定では仮定法過去を使います。",
         choices: [
-          "If I were rich, I would travel around the world.",
           "If I am rich, I will travel around the world.",
-          "If I was rich, I would travel around the world.",
           "If I were rich, I will travel around the world.",
+          "If I were rich, I would travel around the world.",
+          "If I was rich, I would travel around the world.",
         ],
       },
       {
@@ -762,10 +762,10 @@ export const questionsByCategory: Record<
         explanation:
           '仮定法過去では "were" を使い、主節に助動詞の過去形を使います。',
         choices: [
-          "If I were a bird, I could fly in the sky.",
           "If I was a bird, I can fly in the sky.",
-          "If I am a bird, I could fly in the sky.",
+          "If I were a bird, I could fly in the sky.",
           "If I were a bird, I can fly in the sky.",
+          "If I am a bird, I could fly in the sky.",
         ],
       },
     ],
@@ -865,10 +865,10 @@ export const questionsByCategory: Record<
         correctAnswer: "He is taller than me.",
         explanation: '比較級は "形容詞 + er + than" で表現します。',
         choices: [
-          "He is taller than me.",
           "He is more tall than me.",
-          "He is tall than me.",
           "He is taller then me.",
+          "He is taller than me.",
+          "He is tall than me.",
         ],
       },
       {
@@ -877,10 +877,10 @@ export const questionsByCategory: Record<
         correctAnswer: "This book is more interesting than that book.",
         explanation: '長い形容詞は "more + 形容詞 + than" で比較級を作ります。',
         choices: [
-          "This book is more interesting than that book.",
           "This book is interestinger than that book.",
-          "This book is most interesting than that book.",
+          "This book is more interesting than that book.",
           "This book is interesting than that book.",
+          "This book is most interesting than that book.",
         ],
       },
       {
@@ -889,10 +889,10 @@ export const questionsByCategory: Record<
         correctAnswer: "She is the youngest of the three.",
         explanation: '最上級は "the + 形容詞 + est" で表現します。',
         choices: [
-          "She is the youngest of the three.",
           "She is the most young of the three.",
-          "She is younger of the three.",
           "She is the young of the three.",
+          "She is the youngest of the three.",
+          "She is younger of the three.",
         ],
       },
       {
@@ -901,10 +901,10 @@ export const questionsByCategory: Record<
         correctAnswer: "Today is not as hot as yesterday.",
         explanation: '同程度の比較は "as + 形容詞 + as" を使います。',
         choices: [
-          "Today is not as hot as yesterday.",
           "Today is not so hot than yesterday.",
-          "Today is not more hot as yesterday.",
           "Today is not hot than yesterday.",
+          "Today is not as hot as yesterday.",
+          "Today is not more hot as yesterday.",
         ],
       },
       {
@@ -913,10 +913,10 @@ export const questionsByCategory: Record<
         correctAnswer: "This is the most interesting book I have ever read.",
         explanation: '長い形容詞の最上級は "the most + 形容詞" を使います。',
         choices: [
-          "This is the most interesting book I have ever read.",
           "This is the interestingest book I have ever read.",
-          "This is the more interesting book I have ever read.",
           "This is most interesting book I have ever read.",
+          "This is the more interesting book I have ever read.",
+          "This is the most interesting book I have ever read.",
         ],
       },
     ],
@@ -999,10 +999,10 @@ export const questionsByCategory: Record<
         correctAnswer: "I saw a boy running.",
         explanation: "現在分詞 (-ing) で進行中の動作を修飾します。",
         choices: [
-          "I saw a boy running.",
           "I saw a boy run.",
-          "I saw a boy ran.",
           "I saw a boy to run.",
+          "I saw a boy running.",
+          "I saw a boy ran.",
         ],
       },
       {
@@ -1011,10 +1011,10 @@ export const questionsByCategory: Record<
         correctAnswer: "I had the broken window repaired.",
         explanation: "過去分詞で完了した状態を修飾します。",
         choices: [
-          "I had the broken window repaired.",
           "I had the breaking window repaired.",
-          "I had the break window repaired.",
           "I had the broke window repaired.",
+          "I had the broken window repaired.",
+          "I had the break window repaired.",
         ],
       },
       {
@@ -1023,10 +1023,10 @@ export const questionsByCategory: Record<
         correctAnswer: "The smiling baby is very cute.",
         explanation: "現在分詞が形容詞として名詞を修飾します。",
         choices: [
-          "The smiling baby is very cute.",
           "The smiled baby is very cute.",
-          "The smile baby is very cute.",
           "The to smile baby is very cute.",
+          "The smile baby is very cute.",
+          "The smiling baby is very cute.",
         ],
       },
       {
@@ -1035,10 +1035,10 @@ export const questionsByCategory: Record<
         correctAnswer: "He looked tired.",
         explanation: "過去分詞が形容詞として使われます。",
         choices: [
-          "He looked tired.",
           "He looked tiring.",
-          "He looked tire.",
+          "He looked tired.",
           "He looked to tire.",
+          "He looked tire.",
         ],
       },
       {
@@ -1047,10 +1047,10 @@ export const questionsByCategory: Record<
         correctAnswer: "Excited children were playing in the park.",
         explanation: "過去分詞が形容詞として複数名詞を修飾します。",
         choices: [
-          "Excited children were playing in the park.",
           "Exciting children were playing in the park.",
-          "Excite children were playing in the park.",
           "To excite children were playing in the park.",
+          "Excited children were playing in the park.",
+          "Excite children were playing in the park.",
         ],
       },
     ],
@@ -1137,10 +1137,10 @@ export const questionsByCategory: Record<
         correctAnswer: "I want to study English.",
         explanation: '"want" の後は不定詞 "to + 動詞の原形" を使います。',
         choices: [
-          "I want to study English.",
           "I want study English.",
-          "I want studying English.",
           "I want studied English.",
+          "I want to study English.",
+          "I want studying English.",
         ],
       },
       {
@@ -1149,10 +1149,10 @@ export const questionsByCategory: Record<
         correctAnswer: "He is learning to swim.",
         explanation: '"learn" の後も不定詞を使います。',
         choices: [
-          "He is learning to swim.",
           "He is learning swim.",
-          "He is learning swimming.",
+          "He is learning to swim.",
           "He is learning swam.",
+          "He is learning swimming.",
         ],
       },
       {
@@ -1161,10 +1161,10 @@ export const questionsByCategory: Record<
         correctAnswer: "We decided to go to see a movie.",
         explanation: '"decide" の後は不定詞を使います。',
         choices: [
-          "We decided to go to see a movie.",
           "We decided go to see a movie.",
           "We decided going to see a movie.",
           "We decided went to see a movie.",
+          "We decided to go to see a movie.",
         ],
       },
       {
@@ -1173,10 +1173,10 @@ export const questionsByCategory: Record<
         correctAnswer: "She wants to become a singer.",
         explanation: '"want to become" で「～になりたい」を表現します。',
         choices: [
-          "She wants to become a singer.",
           "She wants become a singer.",
-          "She wants becoming a singer.",
+          "She wants to become a singer.",
           "She wants became a singer.",
+          "She wants becoming a singer.",
         ],
       },
       {
@@ -1185,10 +1185,10 @@ export const questionsByCategory: Record<
         correctAnswer: "I need to go home early.",
         explanation: '"need" の後は不定詞を使います。',
         choices: [
-          "I need to go home early.",
           "I need go home early.",
           "I need going home early.",
           "I need went home early.",
+          "I need to go home early.",
         ],
       },
     ],

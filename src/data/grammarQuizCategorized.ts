@@ -220,7 +220,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
       { id: "blank1", position: 2, correctAnswer: "go" },
       { id: "blank2", position: 6, correctAnswer: "every" },
     ],
-    options: ["go", "goes", "went", "will go", "every", "each", "all", "go"],
+    options: ["goes", "every", "went", "go", "all", "will go", "each", "go"],
     explanation:
       "【事前学習連携】習慣を表すevery dayと一人称の現在形goが正解。事前学習前編の基本時制で学習した内容です。",
     level: "beginner",
@@ -235,7 +235,16 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
       { id: "blank1", position: 2, correctAnswer: "has lived" },
       { id: "blank2", position: 5, correctAnswer: "since" },
     ],
-    options: ["has lived", "lived", "lives", "will live", "since", "for", "from", "has lived"],
+    options: [
+      "lived",
+      "since",
+      "will live",
+      "has lived",
+      "from",
+      "lives",
+      "for",
+      "has lived",
+    ],
     explanation:
       "【事前学習連携】起点を表すsinceと現在完了形has livedが正解。事前学習後編の現在完了形で学習した内容です。",
     level: "intermediate",
@@ -250,7 +259,16 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
       { id: "blank1", position: 3, correctAnswer: "got" },
       { id: "blank2", position: 7, correctAnswer: "had finished" },
     ],
-    options: ["got", "get", "was getting", "have got", "had finished", "finished", "have finished", "got"],
+    options: [
+      "get",
+      "had finished",
+      "have got",
+      "got",
+      "finished",
+      "was getting",
+      "have finished",
+      "got",
+    ],
     explanation:
       "【事前学習連携】過去の時点gotより前に完了していた行動はhad finished（過去完了形）で表現します。",
     level: "advanced",
@@ -262,7 +280,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     id: 15,
     sentence: "Look at those clouds! It ___ rain soon.",
     blanks: [{ id: "blank1", position: 6, correctAnswer: "is going to" }],
-    options: ["is going to", "will", "rains", "rained", "would"],
+    options: ["will", "rained", "is going to", "rains", "would"],
     explanation:
       "【事前学習連携】根拠のある予測はbe going toで表現。Look at those cloudsが根拠を示しています。",
     level: "beginner",
@@ -277,7 +295,16 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
       { id: "blank1", position: 2, correctAnswer: "have been reading" },
       { id: "blank2", position: 5, correctAnswer: "since" },
     ],
-    options: ["have been reading", "read", "am reading", "was reading", "since", "for", "from", "have been reading"],
+    options: [
+      "read",
+      "since",
+      "was reading",
+      "have been reading",
+      "for",
+      "am reading",
+      "from",
+      "have been reading",
+    ],
     explanation:
       "【事前学習連携】先週から現在まで継続している行動は現在完了進行形have been readingで表現します。",
     level: "intermediate",
@@ -288,8 +315,16 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 17,
     sentence: "By next month, we ___ this project.",
-    blanks: [{ id: "blank1", position: 5, correctAnswer: "will have completed" }],
-    options: ["will have completed", "will complete", "complete", "completed", "have completed"],
+    blanks: [
+      { id: "blank1", position: 5, correctAnswer: "will have completed" },
+    ],
+    options: [
+      "will complete",
+      "completed",
+      "will have completed",
+      "complete",
+      "have completed",
+    ],
     explanation:
       "【事前学習連携】未来のある時点（来月）までに完了している行動は未来完了形will have completedで表現します。",
     level: "advanced",
@@ -304,7 +339,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
       { id: "blank1", position: 1, correctAnswer: "Have" },
       { id: "blank2", position: 4, correctAnswer: "been" },
     ],
-    options: ["Have", "Did", "Do", "Are", "been", "gone", "went", "Have"],
+    options: ["Did", "gone", "Do", "Have", "been", "Are", "went", "Have"],
     explanation:
       "【事前学習連携】経験を表すHave you ever been...?の構文。現在完了形の経験用法です。",
     level: "intermediate",
@@ -316,7 +351,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     id: 19,
     sentence: "The meeting ___ at 2 PM tomorrow.",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "starts" }],
-    options: ["starts", "will start", "started", "is starting", "start"],
+    options: ["will start", "start", "started", "starts", "is starting"],
     explanation:
       "【事前学習連携】スケジュール・時刻表を表すときは現在形startsを使用。確定した予定の表現です。",
     level: "beginner",
@@ -328,7 +363,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     id: 20,
     sentence: "She said that she ___ busy.",
     blanks: [{ id: "blank1", position: 4, correctAnswer: "was" }],
-    options: ["was", "is", "will be", "has been", "would be"],
+    options: ["is", "would be", "was", "will be", "has been"],
     explanation:
       "【事前学習連携】時制の一致：主節が過去形（said）なので従属節も過去形wasを使用します。",
     level: "intermediate",

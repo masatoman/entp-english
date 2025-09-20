@@ -417,7 +417,8 @@ export const preStudyContents: PreStudyContent[] = [
         question: "She _____ to work by train every day.",
         options: ["go", "goes", "went", "will go"],
         correct: 1,
-        explanation: "every dayという習慣を表す表現があり、三人称単数なのでgoesが正解",
+        explanation:
+          "every dayという習慣を表す表現があり、三人称単数なのでgoesが正解",
       },
       {
         question: "I _____ him at the conference last week.",
