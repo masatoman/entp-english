@@ -1,5 +1,13 @@
 export type Category =
+  | "parts-of-speech"
+  | "word-order"
+  | "pronouns"
+  | "articles"
+  | "plurals"
+  | "questions-negations"
   | "basic-grammar"
+  | "prepositions"
+  | "conjunctions"
   | "tenses"
   | "modals"
   | "passive"
@@ -7,7 +15,9 @@ export type Category =
   | "subjunctive"
   | "comparison"
   | "participle"
-  | "infinitive";
+  | "infinitive"
+  | "vocabulary-mastery"
+  | "pronunciation";
 
 // 新仕様の型定義
 export type Chapter = 1 | 2 | 3 | 4 | 5;

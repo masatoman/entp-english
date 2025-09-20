@@ -48,9 +48,131 @@ export interface SkillTreeState {
 }
 
 /**
- * 英語文法スキルツリーの定義
+ * 包括的英語学習スキルツリーの定義
  */
 export const GRAMMAR_SKILL_TREE: SkillNode[] = [
+  // === Super Foundation Level (Level 0) ===
+  {
+    id: "parts-of-speech",
+    name: "品詞の理解",
+    description: "名詞・動詞・形容詞・副詞の基本",
+    category: "parts-of-speech",
+    level: 0,
+    position: { x: 200, y: 50 },
+    icon: "📝",
+    color: "bg-slate-100 border-slate-300 text-slate-800",
+    prerequisites: [],
+    unlocks: ["word-order", "pronouns"],
+    masteryRequirement: 80,
+    estimatedTime: 25,
+    difficulty: "beginner",
+    rewards: {
+      xp: 80,
+      badges: ["英語の基本要素マスター"],
+      unlockedFeatures: ["語順学習", "代名詞学習"]
+    }
+  },
+  {
+    id: "word-order",
+    name: "語順の基本",
+    description: "英語の基本語順ルール",
+    category: "word-order",
+    level: 0,
+    position: { x: 100, y: 150 },
+    icon: "🔤",
+    color: "bg-blue-100 border-blue-300 text-blue-800",
+    prerequisites: ["parts-of-speech"],
+    unlocks: ["articles", "sv-basic"],
+    masteryRequirement: 80,
+    estimatedTime: 30,
+    difficulty: "beginner",
+    rewards: {
+      xp: 100,
+      badges: ["語順マスター"],
+      unlockedFeatures: ["冠詞学習", "基本文型"]
+    }
+  },
+  {
+    id: "pronouns",
+    name: "代名詞",
+    description: "人称代名詞・所有代名詞の使い分け",
+    category: "pronouns",
+    level: 0,
+    position: { x: 300, y: 150 },
+    icon: "👤",
+    color: "bg-purple-100 border-purple-300 text-purple-800",
+    prerequisites: ["parts-of-speech"],
+    unlocks: ["plurals", "sv-basic"],
+    masteryRequirement: 80,
+    estimatedTime: 25,
+    difficulty: "beginner",
+    rewards: {
+      xp: 90,
+      badges: ["代名詞マスター"],
+      unlockedFeatures: ["複数形学習", "基本文型"]
+    }
+  },
+  {
+    id: "articles",
+    name: "冠詞",
+    description: "a / an / the の使い分け",
+    category: "articles",
+    level: 0,
+    position: { x: 50, y: 250 },
+    icon: "🅰️",
+    color: "bg-orange-100 border-orange-300 text-orange-800",
+    prerequisites: ["word-order"],
+    unlocks: ["questions-negations"],
+    masteryRequirement: 80,
+    estimatedTime: 35,
+    difficulty: "beginner",
+    rewards: {
+      xp: 120,
+      badges: ["冠詞マスター"],
+      unlockedFeatures: ["疑問文・否定文"]
+    }
+  },
+  {
+    id: "plurals",
+    name: "複数形",
+    description: "可算・不可算名詞の理解",
+    category: "plurals",
+    level: 0,
+    position: { x: 350, y: 250 },
+    icon: "📊",
+    color: "bg-teal-100 border-teal-300 text-teal-800",
+    prerequisites: ["pronouns"],
+    unlocks: ["questions-negations"],
+    masteryRequirement: 80,
+    estimatedTime: 30,
+    difficulty: "beginner",
+    rewards: {
+      xp: 110,
+      badges: ["複数形マスター"],
+      unlockedFeatures: ["疑問文・否定文"]
+    }
+  },
+  {
+    id: "questions-negations",
+    name: "疑問文・否定文",
+    description: "基本的な文の変換",
+    category: "questions-negations",
+    level: 0,
+    position: { x: 200, y: 350 },
+    icon: "❓",
+    color: "bg-red-100 border-red-300 text-red-800",
+    prerequisites: ["articles", "plurals"],
+    unlocks: ["sv-basic"],
+    masteryRequirement: 80,
+    estimatedTime: 40,
+    difficulty: "beginner",
+    rewards: {
+      xp: 150,
+      badges: ["文変換マスター"],
+      unlockedFeatures: ["基本文型学習"]
+    }
+  },
+
   // === Foundation Level (Level 1) ===
   {
     id: "sv-basic",
@@ -59,10 +181,10 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     category: "basic-grammar",
     subcategory: "sv",
     level: 1,
-    position: { x: 200, y: 100 },
+    position: { x: 200, y: 450 },
     icon: "🌱",
     color: "bg-green-100 border-green-300 text-green-800",
-    prerequisites: [],
+    prerequisites: ["word-order", "pronouns", "questions-negations"],
     unlocks: ["svo-basic", "svc-basic"],
     masteryRequirement: 80,
     estimatedTime: 30,
@@ -82,7 +204,7 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     category: "basic-grammar",
     subcategory: "svo",
     level: 2,
-    position: { x: 100, y: 200 },
+    position: { x: 100, y: 550 },
     icon: "📝",
     color: "bg-blue-100 border-blue-300 text-blue-800",
     prerequisites: ["sv-basic"],
@@ -103,7 +225,7 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     category: "basic-grammar",
     subcategory: "svc",
     level: 2,
-    position: { x: 300, y: 200 },
+    position: { x: 300, y: 550 },
     icon: "🔵",
     color: "bg-indigo-100 border-indigo-300 text-indigo-800",
     prerequisites: ["sv-basic"],
@@ -118,6 +240,48 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     }
   },
 
+  // === Basic Elements (Level 2) ===
+  {
+    id: "prepositions",
+    name: "前置詞",
+    description: "in / on / at などの使い分け",
+    category: "prepositions",
+    level: 2,
+    position: { x: 50, y: 650 },
+    icon: "📍",
+    color: "bg-yellow-100 border-yellow-300 text-yellow-800",
+    prerequisites: ["sv-basic"],
+    unlocks: ["tenses-present"],
+    masteryRequirement: 80,
+    estimatedTime: 50,
+    difficulty: "intermediate",
+    rewards: {
+      xp: 180,
+      badges: ["前置詞マスター"],
+      unlockedFeatures: ["時制学習"]
+    }
+  },
+  {
+    id: "conjunctions",
+    name: "接続詞",
+    description: "and / but / because の文接続",
+    category: "conjunctions",
+    level: 2,
+    position: { x: 350, y: 650 },
+    icon: "🔗",
+    color: "bg-emerald-100 border-emerald-300 text-emerald-800",
+    prerequisites: ["sv-basic"],
+    unlocks: ["tenses-present"],
+    masteryRequirement: 80,
+    estimatedTime: 40,
+    difficulty: "intermediate",
+    rewards: {
+      xp: 160,
+      badges: ["接続詞マスター"],
+      unlockedFeatures: ["時制学習"]
+    }
+  },
+
   // === Tense System (Level 3) ===
   {
     id: "tenses-present",
@@ -125,10 +289,10 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     description: "現在形・現在進行形・現在完了形",
     category: "tenses",
     level: 3,
-    position: { x: 200, y: 300 },
+    position: { x: 200, y: 750 },
     icon: "⏰",
     color: "bg-yellow-100 border-yellow-300 text-yellow-800",
-    prerequisites: ["svo-basic", "svc-basic"],
+    prerequisites: ["svo-basic", "svc-basic", "prepositions", "conjunctions"],
     unlocks: ["tenses-past", "modals-basic"],
     masteryRequirement: 80,
     estimatedTime: 60,
@@ -145,7 +309,7 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     description: "過去形・過去進行形・過去完了形",
     category: "tenses",
     level: 3,
-    position: { x: 100, y: 400 },
+    position: { x: 100, y: 850 },
     icon: "⏮️",
     color: "bg-orange-100 border-orange-300 text-orange-800",
     prerequisites: ["tenses-present"],
@@ -165,7 +329,7 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     description: "未来形・未来進行形・未来完了形",
     category: "tenses",
     level: 3,
-    position: { x: 300, y: 400 },
+    position: { x: 300, y: 850 },
     icon: "⏭️",
     color: "bg-purple-100 border-purple-300 text-purple-800",
     prerequisites: ["tenses-past"],
@@ -187,7 +351,7 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     description: "can / will / should の基本用法",
     category: "modals",
     level: 3,
-    position: { x: 400, y: 300 },
+    position: { x: 400, y: 750 },
     icon: "🔧",
     color: "bg-cyan-100 border-cyan-300 text-cyan-800",
     prerequisites: ["tenses-present"],
@@ -210,7 +374,7 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     category: "basic-grammar",
     subcategory: "svoo",
     level: 4,
-    position: { x: 50, y: 500 },
+    position: { x: 50, y: 950 },
     icon: "📦",
     color: "bg-orange-100 border-orange-300 text-orange-800",
     prerequisites: ["tenses-past"],
@@ -231,7 +395,7 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     category: "basic-grammar",
     subcategory: "svoc",
     level: 4,
-    position: { x: 350, y: 500 },
+    position: { x: 350, y: 950 },
     icon: "🎯",
     color: "bg-purple-100 border-purple-300 text-purple-800",
     prerequisites: ["tenses-future"],
@@ -253,7 +417,7 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     description: "be + 過去分詞の受身表現",
     category: "passive",
     level: 5,
-    position: { x: 50, y: 600 },
+    position: { x: 50, y: 1050 },
     icon: "🔄",
     color: "bg-red-100 border-red-300 text-red-800",
     prerequisites: ["svoo-basic"],
@@ -273,7 +437,7 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     description: "who / which / that を使った修飾",
     category: "relative",
     level: 5,
-    position: { x: 200, y: 600 },
+    position: { x: 200, y: 1050 },
     icon: "🔗",
     color: "bg-teal-100 border-teal-300 text-teal-800",
     prerequisites: ["svoc-basic"],
@@ -293,7 +457,7 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     description: "must / might / could の応用",
     category: "modals",
     level: 5,
-    position: { x: 350, y: 600 },
+    position: { x: 350, y: 1050 },
     icon: "⚙️",
     color: "bg-cyan-200 border-cyan-400 text-cyan-900",
     prerequisites: ["modals-basic", "tenses-future"],
@@ -315,7 +479,7 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     description: "比較級・最上級の使い分け",
     category: "comparison",
     level: 6,
-    position: { x: 150, y: 700 },
+    position: { x: 150, y: 1150 },
     icon: "📊",
     color: "bg-pink-100 border-pink-300 text-pink-800",
     prerequisites: ["relative-basic"],
@@ -335,7 +499,7 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     description: "if文・仮定の表現",
     category: "subjunctive",
     level: 6,
-    position: { x: 300, y: 700 },
+    position: { x: 300, y: 1150 },
     icon: "💭",
     color: "bg-indigo-100 border-indigo-300 text-indigo-800",
     prerequisites: ["modals-advanced"],
@@ -357,7 +521,7 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     description: "-ing / -ed の使い分け",
     category: "participle",
     level: 7,
-    position: { x: 150, y: 800 },
+    position: { x: 150, y: 1200 },
     icon: "🌿",
     color: "bg-emerald-100 border-emerald-300 text-emerald-800",
     prerequisites: ["comparison-basic"],
@@ -377,7 +541,7 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     description: "to + 動詞の原形の3用法",
     category: "infinitive",
     level: 7,
-    position: { x: 300, y: 800 },
+    position: { x: 300, y: 1200 },
     icon: "♾️",
     color: "bg-violet-100 border-violet-300 text-violet-800",
     prerequisites: ["subjunctive-basic"],
@@ -392,25 +556,67 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     }
   },
 
-  // === Master Achievement (Level 8) ===
+  // === Advanced Skills (Level 8) ===
   {
-    id: "grammar-master",
-    name: "文法マスター",
-    description: "全文法カテゴリーの完全習得",
-    category: "basic-grammar",
+    id: "vocabulary-mastery",
+    name: "語彙力強化",
+    description: "2000語レベルの語彙習得",
+    category: "vocabulary-mastery",
     level: 8,
-    position: { x: 225, y: 900 },
+    position: { x: 150, y: 1300 },
+    icon: "📚",
+    color: "bg-blue-200 border-blue-400 text-blue-900",
+    prerequisites: ["participle-basic"],
+    unlocks: ["english-master"],
+    masteryRequirement: 90,
+    estimatedTime: 120,
+    difficulty: "advanced",
+    rewards: {
+      xp: 500,
+      badges: ["語彙マスター"],
+      unlockedFeatures: ["英語マスター"]
+    }
+  },
+  {
+    id: "pronunciation",
+    name: "発音・音韻",
+    description: "正確な発音とイントネーション",
+    category: "pronunciation",
+    level: 8,
+    position: { x: 300, y: 1300 },
+    icon: "🗣️",
+    color: "bg-pink-200 border-pink-400 text-pink-900",
+    prerequisites: ["infinitive-basic"],
+    unlocks: ["english-master"],
+    masteryRequirement: 90,
+    estimatedTime: 80,
+    difficulty: "advanced",
+    rewards: {
+      xp: 450,
+      badges: ["発音マスター"],
+      unlockedFeatures: ["英語マスター"]
+    }
+  },
+
+  // === Ultimate Master (Level 9) ===
+  {
+    id: "english-master",
+    name: "英語マスター",
+    description: "英語の全領域を完全習得",
+    category: "basic-grammar",
+    level: 9,
+    position: { x: 225, y: 1400 },
     icon: "👑",
     color: "bg-gradient-to-r from-yellow-100 to-orange-100 border-yellow-400 text-yellow-900",
-    prerequisites: ["participle-basic", "infinitive-basic"],
+    prerequisites: ["vocabulary-mastery", "pronunciation"],
     unlocks: [],
     masteryRequirement: 95,
     estimatedTime: 0,
     difficulty: "advanced",
     rewards: {
-      xp: 1000,
-      badges: ["文法マスター", "英語エキスパート"],
-      unlockedFeatures: ["特別チャレンジ", "上級コンテンツ"]
+      xp: 1500,
+      badges: ["英語マスター", "完全習得者", "学習の達人"],
+      unlockedFeatures: ["特別チャレンジ", "上級コンテンツ", "指導者モード"]
     }
   },
 
@@ -422,7 +628,7 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     category: "basic-grammar",
     subcategory: "svo",
     level: 4,
-    position: { x: 50, y: 350 },
+    position: { x: 50, y: 800 },
     icon: "📚",
     color: "bg-blue-200 border-blue-400 text-blue-900",
     prerequisites: ["svo-basic", "tenses-present"],
@@ -443,7 +649,7 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     category: "basic-grammar",
     subcategory: "svc",
     level: 4,
-    position: { x: 400, y: 350 },
+    position: { x: 400, y: 800 },
     icon: "🔷",
     color: "bg-indigo-200 border-indigo-400 text-indigo-900",
     prerequisites: ["svc-basic", "tenses-present"],
@@ -465,7 +671,7 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     description: "ビジネス場面での文法応用",
     category: "basic-grammar",
     level: 5,
-    position: { x: 450, y: 500 },
+    position: { x: 450, y: 1100 },
     icon: "💼",
     color: "bg-gray-100 border-gray-300 text-gray-800",
     prerequisites: ["svo-advanced", "svc-advanced"],
@@ -595,7 +801,7 @@ export class SkillTreeManager {
   }
 
   private calculateUnlockedNodes(progress: Record<string, SkillTreeProgress>): string[] {
-    const unlocked = ["sv-basic"]; // 最初のノードは常に解放
+    const unlocked = ["parts-of-speech"]; // 最初のノードは品詞から開始
 
     GRAMMAR_SKILL_TREE.forEach(node => {
       if (node.prerequisites.every(prereqId => {
@@ -651,26 +857,49 @@ export class SkillTreeManager {
   private getTotalProblemsForNode(nodeId: string): number {
     // 各ノードの問題数を返す（将来的にはデータベースから取得）
     const problemCounts: Record<string, number> = {
+      // Level 0: 基礎の基礎
+      "parts-of-speech": 20,
+      "word-order": 15,
+      "pronouns": 15,
+      "articles": 20,
+      "plurals": 15,
+      "questions-negations": 25,
+      
+      // Level 1-2: 基本文型
       "sv-basic": 15,
       "svo-basic": 15,
       "svc-basic": 15,
+      "prepositions": 30,
+      "conjunctions": 20,
+      
+      // Level 3: 時制・助動詞
       "tenses-present": 20,
       "tenses-past": 20,
       "tenses-future": 20,
       "modals-basic": 15,
+      
+      // Level 4: 高度文型
       "svoo-basic": 15,
       "svoc-basic": 15,
+      "svo-advanced": 20,
+      "svc-advanced": 20,
+      
+      // Level 5: 専門文法
       "passive-basic": 20,
       "relative-basic": 20,
       "modals-advanced": 20,
+      "business-grammar": 30,
+      
+      // Level 6-7: 表現技法
       "comparison-basic": 15,
       "subjunctive-basic": 20,
       "participle-basic": 20,
       "infinitive-basic": 20,
-      "grammar-master": 50,
-      "svo-advanced": 20,
-      "svc-advanced": 20,
-      "business-grammar": 30
+      
+      // Level 8-9: 最終段階
+      "vocabulary-mastery": 100,
+      "pronunciation": 50,
+      "english-master": 0
     };
     
     return problemCounts[nodeId] || 15;

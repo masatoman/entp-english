@@ -197,7 +197,7 @@ export default function SkillTree() {
                   {/* SVG for connections */}
                   <svg 
                     className="absolute inset-0 w-full h-full pointer-events-none"
-                    style={{ height: '1000px' }}
+                    style={{ height: '1500px' }}
                   >
                     {GRAMMAR_SKILL_TREE.map(node => 
                       node.unlocks.map(unlockId => renderConnectionLine(node, unlockId))
@@ -205,7 +205,7 @@ export default function SkillTree() {
                   </svg>
 
                   {/* Skill Nodes */}
-                  <div className="relative" style={{ height: '1000px' }}>
+                  <div className="relative" style={{ height: '1500px' }}>
                     {GRAMMAR_SKILL_TREE.map(node => {
                       const status = getNodeStatus(node);
                       const progress = skillTreeState.progress[node.id];
@@ -417,7 +417,7 @@ export default function SkillTree() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {[1, 2, 3, 4, 5, 6, 7, 8].map(level => {
+                  {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(level => {
                     const levelNodes = GRAMMAR_SKILL_TREE.filter(n => n.level === level);
                     const completedInLevel = levelNodes.filter(n => 
                       skillTreeState.completedNodes.includes(n.id)
