@@ -347,10 +347,17 @@ export function NewHome() {
   useEffect(() => {
     const interval = setInterval(() => {
       forceRefreshHearts();
-      // スターシステムも更新
+      // スターシステムも更新（変更があった場合のみ）
       const updatedStarSystem = levelManager.getStarSystem();
-      setStarSystem(updatedStarSystem);
-    }, 1000);
+      setStarSystem(prevStars => {
+        // 変更がない場合は更新しない（再レンダリング防止）
+        if (prevStars.current === updatedStarSystem.current && 
+            prevStars.max === updatedStarSystem.max) {
+          return prevStars;
+        }
+        return updatedStarSystem;
+      });
+    }, 5000); // 1秒 → 5秒に変更（負荷軽減）
 
     return () => clearInterval(interval);
   }, []); // 依存関係を空にして、マウント時に一度だけ実行

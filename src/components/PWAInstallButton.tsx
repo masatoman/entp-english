@@ -147,11 +147,14 @@ export function PWAInstallButton({
 
   // コンパクト版
   if (variant === "compact") {
-    console.log("📱 PWAInstallButton compact variant rendered", {
-      deferredPrompt: !!deferredPrompt,
-      isInstalled,
-      deviceInfo,
-    });
+    // デバッグログを条件付きで出力（開発環境のみ）
+    if (process.env.NODE_ENV === "development") {
+      console.log("📱 PWAInstallButton compact variant rendered", {
+        deferredPrompt: !!deferredPrompt,
+        isInstalled,
+        deviceInfo,
+      });
+    }
 
     return (
       <Button
