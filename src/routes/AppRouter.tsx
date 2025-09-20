@@ -26,6 +26,9 @@ import Results from "../components/Results";
 import SentencePatternSelection from "../components/SentencePatternSelection";
 import SkillTree from "../components/SkillTree";
 import SynergyDashboard from "../components/SynergyDashboard";
+import FoundationCategorySelection from "../components/FoundationCategorySelection";
+import FoundationDifficultySelection from "../components/FoundationDifficultySelection";
+import FoundationQuiz from "../components/FoundationQuiz";
 import SimpleTowerDefense from "../components/SimpleTowerDefense";
 import PreStudyContentViewer from "../components/starSystem/PreStudyContentViewer";
 import PreStudyMenu from "../components/starSystem/PreStudyMenu";
@@ -119,6 +122,20 @@ export function AppRouter() {
             <Route
               path="/learning/skill-tree"
               element={<SkillTree />}
+            />
+
+            {/* 基礎英語学習 */}
+            <Route
+              path="/learning/foundation/category"
+              element={<FoundationCategorySelection />}
+            />
+            <Route
+              path="/learning/foundation/difficulty/:category"
+              element={<FoundationDifficultySelection />}
+            />
+            <Route
+              path="/learning/foundation/quiz/:category/:difficulty"
+              element={<FoundationQuiz />}
             />
 
             {/* 事前学習 */}

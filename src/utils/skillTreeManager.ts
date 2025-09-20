@@ -9,7 +9,7 @@ export interface SkillNode {
   id: string;
   name: string;
   description: string;
-  category: Category | 'foundation';
+  category: Category | "foundation";
   subcategory?: string;
   level: number;
   position: { x: number; y: number };
@@ -19,7 +19,7 @@ export interface SkillNode {
   unlocks: string[];
   masteryRequirement: number; // 80% = 解放条件
   estimatedTime: number; // 分
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  difficulty: "beginner" | "intermediate" | "advanced";
   rewards: {
     xp: number;
     badges: string[];
@@ -69,8 +69,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 80,
       badges: ["英語の基本要素マスター"],
-      unlockedFeatures: ["語順学習", "代名詞学習"]
-    }
+      unlockedFeatures: ["語順学習", "代名詞学習"],
+    },
   },
   {
     id: "word-order",
@@ -89,8 +89,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 100,
       badges: ["語順マスター"],
-      unlockedFeatures: ["冠詞学習", "基本文型"]
-    }
+      unlockedFeatures: ["冠詞学習", "基本文型"],
+    },
   },
   {
     id: "pronouns",
@@ -109,8 +109,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 90,
       badges: ["代名詞マスター"],
-      unlockedFeatures: ["複数形学習", "基本文型"]
-    }
+      unlockedFeatures: ["複数形学習", "基本文型"],
+    },
   },
   {
     id: "articles",
@@ -129,8 +129,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 120,
       badges: ["冠詞マスター"],
-      unlockedFeatures: ["疑問文・否定文"]
-    }
+      unlockedFeatures: ["疑問文・否定文"],
+    },
   },
   {
     id: "plurals",
@@ -149,8 +149,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 110,
       badges: ["複数形マスター"],
-      unlockedFeatures: ["疑問文・否定文"]
-    }
+      unlockedFeatures: ["疑問文・否定文"],
+    },
   },
   {
     id: "questions-negations",
@@ -169,8 +169,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 150,
       badges: ["文変換マスター"],
-      unlockedFeatures: ["基本文型学習"]
-    }
+      unlockedFeatures: ["基本文型学習"],
+    },
   },
 
   // === Foundation Level (Level 1) ===
@@ -192,8 +192,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 100,
       badges: ["文法の第一歩"],
-      unlockedFeatures: ["SVO文型", "SVC文型"]
-    }
+      unlockedFeatures: ["SVO文型", "SVC文型"],
+    },
   },
 
   // === Basic Patterns (Level 2) ===
@@ -215,8 +215,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 150,
       badges: ["SVOマスター"],
-      unlockedFeatures: ["時制学習", "SVO応用"]
-    }
+      unlockedFeatures: ["時制学習", "SVO応用"],
+    },
   },
   {
     id: "svc-basic",
@@ -236,8 +236,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 150,
       badges: ["be動詞マスター"],
-      unlockedFeatures: ["時制学習", "SVC応用"]
-    }
+      unlockedFeatures: ["時制学習", "SVC応用"],
+    },
   },
 
   // === Basic Elements (Level 2) ===
@@ -258,8 +258,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 180,
       badges: ["前置詞マスター"],
-      unlockedFeatures: ["時制学習"]
-    }
+      unlockedFeatures: ["時制学習"],
+    },
   },
   {
     id: "conjunctions",
@@ -278,8 +278,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 160,
       badges: ["接続詞マスター"],
-      unlockedFeatures: ["時制学習"]
-    }
+      unlockedFeatures: ["時制学習"],
+    },
   },
 
   // === Tense System (Level 3) ===
@@ -300,8 +300,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 200,
       badges: ["時制の基礎"],
-      unlockedFeatures: ["過去時制", "助動詞"]
-    }
+      unlockedFeatures: ["過去時制", "助動詞"],
+    },
   },
   {
     id: "tenses-past",
@@ -320,8 +320,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 200,
       badges: ["過去の語り手"],
-      unlockedFeatures: ["未来時制", "SVOO文型"]
-    }
+      unlockedFeatures: ["未来時制", "SVOO文型"],
+    },
   },
   {
     id: "tenses-future",
@@ -340,8 +340,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 200,
       badges: ["未来予想士"],
-      unlockedFeatures: ["SVOC文型", "高度助動詞"]
-    }
+      unlockedFeatures: ["SVOC文型", "高度助動詞"],
+    },
   },
 
   // === Modal Verbs (Level 3-4) ===
@@ -362,8 +362,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 180,
       badges: ["助動詞使い"],
-      unlockedFeatures: ["高度助動詞"]
-    }
+      unlockedFeatures: ["高度助動詞"],
+    },
   },
 
   // === Advanced Patterns (Level 4) ===
@@ -385,8 +385,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 250,
       badges: ["授与動詞マスター"],
-      unlockedFeatures: ["受動態"]
-    }
+      unlockedFeatures: ["受動態"],
+    },
   },
   {
     id: "svoc-basic",
@@ -406,8 +406,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 250,
       badges: ["使役動詞マスター"],
-      unlockedFeatures: ["関係詞"]
-    }
+      unlockedFeatures: ["関係詞"],
+    },
   },
 
   // === Advanced Grammar (Level 5) ===
@@ -428,8 +428,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 300,
       badges: ["受動態マスター"],
-      unlockedFeatures: ["高度受動態"]
-    }
+      unlockedFeatures: ["高度受動態"],
+    },
   },
   {
     id: "relative-basic",
@@ -448,8 +448,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 300,
       badges: ["関係詞マスター"],
-      unlockedFeatures: ["比較表現"]
-    }
+      unlockedFeatures: ["比較表現"],
+    },
   },
   {
     id: "modals-advanced",
@@ -468,8 +468,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 300,
       badges: ["助動詞エキスパート"],
-      unlockedFeatures: ["仮定法"]
-    }
+      unlockedFeatures: ["仮定法"],
+    },
   },
 
   // === Expert Level (Level 6) ===
@@ -490,8 +490,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 350,
       badges: ["比較マスター"],
-      unlockedFeatures: ["分詞・動名詞"]
-    }
+      unlockedFeatures: ["分詞・動名詞"],
+    },
   },
   {
     id: "subjunctive-basic",
@@ -510,8 +510,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 400,
       badges: ["仮定法マスター"],
-      unlockedFeatures: ["不定詞"]
-    }
+      unlockedFeatures: ["不定詞"],
+    },
   },
 
   // === Master Level (Level 7) ===
@@ -532,8 +532,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 400,
       badges: ["分詞マスター"],
-      unlockedFeatures: ["文法マスター称号"]
-    }
+      unlockedFeatures: ["文法マスター称号"],
+    },
   },
   {
     id: "infinitive-basic",
@@ -552,8 +552,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 400,
       badges: ["不定詞マスター"],
-      unlockedFeatures: ["文法マスター称号"]
-    }
+      unlockedFeatures: ["文法マスター称号"],
+    },
   },
 
   // === Advanced Skills (Level 8) ===
@@ -574,8 +574,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 500,
       badges: ["語彙マスター"],
-      unlockedFeatures: ["英語マスター"]
-    }
+      unlockedFeatures: ["英語マスター"],
+    },
   },
   {
     id: "pronunciation",
@@ -594,8 +594,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 450,
       badges: ["発音マスター"],
-      unlockedFeatures: ["英語マスター"]
-    }
+      unlockedFeatures: ["英語マスター"],
+    },
   },
 
   // === Ultimate Master (Level 9) ===
@@ -607,7 +607,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     level: 9,
     position: { x: 225, y: 1400 },
     icon: "👑",
-    color: "bg-gradient-to-r from-yellow-100 to-orange-100 border-yellow-400 text-yellow-900",
+    color:
+      "bg-gradient-to-r from-yellow-100 to-orange-100 border-yellow-400 text-yellow-900",
     prerequisites: ["vocabulary-mastery", "pronunciation"],
     unlocks: [],
     masteryRequirement: 95,
@@ -616,8 +617,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 1500,
       badges: ["英語マスター", "完全習得者", "学習の達人"],
-      unlockedFeatures: ["特別チャレンジ", "上級コンテンツ", "指導者モード"]
-    }
+      unlockedFeatures: ["特別チャレンジ", "上級コンテンツ", "指導者モード"],
+    },
   },
 
   // === Advanced Branches ===
@@ -639,8 +640,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 220,
       badges: ["SVO応用マスター"],
-      unlockedFeatures: ["ビジネス文法"]
-    }
+      unlockedFeatures: ["ビジネス文法"],
+    },
   },
   {
     id: "svc-advanced",
@@ -660,8 +661,8 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 220,
       badges: ["SVC応用マスター"],
-      unlockedFeatures: ["ビジネス文法"]
-    }
+      unlockedFeatures: ["ビジネス文法"],
+    },
   },
 
   // === Special Nodes ===
@@ -682,9 +683,9 @@ export const GRAMMAR_SKILL_TREE: SkillNode[] = [
     rewards: {
       xp: 350,
       badges: ["ビジネス英語エキスパート"],
-      unlockedFeatures: ["TOEIC特別問題"]
-    }
-  }
+      unlockedFeatures: ["TOEIC特別問題"],
+    },
+  },
 ];
 
 /**
@@ -716,7 +717,7 @@ export class SkillTreeManager {
       totalXP: this.calculateTotalXP(saved),
       unlockedNodes,
       completedNodes,
-      availableNodes
+      availableNodes,
     };
   }
 
@@ -740,7 +741,7 @@ export class SkillTreeManager {
       totalProblems: this.getTotalProblemsForNode(nodeId),
       lastStudied: new Date(),
       averageScore: masteryLevel,
-      timeSpent
+      timeSpent,
     };
 
     this.saveProgress(progress);
@@ -751,12 +752,12 @@ export class SkillTreeManager {
    * ノードが解放可能かチェック
    */
   isNodeUnlockable(nodeId: string): boolean {
-    const node = GRAMMAR_SKILL_TREE.find(n => n.id === nodeId);
+    const node = GRAMMAR_SKILL_TREE.find((n) => n.id === nodeId);
     if (!node) return false;
 
     const progress = this.loadProgress();
-    
-    return node.prerequisites.every(prereqId => {
+
+    return node.prerequisites.every((prereqId) => {
       const prereqProgress = progress[prereqId];
       return prereqProgress && prereqProgress.masteryLevel >= 80;
     });
@@ -767,9 +768,10 @@ export class SkillTreeManager {
    */
   getRecommendedNextNodes(): SkillNode[] {
     const state = this.getSkillTreeState();
-    
-    return GRAMMAR_SKILL_TREE
-      .filter(node => state.availableNodes.includes(node.id))
+
+    return GRAMMAR_SKILL_TREE.filter((node) =>
+      state.availableNodes.includes(node.id)
+    )
       .sort((a, b) => a.level - b.level)
       .slice(0, 3);
   }
@@ -779,7 +781,9 @@ export class SkillTreeManager {
    */
   getCompletionPercentage(): number {
     const state = this.getSkillTreeState();
-    return Math.round((state.completedNodes.length / GRAMMAR_SKILL_TREE.length) * 100);
+    return Math.round(
+      (state.completedNodes.length / GRAMMAR_SKILL_TREE.length) * 100
+    );
   }
 
   // プライベートメソッド
@@ -800,14 +804,21 @@ export class SkillTreeManager {
     }
   }
 
-  private calculateUnlockedNodes(progress: Record<string, SkillTreeProgress>): string[] {
+  private calculateUnlockedNodes(
+    progress: Record<string, SkillTreeProgress>
+  ): string[] {
     const unlocked = ["parts-of-speech"]; // 最初のノードは品詞から開始
 
-    GRAMMAR_SKILL_TREE.forEach(node => {
-      if (node.prerequisites.every(prereqId => {
-        const prereqProgress = progress[prereqId];
-        return prereqProgress && prereqProgress.masteryLevel >= node.masteryRequirement;
-      })) {
+    GRAMMAR_SKILL_TREE.forEach((node) => {
+      if (
+        node.prerequisites.every((prereqId) => {
+          const prereqProgress = progress[prereqId];
+          return (
+            prereqProgress &&
+            prereqProgress.masteryLevel >= node.masteryRequirement
+          );
+        })
+      ) {
         unlocked.push(node.id);
       }
     });
@@ -815,17 +826,19 @@ export class SkillTreeManager {
     return unlocked;
   }
 
-  private calculateCompletedNodes(progress: Record<string, SkillTreeProgress>): string[] {
+  private calculateCompletedNodes(
+    progress: Record<string, SkillTreeProgress>
+  ): string[] {
     return Object.values(progress)
-      .filter(p => p.masteryLevel >= 90)
-      .map(p => p.nodeId);
+      .filter((p) => p.masteryLevel >= 90)
+      .map((p) => p.nodeId);
   }
 
   private calculateAvailableNodes(
     progress: Record<string, SkillTreeProgress>,
     unlockedNodes: string[]
   ): string[] {
-    return unlockedNodes.filter(nodeId => {
+    return unlockedNodes.filter((nodeId) => {
       const nodeProgress = progress[nodeId];
       return !nodeProgress || nodeProgress.masteryLevel < 90;
     });
@@ -833,20 +846,22 @@ export class SkillTreeManager {
 
   private calculateCurrentLevel(completedNodes: string[]): number {
     if (completedNodes.length === 0) return 1;
-    
+
     const maxLevel = Math.max(
-      ...completedNodes.map(nodeId => {
-        const node = GRAMMAR_SKILL_TREE.find(n => n.id === nodeId);
+      ...completedNodes.map((nodeId) => {
+        const node = GRAMMAR_SKILL_TREE.find((n) => n.id === nodeId);
         return node?.level || 1;
       })
     );
-    
+
     return maxLevel;
   }
 
-  private calculateTotalXP(progress: Record<string, SkillTreeProgress>): number {
+  private calculateTotalXP(
+    progress: Record<string, SkillTreeProgress>
+  ): number {
     return Object.values(progress).reduce((total, nodeProgress) => {
-      const node = GRAMMAR_SKILL_TREE.find(n => n.id === nodeProgress.nodeId);
+      const node = GRAMMAR_SKILL_TREE.find((n) => n.id === nodeProgress.nodeId);
       if (node && nodeProgress.masteryLevel >= 90) {
         return total + node.rewards.xp;
       }
@@ -860,48 +875,48 @@ export class SkillTreeManager {
       // Level 0: 基礎の基礎
       "parts-of-speech": 20,
       "word-order": 15,
-      "pronouns": 15,
-      "articles": 20,
-      "plurals": 15,
+      pronouns: 15,
+      articles: 20,
+      plurals: 15,
       "questions-negations": 25,
-      
+
       // Level 1-2: 基本文型
       "sv-basic": 15,
       "svo-basic": 15,
       "svc-basic": 15,
-      "prepositions": 30,
-      "conjunctions": 20,
-      
+      prepositions: 30,
+      conjunctions: 20,
+
       // Level 3: 時制・助動詞
       "tenses-present": 20,
       "tenses-past": 20,
       "tenses-future": 20,
       "modals-basic": 15,
-      
+
       // Level 4: 高度文型
       "svoo-basic": 15,
       "svoc-basic": 15,
       "svo-advanced": 20,
       "svc-advanced": 20,
-      
+
       // Level 5: 専門文法
       "passive-basic": 20,
       "relative-basic": 20,
       "modals-advanced": 20,
       "business-grammar": 30,
-      
+
       // Level 6-7: 表現技法
       "comparison-basic": 15,
       "subjunctive-basic": 20,
       "participle-basic": 20,
       "infinitive-basic": 20,
-      
+
       // Level 8-9: 最終段階
       "vocabulary-mastery": 100,
-      "pronunciation": 50,
-      "english-master": 0
+      pronunciation: 50,
+      "english-master": 0,
     };
-    
+
     return problemCounts[nodeId] || 15;
   }
 
@@ -909,11 +924,13 @@ export class SkillTreeManager {
     completedNodeId: string,
     progress: Record<string, SkillTreeProgress>
   ): void {
-    const completedNode = GRAMMAR_SKILL_TREE.find(n => n.id === completedNodeId);
+    const completedNode = GRAMMAR_SKILL_TREE.find(
+      (n) => n.id === completedNodeId
+    );
     if (!completedNode) return;
 
     // 解放されるノードをチェック
-    completedNode.unlocks.forEach(unlockNodeId => {
+    completedNode.unlocks.forEach((unlockNodeId) => {
       if (this.isNodeUnlockable(unlockNodeId)) {
         console.log(`🔓 新しいスキル解放: ${unlockNodeId}`);
         // 実際のアプリでは通知を表示
@@ -923,16 +940,16 @@ export class SkillTreeManager {
   }
 
   private showUnlockNotification(nodeId: string): void {
-    const node = GRAMMAR_SKILL_TREE.find(n => n.id === nodeId);
+    const node = GRAMMAR_SKILL_TREE.find((n) => n.id === nodeId);
     if (!node) return;
 
     console.log(`🎉 新しいスキル「${node.name}」が解放されました！`);
-    
+
     // 簡易通知（実際の実装では適切な通知システムを使用）
-    if ('Notification' in window && Notification.permission === 'granted') {
-      new Notification('新しいスキル解放！', {
+    if ("Notification" in window && Notification.permission === "granted") {
+      new Notification("新しいスキル解放！", {
         body: `「${node.name}」が利用可能になりました`,
-        icon: '/icon.svg'
+        icon: "/icon.svg",
       });
     }
   }

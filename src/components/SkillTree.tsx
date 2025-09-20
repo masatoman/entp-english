@@ -1,21 +1,34 @@
-import { useEffect, useState } from "react";
 import { ArrowLeft, Clock, Lock, Star, Trophy, Zap } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { 
-  skillTreeManager, 
-  SkillNode, 
+import {
+  GRAMMAR_SKILL_TREE,
+  SkillNode,
+  skillTreeManager,
   SkillTreeState,
-  GRAMMAR_SKILL_TREE 
 } from "../utils/skillTreeManager";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
 import { Progress } from "./ui/progress";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./ui/tooltip";
 
 export default function SkillTree() {
   const navigate = useNavigate();
-  const [skillTreeState, setSkillTreeState] = useState<SkillTreeState | null>(null);
+  const [skillTreeState, setSkillTreeState] = useState<SkillTreeState | null>(
+    null
+  );
   const [selectedNode, setSelectedNode] = useState<SkillNode | null>(null);
 
   useEffect(() => {
@@ -37,51 +50,79 @@ export default function SkillTree() {
 
   const handleStartLearning = (node: SkillNode) => {
     // ノードに応じて適切な学習ページに遷移
-    if (node.category === "basic-grammar" && node.subcategory) {
+    const foundationCategories = [
+      "parts-of-speech", "word-order", "pronouns", "articles", 
+      "plurals", "questions-negations", "prepositions", "conjunctions"
+    ];
+    
+    if (foundationCategories.includes(node.category)) {
+      // 基礎カテゴリーの場合
+      navigate(`/learning/foundation/difficulty/${node.category}`);
+    } else if (node.category === "basic-grammar" && node.subcategory) {
+      // 基本文型の場合
       navigate(`/learning/grammar/pattern/basic-grammar`);
+    } else if (node.category === "vocabulary-mastery") {
+      // 語彙力強化の場合
+      navigate("/learning/vocabulary/difficulty");
+    } else if (node.category === "pronunciation") {
+      // 発音・音韻の場合（将来実装）
+      alert("発音学習機能は近日実装予定です");
     } else {
+      // その他の文法カテゴリー
       navigate(`/learning/grammar/difficulty/${node.category}`);
     }
   };
 
-  const getNodeStatus = (node: SkillNode): 'locked' | 'available' | 'in-progress' | 'completed' => {
-    if (!skillTreeState) return 'locked';
-    
+  const getNodeStatus = (
+    node: SkillNode
+  ): "locked" | "available" | "in-progress" | "completed" => {
+    if (!skillTreeState) return "locked";
+
     const progress = skillTreeState.progress[node.id];
-    
-    if (!skillTreeState.unlockedNodes.includes(node.id)) return 'locked';
-    if (!progress) return 'available';
-    if (progress.masteryLevel >= 90) return 'completed';
-    return 'in-progress';
+
+    if (!skillTreeState.unlockedNodes.includes(node.id)) return "locked";
+    if (!progress) return "available";
+    if (progress.masteryLevel >= 90) return "completed";
+    return "in-progress";
   };
 
   const getStatusColor = (status: string): string => {
     switch (status) {
-      case 'locked': return 'bg-gray-100 border-gray-300 text-gray-400';
-      case 'available': return 'bg-blue-50 border-blue-300 text-blue-800 hover:bg-blue-100';
-      case 'in-progress': return 'bg-yellow-50 border-yellow-300 text-yellow-800 hover:bg-yellow-100';
-      case 'completed': return 'bg-green-50 border-green-300 text-green-800';
-      default: return 'bg-gray-100 border-gray-300 text-gray-400';
+      case "locked":
+        return "bg-gray-100 border-gray-300 text-gray-400";
+      case "available":
+        return "bg-blue-50 border-blue-300 text-blue-800 hover:bg-blue-100";
+      case "in-progress":
+        return "bg-yellow-50 border-yellow-300 text-yellow-800 hover:bg-yellow-100";
+      case "completed":
+        return "bg-green-50 border-green-300 text-green-800";
+      default:
+        return "bg-gray-100 border-gray-300 text-gray-400";
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'locked': return <Lock className="w-3 h-3" />;
-      case 'available': return <Star className="w-3 h-3" />;
-      case 'in-progress': return <Zap className="w-3 h-3" />;
-      case 'completed': return <Trophy className="w-3 h-3" />;
-      default: return <Lock className="w-3 h-3" />;
+      case "locked":
+        return <Lock className="w-3 h-3" />;
+      case "available":
+        return <Star className="w-3 h-3" />;
+      case "in-progress":
+        return <Zap className="w-3 h-3" />;
+      case "completed":
+        return <Trophy className="w-3 h-3" />;
+      default:
+        return <Lock className="w-3 h-3" />;
     }
   };
 
   const renderConnectionLine = (fromNode: SkillNode, toNodeId: string) => {
-    const toNode = GRAMMAR_SKILL_TREE.find(n => n.id === toNodeId);
+    const toNode = GRAMMAR_SKILL_TREE.find((n) => n.id === toNodeId);
     if (!toNode) return null;
 
     const dx = toNode.position.x - fromNode.position.x;
     const dy = toNode.position.y - fromNode.position.y;
-    
+
     return (
       <line
         key={`${fromNode.id}-${toNodeId}`}
@@ -91,8 +132,8 @@ export default function SkillTree() {
         y2={toNode.position.y + 30}
         stroke="#cbd5e1"
         strokeWidth="2"
-        strokeDasharray={getNodeStatus(toNode) === 'locked' ? "5,5" : "none"}
-        opacity={getNodeStatus(toNode) === 'locked' ? 0.5 : 0.8}
+        strokeDasharray={getNodeStatus(toNode) === "locked" ? "5,5" : "none"}
+        opacity={getNodeStatus(toNode) === "locked" ? 0.5 : 0.8}
       />
     );
   };
@@ -123,7 +164,9 @@ export default function SkillTree() {
             ホームに戻る
           </Button>
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-800">文法スキルツリー</h1>
+            <h1 className="text-3xl font-bold text-gray-800">
+              文法スキルツリー
+            </h1>
             <p className="text-gray-600 mt-2">あなたの英語学習の進捗を可視化</p>
           </div>
           <div className="w-32" />
@@ -148,9 +191,12 @@ export default function SkillTree() {
               <Star className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">Level {skillTreeState.currentLevel}</div>
+              <div className="text-2xl font-bold">
+                Level {skillTreeState.currentLevel}
+              </div>
               <p className="text-xs text-muted-foreground">
-                {skillTreeState.completedNodes.length}/{GRAMMAR_SKILL_TREE.length} 完了
+                {skillTreeState.completedNodes.length}/
+                {GRAMMAR_SKILL_TREE.length} 完了
               </p>
             </CardContent>
           </Card>
@@ -162,9 +208,7 @@ export default function SkillTree() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{skillTreeState.totalXP}</div>
-              <p className="text-xs text-muted-foreground">
-                累計経験値
-              </p>
+              <p className="text-xs text-muted-foreground">累計経験値</p>
             </CardContent>
           </Card>
 
@@ -174,10 +218,10 @@ export default function SkillTree() {
               <Star className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{skillTreeState.availableNodes.length}</div>
-              <p className="text-xs text-muted-foreground">
-                学習可能なスキル
-              </p>
+              <div className="text-2xl font-bold">
+                {skillTreeState.availableNodes.length}
+              </div>
+              <p className="text-xs text-muted-foreground">学習可能なスキル</p>
             </CardContent>
           </Card>
         </div>
@@ -195,28 +239,34 @@ export default function SkillTree() {
               <CardContent>
                 <div className="relative">
                   {/* SVG for connections */}
-                  <svg 
+                  <svg
                     className="absolute inset-0 w-full h-full pointer-events-none"
-                    style={{ height: '1500px' }}
+                    style={{ height: "1500px" }}
                   >
-                    {GRAMMAR_SKILL_TREE.map(node => 
-                      node.unlocks.map(unlockId => renderConnectionLine(node, unlockId))
+                    {GRAMMAR_SKILL_TREE.map((node) =>
+                      node.unlocks.map((unlockId) =>
+                        renderConnectionLine(node, unlockId)
+                      )
                     ).flat()}
                   </svg>
 
                   {/* Skill Nodes */}
-                  <div className="relative" style={{ height: '1500px' }}>
-                    {GRAMMAR_SKILL_TREE.map(node => {
+                  <div className="relative" style={{ height: "1500px" }}>
+                    {GRAMMAR_SKILL_TREE.map((node) => {
                       const status = getNodeStatus(node);
                       const progress = skillTreeState.progress[node.id];
-                      
+
                       return (
                         <TooltipProvider key={node.id}>
                           <Tooltip>
                             <TooltipTrigger asChild>
                               <div
-                                className={`absolute w-32 h-20 rounded-lg border-2 p-2 cursor-pointer transition-all duration-200 ${getStatusColor(status)} ${
-                                  status === 'locked' ? 'cursor-not-allowed' : 'hover:scale-105'
+                                className={`absolute w-32 h-20 rounded-lg border-2 p-2 cursor-pointer transition-all duration-200 ${getStatusColor(
+                                  status
+                                )} ${
+                                  status === "locked"
+                                    ? "cursor-not-allowed"
+                                    : "hover:scale-105"
                                 }`}
                                 style={{
                                   left: node.position.x,
@@ -239,7 +289,9 @@ export default function SkillTree() {
                                     <div className="w-full bg-gray-200 rounded-full h-1">
                                       <div
                                         className="bg-blue-600 h-1 rounded-full"
-                                        style={{ width: `${progress.masteryLevel}%` }}
+                                        style={{
+                                          width: `${progress.masteryLevel}%`,
+                                        }}
                                       />
                                     </div>
                                   </div>
@@ -249,11 +301,13 @@ export default function SkillTree() {
                             <TooltipContent>
                               <div className="p-2">
                                 <div className="font-semibold">{node.name}</div>
-                                <div className="text-sm text-gray-600">{node.description}</div>
+                                <div className="text-sm text-gray-600">
+                                  {node.description}
+                                </div>
                                 <div className="text-xs mt-1">
                                   Level {node.level} • {node.estimatedTime}分
                                 </div>
-                                {status === 'locked' && (
+                                {status === "locked" && (
                                   <div className="text-xs text-red-600 mt-1">
                                     前提条件: {node.prerequisites.join(", ")}
                                   </div>
@@ -296,9 +350,19 @@ export default function SkillTree() {
                     <div>
                       <div className="flex justify-between text-sm mb-1">
                         <span>習熟度</span>
-                        <span>{skillTreeState.progress[selectedNode.id].masteryLevel}%</span>
+                        <span>
+                          {
+                            skillTreeState.progress[selectedNode.id]
+                              .masteryLevel
+                          }
+                          %
+                        </span>
                       </div>
-                      <Progress value={skillTreeState.progress[selectedNode.id].masteryLevel} />
+                      <Progress
+                        value={
+                          skillTreeState.progress[selectedNode.id].masteryLevel
+                        }
+                      />
                     </div>
                   )}
 
@@ -309,7 +373,7 @@ export default function SkillTree() {
                         <Zap className="w-4 h-4 mr-2 text-yellow-600" />
                         {selectedNode.rewards.xp} XP
                       </div>
-                      {selectedNode.rewards.badges.map(badge => (
+                      {selectedNode.rewards.badges.map((badge) => (
                         <div key={badge} className="flex items-center text-sm">
                           <Trophy className="w-4 h-4 mr-2 text-purple-600" />
                           {badge}
@@ -322,18 +386,30 @@ export default function SkillTree() {
                     <div>
                       <h4 className="font-semibold mb-2">前提条件</h4>
                       <div className="space-y-1">
-                        {selectedNode.prerequisites.map(prereqId => {
-                          const prereqNode = GRAMMAR_SKILL_TREE.find(n => n.id === prereqId);
-                          const isCompleted = skillTreeState.completedNodes.includes(prereqId);
-                          
+                        {selectedNode.prerequisites.map((prereqId) => {
+                          const prereqNode = GRAMMAR_SKILL_TREE.find(
+                            (n) => n.id === prereqId
+                          );
+                          const isCompleted =
+                            skillTreeState.completedNodes.includes(prereqId);
+
                           return (
-                            <div key={prereqId} className="flex items-center text-sm">
+                            <div
+                              key={prereqId}
+                              className="flex items-center text-sm"
+                            >
                               {isCompleted ? (
                                 <Trophy className="w-4 h-4 mr-2 text-green-600" />
                               ) : (
                                 <Lock className="w-4 h-4 mr-2 text-gray-400" />
                               )}
-                              <span className={isCompleted ? "text-green-800" : "text-gray-600"}>
+                              <span
+                                className={
+                                  isCompleted
+                                    ? "text-green-800"
+                                    : "text-gray-600"
+                                }
+                              >
                                 {prereqNode?.name || prereqId}
                               </span>
                             </div>
@@ -347,10 +423,15 @@ export default function SkillTree() {
                     <div>
                       <h4 className="font-semibold mb-2">解放されるスキル</h4>
                       <div className="space-y-1">
-                        {selectedNode.unlocks.map(unlockId => {
-                          const unlockNode = GRAMMAR_SKILL_TREE.find(n => n.id === unlockId);
+                        {selectedNode.unlocks.map((unlockId) => {
+                          const unlockNode = GRAMMAR_SKILL_TREE.find(
+                            (n) => n.id === unlockId
+                          );
                           return (
-                            <div key={unlockId} className="flex items-center text-sm">
+                            <div
+                              key={unlockId}
+                              className="flex items-center text-sm"
+                            >
                               <Star className="w-4 h-4 mr-2 text-blue-600" />
                               <span className="text-blue-800">
                                 {unlockNode?.name || unlockId}
@@ -379,26 +460,30 @@ export default function SkillTree() {
             <Card>
               <CardHeader>
                 <CardTitle>推奨次学習</CardTitle>
-                <CardDescription>
-                  効率的な学習順序に基づく推奨
-                </CardDescription>
+                <CardDescription>効率的な学習順序に基づく推奨</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {skillTreeManager.getRecommendedNextNodes().map(node => {
+                  {skillTreeManager.getRecommendedNextNodes().map((node) => {
                     const status = getNodeStatus(node);
                     return (
                       <div
                         key={node.id}
-                        className={`p-3 rounded-lg border cursor-pointer transition-colors ${getStatusColor(status)}`}
+                        className={`p-3 rounded-lg border cursor-pointer transition-colors ${getStatusColor(
+                          status
+                        )}`}
                         onClick={() => setSelectedNode(node)}
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
                             <span className="text-lg">{node.icon}</span>
                             <div>
-                              <div className="font-medium text-sm">{node.name}</div>
-                              <div className="text-xs text-gray-600">Level {node.level}</div>
+                              <div className="font-medium text-sm">
+                                {node.name}
+                              </div>
+                              <div className="text-xs text-gray-600">
+                                Level {node.level}
+                              </div>
                             </div>
                           </div>
                           {getStatusIcon(status)}
@@ -417,21 +502,32 @@ export default function SkillTree() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(level => {
-                    const levelNodes = GRAMMAR_SKILL_TREE.filter(n => n.level === level);
-                    const completedInLevel = levelNodes.filter(n => 
+                  {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((level) => {
+                    const levelNodes = GRAMMAR_SKILL_TREE.filter(
+                      (n) => n.level === level
+                    );
+                    const completedInLevel = levelNodes.filter((n) =>
                       skillTreeState.completedNodes.includes(n.id)
                     ).length;
-                    
+
                     return (
-                      <div key={level} className="flex items-center justify-between">
-                        <span className="text-sm font-medium">Level {level}</span>
+                      <div
+                        key={level}
+                        className="flex items-center justify-between"
+                      >
+                        <span className="text-sm font-medium">
+                          Level {level}
+                        </span>
                         <div className="flex items-center space-x-2">
                           <span className="text-sm text-gray-600">
                             {completedInLevel}/{levelNodes.length}
                           </span>
                           <div className="w-20">
-                            <Progress value={(completedInLevel / levelNodes.length) * 100} />
+                            <Progress
+                              value={
+                                (completedInLevel / levelNodes.length) * 100
+                              }
+                            />
                           </div>
                         </div>
                       </div>
