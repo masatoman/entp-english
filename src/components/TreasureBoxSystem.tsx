@@ -97,7 +97,7 @@ export default function TreasureBoxSystem({
 
     setShowRewards(rewards);
     setOpeningBox(null);
-    
+
     console.log("🔍 宝箱UI状態更新:", {
       showRewards: rewards,
       rewardsLength: rewards.length,
@@ -105,11 +105,26 @@ export default function TreasureBoxSystem({
     });
 
     // 一時的な解決策：アラートで報酬を表示
-    const rewardSummary = rewards.map(r => 
-      `${r.type === "xp" ? "⚡" : r.type === "hearts" ? "❤️" : r.type === "stars" ? "⭐" : r.type === "gacha_ticket" ? "🎫" : "✨"} ${r.description}: +${r.amount}`
-    ).join('\n');
-    
-    alert(`🎉 宝箱開封完了！\n\n${rewardSummary}\n\n合計: ${rewards.length}個の報酬を獲得しました！`);
+    const rewardSummary = rewards
+      .map(
+        (r) =>
+          `${
+            r.type === "xp"
+              ? "⚡"
+              : r.type === "hearts"
+              ? "❤️"
+              : r.type === "stars"
+              ? "⭐"
+              : r.type === "gacha_ticket"
+              ? "🎫"
+              : "✨"
+          } ${r.description}: +${r.amount}`
+      )
+      .join("\n");
+
+    alert(
+      `🎉 宝箱開封完了！\n\n${rewardSummary}\n\n合計: ${rewards.length}個の報酬を獲得しました！`
+    );
 
     // 報酬表示中は宝箱リストを更新しない（報酬表示完了後に更新）
     const system = adrenalineManager.getSystem();
@@ -184,21 +199,21 @@ export default function TreasureBoxSystem({
           <>
             {console.log("🔍 報酬表示画面をレンダリング中:", showRewards)}
             <Card className="border-0 shadow-2xl bg-gradient-to-br from-yellow-50 to-orange-100 animate-pulse">
-            <CardHeader className="text-center">
-              <div className="text-6xl mb-2 animate-bounce">🎉</div>
-              <CardTitle className="text-3xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
-                宝箱開封完了！
-              </CardTitle>
-              <div className="text-lg font-semibold text-orange-700 mt-2">
-                素晴らしい報酬を獲得しました！
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-4">
-                {showRewards.map((reward, index) => (
-                  <div
-                    key={index}
-                    className={`
+              <CardHeader className="text-center">
+                <div className="text-6xl mb-2 animate-bounce">🎉</div>
+                <CardTitle className="text-3xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
+                  宝箱開封完了！
+                </CardTitle>
+                <div className="text-lg font-semibold text-orange-700 mt-2">
+                  素晴らしい報酬を獲得しました！
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-4">
+                  {showRewards.map((reward, index) => (
+                    <div
+                      key={index}
+                      className={`
                       p-4 rounded-xl border-3 flex items-center justify-between transform hover:scale-105 transition-all animate-bounce
                       ${
                         reward.rarity === "legendary"
@@ -221,26 +236,26 @@ export default function TreasureBoxSystem({
                           : ""
                       }
                     `}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <span className="text-3xl animate-pulse">
-                        {reward.type === "xp"
-                          ? "⚡"
-                          : reward.type === "hearts"
-                          ? "❤️"
-                          : reward.type === "stars"
-                          ? "⭐"
-                          : reward.type === "gacha_ticket"
-                          ? "🎫"
-                          : "✨"}
-                      </span>
-                      <div>
-                        <div className="font-bold text-lg text-gray-800">
-                          {reward.description}
-                        </div>
-                        <Badge
-                          variant="outline"
-                          className={`
+                    >
+                      <div className="flex items-center space-x-3">
+                        <span className="text-3xl animate-pulse">
+                          {reward.type === "xp"
+                            ? "⚡"
+                            : reward.type === "hearts"
+                            ? "❤️"
+                            : reward.type === "stars"
+                            ? "⭐"
+                            : reward.type === "gacha_ticket"
+                            ? "🎫"
+                            : "✨"}
+                        </span>
+                        <div>
+                          <div className="font-bold text-lg text-gray-800">
+                            {reward.description}
+                          </div>
+                          <Badge
+                            variant="outline"
+                            className={`
                             text-sm font-medium
                             ${
                               reward.rarity === "legendary"
@@ -263,88 +278,90 @@ export default function TreasureBoxSystem({
                                 : ""
                             }
                           `}
-                        >
-                          {reward.rarity === "legendary"
-                            ? "🌟 伝説級"
-                            : reward.rarity === "epic"
-                            ? "💎 エピック"
-                            : reward.rarity === "rare"
-                            ? "💙 レア"
-                            : "⚪ 通常"}
-                        </Badge>
+                          >
+                            {reward.rarity === "legendary"
+                              ? "🌟 伝説級"
+                              : reward.rarity === "epic"
+                              ? "💎 エピック"
+                              : reward.rarity === "rare"
+                              ? "💙 レア"
+                              : "⚪ 通常"}
+                          </Badge>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-2xl font-bold text-green-600">
+                          +{reward.amount}
+                        </div>
+                        <div className="text-sm text-green-500 font-medium">
+                          {reward.type === "xp"
+                            ? "XP"
+                            : reward.type === "hearts"
+                            ? "体力"
+                            : reward.type === "stars"
+                            ? "スタミナ"
+                            : reward.type === "gacha_ticket"
+                            ? "チケット"
+                            : "アイテム"}
+                        </div>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <div className="text-2xl font-bold text-green-600">
-                        +{reward.amount}
-                      </div>
-                      <div className="text-sm text-green-500 font-medium">
-                        {reward.type === "xp"
-                          ? "XP"
-                          : reward.type === "hearts"
-                          ? "体力"
-                          : reward.type === "stars"
-                          ? "スタミナ"
-                          : reward.type === "gacha_ticket"
-                          ? "チケット"
-                          : "アイテム"}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
 
-              {/* 総獲得表示 */}
-              <div className="bg-gradient-to-r from-green-100 to-emerald-100 p-4 rounded-xl border-2 border-green-400">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-green-700 mb-2">
-                    🏆 総獲得報酬 🏆
-                  </div>
-                  <div className="grid grid-cols-3 gap-2 text-sm">
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-blue-600">
-                        {showRewards
-                          .filter((r) => r.type === "xp")
-                          .reduce((sum, r) => sum + r.amount, 0)}
-                      </div>
-                      <div className="text-xs text-blue-500">XP</div>
+                {/* 総獲得表示 */}
+                <div className="bg-gradient-to-r from-green-100 to-emerald-100 p-4 rounded-xl border-2 border-green-400">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-green-700 mb-2">
+                      🏆 総獲得報酬 🏆
                     </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-red-600">
-                        {showRewards.filter((r) => r.type === "hearts").length >
-                        0
-                          ? "FULL"
-                          : "0"}
+                    <div className="grid grid-cols-3 gap-2 text-sm">
+                      <div className="text-center">
+                        <div className="text-lg font-bold text-blue-600">
+                          {showRewards
+                            .filter((r) => r.type === "xp")
+                            .reduce((sum, r) => sum + r.amount, 0)}
+                        </div>
+                        <div className="text-xs text-blue-500">XP</div>
                       </div>
-                      <div className="text-xs text-red-500">体力</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-yellow-600">
-                        {showRewards
-                          .filter((r) => r.type === "gacha_ticket")
-                          .reduce((sum, r) => sum + r.amount, 0)}
+                      <div className="text-center">
+                        <div className="text-lg font-bold text-red-600">
+                          {showRewards.filter((r) => r.type === "hearts")
+                            .length > 0
+                            ? "FULL"
+                            : "0"}
+                        </div>
+                        <div className="text-xs text-red-500">体力</div>
                       </div>
-                      <div className="text-xs text-yellow-500">チケット</div>
+                      <div className="text-center">
+                        <div className="text-lg font-bold text-yellow-600">
+                          {showRewards
+                            .filter((r) => r.type === "gacha_ticket")
+                            .reduce((sum, r) => sum + r.amount, 0)}
+                        </div>
+                        <div className="text-xs text-yellow-500">チケット</div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <Button
-                onClick={() => {
-                  setShowRewards(null);
-                  // 報酬表示完了後に宝箱リストを更新
-                  const system = adrenalineManager.getSystem();
-                  setTreasureBoxes(system.treasureBoxes.filter((box) => !box.isOpened));
-                  console.log("🔍 報酬表示完了 - 宝箱リスト更新");
-                }}
-                className="w-full mt-6 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold text-lg py-3"
-                size="lg"
-              >
-                🚀 学習を続ける 🚀
-              </Button>
-            </CardContent>
-          </Card>
+                <Button
+                  onClick={() => {
+                    setShowRewards(null);
+                    // 報酬表示完了後に宝箱リストを更新
+                    const system = adrenalineManager.getSystem();
+                    setTreasureBoxes(
+                      system.treasureBoxes.filter((box) => !box.isOpened)
+                    );
+                    console.log("🔍 報酬表示完了 - 宝箱リスト更新");
+                  }}
+                  className="w-full mt-6 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold text-lg py-3"
+                  size="lg"
+                >
+                  🚀 学習を続ける 🚀
+                </Button>
+              </CardContent>
+            </Card>
           </>
         ) : (
           // 宝箱選択画面

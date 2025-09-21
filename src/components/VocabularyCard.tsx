@@ -275,7 +275,7 @@ export default function VocabularyCard({
     if (known && Math.random() < 0.15) {
       const box = adrenalineManager.earnTreasureBox("normal");
       console.log("🎁 語彙学習で宝箱獲得:", box);
-      
+
       // 即座に宝箱表示（遅延を削除）
       setShowTreasureBox(true);
     }
