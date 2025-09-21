@@ -159,10 +159,10 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
                 <span className="text-lg sm:text-2xl">🪙</span>
                 <div>
                   <div className="font-bold text-yellow-700 text-sm sm:text-base">
-                    ガチャコイン
+                    所持コイン
                   </div>
                   <div className="text-xs sm:text-sm text-yellow-600">
-                    ガチャに使用可能
+                    ガチャで使用可能
                   </div>
                 </div>
               </div>
@@ -313,7 +313,7 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
                   <div className="flex items-center space-x-1">
                     <span className="text-sm">🪙</span>
                     <span className="text-sm font-medium">
-                      +50 ボーナスコイン
+                      +50 コイン
                     </span>
                   </div>
                 </div>
