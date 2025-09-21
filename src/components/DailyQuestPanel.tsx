@@ -72,15 +72,15 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4">
+      <Card className="w-full max-w-sm sm:max-w-md md:max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
         <CardHeader className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white">
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-2xl font-bold">
+              <CardTitle className="text-lg sm:text-2xl font-bold">
                 デイリークエスト
               </CardTitle>
-              <p className="text-teal-100 mt-1">全てのコンテンツを楽しもう！</p>
+              <p className="text-teal-100 mt-1 text-sm sm:text-base">全てのコンテンツを楽しもう！</p>
             </div>
             <Button
               variant="ghost"
@@ -93,62 +93,62 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
           </div>
         </CardHeader>
 
-        <CardContent className="p-6 space-y-6">
+        <CardContent className="p-3 sm:p-6 space-y-4 sm:space-y-6">
           {/* 統計サマリー */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-2 sm:gap-4">
             <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">
+              <div className="text-lg sm:text-2xl font-bold text-green-600">
                 {stats.completed}
               </div>
-              <div className="text-sm text-gray-600">完了</div>
+              <div className="text-xs sm:text-sm text-gray-600">完了</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">
+              <div className="text-lg sm:text-2xl font-bold text-blue-600">
                 {stats.total}
               </div>
-              <div className="text-sm text-gray-600">総数</div>
+              <div className="text-xs sm:text-sm text-gray-600">総数</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600">
+              <div className="text-lg sm:text-2xl font-bold text-purple-600">
                 {stats.streak}
               </div>
-              <div className="text-sm text-gray-600">連続日数</div>
+              <div className="text-xs sm:text-sm text-gray-600">連続日数</div>
             </div>
           </div>
 
           {/* 進捗バー */}
           <div>
             <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-medium">今日の進捗</span>
-              <span className="text-sm text-gray-600">{stats.percentage}%</span>
+              <span className="text-xs sm:text-sm font-medium">今日の進捗</span>
+              <span className="text-xs sm:text-sm text-gray-600">{stats.percentage}%</span>
             </div>
             <Progress value={stats.percentage} className="h-3" />
           </div>
 
           {/* コイン残高 */}
-          <div className="bg-gradient-to-r from-yellow-50 to-orange-50 p-4 rounded-lg border border-yellow-200">
+          <div className="bg-gradient-to-r from-yellow-50 to-orange-50 p-3 sm:p-4 rounded-lg border border-yellow-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <span className="text-2xl">🪙</span>
+                <span className="text-lg sm:text-2xl">🪙</span>
                 <div>
-                  <div className="font-bold text-yellow-700">ガチャコイン</div>
-                  <div className="text-sm text-yellow-600">
+                  <div className="font-bold text-yellow-700 text-sm sm:text-base">ガチャコイン</div>
+                  <div className="text-xs sm:text-sm text-yellow-600">
                     ガチャに使用可能
                   </div>
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-2xl font-bold text-yellow-700">
+                <div className="text-lg sm:text-2xl font-bold text-yellow-700">
                   {coinSystem.current}
                 </div>
-                <div className="text-sm text-yellow-600">枚</div>
+                <div className="text-xs sm:text-sm text-yellow-600">枚</div>
               </div>
             </div>
           </div>
 
           {/* クエスト一覧 */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">今日のクエスト</h3>
+          <div className="space-y-3 sm:space-y-4">
+            <h3 className="text-base sm:text-lg font-semibold">今日のクエスト</h3>
             {questSystem.availableQuests.map((quest) => (
               <Card
                 key={quest.id}
@@ -156,28 +156,28 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
                   quest.isCompleted ? "opacity-75" : ""
                 }`}
               >
-                <CardContent className="p-4">
-                  <div className="flex items-start space-x-4">
+                <CardContent className="p-3 sm:p-4">
+                  <div className="flex items-start space-x-3 sm:space-x-4">
                     {/* クエストアイコンとレアリティ */}
-                    <div className="relative">
+                    <div className="relative flex-shrink-0">
                       <div
-                        className={`w-16 h-16 rounded-lg bg-gradient-to-br ${getRarityColor(
+                        className={`w-12 h-12 sm:w-16 sm:h-16 rounded-lg bg-gradient-to-br ${getRarityColor(
                           quest.rarity
-                        )} flex items-center justify-center text-2xl text-white shadow-lg`}
+                        )} flex items-center justify-center text-lg sm:text-2xl text-white shadow-lg`}
                       >
                         {quest.icon}
                       </div>
                       {quest.isCompleted && (
-                        <div className="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                          <Check className="w-4 h-4 text-white" />
+                        <div className="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-green-500 rounded-full flex items-center justify-center">
+                          <Check className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
                         </div>
                       )}
                     </div>
 
                     {/* クエスト情報 */}
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <div className="flex items-center space-x-2 mb-1">
-                        <h4 className="font-bold text-gray-800">
+                        <h4 className="font-bold text-gray-800 text-sm sm:text-base">
                           {quest.title}
                         </h4>
                         <Badge
@@ -202,12 +202,12 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
                         </Badge>
                       </div>
 
-                      <p className="text-sm text-gray-600 mb-3">
+                      <p className="text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3">
                         {quest.description}
                       </p>
 
                       {/* 進捗バー */}
-                      <div className="mb-3">
+                      <div className="mb-2 sm:mb-3">
                         <div className="flex justify-between items-center mb-1">
                           <span className="text-xs text-gray-500">進捗</span>
                           <span className="text-xs text-gray-600">
@@ -227,11 +227,11 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
                         <div className="text-xs font-medium text-gray-700">
                           報酬:
                         </div>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-1 sm:gap-2">
                           {quest.rewards.map((reward, index) => (
                             <div
                               key={index}
-                              className="flex items-center space-x-1 bg-gray-100 rounded-full px-2 py-1"
+                              className="flex items-center space-x-1 bg-gray-100 rounded-full px-2 py-1 text-xs"
                             >
                               <span className="text-sm">
                                 {reward.type === "xp" ? "⚡" : "🪙"}
@@ -291,11 +291,11 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
           )}
 
           {/* クローズボタン */}
-          <div className="text-center pt-4">
-            <Button onClick={onClose} className="w-full" size="lg">
+          <div className="text-center pt-3 sm:pt-4">
+            <Button onClick={onClose} className="w-full" size="sm">
               学習を続ける
             </Button>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-gray-500 mt-1 sm:mt-2">
               - 空白をタップして閉じる -
             </p>
           </div>

@@ -71,9 +71,12 @@ class DailyQuestManager {
 
   private checkDailyReset(): void {
     const today = new Date().toISOString().split("T")[0];
-    
+
     // 日付が変わったか、クエストが空の場合は生成
-    if (this.questSystem.currentDate !== today || this.questSystem.availableQuests.length === 0) {
+    if (
+      this.questSystem.currentDate !== today ||
+      this.questSystem.availableQuests.length === 0
+    ) {
       console.log(
         "🔄 デイリークエストリセット:",
         this.questSystem.currentDate,
@@ -86,8 +89,12 @@ class DailyQuestManager {
       this.questSystem.availableQuests = this.generateDailyQuests();
       this.questSystem.completedQuests = [];
       this.saveQuestSystem();
-      
-      console.log("✅ デイリークエスト生成完了:", this.questSystem.availableQuests.length, "個");
+
+      console.log(
+        "✅ デイリークエスト生成完了:",
+        this.questSystem.availableQuests.length,
+        "個"
+      );
     }
   }
 
