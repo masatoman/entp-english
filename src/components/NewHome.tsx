@@ -609,6 +609,18 @@ export function NewHome() {
 
         {/* 学習モード選択 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* TOEIC単語ガチャ */}
+          <SelectionCard
+            id="gacha"
+            title="TOEIC単語ガチャ"
+            description="新しい単語をゲット！レアカードを集めよう"
+            icon="🎁"
+            difficulty="ガチャ"
+            detail="XP消費"
+            color="bg-purple-50 border-purple-200 text-purple-800"
+            onClick={() => navigate("/games/gacha")}
+          />
+          
           {/* ⭐️事前学習 */}
           <SelectionCard
             id="pre-study"
@@ -621,6 +633,19 @@ export function NewHome() {
             isLocked={!canUseStars(starSystem)}
             onClick={() => canUseStars(starSystem) && handlePreStudyMenuOpen()}
           />
+          
+          {/* スキルツリー */}
+          <SelectionCard
+            id="skill-tree"
+            title="スキルツリー"
+            description="英語学習の全体マップと進捗確認"
+            icon="🌳"
+            difficulty="進捗"
+            detail="体力不要"
+            color="bg-emerald-50 border-emerald-200 text-emerald-800"
+            onClick={() => navigate("/learning/skill-tree")}
+          />
+          
           {/* 文法クイズ */}
           <SelectionCard
             id="grammar-quiz"
@@ -728,18 +753,6 @@ export function NewHome() {
             onClick={() => {}}
           />
 
-          {/* TOEIC単語ガチャ */}
-          <SelectionCard
-            id="gacha"
-            title="TOEIC単語ガチャ"
-            description="新しい単語をゲット！レアカードを集めよう"
-            icon="🎁"
-            difficulty="ガチャ"
-            detail="XP消費"
-            color="bg-purple-50 border-purple-200 text-purple-800"
-            onClick={() => navigate("/games/gacha")}
-          />
-
           {/* 実績 */}
           <SelectionCard
             id="achievements"
@@ -782,14 +795,6 @@ export function NewHome() {
           >
             <Brain className="w-4 h-4" />
             <span>シナジー効果</span>
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => navigate("/learning/skill-tree")}
-            className="flex items-center space-x-2"
-          >
-            <Target className="w-4 h-4" />
-            <span>スキルツリー</span>
           </Button>
         </div>
 
