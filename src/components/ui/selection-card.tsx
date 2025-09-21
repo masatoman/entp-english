@@ -1,4 +1,5 @@
 import { cn } from "../../lib/utils";
+import { accentColors, baseColors } from "../../styles/colors";
 import { Badge } from "./badge";
 import {
   Card,
@@ -7,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "./card";
-import { baseColors, accentColors } from "../../styles/colors";
 
 export interface SelectionCardProps {
   id: string;
@@ -109,12 +109,12 @@ export function SelectionCard({
   const cardClassName = cn(
     "cursor-pointer transition-all duration-200 border-2 hover:shadow-card game-button",
     isLocked && "cursor-not-allowed opacity-60",
-    isRecommended && "ring-2 ring-opacity-50",
+    isRecommended && "ring-2 ring-opacity-50"
   );
 
   return (
-    <Card 
-      className={cardClassName} 
+    <Card
+      className={cardClassName}
       onClick={() => !isLocked && onClick(id)}
       style={{
         ...cardStyle,
@@ -128,8 +128,12 @@ export function SelectionCard({
           <div className="flex items-center gap-2">
             {icon && <span className="text-lg">{icon}</span>}
             <CardTitle className="text-lg">{title}</CardTitle>
-            {isCompleted && <span style={{ color: accentColors.successGreen }}>✓</span>}
-            {isLocked && <span style={{ color: baseColors.gunmetalLight }}>🔒</span>}
+            {isCompleted && (
+              <span style={{ color: accentColors.successGreen }}>✓</span>
+            )}
+            {isLocked && (
+              <span style={{ color: baseColors.gunmetalLight }}>🔒</span>
+            )}
           </div>
           <div className="flex gap-2">
             {difficulty && (
@@ -142,8 +146,8 @@ export function SelectionCard({
               </Badge>
             )}
             {level && (
-              <Badge 
-                variant="outline" 
+              <Badge
+                variant="outline"
                 className="text-xs border"
                 style={{
                   backgroundColor: `${baseColors.delftBlue}15`,
@@ -156,9 +160,11 @@ export function SelectionCard({
             )}
           </div>
         </div>
-        <CardDescription 
-          style={{ 
-            color: isLocked ? baseColors.gunmetalLight : baseColors.gunmetalLight 
+        <CardDescription
+          style={{
+            color: isLocked
+              ? baseColors.gunmetalLight
+              : baseColors.gunmetalLight,
           }}
         >
           {description}

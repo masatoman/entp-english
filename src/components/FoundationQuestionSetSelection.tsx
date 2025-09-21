@@ -1,6 +1,7 @@
 import { ArrowLeft, BookOpen, Target } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Badge } from "./ui/badge";
+import { baseColors } from "../styles/colors";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
@@ -126,7 +127,7 @@ export default function FoundationQuestionSetSelection() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screenp-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center gap-4 mb-6">
           <Button

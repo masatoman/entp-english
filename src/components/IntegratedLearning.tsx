@@ -11,6 +11,7 @@ import { LearningItemManager } from "../utils/learningItemManager";
 import { SpeechSynthesisManager } from "../utils/speechSynthesis";
 import { calculateVocabularyXP } from "../utils/xpCalculator";
 import { Button } from "./ui/button";
+import { baseColors } from "../styles/colors";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";

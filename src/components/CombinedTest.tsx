@@ -20,6 +20,7 @@ import { DataManager } from "../utils/dataManager";
 import { GachaSystem } from "../utils/gachaSystem";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 import { Badge } from "./ui/badge";
+import { baseColors } from "../styles/colors";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";

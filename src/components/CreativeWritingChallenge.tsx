@@ -6,6 +6,7 @@ import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { DataManager } from "../utils/dataManager";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 import { Button } from "./ui/button";
+import { baseColors } from "../styles/colors";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Textarea } from "./ui/textarea";
@@ -139,7 +140,7 @@ export default function CreativeWritingChallenge({}: CreativeWritingChallengePro
 
   if (isCompleted) {
     return (
-      <div className="min-h-screen p-4 bg-gradient-to-br from-purple-50 to-pink-50">
+      <div className="min-h-screen p-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
         <div className="max-w-2xl mx-auto">
           <Card className="text-center">
             <CardHeader>
@@ -220,7 +221,7 @@ export default function CreativeWritingChallenge({}: CreativeWritingChallengePro
   }
 
   return (
-    <div className="min-h-screen p-4 bg-gradient-to-br from-purple-50 to-pink-50">
+    <div className="min-h-screen p-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
       <div className="max-w-2xl mx-auto">
         {/* ヘッダー */}
         <div className="flex items-center justify-between mb-6">

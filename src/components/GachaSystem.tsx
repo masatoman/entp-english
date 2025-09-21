@@ -10,6 +10,7 @@ import GameHeader from "./GameHeader";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { CardCollectionGrid } from "./ui/card-collection-grid";
+import { baseColors } from "../styles/colors";
 
 interface GachaSystemProps {
   onBack: () => void;
@@ -182,7 +183,12 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50">
+    <div 
+      className="min-h-screen"
+      style={{
+        background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
+      }}
+    >
       {/* ゲームヘッダー */}
       <GameHeader />
 

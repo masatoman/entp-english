@@ -16,6 +16,7 @@ import {
   determineQuestionRank,
 } from "../data/enhancedQuestions";
 import { getGrammarQuizQuestions } from "../data/grammarQuizCategorized";
+import { baseColors } from "../styles/colors";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Category, QuestionWithRank } from "../types";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
@@ -357,7 +358,7 @@ export default function EnhancedGrammarQuiz() {
   // 問題が読み込まれていない場合の表示
   if (questions.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="min-h-screenp-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
         <div className="max-w-4xl mx-auto">
           <Card className="mb-6">
             <CardHeader>
@@ -399,7 +400,7 @@ export default function EnhancedGrammarQuiz() {
 
   if (showResults) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="min-h-screenp-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
         <div className="max-w-4xl mx-auto">
           <Card className="mb-6">
             <CardHeader>
@@ -471,7 +472,7 @@ export default function EnhancedGrammarQuiz() {
 
   if (!currentQuestion || questions.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="min-h-screenp-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
         <div className="max-w-4xl mx-auto">
           <Card>
             <CardContent className="p-8 text-center">
@@ -498,7 +499,7 @@ export default function EnhancedGrammarQuiz() {
 
   return (
     <DndProvider backend={isTouchDevice ? TouchBackend : HTML5Backend}>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="min-h-screenp-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
         <div className="max-w-4xl mx-auto">
           {/* ヘッダー */}
           <Card className="mb-6">

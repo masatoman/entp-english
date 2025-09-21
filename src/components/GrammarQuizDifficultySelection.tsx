@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { baseColors } from "../styles/colors";
 import { Button } from './ui/button';
 import { ArrowLeft, Star, Zap, Crown } from 'lucide-react';
 
@@ -44,7 +45,7 @@ export function GrammarQuizDifficultySelection({
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screenp-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
       <div className="max-w-2xl mx-auto">
         {/* ヘッダー */}
         <div className="flex items-center justify-between mb-6">

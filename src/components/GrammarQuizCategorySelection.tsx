@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { baseColors } from "../styles/colors";
 import { Button } from './ui/button';
 import { ArrowLeft, BookOpen } from 'lucide-react';
 import { grammarCategories } from '../data/grammarQuizCategorized';
@@ -10,7 +11,7 @@ interface GrammarQuizCategorySelectionProps {
 
 export function GrammarQuizCategorySelection({ onSelectCategory, onBack }: GrammarQuizCategorySelectionProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screenp-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
       <div className="max-w-4xl mx-auto">
         {/* ヘッダー */}
         <div className="mb-6">

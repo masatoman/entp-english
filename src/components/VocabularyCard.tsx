@@ -22,6 +22,7 @@ import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Progress } from "./ui/progress";
+import { baseColors } from "../styles/colors";
 
 interface StudySession {
   totalWords: number;
@@ -359,7 +360,12 @@ export default function VocabularyCard({
 
   if (!currentWord) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center">
+      <div 
+        className="min-h-screen flex items-center justify-center"
+        style={{
+          background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
+        }}
+      >
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p>単語を読み込み中...</p>
@@ -442,7 +448,12 @@ export default function VocabularyCard({
     );
 
     return (
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      <div 
+        className="min-h-screen"
+        style={{
+          background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
+        }}
+      >
         <div className="max-w-md mx-auto p-4 space-y-6">
           {/* Header */}
           <div className="flex items-center justify-between pt-8">
@@ -518,7 +529,12 @@ export default function VocabularyCard({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div 
+      className="min-h-screen"
+      style={{
+        background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
+      }}
+    >
       {/* ゲームヘッダー */}
       <GameHeader />
 

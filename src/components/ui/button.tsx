@@ -1,9 +1,8 @@
-import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
+import * as React from "react";
 
 import { cn } from "./utils";
-import { baseColors, accentColors } from "../../styles/colors";
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
@@ -21,9 +20,12 @@ const buttonVariants = cva(
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
         // ゲーミフィケーション用バリアント
-        accent: "bg-accent-orange text-base-gunmetal-dark hover:bg-accent-orange-light shadow-button game-button",
-        success: "bg-status-success text-base-ghost-white hover:bg-status-success-light shadow-success game-button",
-        warning: "bg-status-error text-base-ghost-white hover:bg-status-error-light shadow-warning game-button",
+        accent:
+          "bg-accent-orange text-base-gunmetal-dark hover:bg-accent-orange-light shadow-button game-button",
+        success:
+          "bg-status-success text-base-ghost-white hover:bg-status-success-light shadow-success game-button",
+        warning:
+          "bg-status-error text-base-ghost-white hover:bg-status-error-light shadow-warning game-button",
         xp: "bg-game-xp text-base-gunmetal-dark hover:bg-accent-orange-light shadow-xp xp-glow",
       },
       size: {
@@ -37,7 +39,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  },
+  }
 );
 
 function Button({

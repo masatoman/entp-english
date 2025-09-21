@@ -25,6 +25,7 @@ import { GachaSystem } from "../utils/gachaSystem";
 import { getLevelManager } from "../utils/levelManager";
 import { VocabularyIntegration } from "../utils/vocabularyIntegration";
 import { Badge } from "./ui/badge";
+import { baseColors } from "../styles/colors";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { SelectionCard } from "./ui/selection-card";

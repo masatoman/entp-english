@@ -22,6 +22,7 @@ import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
+import { baseColors } from "../styles/colors";
 import { Textarea } from "./ui/textarea";
 
 export interface QuestionData {
@@ -244,7 +245,12 @@ export default function Question() {
 
   if (!category || !difficulty || questions.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div 
+        className="min-h-screen p-4"
+        style={{
+          background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
+        }}
+      >
         <div className="max-w-4xl mx-auto">
           <div className="text-center">
             <h2 className="text-xl font-semibold mb-4">
@@ -383,7 +389,12 @@ export default function Question() {
 
   if (isComplete) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-100 p-4">
+      <div 
+        className="min-h-screen p-4"
+        style={{
+          background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
+        }}
+      >
         <div className="max-w-4xl mx-auto">
           <Card className="shadow-lg">
             <CardHeader>
@@ -424,7 +435,12 @@ export default function Question() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div 
+      className="min-h-screen"
+      style={{
+        background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
+      }}
+    >
       {/* ゲームヘッダー */}
       <GameHeader />
 

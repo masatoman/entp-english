@@ -13,6 +13,7 @@ import { useScrollToTop } from "../hooks/useScrollToTop";
 import { WordCard } from "../types/gacha";
 import { SpeechSynthesisManager } from "../utils/speechSynthesis";
 import { Button } from "./ui/button";
+import { baseColors } from "../styles/colors";
 import { Card } from "./ui/card";
 
 export default function CardDetailContent() {

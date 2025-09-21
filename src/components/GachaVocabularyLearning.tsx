@@ -4,6 +4,7 @@ import { useScrollToTop } from "../hooks/useScrollToTop";
 import { getLevelManager } from "../utils/levelManager";
 import { VocabularyManager } from "../utils/vocabularyManager";
 import { Badge } from "./ui/badge";
+import { baseColors } from "../styles/colors";
 import { Button } from "./ui/button";
 import VocabularyCard from "./VocabularyCard";
 

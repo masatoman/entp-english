@@ -20,6 +20,7 @@ import {
 } from "../utils/essayHistoryManager";
 import { EssayShareManager, ShareOptions } from "../utils/essayShareManager";
 import { Badge } from "./ui/badge";
+import { baseColors } from "../styles/colors";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Input } from "./ui/input";

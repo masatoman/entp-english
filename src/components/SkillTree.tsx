@@ -10,6 +10,7 @@ import {
   SkillTreeState,
 } from "../utils/skillTreeManager";
 import { Button } from "./ui/button";
+import { baseColors } from "../styles/colors";
 import {
   Card,
   CardContent,
@@ -157,7 +158,7 @@ export default function SkillTree() {
 
   if (!skillTreeState) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="min-h-screenp-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center">読み込み中...</div>
         </div>
@@ -168,7 +169,7 @@ export default function SkillTree() {
   const completionPercentage = skillTreeManager.getCompletionPercentage();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screenp-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
       <div className="max-w-7xl mx-auto">
         {/* ヘッダー */}
         <div className="flex items-center justify-between mb-6">

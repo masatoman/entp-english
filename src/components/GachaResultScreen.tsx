@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { WordCard } from "../types/gacha";
 import { Button } from "./ui/button";
+import { baseColors } from "../styles/colors";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { GachaCard } from "./ui/gacha-card";
 

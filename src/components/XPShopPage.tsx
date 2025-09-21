@@ -5,6 +5,7 @@ import { XP_SHOP_ITEMS } from "../data/xpShop";
 import { XPShopItem } from "../types/simple-game";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 import { Badge } from "./ui/badge";
+import { baseColors } from "../styles/colors";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
@@ -118,7 +119,7 @@ export default function XPShopPage() {
   );
 
   return (
-    <div className="min-h-screen p-4 bg-gradient-to-br from-blue-50 to-purple-50">
+    <div className="min-h-screen p-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
       <div className="max-w-4xl mx-auto">
         {/* ヘッダー */}
         <div className="flex items-center justify-between mb-6">

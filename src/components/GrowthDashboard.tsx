@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { UserStats } from "../data/achievements";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Badge } from "./ui/badge";
+import { baseColors } from "../styles/colors";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
 
@@ -184,7 +185,7 @@ export default function GrowthDashboard() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
       <div className="max-w-4xl mx-auto p-4 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between pt-8">

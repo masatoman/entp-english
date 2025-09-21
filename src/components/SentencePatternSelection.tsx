@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Category } from "../types";
 import { Badge } from "./ui/badge";
+import { baseColors } from "../styles/colors";
 import { Button } from "./ui/button";
 import { SelectionCard } from "./ui/selection-card";
 
@@ -93,7 +94,7 @@ export default function SentencePatternSelection() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screenp-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">

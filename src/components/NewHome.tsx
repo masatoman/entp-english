@@ -40,10 +40,10 @@ import GameHeader from "./GameHeader";
 import { LearningFeedbackForm } from "./LearningFeedbackForm";
 import { StatusAllocationComponent } from "./StatusAllocation";
 // PreStudyContentViewerはRouter経由で使用するため、直接importを削除
+import { baseColors } from "../styles/colors";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { SelectionCard } from "./ui/selection-card";
-import { baseColors, accentColors } from "../styles/colors";
 
 // NewHomeProps は不要（React Router使用）
 
@@ -445,7 +445,7 @@ export function NewHome() {
   }
 
   return (
-    <div 
+    <div
       className="min-h-screen"
       style={{
         background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkleLight} 100%)`,

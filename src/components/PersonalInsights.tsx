@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { LearningAnalytics, LearningInsight } from "../types";
 import { LearningAnalyzer } from "../utils/learningAnalyzer";
 import { Badge } from "./ui/badge";
+import { baseColors } from "../styles/colors";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Progress } from "./ui/progress";
@@ -69,7 +70,7 @@ function PersonalInsights() {
 
   if (isAnalyzing) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-4">
+      <div className="min-h-screenp-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
         <div className="max-w-md mx-auto">
           {/* ヘッダー */}
           <div className="flex items-center justify-between mb-6">
@@ -105,7 +106,7 @@ function PersonalInsights() {
 
   if (!insights || !analytics) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-4">
+      <div className="min-h-screenp-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
         <div className="max-w-md mx-auto text-center pt-20">
           <p>分析データを読み込めませんでした</p>
         </div>
@@ -114,7 +115,7 @@ function PersonalInsights() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-4">
+    <div className="min-h-screenp-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
       <div className="max-w-md mx-auto">
         {/* ヘッダー */}
         <div className="flex items-center justify-between mb-6">
