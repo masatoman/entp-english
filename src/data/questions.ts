@@ -223,6 +223,12 @@ export const questionsByCategory: Record<
         correctAnswer: "He has been busy since last week.",
         explanation: '開始点からの継続は "since" を使います。',
         hint: "has been busy, since, last week",
+        choices: [
+          "He is busy since last week.",
+          "He has been busy for last week.",
+          "He has been busy since last week.",
+          "He was busy since last week.",
+        ],
       },
       {
         id: 43,
@@ -230,6 +236,12 @@ export const questionsByCategory: Record<
         correctAnswer: "When we arrived there, it started to rain.",
         explanation: "時を表す副詞節では過去形を使います。",
         hint: "when, arrived, started, rain",
+        choices: [
+          "When we arrive there, it started to rain.",
+          "When we arrived there, it starts to rain.",
+          "When we arrived there, it started to rain.",
+          "When we will arrive there, it started to rain.",
+        ],
       },
       {
         id: 44,
@@ -237,6 +249,12 @@ export const questionsByCategory: Record<
         correctAnswer: "She has visited many countries so far.",
         explanation: "経験を表す現在完了形を使います。",
         hint: "has visited, many countries, so far",
+        choices: [
+          "She visited many countries so far.",
+          "She has visited many countries so far.",
+          "She is visiting many countries so far.",
+          "She will visit many countries so far.",
+        ],
       },
       {
         id: 45,
@@ -244,6 +262,12 @@ export const questionsByCategory: Record<
         correctAnswer: "I will be on a plane at this time tomorrow.",
         explanation: "未来のある時点での状態は未来進行形を使います。",
         hint: "will be, plane, this time tomorrow",
+        choices: [
+          "I am on a plane at this time tomorrow.",
+          "I will be on a plane at this time tomorrow.",
+          "I was on a plane at this time tomorrow.",
+          "I have been on a plane at this time tomorrow.",
+        ],
       },
     ],
     hard: [
