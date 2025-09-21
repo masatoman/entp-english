@@ -87,13 +87,14 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
       setIsOpening(false);
       setSelectedPack(null);
 
-      // 結果画面に遷移
-      const cardsParam = encodeURIComponent(JSON.stringify(cards));
-      navigate(
-        `/games/gacha/result?cards=${cardsParam}&packName=${encodeURIComponent(
-          pack.name
-        )}`
-      );
+      // 結果画面に遷移（一時的にローカルストレージに保存）
+      const resultData = {
+        cards,
+        packName: pack.name,
+        timestamp: Date.now(),
+      };
+      localStorage.setItem("gachaResult", JSON.stringify(resultData));
+      navigate("/games/gacha/result");
     } catch (error) {
       console.error("Error opening pack:", error);
       alert(

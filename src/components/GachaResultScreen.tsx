@@ -11,17 +11,23 @@ export default function GachaResultScreen() {
   const [searchParams] = useSearchParams();
   useScrollToTop();
 
-  // URLパラメータから開封結果を取得
-  const cardsParam = searchParams.get("cards");
-  const packName = searchParams.get("packName") || "パック";
-
+  // ローカルストレージから開封結果を取得
   let drawnCards: WordCard[] = [];
+  let packName = "パック";
+  
   try {
-    if (cardsParam) {
-      drawnCards = JSON.parse(decodeURIComponent(cardsParam));
+    const resultData = localStorage.getItem("gachaResult");
+    if (resultData) {
+      const parsed = JSON.parse(resultData);
+      drawnCards = parsed.cards || [];
+      packName = parsed.packName || "パック";
+      console.log("Gacha result loaded:", drawnCards.length, "cards from", packName);
+      
+      // 使用後は削除
+      localStorage.removeItem("gachaResult");
     }
   } catch (error) {
-    console.error("Error parsing cards from URL:", error);
+    console.error("Error parsing gacha result from localStorage:", error);
   }
 
   if (drawnCards.length === 0) {
