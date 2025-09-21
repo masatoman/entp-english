@@ -2,6 +2,7 @@ import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useScrollToTop } from "../hooks/useScrollToTop";
+import { GachaSystem } from "../utils/gachaSystem";
 import { KnownWordsManager } from "../utils/knownWordsManager";
 import { VocabularyManager } from "../utils/vocabularyManager";
 import { Badge } from "./ui/badge";
@@ -9,7 +10,7 @@ import { Button } from "./ui/button";
 import { SelectionCard } from "./ui/selection-card";
 
 // ルーター対応版 - propsは不要
-interface WordStats {
+interface LearningModeStats {
   total: number;
   known: number;
   remaining: number;
@@ -19,129 +20,122 @@ export default function VocabularyDifficultySelection() {
   const navigate = useNavigate();
   useScrollToTop();
 
-  const [wordStats, setWordStats] = useState<Record<string, WordStats>>({});
+  const [gachaStats, setGachaStats] = useState<LearningModeStats>({ total: 0, known: 0, remaining: 0 });
+  const [basicStats, setBasicStats] = useState<LearningModeStats>({ total: 0, known: 0, remaining: 0 });
 
-  // 各難易度の単語統計を計算
+  // 2つの学習モードの統計を計算
   useEffect(() => {
-    const calculateWordStats = () => {
-      const stats: Record<string, WordStats> = {};
-
-      ["beginner", "intermediate", "advanced"].forEach((level) => {
-        // 全カテゴリの単語を取得（TOEIC + 日常会話 + その他）
-        const allWords = VocabularyManager.getFilteredVocabularyWords(
-          level as "beginner" | "intermediate" | "advanced",
-          "all"
-        );
-
-        // 既知単語を除外
-        const unknownWords = KnownWordsManager.filterUnknownWords(allWords);
-
-        stats[level] = {
-          total: allWords.length,
-          known: allWords.length - unknownWords.length,
-          remaining: unknownWords.length,
-        };
+    const calculateStats = () => {
+      // ガチャカード専用統計
+      const gachaCards = VocabularyManager.getGachaVocabularyWords();
+      const unknownGachaCards = KnownWordsManager.filterUnknownWords(gachaCards);
+      
+      setGachaStats({
+        total: gachaCards.length,
+        known: gachaCards.length - unknownGachaCards.length,
+        remaining: unknownGachaCards.length,
       });
 
-      setWordStats(stats);
-      console.log("語彙統計計算完了:", stats);
+      // 基本単語専用統計
+      const basicWords = VocabularyManager.getStandardVocabularyWords();
+      const unknownBasicWords = KnownWordsManager.filterUnknownWords(basicWords);
+      
+      setBasicStats({
+        total: basicWords.length,
+        known: basicWords.length - unknownBasicWords.length,
+        remaining: unknownBasicWords.length,
+      });
+
+      console.log("語彙学習モード統計:", {
+        gacha: { total: gachaCards.length, remaining: unknownGachaCards.length },
+        basic: { total: basicWords.length, remaining: unknownBasicWords.length }
+      });
     };
 
-    calculateWordStats();
+    calculateStats();
   }, []);
 
-  const difficulties = [
-    {
-      level: "beginner" as const,
-      title: "初級",
-      description: "基本的な日常会話でよく使われる単語",
-      detail: "I am / You are / He has など基本的な単語",
-      color: "bg-green-50 border-green-200 text-green-800",
-      difficulty: "初級",
-      wordCount: "約20個の単語",
-      examples: ["reliable", "confident", "important", "beautiful"],
-    },
-    {
-      level: "intermediate" as const,
-      title: "中級",
-      description: "ビジネスや日常でよく使われる単語",
-      detail: "ビジネスシーンや日常会話で頻繁に使用される単語",
-      color: "bg-blue-50 border-blue-200 text-blue-800",
-      difficulty: "中級",
-      wordCount: "約50個の単語",
-      examples: ["accomplish", "opportunity", "effective", "professional"],
-    },
-    {
-      level: "advanced" as const,
-      title: "上級",
-      description: "ビジネス、学術、専門的な単語",
-      detail: "学術論文や専門分野で使用される高度な単語",
-      color: "bg-purple-50 border-purple-200 text-purple-800",
-      difficulty: "上級",
-      wordCount: "約30個の単語",
-      examples: [
-        "sophisticated",
-        "comprehensive",
-        "methodology",
-        "infrastructure",
-      ],
-    },
-  ];
-
   return (
-    <div className="min-h-screen p-4 flex flex-col justify-center">
-      <div className="max-w-md mx-auto w-full space-y-6">
-        {/* Header with back button */}
-        <div className="flex items-center space-x-3">
-          <Button variant="ghost" size="sm" onClick={() => navigate("/")}>
-            <ArrowLeft className="w-4 h-4" />
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="max-w-2xl mx-auto">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <Button variant="outline" onClick={() => navigate("/")} className="flex items-center">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            戻る
           </Button>
-          <div className="flex-1 text-center">
-            <h1 className="text-3xl">難易度選択</h1>
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-gray-800">語彙学習モード選択</h1>
             <div className="flex justify-center mt-2">
               <Badge variant="outline" className="text-sm">
                 単語学習
               </Badge>
             </div>
           </div>
+          <div className="w-24" />
         </div>
 
-        <p className="text-center text-muted-foreground">
-          難易度を選択してください
+        <p className="text-center text-muted-foreground mb-8">
+          学習モードを選択してください
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {difficulties.map((difficulty) => {
-            const stats = wordStats[difficulty.level];
-            const statsLoaded = stats !== undefined;
+        <div className="space-y-4">
+          {/* ガチャカード専用学習 */}
+          <SelectionCard
+            id="gacha-cards"
+            title="ガチャカード学習"
+            description="ガチャで獲得したカードのみで学習"
+            detail="あなたが引いたレアカードを使って効率的に学習"
+            icon="🎁"
+            difficulty="ガチャ限定"
+            color="bg-purple-50 border-purple-200 text-purple-800"
+            keyPoints={[
+              `獲得カード: ${gachaStats.total}枚`,
+              `未学習: ${gachaStats.remaining}枚`,
+              `学習済み: ${gachaStats.known}枚`,
+              "レアリティ別の高品質語彙",
+            ]}
+            onClick={() => navigate("/learning/vocabulary/gacha-mode")}
+          />
 
-            return (
-              <SelectionCard
-                key={difficulty.level}
-                id={difficulty.level}
-                title={difficulty.title}
-                description={difficulty.description}
-                detail={difficulty.detail}
-                difficulty={difficulty.difficulty}
-                color={difficulty.color}
-                keyPoints={[
-                  `例: ${difficulty.examples.join(", ")}`,
-                  statsLoaded ? `残り ${stats.remaining}語` : "計算中...",
-                  statsLoaded ? `知ってる ${stats.known}語` : "計算中...",
-                  statsLoaded ? `総数 ${stats.total}語` : "計算中...",
-                ]}
-                onClick={(id) => {
-                  const difficulty = id as
-                    | "beginner"
-                    | "intermediate"
-                    | "advanced";
-                  navigate(
-                    `/learning/vocabulary/category?difficulty=${difficulty}`
-                  );
-                }}
-              />
-            );
-          })}
+          {/* 基本単語学習 */}
+          <SelectionCard
+            id="basic-words"
+            title="基本単語学習"
+            description="標準語彙データのみで学習"
+            detail="体系的に整理された基本語彙を段階的に学習"
+            icon="📚"
+            difficulty="ベーシック"
+            color="bg-green-50 border-green-200 text-green-800"
+            keyPoints={[
+              `基本語彙: ${basicStats.total}枚`,
+              `未学習: ${basicStats.remaining}枚`,
+              `学習済み: ${basicStats.known}枚`,
+              "初級→中級→上級の体系的学習",
+            ]}
+            onClick={() => navigate("/learning/vocabulary/basic-mode")}
+          />
+        </div>
+
+        {/* 説明セクション */}
+        <div className="mt-8 space-y-4">
+          <div className="p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
+            <h3 className="text-lg font-semibold mb-3">🎯 2つの学習モード</h3>
+            <div className="space-y-3 text-sm text-gray-700">
+              <div className="flex items-start space-x-2">
+                <span className="text-purple-600">🎁</span>
+                <div>
+                  <strong>ガチャカード学習</strong>: ガチャで獲得したカードのみを使用。レアリティが高いほど高度な語彙。楽しく学習継続。
+                </div>
+              </div>
+              <div className="flex items-start space-x-2">
+                <span className="text-green-600">📚</span>
+                <div>
+                  <strong>基本単語学習</strong>: 体系的に整理された標準語彙。初級から上級まで段階的に学習。確実な基礎固め。
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

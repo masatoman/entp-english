@@ -37,6 +37,8 @@ import TimeAttackMode from "../components/TimeAttackMode";
 import VocabularyCard from "../components/VocabularyCard";
 import VocabularyCategorySelection from "../components/VocabularyCategorySelection";
 import VocabularyDifficultySelection from "../components/VocabularyDifficultySelection";
+import GachaVocabularyLearning from "../components/GachaVocabularyLearning";
+import BasicVocabularyLearning from "../components/BasicVocabularyLearning";
 import XPShopPage from "../components/XPShopPage";
 
 export function AppRouter() {
@@ -61,6 +63,16 @@ export function AppRouter() {
             <Route
               path="/learning/vocabulary/study/:difficulty/:category"
               element={<VocabularyCard />}
+            />
+            
+            {/* 新しい分離された語彙学習モード */}
+            <Route
+              path="/learning/vocabulary/gacha-mode"
+              element={<GachaVocabularyLearning />}
+            />
+            <Route
+              path="/learning/vocabulary/basic-mode"
+              element={<BasicVocabularyLearning />}
             />
 
             {/* 統合学習システム */}

@@ -23,6 +23,12 @@ interface StudySession {
   studiedWords: Set<number>;
 }
 
+interface VocabularyCardProps {
+  difficulty?: "beginner" | "intermediate" | "advanced";
+  category?: "all" | "toeic" | "daily" | "gacha-only" | "basic-only";
+  isGachaMode?: boolean;
+}
+
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -32,13 +38,21 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
-export default function VocabularyCard() {
+export default function VocabularyCard({ 
+  difficulty: propDifficulty, 
+  category: propCategory, 
+  isGachaMode = false 
+}: VocabularyCardProps = {}) {
   const navigate = useNavigate();
   const { difficulty: urlDifficulty, category: urlCategory } = useParams();
-  const actualDifficulty =
+  
+  // propsが渡された場合はpropsを優先、そうでなければURLパラメータを使用
+  const actualDifficulty = propDifficulty || 
     (urlDifficulty as "beginner" | "intermediate" | "advanced") ||
     "intermediate";
-  const actualCategory = (urlCategory as "all" | "toeic" | "daily") || "all";
+  const actualCategory = propCategory || 
+    (urlCategory as "all" | "toeic" | "daily" | "gacha-only" | "basic-only") || 
+    "all";
 
   // ページトップにスクロール
   useScrollToTop();
@@ -57,30 +71,65 @@ export default function VocabularyCard() {
   const [isSpeaking, setIsSpeaking] = useState(false);
 
   useEffect(() => {
-    // 統合語彙管理システムから単語を取得（ガチャカード含む）
-    const allWords = VocabularyManager.getFilteredVocabularyWords(
-      actualDifficulty,
-      actualCategory
-    );
+    let allWords: VocabularyWord[] = [];
+
+    // モード別にデータを取得
+    if (actualCategory === "gacha-only") {
+      // ガチャカード専用モード
+      allWords = VocabularyManager.getGachaVocabularyWords();
+      
+      // ガチャカードのレベルフィルタリング（必要に応じて）
+      if (actualDifficulty !== "intermediate") {
+        allWords = allWords.filter(word => word.level === actualDifficulty);
+      }
+      
+      console.log("VocabularyCard - ガチャカード専用モード:", {
+        actualDifficulty,
+        totalGachaCards: allWords.length,
+      });
+    } else if (actualCategory === "basic-only") {
+      // 基本単語専用モード
+      allWords = VocabularyManager.getStandardVocabularyWords();
+      
+      // 難易度フィルタリング
+      allWords = allWords.filter(word => word.level === actualDifficulty);
+      
+      console.log("VocabularyCard - 基本単語専用モード:", {
+        actualDifficulty,
+        totalBasicCards: allWords.length,
+      });
+    } else {
+      // 従来の統合モード（後方互換性）
+      allWords = VocabularyManager.getFilteredVocabularyWords(
+        actualDifficulty,
+        actualCategory
+      );
+      
+      console.log("VocabularyCard - 統合モード（後方互換性）:", {
+        actualDifficulty,
+        actualCategory,
+        totalWords: allWords.length,
+      });
+    }
 
     // 既知単語を除外
     const filteredWords = KnownWordsManager.filterUnknownWords(allWords);
 
-    console.log("VocabularyCard - 統合語彙フィルタリング結果:", {
+    console.log("VocabularyCard - フィルタリング結果:", {
       actualDifficulty,
       actualCategory,
       totalWords: allWords.length,
       filteredWordsCount: filteredWords.length,
       excludedCount: allWords.length - filteredWords.length,
-      gachaCards: allWords.filter((w) => w.id >= 10000).length,
-      standardCards: allWords.filter((w) => w.id < 10000).length,
-      filteredWords: filteredWords.slice(0, 5), // 最初の5個を表示
+      isGachaMode,
+      mode: actualCategory === "gacha-only" ? "ガチャ専用" : actualCategory === "basic-only" ? "基本単語専用" : "統合",
     });
 
     if (filteredWords.length === 0) {
       console.error("VocabularyCard - 該当する単語が見つかりません:", {
         actualDifficulty,
         actualCategory,
+        isGachaMode,
       });
       // エラー状態を設定
       setWords([]);
@@ -106,7 +155,7 @@ export default function VocabularyCard() {
       unknownWords: 0,
       studiedWords: new Set(),
     });
-  }, [actualDifficulty, actualCategory]);
+  }, [actualDifficulty, actualCategory, isGachaMode]);
 
   // 語彙学習セッション完了時の処理
   useEffect(() => {
