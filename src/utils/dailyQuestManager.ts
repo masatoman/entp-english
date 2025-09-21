@@ -226,6 +226,7 @@ class DailyQuestManager {
     const shuffled = [...questTemplates].sort(() => Math.random() - 0.5);
     const dailyCount = 3 + Math.floor(Math.random() * 3); // 3-5個
     const selectedQuests = shuffled.slice(0, dailyCount);
+    const today = new Date().toISOString().split("T")[0];
 
     return selectedQuests.map((template, index) => ({
       ...template,
