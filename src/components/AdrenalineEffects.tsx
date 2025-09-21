@@ -231,7 +231,17 @@ export default function AdrenalineEffects({
 
         {/* 宝箱通知 */}
         {system.treasureBoxes.filter((box) => !box.isOpened).length > 0 && (
-          <Card className="bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-400 animate-pulse">
+          <Card 
+            className="bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-400 animate-pulse cursor-pointer hover:shadow-lg transition-all"
+            onClick={() => {
+              // 宝箱開封イベントを親コンポーネントに通知
+              const event = new CustomEvent('openTreasureBoxes', {
+                detail: { treasureBoxes: system.treasureBoxes.filter((box) => !box.isOpened) }
+              });
+              window.dispatchEvent(event);
+              console.log("🎁 宝箱開封イベント発火:", system.treasureBoxes.filter((box) => !box.isOpened).length);
+            }}
+          >
             <CardContent className="p-3">
               <div className="text-center">
                 <div className="text-lg">🎁</div>
