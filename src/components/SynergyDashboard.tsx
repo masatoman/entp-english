@@ -159,8 +159,11 @@ export default function SynergyDashboard({
               学習シナジーダッシュボード
             </h1>
             <p className="text-gray-600">
-              事前学習と文法クイズの相乗効果を最大化しよう！
+              事前学習と文法クイズを組み合わせて、学習効果を最大260%まで向上させよう！
             </p>
+            <div className="mt-2 text-sm text-blue-600">
+              💡 このページは「事前学習」専用です。スキルツリーとは別のシステムです。
+            </div>
           </div>
           <div className="w-32" />
         </div>
@@ -170,7 +173,7 @@ export default function SynergyDashboard({
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                完了コンテンツ
+                完了した事前学習
               </CardTitle>
               <Target className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
@@ -179,9 +182,10 @@ export default function SynergyDashboard({
                 {completedCount}/{totalCount}
               </div>
               <Progress
-                value={(completedCount / totalCount) * 100}
+                value={totalCount > 0 ? (completedCount / totalCount) * 100 : 0}
                 className="mt-2"
               />
+              <p className="text-xs text-muted-foreground mt-1">理論学習の進捗</p>
             </CardContent>
           </Card>
 
@@ -206,7 +210,7 @@ export default function SynergyDashboard({
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                解放コンテンツ
+                新しい事前学習
               </CardTitle>
               <Star className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
@@ -217,14 +221,14 @@ export default function SynergyDashboard({
                   0
                 )}
               </div>
-              <p className="text-xs text-muted-foreground">新たに利用可能</p>
+              <p className="text-xs text-muted-foreground">学習で解放された理論コンテンツ</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                推奨コンテンツ
+                おすすめ事前学習
               </CardTitle>
               <BookOpen className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
@@ -232,7 +236,7 @@ export default function SynergyDashboard({
               <div className="text-2xl font-bold">
                 {recommendedContent.length}
               </div>
-              <p className="text-xs text-muted-foreground">シナジー効果あり</p>
+              <p className="text-xs text-muted-foreground">効果的な理論学習</p>
             </CardContent>
           </Card>
         </div>
@@ -312,7 +316,7 @@ export default function SynergyDashboard({
                 const bonusPercent = Math.round(
                   (progress.synergyBonus - 1) * 100
                 );
-                const effectivenessPercent = isNaN(progress.effectivenessScore) 
+                const effectivenessPercent = isNaN(progress.effectivenessScore)
                   ? 50 // デフォルト値
                   : Math.round(progress.effectivenessScore * 100);
 
@@ -435,27 +439,61 @@ export default function SynergyDashboard({
             </div>
 
             {/* 説明セクション */}
-            <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-              <h4 className="font-semibold text-blue-700 mb-2">
-                💡 表示の見方
-              </h4>
-              <div className="space-y-2 text-sm text-blue-600">
-                <div>
-                  • <strong>学習効果 +30%</strong>
-                  ：通常より30%多くXPがもらえます（0%の場合は通常通り）
+            <div className="mt-6 space-y-4">
+              {/* このページの説明 */}
+              <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <h4 className="font-semibold text-blue-700 mb-2">
+                  🧠 このページについて
+                </h4>
+                <div className="space-y-2 text-sm text-blue-600">
+                  <div>• このページは<strong>「事前学習」の効率的な使い方</strong>を支援します</div>
+                  <div>• <strong>スキルツリーとは別のシステム</strong>です（スキルツリーは文法学習全体、こちらは理論学習専用）</div>
+                  <div>• 事前学習（理論）→ 文法クイズ（実践）の順番で学習すると<strong>学習効果が大幅アップ</strong>します</div>
                 </div>
-                <div>
-                  • <strong>おすすめ度</strong>
-                  ：⭐⭐⭐⭐⭐（90%以上）、⭐⭐⭐⭐（75%以上）、⭐⭐⭐（60%以上）、⭐⭐（40%以上）、⭐（40%未満）
+              </div>
+
+              {/* 4つのブロックの説明 */}
+              <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                <h4 className="font-semibold text-green-700 mb-2">
+                  📊 4つのブロックの意味
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-green-600">
+                  <div>
+                    <strong>完了した事前学習</strong>：あなたが読み終えた理論コンテンツの数
+                  </div>
+                  <div>
+                    <strong>平均シナジー効果</strong>：理論学習により文法クイズでどれくらい効果アップするか
+                  </div>
+                  <div>
+                    <strong>新しい事前学習</strong>：学習進捗により新たに読めるようになった理論コンテンツ
+                  </div>
+                  <div>
+                    <strong>おすすめ事前学習</strong>：今のあなたに最も効果的な理論学習の数
+                  </div>
                 </div>
-                <div>
-                  • <strong>効果的レベル</strong>：超効果的（+25%以上） &gt;
-                  とても効果的（+15%以上） &gt; 効果的（+5%以上） &gt;
-                  普通（0%以上）
-                </div>
-                <div>
-                  • <strong>番号順</strong>
-                  ：#1が最も効果的、番号が大きくなるほど効果は下がりますが、全て学習価値があります
+              </div>
+
+              {/* 表示の見方 */}
+              <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                <h4 className="font-semibold text-yellow-700 mb-2">
+                  💡 表示の見方
+                </h4>
+                <div className="space-y-2 text-sm text-yellow-600">
+                  <div>
+                    • <strong>学習効果 +30%</strong>
+                    ：この理論を学んだ後に文法クイズをすると、通常より30%多くXPがもらえます
+                  </div>
+                  <div>
+                    • <strong>おすすめ度 ⭐⭐⭐⭐⭐</strong>
+                    ：今のあなたの学習レベルにどれくらい適しているかを5段階で表示
+                  </div>
+                  <div>
+                    • <strong>効果的レベル</strong>：理論学習の効果度（超効果的 &gt; とても効果的 &gt; 効果的 &gt; 普通）
+                  </div>
+                  <div>
+                    • <strong>番号順</strong>
+                    ：#1が最も効果的、効果順に並んでいます
+                  </div>
                 </div>
               </div>
             </div>
