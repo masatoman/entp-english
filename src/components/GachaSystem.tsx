@@ -56,18 +56,21 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
     return () => clearInterval(interval);
   }, []);
 
-  const handleOpenPack = async (packId: string) => {
+  const handleOpenPack = async (packId: string, paymentType?: "xp" | "coins") => {
     const pack = GachaSystemUtil.getPackById(packId);
     if (!pack) return;
 
+    // 支払い方法を決定（パラメータ優先、なければ現在の設定）
+    const finalPaymentMethod = paymentType || paymentMethod;
+
     // 支払い方法に応じてチェック
-    if (paymentMethod === "xp") {
+    if (finalPaymentMethod === "xp") {
       const canOpen = GachaSystemUtil.canOpenPack(packId, userXP);
       if (!canOpen.canOpen) {
         alert(canOpen.reason);
         return;
       }
-    } else if (paymentMethod === "coins") {
+    } else if (finalPaymentMethod === "coins") {
       const coinCost = Math.floor(pack.cost / 2); // コインはXPの半分のコスト
       if (!dailyQuestManager.canAffordCoins(coinCost)) {
         alert(
@@ -89,11 +92,11 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
       console.log("Cards drawn:", cards);
 
       // 支払い処理
-      if (paymentMethod === "xp") {
+      if (finalPaymentMethod === "xp") {
         const newXP = userXP - pack.cost;
         console.log("XP支払い:", userXP, "→", newXP);
         onXPChange(newXP);
-      } else if (paymentMethod === "coins") {
+      } else if (finalPaymentMethod === "coins") {
         const coinCost = Math.floor(pack.cost / 2);
         dailyQuestManager.spendCoins(coinCost);
         setCoinSystem(dailyQuestManager.getCoinSystem());
@@ -221,27 +224,6 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
               {showCollection ? "パック選択" : "コレクション"}
             </Button>
 
-            {/* 支払い方法選択 */}
-            <div className="flex items-center gap-2">
-              <Button
-                variant={paymentMethod === "xp" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setPaymentMethod("xp")}
-                className="flex items-center gap-1"
-              >
-                <Zap className="w-3 h-3" />
-                XP
-              </Button>
-              <Button
-                variant={paymentMethod === "coins" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setPaymentMethod("coins")}
-                className="flex items-center gap-1"
-              >
-                <span className="text-sm">🪙</span>
-                コイン
-              </Button>
-            </div>
           </div>
         </div>
 
@@ -326,13 +308,6 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
                 const canOpenXP = GachaSystemUtil.canOpenPack(pack.id, userXP);
                 const coinCost = Math.floor(pack.cost / 2);
                 const canOpenCoins = dailyQuestManager.canAffordCoins(coinCost);
-                const canOpen =
-                  paymentMethod === "xp"
-                    ? canOpenXP
-                    : {
-                        canOpen: canOpenCoins,
-                        reason: canOpenCoins ? "" : "コイン不足",
-                      };
 
                 const RarityIcon =
                   pack.rarity === "normal"
@@ -344,14 +319,11 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
                 return (
                   <Card
                     key={pack.id}
-                    className={`p-4 transition-all hover:shadow-lg cursor-pointer ${
+                    className={`p-4 transition-all hover:shadow-lg ${
                       selectedPack === pack.id ? "ring-2 ring-purple-500" : ""
                     } ${
-                      !canOpen.canOpen ? "opacity-60 cursor-not-allowed" : ""
+                      (!canOpenXP.canOpen && !canOpenCoins) ? "opacity-60" : ""
                     }`}
-                    onClick={() =>
-                      canOpen.canOpen && !isOpening && handleOpenPack(pack.id)
-                    }
                   >
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
@@ -374,51 +346,60 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
                       {pack.description}
                     </p>
 
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <Zap className="w-4 h-4 text-blue-500" />
-                          <span className="text-lg font-bold text-blue-600">
-                            {pack.cost} XP
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm">🪙</span>
-                          <span className="text-lg font-bold text-yellow-600">
-                            {Math.floor(pack.cost / 2)} コイン
-                          </span>
-                        </div>
-                        <div className="text-xs text-gray-500">
-                          {paymentMethod === "xp"
-                            ? "XP支払い選択中"
-                            : "コイン支払い選択中"}
-                        </div>
+                    <div className="space-y-3">
+                      {/* 支払い方法ボタン */}
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenPack(pack.id, "xp");
+                          }}
+                          disabled={!canOpenXP.canOpen || isOpening || userXP < pack.cost}
+                          className="flex-1 flex items-center gap-2"
+                        >
+                          <Zap className="w-4 h-4" />
+                          <span className="font-bold">{pack.cost} XP</span>
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenPack(pack.id, "coins");
+                          }}
+                          disabled={!canOpenCoins || isOpening || coinSystem.current < Math.floor(pack.cost / 2)}
+                          className="flex-1 flex items-center gap-2"
+                        >
+                          <span>🪙</span>
+                          <span className="font-bold">{Math.floor(pack.cost / 2)} コイン</span>
+                        </Button>
                       </div>
-                      <div
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                          canOpen.canOpen && !isOpening
-                            ? "bg-purple-600 text-white hover:bg-purple-700"
-                            : "bg-gray-300 text-gray-500"
-                        }`}
-                      >
-                        {isOpening && selectedPack === pack.id
-                          ? "開封中..."
-                          : canOpen.canOpen
-                          ? "クリックして開封"
-                          : "開封不可"}
-                      </div>
+                      
+                      {/* 開封状態表示 */}
+                      {isOpening && selectedPack === pack.id && (
+                        <div className="text-center text-sm text-gray-600">
+                          開封中...
+                        </div>
+                      )}
                     </div>
 
-                    {!canOpen.canOpen && (
+                    {(!canOpenXP.canOpen || !canOpenCoins) && (
                       <div className="text-xs text-red-600 mt-2">
-                        {canOpen.reason}
-                        {canOpen.nextPackTime && (
+                        {!canOpenXP.canOpen && (
+                          <div>XP不足: {canOpenXP.reason}</div>
+                        )}
+                        {!canOpenCoins && (
+                          <div>コイン不足: {coinCost}枚必要</div>
+                        )}
+                        {canOpenXP.nextPackTime && (
                           <div className="mt-1 text-gray-500">
                             次の回復:{" "}
                             {(() => {
                               const remaining = Math.max(
                                 0,
-                                canOpen.nextPackTime - Date.now()
+                                canOpenXP.nextPackTime - Date.now()
                               );
                               const minutes = Math.ceil(
                                 remaining / (1000 * 60)
