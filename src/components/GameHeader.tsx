@@ -8,7 +8,6 @@ import { adrenalineManager } from "../utils/adrenalineManager";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { DataManager } from "../utils/dataManager";
 import { getLevelManager } from "../utils/levelManager";
-import { calculateRecoveredStars } from "../utils/starUtils";
 import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
 
@@ -64,35 +63,38 @@ export default function GameHeader({
   const nextLevelXP = currentLevel * 100;
   const progressXP = Math.max(0, totalXP - currentLevelXP);
   const requiredXP = nextLevelXP - currentLevelXP;
-  const progressPercentage = requiredXP > 0 ? Math.min(100, (progressXP / requiredXP) * 100) : 0;
+  const progressPercentage =
+    requiredXP > 0 ? Math.min(100, (progressXP / requiredXP) * 100) : 0;
 
   return (
-    <div className="bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 text-white p-4 shadow-lg">
+    <div className="bg-gradient-to-r from-slate-800 via-purple-800 to-slate-800 text-white p-4 shadow-lg border-b border-purple-700/50">
       <div className="max-w-6xl mx-auto">
         {/* 上段: ユーザー情報とレベル */}
         <div className="flex items-center justify-between mb-4">
           {/* ユーザー情報 */}
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg border-2 border-white/30">
+            <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg border-2 border-white/50 shadow-lg">
               {userLevel.level || 1}
             </div>
             <div>
-              <div className="text-lg font-bold">Level {userLevel.level || 1}</div>
-              <div className="text-sm text-purple-200">中級編</div>
+              <div className="text-lg font-bold text-white drop-shadow-sm">
+                Level {userLevel.level || 1}
+              </div>
+              <div className="text-sm text-purple-100">中級編</div>
             </div>
           </div>
 
           {/* XP進捗 */}
           <div className="flex-1 max-w-md mx-6">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-sm text-purple-200">経験値</span>
-              <span className="text-sm text-white font-medium">
+              <span className="text-sm text-purple-100">経験値</span>
+              <span className="text-sm text-white font-medium drop-shadow-sm">
                 {progressXP.toFixed(0)}/{requiredXP} XP
               </span>
             </div>
             <Progress
               value={progressPercentage}
-              className="h-2 bg-purple-900/50"
+              className="h-3 bg-purple-900/70 border border-purple-600/30"
             />
           </div>
 
@@ -130,10 +132,11 @@ export default function GameHeader({
               size="sm"
               onClick={() => {
                 const manager = getLevelManager();
-                if (manager.addHeart()) {
-                  console.log("♥ 体力を1回復しました");
+                if (manager.recoverAllHearts) {
+                  manager.recoverAllHearts();
+                  console.log("♥ 体力を全回復しました");
                 } else {
-                  console.log("♥ 体力は既に最大です");
+                  console.log("♥ 回復機能が利用できません");
                 }
               }}
               className="text-red-300 hover:text-red-200 hover:bg-red-500/20 p-1"
@@ -154,21 +157,14 @@ export default function GameHeader({
               variant="ghost"
               size="sm"
               onClick={() => {
-                const currentStats = DataManager.getUserStats();
-                const updatedStats = {
-                  ...currentStats,
-                  stars: {
-                    ...currentStats.stars,
-                    current: Math.min(
-                      currentStats.stars.current + 1,
-                      currentStats.stars.max
-                    ),
-                    lastRecoveryTime: Date.now(),
-                  },
-                };
-                DataManager.saveUserStats(updatedStats);
-                setStarSystem(updatedStats.stars);
-                console.log("⭐ スタミナを1回復しました");
+                const manager = getLevelManager();
+                if (manager.recoverAllStars) {
+                  manager.recoverAllStars();
+                  setStarSystem(manager.getStarSystem());
+                  console.log("⭐ スタミナを全回復しました");
+                } else {
+                  console.log("⭐ 回復機能が利用できません");
+                }
               }}
               className="text-yellow-300 hover:text-yellow-200 hover:bg-yellow-500/20 p-1"
             >

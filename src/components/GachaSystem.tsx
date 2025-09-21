@@ -185,7 +185,7 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50">
       {/* ゲームヘッダー */}
       <GameHeader />
-      
+
       <div className="max-w-6xl mx-auto p-6">
         {/* ページタイトル */}
         <div className="flex items-center justify-between mb-6">
@@ -204,365 +204,373 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
               TOEIC単語ガチャ
             </h1>
           </div>
-        <div className="flex items-center gap-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowCollection(!showCollection)}
-            className="flex items-center gap-2"
-          >
-            <Gift className="w-4 h-4" />
-            {showCollection ? "パック選択" : "コレクション"}
-          </Button>
-
-          {/* 支払い方法選択 */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
             <Button
-              variant={paymentMethod === "xp" ? "default" : "outline"}
+              variant="outline"
               size="sm"
-              onClick={() => setPaymentMethod("xp")}
-              className="flex items-center gap-1"
+              onClick={() => setShowCollection(!showCollection)}
+              className="flex items-center gap-2"
             >
-              <Zap className="w-3 h-3" />
-              XP
+              <Gift className="w-4 h-4" />
+              {showCollection ? "パック選択" : "コレクション"}
             </Button>
-            <Button
-              variant={paymentMethod === "coins" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setPaymentMethod("coins")}
-              className="flex items-center gap-1"
-            >
-              <span className="text-sm">🪙</span>
-              コイン
-            </Button>
-          </div>
-        </div>
-      </div>
 
-      {/* コレクション統計 */}
-      <Card className="p-4 mb-6">
-        <h3 className="font-semibold mb-2">コレクション統計</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-          <div>
-            <div className="text-gray-600">総カード数</div>
-            <div className="font-bold">
-              {userGachaData.collection.totalCards}
-            </div>
-          </div>
-          <div>
-            <div className="text-gray-600">ユニークカード</div>
-            <div className="font-bold">
-              {userGachaData.collection.uniqueCards}
-            </div>
-          </div>
-          <div>
-            <div className="text-gray-600">開封パック数</div>
-            <div className="font-bold">{userGachaData.totalPacks}</div>
-          </div>
-          <div>
-            <div className="text-gray-600">利用可能パック</div>
-            <div className="font-bold">
-              {GachaSystemUtil.getAvailablePacksCount(userGachaData)}/2
-            </div>
-          </div>
-        </div>
-      </Card>
-
-      {/* パック回復時間表示 */}
-      {GachaSystemUtil.getAvailablePacksCount(userGachaData) < 2 && (
-        <Card className="mb-6">
-          <div className="p-4">
-            <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
-              <Zap className="w-5 h-5 text-yellow-500" />
-              パック回復システム
-            </h3>
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">次のパック回復まで</span>
-                <span className="font-bold text-purple-600">
-                  {(() => {
-                    const nextTime =
-                      GachaSystemUtil.getNextPackRecoveryTime(userGachaData);
-                    const remaining = Math.max(0, nextTime - Date.now());
-                    const minutes = Math.ceil(remaining / (1000 * 60));
-                    return `${minutes}分`;
-                  })()}
-                </span>
-              </div>
-              <div className="text-sm text-gray-500">
-                💡 5分ごとに1パック回復します（最大2パック）
-              </div>
-              {/* 開発用リセットボタン */}
+            {/* 支払い方法選択 */}
+            <div className="flex items-center gap-2">
               <Button
-                variant="outline"
+                variant={paymentMethod === "xp" ? "default" : "outline"}
                 size="sm"
-                onClick={() => {
-                  localStorage.removeItem("userGachaData");
-                  setUserGachaData(GachaSystemUtil.getUserGachaData());
-                }}
-                className="mt-2 text-xs"
+                onClick={() => setPaymentMethod("xp")}
+                className="flex items-center gap-1"
               >
-                🔄 テスト用リセット
+                <Zap className="w-3 h-3" />
+                XP
+              </Button>
+              <Button
+                variant={paymentMethod === "coins" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setPaymentMethod("coins")}
+                className="flex items-center gap-1"
+              >
+                <span className="text-sm">🪙</span>
+                コイン
               </Button>
             </div>
           </div>
-        </Card>
-      )}
+        </div>
 
-      {/* パック選択またはコレクション表示 */}
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4">
-          {showCollection ? "所持カードコレクション" : "パックを選択"}
-        </h2>
-        {!showCollection ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {availablePacks.map((pack) => {
-              const canOpenXP = GachaSystemUtil.canOpenPack(pack.id, userXP);
-              const coinCost = Math.floor(pack.cost / 2);
-              const canOpenCoins = dailyQuestManager.canAffordCoins(coinCost);
-              const canOpen =
-                paymentMethod === "xp"
-                  ? canOpenXP
-                  : {
-                      canOpen: canOpenCoins,
-                      reason: canOpenCoins ? "" : "コイン不足",
-                    };
-
-              const RarityIcon =
-                pack.rarity === "normal"
-                  ? Star
-                  : pack.rarity === "premium"
-                  ? Zap
-                  : Diamond;
-
-              return (
-                <Card
-                  key={pack.id}
-                  className={`p-4 transition-all hover:shadow-lg cursor-pointer ${
-                    selectedPack === pack.id ? "ring-2 ring-purple-500" : ""
-                  } ${!canOpen.canOpen ? "opacity-60 cursor-not-allowed" : ""}`}
-                  onClick={() =>
-                    canOpen.canOpen && !isOpening && handleOpenPack(pack.id)
-                  }
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-2xl">
-                        {getPackThemeIcon(pack.theme)}
-                      </span>
-                      <RarityIcon className="w-5 h-5 text-purple-600" />
-                    </div>
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${getScoreBandColor(
-                        pack.targetScore
-                      )}`}
-                    >
-                      {pack.targetScore}
-                    </span>
-                  </div>
-
-                  <h3 className="font-bold text-lg mb-1">{pack.name}</h3>
-                  <p className="text-sm text-gray-600 mb-4">
-                    {pack.description}
-                  </p>
-
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <Zap className="w-4 h-4 text-blue-500" />
-                        <span className="text-lg font-bold text-blue-600">
-                          {pack.cost} XP
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm">🪙</span>
-                        <span className="text-lg font-bold text-yellow-600">
-                          {Math.floor(pack.cost / 2)} コイン
-                        </span>
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        {paymentMethod === "xp"
-                          ? "XP支払い選択中"
-                          : "コイン支払い選択中"}
-                      </div>
-                    </div>
-                    <div
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        canOpen.canOpen && !isOpening
-                          ? "bg-purple-600 text-white hover:bg-purple-700"
-                          : "bg-gray-300 text-gray-500"
-                      }`}
-                    >
-                      {isOpening && selectedPack === pack.id
-                        ? "開封中..."
-                        : canOpen.canOpen
-                        ? "クリックして開封"
-                        : "開封不可"}
-                    </div>
-                  </div>
-
-                  {!canOpen.canOpen && (
-                    <div className="text-xs text-red-600 mt-2">
-                      {canOpen.reason}
-                      {canOpen.nextPackTime && (
-                        <div className="mt-1 text-gray-500">
-                          次の回復:{" "}
-                          {(() => {
-                            const remaining = Math.max(
-                              0,
-                              canOpen.nextPackTime - Date.now()
-                            );
-                            const minutes = Math.ceil(remaining / (1000 * 60));
-                            return `${minutes}分後`;
-                          })()}
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </Card>
-              );
-            })}
-          </div>
-        ) : (
-          /* コレクション表示 */
-          <div>
-            {userGachaData.ownedCards.length === 0 ? (
-              <Card className="text-center py-12">
-                <Gift className="w-16 h-16 mx-auto text-gray-300 mb-4" />
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">
-                  まだカードを所持していません
-                </h3>
-                <p className="text-gray-500 mb-4">
-                  パックを開封してカードを集めよう！
-                </p>
-                <Button
-                  onClick={() => setShowCollection(false)}
-                  className="bg-purple-600 hover:bg-purple-700"
-                >
-                  パックを開封する
-                </Button>
-              </Card>
-            ) : (
-              <div>
-                {/* コレクション統計 */}
-                <div className="flex items-center gap-6 mb-4 p-3 bg-gray-50 rounded-lg">
-                  <div className="text-center">
-                    <div className="text-lg font-bold text-purple-600">
-                      {userGachaData.ownedCards.length}
-                    </div>
-                    <div className="text-xs text-gray-600">総カード数</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-lg font-bold text-blue-600">
-                      {userGachaData.collection.uniqueCards}
-                    </div>
-                    <div className="text-xs text-gray-600">ユニークカード</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-lg font-bold text-green-600">
-                      {
-                        userGachaData.ownedCards.filter(
-                          (card) =>
-                            card.rarity === "rare" ||
-                            card.rarity === "epic" ||
-                            card.rarity === "legendary"
-                        ).length
-                      }
-                    </div>
-                    <div className="text-xs text-gray-600">レア以上</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-lg font-bold text-yellow-600">
-                      {
-                        userGachaData.ownedCards.filter(
-                          (card) => card.rarity === "legendary"
-                        ).length
-                      }
-                    </div>
-                    <div className="text-xs text-gray-600">レジェンダリー</div>
-                  </div>
-                </div>
-
-                {/* レアリティ別フィルター */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setShowCollection(!showCollection)}
-                    className="text-xs"
-                  >
-                    全て
-                  </Button>
-                  {[
-                    {
-                      rarity: "common",
-                      name: "コモン",
-                      color: "text-gray-700 border-gray-400",
-                    },
-                    {
-                      rarity: "uncommon",
-                      name: "アンコモン",
-                      color: "text-green-700 border-green-500",
-                    },
-                    {
-                      rarity: "rare",
-                      name: "レア",
-                      color: "text-blue-700 border-blue-500",
-                    },
-                    {
-                      rarity: "epic",
-                      name: "エピック",
-                      color: "text-purple-700 border-purple-500",
-                    },
-                    {
-                      rarity: "legendary",
-                      name: "レジェンダリー",
-                      color: "text-yellow-700 border-yellow-500",
-                    },
-                  ].map(({ rarity, name, color }) => {
-                    const count = userGachaData.ownedCards.filter(
-                      (card) => card.rarity === rarity
-                    ).length;
-                    return (
-                      <Button
-                        key={rarity}
-                        variant="outline"
-                        size="sm"
-                        className={`text-xs ${color} border-2`}
-                      >
-                        {name} ({count})
-                      </Button>
-                    );
-                  })}
-                </div>
-
-                {/* カードコレクション */}
-                <CardCollectionGrid
-                  cards={userGachaData.ownedCards}
-                  onCardClick={(card) => {
-                    // カード詳細画面に遷移
-                    navigate(`/games/gacha/card/${card.id}`);
-                  }}
-                  title="マイコレクション"
-                  showFilters={true}
-                  showSearch={true}
-                />
+        {/* コレクション統計 */}
+        <Card className="p-4 mb-6">
+          <h3 className="font-semibold mb-2">コレクション統計</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div>
+              <div className="text-gray-600">総カード数</div>
+              <div className="font-bold">
+                {userGachaData.collection.totalCards}
               </div>
-            )}
+            </div>
+            <div>
+              <div className="text-gray-600">ユニークカード</div>
+              <div className="font-bold">
+                {userGachaData.collection.uniqueCards}
+              </div>
+            </div>
+            <div>
+              <div className="text-gray-600">開封パック数</div>
+              <div className="font-bold">{userGachaData.totalPacks}</div>
+            </div>
+            <div>
+              <div className="text-gray-600">利用可能パック</div>
+              <div className="font-bold">
+                {GachaSystemUtil.getAvailablePacksCount(userGachaData)}/2
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        {/* パック回復時間表示 */}
+        {GachaSystemUtil.getAvailablePacksCount(userGachaData) < 2 && (
+          <Card className="mb-6">
+            <div className="p-4">
+              <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                <Zap className="w-5 h-5 text-yellow-500" />
+                パック回復システム
+              </h3>
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">次のパック回復まで</span>
+                  <span className="font-bold text-purple-600">
+                    {(() => {
+                      const nextTime =
+                        GachaSystemUtil.getNextPackRecoveryTime(userGachaData);
+                      const remaining = Math.max(0, nextTime - Date.now());
+                      const minutes = Math.ceil(remaining / (1000 * 60));
+                      return `${minutes}分`;
+                    })()}
+                  </span>
+                </div>
+                <div className="text-sm text-gray-500">
+                  💡 5分ごとに1パック回復します（最大2パック）
+                </div>
+                {/* 開発用リセットボタン */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    localStorage.removeItem("userGachaData");
+                    setUserGachaData(GachaSystemUtil.getUserGachaData());
+                  }}
+                  className="mt-2 text-xs"
+                >
+                  🔄 テスト用リセット
+                </Button>
+              </div>
+            </div>
+          </Card>
+        )}
+
+        {/* パック選択またはコレクション表示 */}
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">
+            {showCollection ? "所持カードコレクション" : "パックを選択"}
+          </h2>
+          {!showCollection ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {availablePacks.map((pack) => {
+                const canOpenXP = GachaSystemUtil.canOpenPack(pack.id, userXP);
+                const coinCost = Math.floor(pack.cost / 2);
+                const canOpenCoins = dailyQuestManager.canAffordCoins(coinCost);
+                const canOpen =
+                  paymentMethod === "xp"
+                    ? canOpenXP
+                    : {
+                        canOpen: canOpenCoins,
+                        reason: canOpenCoins ? "" : "コイン不足",
+                      };
+
+                const RarityIcon =
+                  pack.rarity === "normal"
+                    ? Star
+                    : pack.rarity === "premium"
+                    ? Zap
+                    : Diamond;
+
+                return (
+                  <Card
+                    key={pack.id}
+                    className={`p-4 transition-all hover:shadow-lg cursor-pointer ${
+                      selectedPack === pack.id ? "ring-2 ring-purple-500" : ""
+                    } ${
+                      !canOpen.canOpen ? "opacity-60 cursor-not-allowed" : ""
+                    }`}
+                    onClick={() =>
+                      canOpen.canOpen && !isOpening && handleOpenPack(pack.id)
+                    }
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl">
+                          {getPackThemeIcon(pack.theme)}
+                        </span>
+                        <RarityIcon className="w-5 h-5 text-purple-600" />
+                      </div>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${getScoreBandColor(
+                          pack.targetScore
+                        )}`}
+                      >
+                        {pack.targetScore}
+                      </span>
+                    </div>
+
+                    <h3 className="font-bold text-lg mb-1">{pack.name}</h3>
+                    <p className="text-sm text-gray-600 mb-4">
+                      {pack.description}
+                    </p>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <Zap className="w-4 h-4 text-blue-500" />
+                          <span className="text-lg font-bold text-blue-600">
+                            {pack.cost} XP
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm">🪙</span>
+                          <span className="text-lg font-bold text-yellow-600">
+                            {Math.floor(pack.cost / 2)} コイン
+                          </span>
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {paymentMethod === "xp"
+                            ? "XP支払い選択中"
+                            : "コイン支払い選択中"}
+                        </div>
+                      </div>
+                      <div
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                          canOpen.canOpen && !isOpening
+                            ? "bg-purple-600 text-white hover:bg-purple-700"
+                            : "bg-gray-300 text-gray-500"
+                        }`}
+                      >
+                        {isOpening && selectedPack === pack.id
+                          ? "開封中..."
+                          : canOpen.canOpen
+                          ? "クリックして開封"
+                          : "開封不可"}
+                      </div>
+                    </div>
+
+                    {!canOpen.canOpen && (
+                      <div className="text-xs text-red-600 mt-2">
+                        {canOpen.reason}
+                        {canOpen.nextPackTime && (
+                          <div className="mt-1 text-gray-500">
+                            次の回復:{" "}
+                            {(() => {
+                              const remaining = Math.max(
+                                0,
+                                canOpen.nextPackTime - Date.now()
+                              );
+                              const minutes = Math.ceil(
+                                remaining / (1000 * 60)
+                              );
+                              return `${minutes}分後`;
+                            })()}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </Card>
+                );
+              })}
+            </div>
+          ) : (
+            /* コレクション表示 */
+            <div>
+              {userGachaData.ownedCards.length === 0 ? (
+                <Card className="text-center py-12">
+                  <Gift className="w-16 h-16 mx-auto text-gray-300 mb-4" />
+                  <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                    まだカードを所持していません
+                  </h3>
+                  <p className="text-gray-500 mb-4">
+                    パックを開封してカードを集めよう！
+                  </p>
+                  <Button
+                    onClick={() => setShowCollection(false)}
+                    className="bg-purple-600 hover:bg-purple-700"
+                  >
+                    パックを開封する
+                  </Button>
+                </Card>
+              ) : (
+                <div>
+                  {/* コレクション統計 */}
+                  <div className="flex items-center gap-6 mb-4 p-3 bg-gray-50 rounded-lg">
+                    <div className="text-center">
+                      <div className="text-lg font-bold text-purple-600">
+                        {userGachaData.ownedCards.length}
+                      </div>
+                      <div className="text-xs text-gray-600">総カード数</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-lg font-bold text-blue-600">
+                        {userGachaData.collection.uniqueCards}
+                      </div>
+                      <div className="text-xs text-gray-600">
+                        ユニークカード
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-lg font-bold text-green-600">
+                        {
+                          userGachaData.ownedCards.filter(
+                            (card) =>
+                              card.rarity === "rare" ||
+                              card.rarity === "epic" ||
+                              card.rarity === "legendary"
+                          ).length
+                        }
+                      </div>
+                      <div className="text-xs text-gray-600">レア以上</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-lg font-bold text-yellow-600">
+                        {
+                          userGachaData.ownedCards.filter(
+                            (card) => card.rarity === "legendary"
+                          ).length
+                        }
+                      </div>
+                      <div className="text-xs text-gray-600">
+                        レジェンダリー
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* レアリティ別フィルター */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowCollection(!showCollection)}
+                      className="text-xs"
+                    >
+                      全て
+                    </Button>
+                    {[
+                      {
+                        rarity: "common",
+                        name: "コモン",
+                        color: "text-gray-700 border-gray-400",
+                      },
+                      {
+                        rarity: "uncommon",
+                        name: "アンコモン",
+                        color: "text-green-700 border-green-500",
+                      },
+                      {
+                        rarity: "rare",
+                        name: "レア",
+                        color: "text-blue-700 border-blue-500",
+                      },
+                      {
+                        rarity: "epic",
+                        name: "エピック",
+                        color: "text-purple-700 border-purple-500",
+                      },
+                      {
+                        rarity: "legendary",
+                        name: "レジェンダリー",
+                        color: "text-yellow-700 border-yellow-500",
+                      },
+                    ].map(({ rarity, name, color }) => {
+                      const count = userGachaData.ownedCards.filter(
+                        (card) => card.rarity === rarity
+                      ).length;
+                      return (
+                        <Button
+                          key={rarity}
+                          variant="outline"
+                          size="sm"
+                          className={`text-xs ${color} border-2`}
+                        >
+                          {name} ({count})
+                        </Button>
+                      );
+                    })}
+                  </div>
+
+                  {/* カードコレクション */}
+                  <CardCollectionGrid
+                    cards={userGachaData.ownedCards}
+                    onCardClick={(card) => {
+                      // カード詳細画面に遷移
+                      navigate(`/games/gacha/card/${card.id}`);
+                    }}
+                    title="マイコレクション"
+                    showFilters={true}
+                    showSearch={true}
+                  />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* 開封アニメーション */}
+        {isOpening && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-8 rounded-lg text-center">
+              <div className="animate-spin w-12 h-12 border-4 border-purple-600 border-t-transparent rounded-full mx-auto mb-4"></div>
+              <h3 className="text-xl font-semibold mb-2">パックを開封中...</h3>
+              <p className="text-gray-600">素晴らしいカードが待っています！</p>
+            </div>
           </div>
         )}
-      </div>
-
-      {/* 開封アニメーション */}
-      {isOpening && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded-lg text-center">
-            <div className="animate-spin w-12 h-12 border-4 border-purple-600 border-t-transparent rounded-full mx-auto mb-4"></div>
-            <h3 className="text-xl font-semibold mb-2">パックを開封中...</h3>
-            <p className="text-gray-600">素晴らしいカードが待っています！</p>
-          </div>
-        </div>
-      )}
       </div>
     </div>
   );

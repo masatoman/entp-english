@@ -24,7 +24,7 @@ import {
 import { adrenalineManager } from "../utils/adrenalineManager";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { DataManager } from "../utils/dataManager";
-import { getLevelManager, saveLevelManager } from "../utils/levelManager";
+import { getLevelManager } from "../utils/levelManager";
 import {
   calculateRecoveredStars,
   canUseStars,
@@ -466,7 +466,8 @@ export function NewHome() {
 
         {/* 簡素化されたコントロール */}
         <div className="flex items-center justify-center gap-3 py-2">
-          <PWAInstallButton variant="compact" showInstructions={false} />
+          {/* PWAInstallButton一時的に非表示（無限レンダリング対策） */}
+          {/* <PWAInstallButton variant="compact" showInstructions={false} /> */}
           <Button
             variant="outline"
             size="sm"
