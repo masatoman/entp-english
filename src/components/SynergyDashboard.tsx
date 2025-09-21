@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, BookOpen, Brain, Star, Target, TrendingUp } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Brain, Star, Target, TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Category } from "../types";
 import { 
@@ -107,20 +107,33 @@ export default function SynergyDashboard({
   // 完了済みコンテンツの統計
   const completedCount = synergyProgress.filter(p => p.completionRate === 1.0).length;
   const totalCount = synergyProgress.length;
-  const averageSynergyBonus = synergyProgress.reduce((sum, p) => sum + p.synergyBonus, 0) / totalCount;
+  const averageSynergyBonus = totalCount > 0 
+    ? synergyProgress.reduce((sum, p) => sum + p.synergyBonus, 0) / totalCount 
+    : 1.0; // デフォルト値として1.0（100%）を設定
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* ヘッダー */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            <Brain className="inline-block w-8 h-8 mr-2 text-blue-600" />
-            学習シナジーダッシュボード
-          </h1>
-          <p className="text-gray-600">
-            事前学習と文法クイズの相乗効果を最大化しよう！
-          </p>
+        <div className="flex items-center justify-between mb-8">
+          <Button
+            variant="outline"
+            onClick={() => navigate("/")}
+            className="flex items-center"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            ホームに戻る
+          </Button>
+          <div className="text-center">
+            <h1 className="text-3xl font-bold text-gray-800 mb-2">
+              <Brain className="inline-block w-8 h-8 mr-2 text-blue-600" />
+              学習シナジーダッシュボード
+            </h1>
+            <p className="text-gray-600">
+              事前学習と文法クイズの相乗効果を最大化しよう！
+            </p>
+          </div>
+          <div className="w-32" />
         </div>
 
         {/* 統計サマリー */}
@@ -143,7 +156,7 @@ export default function SynergyDashboard({
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {Math.round(averageSynergyBonus * 100)}%
+                {totalCount > 0 ? Math.round((averageSynergyBonus - 1) * 100) : 0}%
               </div>
               <p className="text-xs text-muted-foreground">
                 学習効果の向上率
