@@ -1,5 +1,5 @@
 import { Check, Star, X } from "lucide-react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CoinSystem, DailyQuest, DailyQuestSystem } from "../types/dailyQuest";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { Badge } from "./ui/badge";
@@ -15,7 +15,10 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
   const [questSystem, setQuestSystem] = useState<DailyQuestSystem | null>(null);
   const [coinSystem, setCoinSystem] = useState<CoinSystem | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
-  const [touchStart, setTouchStart] = useState<{ y: number; time: number } | null>(null);
+  const [touchStart, setTouchStart] = useState<{
+    y: number;
+    time: number;
+  } | null>(null);
 
   useEffect(() => {
     const loadData = () => {
@@ -35,13 +38,13 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
   // ESCキーで閉じる
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         onClose();
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
 
   // 背景クリックで閉じる
@@ -62,7 +65,7 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
 
   const handleTouchEnd = (event: React.TouchEvent) => {
     if (!touchStart) return;
-    
+
     const touch = event.changedTouches[0];
     const deltaY = touch.clientY - touchStart.y;
     const deltaTime = Date.now() - touchStart.time;
@@ -72,7 +75,7 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
     if (deltaY > 50 && velocity > 0.5) {
       onClose();
     }
-    
+
     setTouchStart(null);
   };
 
@@ -118,18 +121,18 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 bg-black/50 flex items-start justify-center z-50 p-2 sm:p-4 pt-8 sm:pt-16"
       onClick={handleBackgroundClick}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <Card 
+      <Card
         ref={modalRef}
         className="w-full max-w-sm sm:max-w-md md:max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        <CardHeader className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white">
+        <CardHeader className="bg-gradient-to-r from-teal-500 to-cyan-600">
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="text-lg sm:text-2xl font-bold">
@@ -143,7 +146,7 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
               variant="ghost"
               size="sm"
               onClick={onClose}
-              className="text-white hover:bg-white/20"
+              className="text-gray-700 hover:bg-white/20"
             >
               <X className="w-5 h-5" />
             </Button>
@@ -151,13 +154,8 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
         </CardHeader>
 
         <CardContent className="p-3 sm:p-4 space-y-3 sm:space-y-4">
-
-
           {/* クエスト一覧 */}
           <div className="space-y-3 sm:space-y-4">
-            <h3 className="text-base sm:text-lg font-semibold">
-              今日のクエスト
-            </h3>
             {questSystem.availableQuests.map((quest) => (
               <Card
                 key={quest.id}
@@ -290,9 +288,7 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
                   </div>
                   <div className="flex items-center space-x-1">
                     <span className="text-sm">🪙</span>
-                    <span className="text-sm font-medium">
-                      +50 コイン
-                    </span>
+                    <span className="text-sm font-medium">+50 コイン</span>
                   </div>
                 </div>
               </CardContent>
