@@ -8,6 +8,7 @@ import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Category } from "../types";
 import { AdrenalineEventData } from "../types/adrenalineSystem";
 import { adrenalineManager } from "../utils/adrenalineManager";
+import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 import { questionStatsManager } from "../utils/questionStatsManager";
 import { skillTreeManager } from "../utils/skillTreeManager";
@@ -343,6 +344,9 @@ export default function Question() {
         finalXP,
         adrenalineBonus: finalXP - baseXP,
       });
+
+      // デイリークエスト進捗更新
+      dailyQuestManager.recordGrammarQuizCompletion();
 
       // スキルツリーの進捗を更新
       updateSkillTreeProgress();

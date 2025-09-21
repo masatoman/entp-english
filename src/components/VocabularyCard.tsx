@@ -11,6 +11,7 @@ import { SoundManager } from "../utils/soundManager";
 import { SpeechSynthesisManager } from "../utils/speechSynthesis";
 import { VocabularyManager } from "../utils/vocabularyManager";
 import { calculateVocabularyXP } from "../utils/xpCalculator";
+import { dailyQuestManager } from "../utils/dailyQuestManager";
 import AdrenalineEffects, {
   calculateAdrenalineXP,
   triggerAdrenalineEvent,
@@ -296,6 +297,11 @@ export default function VocabularyCard({
 
     // 語彙学習の記録
     DataManager.recordVocabularyStudy(currentWord.id);
+
+    // デイリークエスト進捗更新（「知ってる」の場合のみ）
+    if (known) {
+      dailyQuestManager.recordVocabularyLearning(1);
+    }
 
     // 「まだ」の場合のみ次の単語に移動
     if (!known) {

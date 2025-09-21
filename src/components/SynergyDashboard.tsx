@@ -16,6 +16,7 @@ import {
   synergyManager,
   SynergyProgress,
 } from "../utils/contentMetadataManager";
+import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import {
@@ -47,6 +48,8 @@ export default function SynergyDashboard({
     if (currentCategory) {
       loadOptimalPath(currentCategory);
     }
+    // シナジーダッシュボード訪問をデイリークエストに記録
+    dailyQuestManager.recordSynergyVisit();
   }, [userId, currentCategory]);
 
   const loadUserProgress = () => {

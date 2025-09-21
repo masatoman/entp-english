@@ -22,6 +22,7 @@ import {
   StarData,
 } from "../types/starSystem";
 import { adrenalineManager } from "../utils/adrenalineManager";
+import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { DataManager } from "../utils/dataManager";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 import {
@@ -34,6 +35,7 @@ import { GrammarQuizCategorySelection } from "./GrammarQuizCategorySelection";
 import { GrammarQuizDifficultySelection } from "./GrammarQuizDifficultySelection";
 // GrowthDashboardはRouter経由で使用するため、直接importを削除
 import { DailyChallengeCard } from "./DailyChallengeCard";
+import DailyQuestPanel from "./DailyQuestPanel";
 import { LearningFeedbackForm } from "./LearningFeedbackForm";
 import { LevelDisplay } from "./LevelDisplay";
 import { PWAInstallButton } from "./PWAInstallButton";
@@ -56,6 +58,11 @@ export function NewHome() {
   // アドレナリンシステムの初期化
   const [dailyMultiplier, setDailyMultiplier] = useState(1.0);
   const [consecutiveDays, setConsecutiveDays] = useState(0);
+
+  // デイリークエストシステム
+  const [showDailyQuests, setShowDailyQuests] = useState(false);
+  const [questStats, setQuestStats] = useState({ completed: 0, total: 0, percentage: 0, streak: 0 });
+  const [coinSystem, setCoinSystem] = useState(dailyQuestManager.getCoinSystem());
 
   // ハートシステムの状態を強制的に更新
   const forceRefreshHearts = () => {
@@ -139,10 +146,17 @@ export function NewHome() {
       setDailyMultiplier(multiplier);
       setConsecutiveDays(system.dailyBonus.consecutiveDays);
 
+      // デイリークエストシステムの更新
+      const questStatsData = dailyQuestManager.getCompletionStats();
+      setQuestStats(questStatsData);
+      setCoinSystem(dailyQuestManager.getCoinSystem());
+
       console.log("🎯 デイリーボーナス更新:", {
         multiplier,
         consecutiveDays: system.dailyBonus.consecutiveDays,
       });
+      
+      console.log("🎯 デイリークエスト更新:", questStatsData);
     };
 
     refreshData();
@@ -439,6 +453,26 @@ export function NewHome() {
             </div>
             <div className="flex items-center gap-3">
               <PWAInstallButton variant="compact" showInstructions={false} />
+              
+              {/* デイリークエストボタン */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowDailyQuests(true)}
+                className="flex items-center gap-2 bg-gradient-to-r from-teal-50 to-cyan-50 border-teal-200 hover:from-teal-100 hover:to-cyan-100"
+              >
+                <Target className="w-4 h-4 text-teal-600" />
+                <span className="hidden sm:inline text-teal-700">
+                  デイリークエスト
+                </span>
+                <span className="sm:hidden text-teal-700">クエスト</span>
+                {questStats.completed > 0 && (
+                  <span className="bg-teal-500 text-white text-xs rounded-full px-1.5 py-0.5 min-w-[18px] text-center">
+                    {questStats.completed}
+                  </span>
+                )}
+              </Button>
+              
               <Button
                 variant="outline"
                 size="sm"
@@ -566,6 +600,29 @@ export function NewHome() {
                   </div>
                 </div>
               )}
+
+              {/* ガチャコイン表示 */}
+              <div className="mb-3 p-2 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-lg border border-yellow-200">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-lg">🪙</span>
+                    <div>
+                      <div className="text-xs font-semibold text-yellow-700">
+                        ガチャコイン
+                      </div>
+                      <div className="text-xs text-yellow-600">
+                        ガチャに使用可能
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm font-bold text-yellow-700">
+                      {coinSystem.current}
+                    </div>
+                    <div className="text-xs text-yellow-600">枚</div>
+                  </div>
+                </div>
+              </div>
 
               {/* 体力とスタミナの操作ボタン */}
               <div className="flex items-center justify-between">
@@ -939,6 +996,11 @@ export function NewHome() {
               />
             </div>
           </div>
+        )}
+
+        {/* デイリークエストパネル */}
+        {showDailyQuests && (
+          <DailyQuestPanel onClose={() => setShowDailyQuests(false)} />
         )}
       </div>
     </div>

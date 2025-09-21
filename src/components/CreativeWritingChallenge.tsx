@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { DailyChallengeManager } from "../utils/dailyChallengeManager";
 import { DataManager } from "../utils/dataManager";
+import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
@@ -123,6 +124,9 @@ export default function CreativeWritingChallenge({}: CreativeWritingChallengePro
         (currentStats.creativeChallengesCompleted || 0) + 1,
     };
     DataManager.saveUserStats(updatedStats);
+
+    // デイリークエスト進捗更新
+    dailyQuestManager.recordEssayCompletion();
 
     setIsCompleted(true);
   };

@@ -9,6 +9,7 @@ import {
 } from "../data/achievements";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { DataManager } from "../utils/dataManager";
+import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { KnownWordsManager } from "../utils/knownWordsManager";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -153,6 +154,9 @@ export default function Achievements() {
 
     setUserStats(stats);
     setAchievements(achievementsData);
+    
+    // 実績ページ訪問をデイリークエストに記録
+    dailyQuestManager.recordAchievementsVisit();
   }, []);
 
   const unlockedAchievements = achievements.filter((a) => a.isUnlocked);

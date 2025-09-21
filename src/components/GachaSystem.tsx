@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { GachaPack } from "../types/gacha";
 import { GachaSystem as GachaSystemUtil } from "../utils/gachaSystem";
+import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
@@ -30,6 +31,8 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
   );
   const [availablePacks] = useState(GachaSystemUtil.getAvailablePacks());
   const [showCollection, setShowCollection] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<"xp" | "coins">("xp");
+  const [coinSystem, setCoinSystem] = useState(dailyQuestManager.getCoinSystem());
 
   // 時間ベースの回復システム用の定期更新
   useEffect(() => {
@@ -37,6 +40,7 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
       const updatedData =
         GachaSystemUtil.updateAvailablePacksCount(userGachaData);
       setUserGachaData(updatedData);
+      setCoinSystem(dailyQuestManager.getCoinSystem());
     };
 
     // 初回実行
@@ -52,10 +56,19 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
     const pack = GachaSystemUtil.getPackById(packId);
     if (!pack) return;
 
-    const canOpen = GachaSystemUtil.canOpenPack(packId, userXP);
-    if (!canOpen.canOpen) {
-      alert(canOpen.reason);
-      return;
+    // 支払い方法に応じてチェック
+    if (paymentMethod === "xp") {
+      const canOpen = GachaSystemUtil.canOpenPack(packId, userXP);
+      if (!canOpen.canOpen) {
+        alert(canOpen.reason);
+        return;
+      }
+    } else if (paymentMethod === "coins") {
+      const coinCost = Math.floor(pack.cost / 2); // コインはXPの半分のコスト
+      if (!dailyQuestManager.canAffordCoins(coinCost)) {
+        alert(`コインが不足しています。必要: ${coinCost}枚, 所持: ${coinSystem.current}枚`);
+        return;
+      }
     }
 
     setIsOpening(true);
@@ -69,10 +82,17 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
       const cards = GachaSystemUtil.openPackAndSave(packId);
       console.log("Cards drawn:", cards);
 
-      // XPを消費
-      const newXP = userXP - pack.cost;
-      console.log("Updating XP from", userXP, "to", newXP);
-      onXPChange(newXP);
+      // 支払い処理
+      if (paymentMethod === "xp") {
+        const newXP = userXP - pack.cost;
+        console.log("XP支払い:", userXP, "→", newXP);
+        onXPChange(newXP);
+      } else if (paymentMethod === "coins") {
+        const coinCost = Math.floor(pack.cost / 2);
+        dailyQuestManager.spendCoins(coinCost);
+        setCoinSystem(dailyQuestManager.getCoinSystem());
+        console.log("コイン支払い:", coinCost, "枚");
+      }
 
       // 語彙学習システムに追加
       console.log("Adding cards to vocabulary system...");
@@ -82,6 +102,9 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
       console.log("Updating user gacha data...");
       setUserGachaData(GachaSystemUtil.getUserGachaData());
       console.log("Pack opening completed successfully");
+
+      // デイリークエスト進捗更新
+      dailyQuestManager.recordGachaUsage();
 
       // 開封状態をリセット
       setIsOpening(false);
@@ -182,9 +205,49 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
             <Gift className="w-4 h-4" />
             {showCollection ? "パック選択" : "コレクション"}
           </Button>
-          <div className="text-right">
-            <div className="text-sm text-gray-600">所持XP</div>
-            <div className="text-2xl font-bold text-purple-600">{userXP}</div>
+          
+          {/* 支払い方法選択 */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant={paymentMethod === "xp" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setPaymentMethod("xp")}
+              className="flex items-center gap-1"
+            >
+              <Zap className="w-3 h-3" />
+              XP
+            </Button>
+            <Button
+              variant={paymentMethod === "coins" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setPaymentMethod("coins")}
+              className="flex items-center gap-1"
+            >
+              <span className="text-sm">🪙</span>
+              コイン
+            </Button>
+          </div>
+          
+          {/* 残高表示 */}
+          <div className="text-right space-y-1">
+            <div className="flex items-center gap-2">
+              <Zap className="w-4 h-4 text-blue-500" />
+              <div>
+                <div className="text-xs text-gray-600">XP</div>
+                <div className="text-lg font-bold text-blue-600">
+                  {Math.max(0, userXP)}
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm">🪙</span>
+              <div>
+                <div className="text-xs text-gray-600">コイン</div>
+                <div className="text-lg font-bold text-yellow-600">
+                  {coinSystem.current}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -267,7 +330,11 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
         {!showCollection ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {availablePacks.map((pack) => {
-              const canOpen = GachaSystemUtil.canOpenPack(pack.id, userXP);
+              const canOpenXP = GachaSystemUtil.canOpenPack(pack.id, userXP);
+              const coinCost = Math.floor(pack.cost / 2);
+              const canOpenCoins = dailyQuestManager.canAffordCoins(coinCost);
+              const canOpen = paymentMethod === "xp" ? canOpenXP : { canOpen: canOpenCoins, reason: canOpenCoins ? "" : "コイン不足" };
+              
               const RarityIcon =
                 pack.rarity === "normal"
                   ? Star
@@ -307,8 +374,22 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
                   </p>
 
                   <div className="flex items-center justify-between">
-                    <div className="text-lg font-bold text-purple-600">
-                      {pack.cost} XP
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <Zap className="w-4 h-4 text-blue-500" />
+                        <span className="text-lg font-bold text-blue-600">
+                          {pack.cost} XP
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm">🪙</span>
+                        <span className="text-lg font-bold text-yellow-600">
+                          {Math.floor(pack.cost / 2)} コイン
+                        </span>
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {paymentMethod === "xp" ? "XP支払い選択中" : "コイン支払い選択中"}
+                      </div>
                     </div>
                     <div
                       className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${

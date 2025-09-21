@@ -5,6 +5,7 @@ import { getQuestions } from "../data/questions";
 import { getVocabularyWords } from "../data/vocabulary";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { DataManager } from "../utils/dataManager";
+import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { GachaSystem } from "../utils/gachaSystem";
 import { KnownWordsManager } from "../utils/knownWordsManager";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
@@ -242,6 +243,9 @@ export default function TimeAttackMode() {
     };
 
     DataManager.recordLearningSession(sessionData);
+    
+    // デイリークエスト進捗更新
+    dailyQuestManager.recordTimeAttackCompletion();
   };
 
   const currentQuestion = questions[currentQuestionIndex];
