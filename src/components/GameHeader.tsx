@@ -44,27 +44,6 @@ export default function GameHeader({
   // 定期更新
   useEffect(() => {
     const updateResources = () => {
-      // ハート回復処理
-      processRecovery();
-
-      // スター回復処理
-      const currentStats = DataManager.getUserStats();
-      if (currentStats.stars) {
-        const recoveredStars = calculateRecoveredStars(currentStats.stars);
-        if (recoveredStars > currentStats.stars.current) {
-          const updatedStats = {
-            ...currentStats,
-            stars: {
-              ...currentStats.stars,
-              current: recoveredStars,
-              lastRecoveryTime: Date.now(),
-            },
-          };
-          DataManager.saveUserStats(updatedStats);
-          setStarSystem(updatedStats.stars);
-        }
-      }
-
       // コインシステム更新
       setCoinSystem(dailyQuestManager.getCoinSystem());
 
@@ -74,9 +53,9 @@ export default function GameHeader({
     };
 
     updateResources();
-    const interval = setInterval(updateResources, 5000);
+    const interval = setInterval(updateResources, 10000); // 10秒に変更
     return () => clearInterval(interval);
-  }, [processRecovery]);
+  }, []); // 依存配列を空にして無限再レンダリングを防ぐ
 
   // XP進捗計算（LevelDisplayと同じロジックを使用）
   const currentLevel = userLevel.level || 1;
@@ -152,7 +131,6 @@ export default function GameHeader({
               onClick={() => {
                 const manager = getLevelManager();
                 if (manager.addHeart()) {
-                  processRecovery();
                   console.log("♥ 体力を1回復しました");
                 } else {
                   console.log("♥ 体力は既に最大です");
