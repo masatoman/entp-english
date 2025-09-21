@@ -295,47 +295,108 @@ export default function SynergyDashboard({
         {/* 推奨コンテンツ */}
         <Card>
           <CardHeader>
-            <CardTitle>シナジー効果の高い推奨コンテンツ</CardTitle>
+            <CardTitle>🎯 今やるべき学習（効果順）</CardTitle>
             <CardDescription>
-              現在の学習進捗に基づいて、最も効果的なコンテンツを表示しています
+              今のあなたにとって最も効果的な学習を効果の高い順に表示しています
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {recommendedContent.map((progress) => (
-                <div
-                  key={progress.contentId}
-                  className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer"
-                  onClick={() => handleContentSelect(progress.contentId)}
-                >
-                  <div className="flex items-start justify-between mb-2">
-                    <h4 className="font-medium text-sm">
+              {recommendedContent.map((progress, index) => {
+                const bonusPercent = Math.round((progress.synergyBonus - 1) * 100);
+                const effectivenessPercent = Math.round(progress.effectivenessScore * 100);
+                
+                // 効果レベルの判定
+                const getEffectLevel = (bonus: number) => {
+                  if (bonus >= 25) return { text: "超効果的", color: "bg-purple-100 text-purple-700 border-purple-300" };
+                  if (bonus >= 20) return { text: "とても効果的", color: "bg-blue-100 text-blue-700 border-blue-300" };
+                  if (bonus >= 15) return { text: "効果的", color: "bg-green-100 text-green-700 border-green-300" };
+                  return { text: "普通", color: "bg-gray-100 text-gray-700 border-gray-300" };
+                };
+
+                const effectLevel = getEffectLevel(bonusPercent);
+
+                return (
+                  <div
+                    key={progress.contentId}
+                    className={`p-4 border rounded-lg hover:shadow-md transition-shadow cursor-pointer ${effectLevel.color}`}
+                    onClick={() => handleContentSelect(progress.contentId)}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center space-x-2">
+                        <span className="text-lg font-bold text-gray-700">#{index + 1}</span>
+                        <Badge variant="outline" className="text-xs">
+                          {effectLevel.text}
+                        </Badge>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-xs text-gray-500">学習効果</div>
+                        <div className="font-bold text-sm">
+                          {bonusPercent > 0 ? `+${bonusPercent}%` : "通常"}
+                        </div>
+                      </div>
+                    </div>
+
+                    <h4 className="font-medium text-sm mb-2">
                       {progress.contentId.replace(/-/g, " ").toUpperCase()}
                     </h4>
-                    <Badge
-                      className={getSynergyLevelColor(progress.synergyBonus)}
-                    >
-                      +{Math.round((progress.synergyBonus - 1) * 100)}%
-                    </Badge>
+
+                    <div className="space-y-1 text-xs">
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-600">おすすめ度:</span>
+                        <div className="flex items-center space-x-1">
+                          {[...Array(5)].map((_, i) => (
+                            <span
+                              key={i}
+                              className={`text-xs ${
+                                i < Math.min(5, Math.ceil(effectivenessPercent / 20))
+                                  ? "text-yellow-500"
+                                  : "text-gray-300"
+                              }`}
+                            >
+                              ⭐
+                            </span>
+                          ))}
+                          <span className="text-gray-600 ml-1">
+                            ({effectivenessPercent}%)
+                          </span>
+                        </div>
+                      </div>
+
+                      {bonusPercent > 0 && (
+                        <div className="bg-white/50 p-2 rounded text-center">
+                          <div className="text-gray-700 font-medium">
+                            通常より<span className="text-green-600 font-bold">{bonusPercent}%</span>多くXPがもらえる！
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {progress.recommendedNext.length > 0 && (
+                      <div className="mt-2 text-xs text-blue-600">
+                        💡 次の推奨: {progress.recommendedNext.length}件
+                      </div>
+                    )}
+
+                    {progress.unlockedContent.length > 0 && (
+                      <div className="mt-1 text-xs text-green-600">
+                        🔓 解放される学習: {progress.unlockedContent.length}件
+                      </div>
+                    )}
                   </div>
+                );
+              })}
+            </div>
 
-                  <p className="text-xs text-gray-600 mb-3">
-                    効果スコア: {Math.round(progress.effectivenessScore * 100)}%
-                  </p>
-
-                  {progress.recommendedNext.length > 0 && (
-                    <div className="text-xs text-blue-600">
-                      次の推奨: {progress.recommendedNext.length}件
-                    </div>
-                  )}
-
-                  {progress.unlockedContent.length > 0 && (
-                    <div className="text-xs text-green-600">
-                      解放コンテンツ: {progress.unlockedContent.length}件
-                    </div>
-                  )}
-                </div>
-              ))}
+            {/* 説明セクション */}
+            <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <h4 className="font-semibold text-blue-700 mb-2">💡 表示の見方</h4>
+              <div className="space-y-2 text-sm text-blue-600">
+                <div>• <strong>学習効果 +30%</strong>：通常より30%多くXPがもらえます</div>
+                <div>• <strong>おすすめ度 ⭐⭐⭐⭐⭐</strong>：今のあなたにどれくらい適しているかを5段階で表示</div>
+                <div>• <strong>効果的レベル</strong>：超効果的 &gt; とても効果的 &gt; 効果的 &gt; 普通</div>
+                <div>• <strong>番号順</strong>：#1が最も効果的、#2、#3の順で効果が高い</div>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -380,15 +441,23 @@ export default function SynergyDashboard({
 
             {/* 具体例 */}
             <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg border">
-              <h4 className="font-semibold mb-3 text-center">📖 具体例：時制の学習</h4>
-              
+              <h4 className="font-semibold mb-3 text-center">
+                📖 具体例：時制の学習
+              </h4>
+
               <div className="space-y-4">
                 {/* ステップ1 */}
                 <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center font-bold">1</div>
+                  <div className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center font-bold">
+                    1
+                  </div>
                   <div className="flex-1">
-                    <h5 className="font-medium text-blue-700">📚 事前学習：「時制の完全マスター」</h5>
-                    <p className="text-sm text-gray-600">現在完了形の理論を詳しく学習</p>
+                    <h5 className="font-medium text-blue-700">
+                      📚 事前学習：「時制の完全マスター」
+                    </h5>
+                    <p className="text-sm text-gray-600">
+                      現在完了形の理論を詳しく学習
+                    </p>
                     <div className="text-xs text-blue-600 mt-1">
                       例：「have + 過去分詞」の3つの用法（継続・経験・完了）
                     </div>
@@ -402,12 +471,19 @@ export default function SynergyDashboard({
 
                 {/* ステップ2 */}
                 <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 rounded-full bg-green-500 text-white text-xs flex items-center justify-center font-bold">2</div>
+                  <div className="w-6 h-6 rounded-full bg-green-500 text-white text-xs flex items-center justify-center font-bold">
+                    2
+                  </div>
                   <div className="flex-1">
-                    <h5 className="font-medium text-green-700">🎯 実践練習：「時制クイズ」</h5>
-                    <p className="text-sm text-gray-600">学んだ理論を問題で確認</p>
+                    <h5 className="font-medium text-green-700">
+                      🎯 実践練習：「時制クイズ」
+                    </h5>
+                    <p className="text-sm text-gray-600">
+                      学んだ理論を問題で確認
+                    </p>
                     <div className="text-xs text-green-600 mt-1">
-                      例：「私は3年間英語を勉強しています」→「I have studied English for 3 years.」
+                      例：「私は3年間英語を勉強しています」→「I have studied
+                      English for 3 years.」
                     </div>
                   </div>
                 </div>
@@ -419,10 +495,16 @@ export default function SynergyDashboard({
 
                 {/* ステップ3 */}
                 <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 rounded-full bg-purple-500 text-white text-xs flex items-center justify-center font-bold">3</div>
+                  <div className="w-6 h-6 rounded-full bg-purple-500 text-white text-xs flex items-center justify-center font-bold">
+                    3
+                  </div>
                   <div className="flex-1">
-                    <h5 className="font-medium text-purple-700">🚀 シナジー効果発動！</h5>
-                    <p className="text-sm text-gray-600">理論×実践で学習効果が大幅アップ</p>
+                    <h5 className="font-medium text-purple-700">
+                      🚀 シナジー効果発動！
+                    </h5>
+                    <p className="text-sm text-gray-600">
+                      理論×実践で学習効果が大幅アップ
+                    </p>
                     <div className="text-xs text-purple-600 mt-1">
                       基本80 XP → シナジーボーナス+30% → 104 XP獲得！
                     </div>
@@ -434,7 +516,9 @@ export default function SynergyDashboard({
             {/* 効果比較 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-red-50 p-4 rounded-lg border border-red-200">
-                <h4 className="font-semibold text-red-700 mb-2">❌ 単体学習の場合</h4>
+                <h4 className="font-semibold text-red-700 mb-2">
+                  ❌ 単体学習の場合
+                </h4>
                 <div className="space-y-2 text-sm">
                   <div>• 文法クイズのみ：80 XP</div>
                   <div>• 理解度：70%</div>
@@ -444,50 +528,76 @@ export default function SynergyDashboard({
               </div>
 
               <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                <h4 className="font-semibold text-green-700 mb-2">✅ シナジー学習の場合</h4>
+                <h4 className="font-semibold text-green-700 mb-2">
+                  ✅ シナジー学習の場合
+                </h4>
                 <div className="space-y-2 text-sm">
                   <div>• 事前学習 + 文法クイズ：104 XP</div>
                   <div>• 理解度：95%</div>
                   <div>• 定着率：85%</div>
-                  <div className="font-bold text-green-600">合計効果：130%（+30%向上）</div>
+                  <div className="font-bold text-green-600">
+                    合計効果：130%（+30%向上）
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* さらなる活用法 */}
             <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-              <h4 className="font-semibold text-yellow-700 mb-3">💡 さらなる活用法</h4>
+              <h4 className="font-semibold text-yellow-700 mb-3">
+                💡 さらなる活用法
+              </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 <div>
-                  <h5 className="font-medium text-gray-700 mb-1">🎁 ガチャ語彙との組み合わせ</h5>
-                  <p className="text-gray-600">ガチャで覚えた単語を文法クイズで活用 → +50%効果</p>
+                  <h5 className="font-medium text-gray-700 mb-1">
+                    🎁 ガチャ語彙との組み合わせ
+                  </h5>
+                  <p className="text-gray-600">
+                    ガチャで覚えた単語を文法クイズで活用 → +50%効果
+                  </p>
                 </div>
                 <div>
-                  <h5 className="font-medium text-gray-700 mb-1">🏆 XPショップのブースター</h5>
-                  <p className="text-gray-600">相乗効果マルチプライヤー購入 → 効果2倍（最大260%）</p>
+                  <h5 className="font-medium text-gray-700 mb-1">
+                    🏆 XPショップのブースター
+                  </h5>
+                  <p className="text-gray-600">
+                    相乗効果マルチプライヤー購入 → 効果2倍（最大260%）
+                  </p>
                 </div>
               </div>
             </div>
 
             {/* 推奨学習パターン */}
             <div className="bg-indigo-50 p-4 rounded-lg border border-indigo-200">
-              <h4 className="font-semibold text-indigo-700 mb-3">🎯 推奨学習パターン</h4>
+              <h4 className="font-semibold text-indigo-700 mb-3">
+                🎯 推奨学習パターン
+              </h4>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center space-x-2">
-                  <span className="w-4 h-4 rounded-full bg-indigo-500 text-white text-xs flex items-center justify-center">1</span>
+                  <span className="w-4 h-4 rounded-full bg-indigo-500 text-white text-xs flex items-center justify-center">
+                    1
+                  </span>
                   <span>朝：事前学習で理論習得（⭐️1個消費）</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <span className="w-4 h-4 rounded-full bg-indigo-500 text-white text-xs flex items-center justify-center">2</span>
+                  <span className="w-4 h-4 rounded-full bg-indigo-500 text-white text-xs flex items-center justify-center">
+                    2
+                  </span>
                   <span>昼：関連する文法クイズで実践（♥1個消費）</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <span className="w-4 h-4 rounded-full bg-indigo-500 text-white text-xs flex items-center justify-center">3</span>
+                  <span className="w-4 h-4 rounded-full bg-indigo-500 text-white text-xs flex items-center justify-center">
+                    3
+                  </span>
                   <span>夕：統合学習でガチャ語彙を活用（♥1個消費）</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <span className="w-4 h-4 rounded-full bg-purple-500 text-white text-xs flex items-center justify-center">🚀</span>
-                  <span className="font-bold text-purple-600">結果：通常の2.6倍の学習効果！</span>
+                  <span className="w-4 h-4 rounded-full bg-purple-500 text-white text-xs flex items-center justify-center">
+                    🚀
+                  </span>
+                  <span className="font-bold text-purple-600">
+                    結果：通常の2.6倍の学習効果！
+                  </span>
                 </div>
               </div>
             </div>
