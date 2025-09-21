@@ -283,13 +283,8 @@ export function CardCollectionGrid({
               }
               showDetails={viewMode === "list"}
               isAnimated={true}
-              isFavorite={false} // TODO: 実際のお気に入り状態を連携
-              onFavoriteToggle={() => {
-                // TODO: お気に入り状態の切り替え処理
-                console.log(
-                  `Toggle favorite for card: ${cardWithCount.card.word}`
-                );
-              }}
+              isFavorite={false}
+              onFavoriteToggle={undefined}
               className="hover:z-10"
             />
           ))}

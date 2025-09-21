@@ -100,9 +100,7 @@ export default function GachaResultScreen() {
                   isNew={true}
                   isAnimated={true}
                   isFavorite={false}
-                  onFavoriteToggle={() => {
-                    console.log(`Toggle favorite for card: ${card.word}`);
-                  }}
+                  onFavoriteToggle={undefined}
                   className="hover:z-10 animate-bounce-in"
                 />
               ))}
