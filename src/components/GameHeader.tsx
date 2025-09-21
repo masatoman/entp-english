@@ -79,11 +79,11 @@ export default function GameHeader({
   }, [processRecovery]);
 
   // XP進捗計算
-  const currentLevelXP = userLevel.level * 100;
-  const nextLevelXP = (userLevel.level + 1) * 100;
-  const progressXP = userLevel.totalXP - currentLevelXP;
+  const currentLevelXP = (userLevel.level || 1) * 100;
+  const nextLevelXP = ((userLevel.level || 1) + 1) * 100;
+  const progressXP = (userLevel.totalXP || 0) - currentLevelXP;
   const requiredXP = nextLevelXP - currentLevelXP;
-  const progressPercentage = (progressXP / requiredXP) * 100;
+  const progressPercentage = requiredXP > 0 ? (progressXP / requiredXP) * 100 : 0;
 
   return (
     <div className="bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 text-white p-4 shadow-lg">
@@ -93,10 +93,10 @@ export default function GameHeader({
           {/* ユーザー情報 */}
           <div className="flex items-center space-x-3">
             <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg border-2 border-white/30">
-              {userLevel.level}
+              {userLevel.level || 1}
             </div>
             <div>
-              <div className="text-lg font-bold">Level {userLevel.level}</div>
+              <div className="text-lg font-bold">Level {userLevel.level || 1}</div>
               <div className="text-sm text-purple-200">中級編</div>
             </div>
           </div>
@@ -235,7 +235,7 @@ export default function GameHeader({
           <div className="flex items-center space-x-1">
             <span className="text-sm">⚡</span>
             <span className="text-lg font-bold text-blue-300">
-              {userLevel.totalXP.toLocaleString()}
+              {(userLevel.totalXP || 0).toLocaleString()}
             </span>
             <span className="text-sm text-blue-200">XP</span>
           </div>
