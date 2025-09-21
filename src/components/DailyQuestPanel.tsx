@@ -152,28 +152,6 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
 
         <CardContent className="p-3 sm:p-4 space-y-3 sm:space-y-4">
 
-          {/* コイン残高 */}
-          <div className="bg-gradient-to-r from-yellow-50 to-orange-50 p-3 sm:p-4 rounded-lg border border-yellow-200">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <span className="text-lg sm:text-2xl">🪙</span>
-                <div>
-                  <div className="font-bold text-yellow-700 text-sm sm:text-base">
-                    所持コイン
-                  </div>
-                  <div className="text-xs sm:text-sm text-yellow-600">
-                    ガチャで使用可能
-                  </div>
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="text-lg sm:text-2xl font-bold text-yellow-700">
-                  {coinSystem.current}
-                </div>
-                <div className="text-xs sm:text-sm text-yellow-600">枚</div>
-              </div>
-            </div>
-          </div>
 
           {/* クエスト一覧 */}
           <div className="space-y-3 sm:space-y-4">
