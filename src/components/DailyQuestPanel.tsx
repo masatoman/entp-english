@@ -1,5 +1,5 @@
 import { Check, Star, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { CoinSystem, DailyQuest, DailyQuestSystem } from "../types/dailyQuest";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { Badge } from "./ui/badge";
@@ -14,6 +14,8 @@ interface DailyQuestPanelProps {
 export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
   const [questSystem, setQuestSystem] = useState<DailyQuestSystem | null>(null);
   const [coinSystem, setCoinSystem] = useState<CoinSystem | null>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const [touchStart, setTouchStart] = useState<{ y: number; time: number } | null>(null);
 
   useEffect(() => {
     const loadData = () => {
@@ -29,6 +31,50 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
     const interval = setInterval(loadData, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  // ESCキーで閉じる
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  // 背景クリックで閉じる
+  const handleBackgroundClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.target === event.currentTarget) {
+      onClose();
+    }
+  };
+
+  // スワイプダウンで閉じる（モバイル用）
+  const handleTouchStart = (event: React.TouchEvent) => {
+    const touch = event.touches[0];
+    setTouchStart({
+      y: touch.clientY,
+      time: Date.now(),
+    });
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent) => {
+    if (!touchStart) return;
+    
+    const touch = event.changedTouches[0];
+    const deltaY = touch.clientY - touchStart.y;
+    const deltaTime = Date.now() - touchStart.time;
+    const velocity = Math.abs(deltaY) / deltaTime;
+
+    // 下向きに50px以上、かつ速度が0.5以上でスワイプダウンと判定
+    if (deltaY > 50 && velocity > 0.5) {
+      onClose();
+    }
+    
+    setTouchStart(null);
+  };
 
   if (!questSystem || !coinSystem) {
     return (
@@ -72,15 +118,26 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4">
-      <Card className="w-full max-w-sm sm:max-w-md md:max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
+    <div 
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4"
+      onClick={handleBackgroundClick}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
+      <Card 
+        ref={modalRef}
+        className="w-full max-w-sm sm:max-w-md md:max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
         <CardHeader className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white">
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="text-lg sm:text-2xl font-bold">
                 デイリークエスト
               </CardTitle>
-              <p className="text-teal-100 mt-1 text-sm sm:text-base">全てのコンテンツを楽しもう！</p>
+              <p className="text-teal-100 mt-1 text-sm sm:text-base">
+                全てのコンテンツを楽しもう！
+              </p>
             </div>
             <Button
               variant="ghost"
@@ -120,7 +177,9 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
           <div>
             <div className="flex justify-between items-center mb-2">
               <span className="text-xs sm:text-sm font-medium">今日の進捗</span>
-              <span className="text-xs sm:text-sm text-gray-600">{stats.percentage}%</span>
+              <span className="text-xs sm:text-sm text-gray-600">
+                {stats.percentage}%
+              </span>
             </div>
             <Progress value={stats.percentage} className="h-3" />
           </div>
@@ -131,7 +190,9 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
               <div className="flex items-center space-x-2">
                 <span className="text-lg sm:text-2xl">🪙</span>
                 <div>
-                  <div className="font-bold text-yellow-700 text-sm sm:text-base">ガチャコイン</div>
+                  <div className="font-bold text-yellow-700 text-sm sm:text-base">
+                    ガチャコイン
+                  </div>
                   <div className="text-xs sm:text-sm text-yellow-600">
                     ガチャに使用可能
                   </div>
@@ -148,7 +209,9 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
 
           {/* クエスト一覧 */}
           <div className="space-y-3 sm:space-y-4">
-            <h3 className="text-base sm:text-lg font-semibold">今日のクエスト</h3>
+            <h3 className="text-base sm:text-lg font-semibold">
+              今日のクエスト
+            </h3>
             {questSystem.availableQuests.map((quest) => (
               <Card
                 key={quest.id}
@@ -296,7 +359,7 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
               学習を続ける
             </Button>
             <p className="text-xs text-gray-500 mt-1 sm:mt-2">
-              - 空白をタップして閉じる -
+              - 空白タップ・ESCキー・スワイプダウンで閉じる -
             </p>
           </div>
         </CardContent>
