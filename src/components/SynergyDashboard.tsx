@@ -165,7 +165,8 @@ export default function SynergyDashboard({
               事前学習と文法クイズを組み合わせて、学習効果を最大260%まで向上させよう！
             </p>
             <div className="mt-2 text-sm text-blue-600">
-              💡 このページは「事前学習」専用です。スキルツリーとは別のシステムです。
+              💡
+              このページは「事前学習」専用です。スキルツリーとは別のシステムです。
             </div>
           </div>
           <div className="w-32" />
@@ -188,7 +189,9 @@ export default function SynergyDashboard({
                 value={totalCount > 0 ? (completedCount / totalCount) * 100 : 0}
                 className="mt-2"
               />
-              <p className="text-xs text-muted-foreground mt-1">理論学習の進捗</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                理論学習の進捗
+              </p>
             </CardContent>
           </Card>
 
@@ -224,7 +227,9 @@ export default function SynergyDashboard({
                   0
                 )}
               </div>
-              <p className="text-xs text-muted-foreground">学習で解放された理論コンテンツ</p>
+              <p className="text-xs text-muted-foreground">
+                学習で解放された理論コンテンツ
+              </p>
             </CardContent>
           </Card>
 
@@ -449,9 +454,18 @@ export default function SynergyDashboard({
                   🧠 このページについて
                 </h4>
                 <div className="space-y-2 text-sm text-blue-600">
-                  <div>• このページは<strong>「事前学習」の効率的な使い方</strong>を支援します</div>
-                  <div>• <strong>スキルツリーとは別のシステム</strong>です（スキルツリーは文法学習全体、こちらは理論学習専用）</div>
-                  <div>• 事前学習（理論）→ 文法クイズ（実践）の順番で学習すると<strong>学習効果が大幅アップ</strong>します</div>
+                  <div>
+                    • このページは<strong>「事前学習」の効率的な使い方</strong>
+                    を支援します
+                  </div>
+                  <div>
+                    • <strong>スキルツリーとは別のシステム</strong>
+                    です（スキルツリーは文法学習全体、こちらは理論学習専用）
+                  </div>
+                  <div>
+                    • 事前学習（理論）→ 文法クイズ（実践）の順番で学習すると
+                    <strong>学習効果が大幅アップ</strong>します
+                  </div>
                 </div>
               </div>
 
@@ -462,16 +476,20 @@ export default function SynergyDashboard({
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-green-600">
                   <div>
-                    <strong>完了した事前学習</strong>：あなたが読み終えた理論コンテンツの数
+                    <strong>完了した事前学習</strong>
+                    ：あなたが読み終えた理論コンテンツの数
                   </div>
                   <div>
-                    <strong>平均シナジー効果</strong>：理論学習により文法クイズでどれくらい効果アップするか
+                    <strong>平均シナジー効果</strong>
+                    ：理論学習により文法クイズでどれくらい効果アップするか
                   </div>
                   <div>
-                    <strong>新しい事前学習</strong>：学習進捗により新たに読めるようになった理論コンテンツ
+                    <strong>新しい事前学習</strong>
+                    ：学習進捗により新たに読めるようになった理論コンテンツ
                   </div>
                   <div>
-                    <strong>おすすめ事前学習</strong>：今のあなたに最も効果的な理論学習の数
+                    <strong>おすすめ事前学習</strong>
+                    ：今のあなたに最も効果的な理論学習の数
                   </div>
                 </div>
               </div>
@@ -491,7 +509,8 @@ export default function SynergyDashboard({
                     ：今のあなたの学習レベルにどれくらい適しているかを5段階で表示
                   </div>
                   <div>
-                    • <strong>効果的レベル</strong>：理論学習の効果度（超効果的 &gt; とても効果的 &gt; 効果的 &gt; 普通）
+                    • <strong>効果的レベル</strong>：理論学習の効果度（超効果的
+                    &gt; とても効果的 &gt; 効果的 &gt; 普通）
                   </div>
                   <div>
                     • <strong>番号順</strong>

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { VocabularyWord, getVocabularyWords } from "../data/vocabulary";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { adrenalineManager } from "../utils/adrenalineManager";
+import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { DataManager } from "../utils/dataManager";
 import { KnownWordsManager } from "../utils/knownWordsManager";
 import { LearningAnalyzer } from "../utils/learningAnalyzer";
@@ -11,11 +12,11 @@ import { SoundManager } from "../utils/soundManager";
 import { SpeechSynthesisManager } from "../utils/speechSynthesis";
 import { VocabularyManager } from "../utils/vocabularyManager";
 import { calculateVocabularyXP } from "../utils/xpCalculator";
-import { dailyQuestManager } from "../utils/dailyQuestManager";
 import AdrenalineEffects, {
   calculateAdrenalineXP,
   triggerAdrenalineEvent,
 } from "./AdrenalineEffects";
+import GameHeader from "./GameHeader";
 import TreasureBoxSystem from "./TreasureBoxSystem";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -518,6 +519,9 @@ export default function VocabularyCard({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      {/* ゲームヘッダー */}
+      <GameHeader />
+      
       {/* アドレナリンエフェクト */}
       <AdrenalineEffects
         onEventTriggered={(event) => {

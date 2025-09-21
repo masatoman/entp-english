@@ -1,4 +1,4 @@
-import { DailyQuest, DailyQuestProgress, DailyQuestSystem, CoinSystem } from "../types/dailyQuest";
+import { CoinSystem, DailyQuest, DailyQuestSystem } from "../types/dailyQuest";
 import { DataManager } from "./dataManager";
 
 class DailyQuestManager {
@@ -59,7 +59,10 @@ class DailyQuestManager {
   }
 
   private saveQuestSystem(): void {
-    localStorage.setItem("daily-quest-system", JSON.stringify(this.questSystem));
+    localStorage.setItem(
+      "daily-quest-system",
+      JSON.stringify(this.questSystem)
+    );
   }
 
   private saveCoinSystem(): void {
@@ -69,7 +72,12 @@ class DailyQuestManager {
   private checkDailyReset(): void {
     const today = new Date().toISOString().split("T")[0];
     if (this.questSystem.currentDate !== today) {
-      console.log("🔄 デイリークエストリセット:", this.questSystem.currentDate, "→", today);
+      console.log(
+        "🔄 デイリークエストリセット:",
+        this.questSystem.currentDate,
+        "→",
+        today
+      );
       this.questSystem.currentDate = today;
       this.questSystem.availableQuests = this.generateDailyQuests();
       this.questSystem.completedQuests = [];
@@ -144,7 +152,11 @@ class DailyQuestManager {
         targetType: "pre-study" as const,
         targetAmount: 1,
         rewards: [
-          { type: "xp" as const, amount: 120, description: "理論マスターボーナス" },
+          {
+            type: "xp" as const,
+            amount: 120,
+            description: "理論マスターボーナス",
+          },
           { type: "coins" as const, amount: 60, description: "ガチャコイン" },
         ],
         rarity: "rare" as const,
@@ -200,7 +212,11 @@ class DailyQuestManager {
         targetType: "combined" as const,
         targetAmount: 1,
         rewards: [
-          { type: "xp" as const, amount: 300, description: "総合マスターボーナス" },
+          {
+            type: "xp" as const,
+            amount: 300,
+            description: "総合マスターボーナス",
+          },
           { type: "coins" as const, amount: 150, description: "ガチャコイン" },
         ],
         rarity: "epic" as const,
@@ -241,19 +257,25 @@ class DailyQuestManager {
     return this.questSystem.availableQuests;
   }
 
-  public updateQuestProgress(targetType: DailyQuest["targetType"], amount: number = 1): void {
+  public updateQuestProgress(
+    targetType: DailyQuest["targetType"],
+    amount: number = 1
+  ): void {
     let anyUpdated = false;
 
     this.questSystem.availableQuests.forEach((quest) => {
       if (quest.targetType === targetType && !quest.isCompleted) {
-        quest.currentProgress = Math.min(quest.currentProgress + amount, quest.targetAmount);
-        
+        quest.currentProgress = Math.min(
+          quest.currentProgress + amount,
+          quest.targetAmount
+        );
+
         if (quest.currentProgress >= quest.targetAmount && !quest.isCompleted) {
           quest.isCompleted = true;
           quest.completedAt = new Date().toISOString();
           this.questSystem.completedQuests.push(quest.id);
           this.questSystem.totalQuestsCompleted++;
-          
+
           // 報酬を付与
           quest.rewards.forEach((reward) => {
             if (reward.type === "xp") {
@@ -268,13 +290,13 @@ class DailyQuestManager {
 
           // ストリーク更新
           this.updateStreak();
-          
+
           console.log("🎯 デイリークエスト完了:", {
             quest: quest.title,
             rewards: quest.rewards,
             totalCompleted: this.questSystem.totalQuestsCompleted,
           });
-          
+
           anyUpdated = true;
         }
       }
@@ -287,7 +309,9 @@ class DailyQuestManager {
 
   private updateStreak(): void {
     const today = new Date().toISOString().split("T")[0];
-    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000)
+      .toISOString()
+      .split("T")[0];
 
     if (this.questSystem.streak.lastCompletionDate === yesterday) {
       this.questSystem.streak.current++;
@@ -317,7 +341,7 @@ class DailyQuestManager {
     this.coinSystem.sources[source] += amount;
     this.coinSystem.lastEarned = new Date().toISOString();
     this.saveCoinSystem();
-    
+
     console.log("🪙 コイン獲得:", {
       amount,
       source,
@@ -330,12 +354,12 @@ class DailyQuestManager {
       this.coinSystem.current -= amount;
       this.coinSystem.totalSpent += amount;
       this.saveCoinSystem();
-      
+
       console.log("🪙 コイン消費:", {
         amount,
         remaining: this.coinSystem.current,
       });
-      
+
       return true;
     }
     return false;
@@ -395,7 +419,7 @@ class DailyQuestManager {
   } {
     const completed = this.questSystem.completedQuests.length;
     const total = this.questSystem.availableQuests.length;
-    
+
     return {
       completed,
       total,
@@ -406,7 +430,9 @@ class DailyQuestManager {
 
   // 報酬受け取り
   public claimQuestRewards(questId: string): boolean {
-    const quest = this.questSystem.availableQuests.find(q => q.id === questId);
+    const quest = this.questSystem.availableQuests.find(
+      (q) => q.id === questId
+    );
     if (quest && quest.isCompleted) {
       // 報酬は完了時に自動付与されるため、ここでは表示用のフラグ管理のみ
       return true;

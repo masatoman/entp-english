@@ -36,6 +36,7 @@ import { GrammarQuizDifficultySelection } from "./GrammarQuizDifficultySelection
 // GrowthDashboardはRouter経由で使用するため、直接importを削除
 import { DailyChallengeCard } from "./DailyChallengeCard";
 import DailyQuestPanel from "./DailyQuestPanel";
+import GameHeader from "./GameHeader";
 import { LearningFeedbackForm } from "./LearningFeedbackForm";
 import { LevelDisplay } from "./LevelDisplay";
 import { PWAInstallButton } from "./PWAInstallButton";
@@ -61,8 +62,15 @@ export function NewHome() {
 
   // デイリークエストシステム
   const [showDailyQuests, setShowDailyQuests] = useState(false);
-  const [questStats, setQuestStats] = useState({ completed: 0, total: 0, percentage: 0, streak: 0 });
-  const [coinSystem, setCoinSystem] = useState(dailyQuestManager.getCoinSystem());
+  const [questStats, setQuestStats] = useState({
+    completed: 0,
+    total: 0,
+    percentage: 0,
+    streak: 0,
+  });
+  const [coinSystem, setCoinSystem] = useState(
+    dailyQuestManager.getCoinSystem()
+  );
 
   // ハートシステムの状態を強制的に更新
   const forceRefreshHearts = () => {
@@ -155,7 +163,7 @@ export function NewHome() {
         multiplier,
         consecutiveDays: system.dailyBonus.consecutiveDays,
       });
-      
+
       console.log("🎯 デイリークエスト更新:", questStatsData);
     };
 
@@ -438,259 +446,67 @@ export function NewHome() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-      <div className="max-w-6xl mx-auto space-y-6">
-        {/* ヘッダー */}
-        <div className="bg-white rounded-lg shadow-sm border p-6 mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="flex-1">
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-                ENTP英語学習アプリ
-              </h1>
-              <p className="text-gray-600 text-sm sm:text-base">
-                あなたの英語学習をサポートします
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              <PWAInstallButton variant="compact" showInstructions={false} />
-              
-              {/* デイリークエストボタン */}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowDailyQuests(true)}
-                className="flex items-center gap-2 bg-gradient-to-r from-teal-50 to-cyan-50 border-teal-200 hover:from-teal-100 hover:to-cyan-100"
-              >
-                <Target className="w-4 h-4 text-teal-600" />
-                <span className="hidden sm:inline text-teal-700">
-                  デイリークエスト
-                </span>
-                <span className="sm:hidden text-teal-700">クエスト</span>
-                {questStats.completed > 0 && (
-                  <span className="bg-teal-500 text-white text-xs rounded-full px-1.5 py-0.5 min-w-[18px] text-center">
-                    {questStats.completed}
-                  </span>
-                )}
-              </Button>
-              
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowDetailedView(!showDetailedView)}
-                className="flex items-center gap-2"
-              >
-                <BarChart3 className="w-4 h-4" />
-                <span className="hidden sm:inline">
-                  {showDetailedView ? "統計を隠す" : "統計を表示"}
-                </span>
-                <span className="sm:hidden">統計</span>
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => navigate("/progress/insights")}
-                className="flex items-center gap-2 bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200 hover:from-purple-100 hover:to-blue-100"
-              >
-                <Brain className="w-4 h-4 text-purple-600" />
-                <span className="hidden sm:inline text-purple-700">
-                  学習分析
-                </span>
-                <span className="sm:hidden text-purple-700">分析</span>
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowStatusAllocation(!showStatusAllocation)}
-                className="flex items-center gap-2"
-              >
-                <Settings className="w-4 h-4" />
-                <span className="hidden sm:inline">ステータス設定</span>
-                <span className="sm:hidden">設定</span>
-              </Button>
-            </div>
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      {/* ゲームヘッダー */}
+      <GameHeader
+        onQuestClick={() => setShowDailyQuests(true)}
+        questCompletedCount={questStats.completed}
+      />
+
+      <div className="max-w-6xl mx-auto space-y-6 p-4">
+        {/* 簡素化されたタイトル */}
+        <div className="text-center py-4">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+            ENTP英語学習アプリ
+          </h1>
+          <p className="text-gray-600 text-sm sm:text-base">
+            あなたの英語学習をサポートします
+          </p>
         </div>
 
-        {/* メイン情報カード */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* レベル情報 */}
-          <div className="lg:col-span-2">
-            <LevelDisplay
-              showDetailed={showDetailedView}
-              showChapterProgress={showDetailedView}
-            />
-          </div>
+        {/* 簡素化されたコントロール */}
+        <div className="flex items-center justify-center gap-3 py-2">
+          <PWAInstallButton variant="compact" showInstructions={false} />
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowDetailedView(!showDetailedView)}
+            className="flex items-center gap-2"
+          >
+            <BarChart3 className="w-4 h-4" />
+            <span className="hidden sm:inline">
+              {showDetailedView ? "統計を隠す" : "統計を表示"}
+            </span>
+            <span className="sm:hidden">統計</span>
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate("/progress/insights")}
+            className="flex items-center gap-2 bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200 hover:from-purple-100 hover:to-blue-100"
+          >
+            <Brain className="w-4 h-4 text-purple-600" />
+            <span className="hidden sm:inline text-purple-700">学習分析</span>
+            <span className="sm:hidden text-purple-700">分析</span>
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowStatusAllocation(!showStatusAllocation)}
+            className="flex items-center gap-2"
+          >
+            <Settings className="w-4 h-4" />
+            <span className="hidden sm:inline">ステータス設定</span>
+            <span className="sm:hidden">設定</span>
+          </Button>
+        </div>
 
-          {/* 体力システム（ハート + スタミナ） */}
-          <div>
-            <div className="bg-white rounded-lg shadow-md p-4">
-              <h3 className="text-lg font-semibold text-gray-800 mb-3">
-                体力システム
-              </h3>
-
-              {/* ハート表示 */}
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-600">体力</span>
-                  <div className="flex space-x-1">
-                    {Array.from({ length: heartSystem.max }, (_, i) => (
-                      <span
-                        key={i}
-                        className={`text-2xl ${
-                          i < heartSystem.current
-                            ? "text-red-500"
-                            : "text-gray-300"
-                        }`}
-                      >
-                        {i < heartSystem.current ? "♥" : "♡"}
-                      </span>
-                    ))}
-                  </div>
-                  <span className="text-sm font-medium text-gray-700">
-                    ({heartSystem.current}/{heartSystem.max})
-                  </span>
-                </div>
-              </div>
-
-              {/* スタミナ（星）表示 */}
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-600">スタミナ</span>
-                  <div className="flex space-x-1">
-                    {Array.from({ length: starSystem.max }, (_, i) => (
-                      <span
-                        key={i}
-                        className={`text-2xl ${
-                          i < starSystem.current
-                            ? "text-yellow-500"
-                            : "text-gray-300"
-                        }`}
-                      >
-                        {i < starSystem.current ? "⭐️" : "☆"}
-                      </span>
-                    ))}
-                  </div>
-                  <span className="text-sm font-medium text-gray-700">
-                    ({starSystem.current}/{starSystem.max})
-                  </span>
-                </div>
-              </div>
-
-              {/* デイリーボーナス表示 */}
-              {dailyMultiplier > 1.0 && (
-                <div className="mb-3 p-2 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-lg">📅</span>
-                      <div>
-                        <div className="text-xs font-semibold text-yellow-700">
-                          デイリーボーナス
-                        </div>
-                        <div className="text-xs text-yellow-600">
-                          {consecutiveDays}日連続ログイン
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm font-bold text-yellow-700">
-                        ×{dailyMultiplier.toFixed(1)}
-                      </div>
-                      <div className="text-xs text-yellow-600">XP倍率</div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* ガチャコイン表示 */}
-              <div className="mb-3 p-2 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-lg border border-yellow-200">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-lg">🪙</span>
-                    <div>
-                      <div className="text-xs font-semibold text-yellow-700">
-                        ガチャコイン
-                      </div>
-                      <div className="text-xs text-yellow-600">
-                        ガチャに使用可能
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-sm font-bold text-yellow-700">
-                      {coinSystem.current}
-                    </div>
-                    <div className="text-xs text-yellow-600">枚</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* 体力とスタミナの操作ボタン */}
-              <div className="flex items-center justify-between">
-                <div className="flex space-x-2">
-                  <p className="text-xs text-gray-500">1問題につき1体力消費</p>
-                  <p className="text-xs text-gray-500">5分で1体力回復</p>
-                </div>
-                <div className="flex space-x-1">
-                  <button
-                    onClick={() => {
-                      const manager = getLevelManager();
-                      if (manager.consumeHeart()) {
-                        forceRefreshHearts();
-                        saveLevelManager();
-                        console.log("💔 体力を1消費しました");
-                      } else {
-                        alert("体力が不足しています");
-                      }
-                    }}
-                    className="px-2 py-1 text-xs bg-red-100 hover:bg-red-200 text-red-700 rounded"
-                    disabled={heartSystem.current === 0}
-                  >
-                    体力消費
-                  </button>
-                  <button
-                    onClick={() => {
-                      const manager = getLevelManager();
-                      manager.recoverAllHearts();
-                      forceRefreshHearts();
-                      saveLevelManager();
-                      console.log("💖 体力を全回復しました");
-                    }}
-                    className="px-2 py-1 text-xs bg-green-100 hover:bg-green-200 text-green-700 rounded"
-                  >
-                    ♥回復
-                  </button>
-                  <button
-                    onClick={() => {
-                      const manager = getLevelManager();
-                      if (manager.consumeStar()) {
-                        setStarSystem(manager.getStarSystem());
-                        saveLevelManager();
-                        console.log("⭐ スタミナを1消費しました");
-                      } else {
-                        alert("スタミナが不足しています");
-                      }
-                    }}
-                    className="px-2 py-1 text-xs bg-orange-100 hover:bg-orange-200 text-orange-700 rounded"
-                    disabled={starSystem.current === 0}
-                  >
-                    スタミナ消費
-                  </button>
-                  <button
-                    onClick={() => {
-                      const manager = getLevelManager();
-                      manager.recoverAllStars();
-                      setStarSystem(manager.getStarSystem());
-                      saveLevelManager();
-                      console.log("⭐ スタミナを全回復しました");
-                    }}
-                    className="px-2 py-1 text-xs bg-purple-100 hover:bg-purple-200 text-purple-700 rounded"
-                  >
-                    ⭐回復
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* レベル情報（フルワイド） */}
+        <div className="w-full">
+          <LevelDisplay
+            showDetailed={showDetailedView}
+            showChapterProgress={showDetailedView}
+          />
         </div>
 
         {/* デイリーチャレンジカード */}

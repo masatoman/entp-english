@@ -15,8 +15,8 @@ import {
   shuffleArray,
 } from "../data/combinedTest";
 import { useScrollToTop } from "../hooks/useScrollToTop";
-import { DataManager } from "../utils/dataManager";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
+import { DataManager } from "../utils/dataManager";
 import { GachaSystem } from "../utils/gachaSystem";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 import { Badge } from "./ui/badge";
@@ -282,14 +282,16 @@ export default function CombinedTest() {
     } else {
       // テスト完了
       const accuracy = (score / questions.length) * 100;
-      
+
       // デイリークエスト進捗更新（80%以上の場合）
       if (accuracy >= 80) {
         dailyQuestManager.recordCombinedTestCompletion();
       }
-      
+
       alert(
-        `テスト完了！\nスコア: ${score}/${questions.length}\n正解率: ${accuracy.toFixed(1)}%\n獲得XP: ${totalXP}`
+        `テスト完了！\nスコア: ${score}/${
+          questions.length
+        }\n正解率: ${accuracy.toFixed(1)}%\n獲得XP: ${totalXP}`
       );
       navigate("/");
     }

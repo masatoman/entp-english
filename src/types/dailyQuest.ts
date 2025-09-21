@@ -9,7 +9,17 @@ export interface DailyQuest {
   title: string;
   description: string;
   icon: string;
-  targetType: "grammar" | "vocabulary" | "combined" | "time-attack" | "essay" | "skill-tree" | "gacha" | "pre-study" | "synergy" | "achievements";
+  targetType:
+    | "grammar"
+    | "vocabulary"
+    | "combined"
+    | "time-attack"
+    | "essay"
+    | "skill-tree"
+    | "gacha"
+    | "pre-study"
+    | "synergy"
+    | "achievements";
   targetAmount: number;
   currentProgress: number;
   rewards: DailyQuestReward[];

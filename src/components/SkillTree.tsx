@@ -1,4 +1,4 @@
-import { ArrowLeft, Clock, Lock, Star, Trophy, Zap } from "lucide-react";
+import { ArrowLeft, Lock, Star, Trophy, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
@@ -9,7 +9,6 @@ import {
   skillTreeManager,
   SkillTreeState,
 } from "../utils/skillTreeManager";
-import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import {
   Card,

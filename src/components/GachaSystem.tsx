@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { GachaPack } from "../types/gacha";
-import { GachaSystem as GachaSystemUtil } from "../utils/gachaSystem";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
+import { GachaSystem as GachaSystemUtil } from "../utils/gachaSystem";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
+import GameHeader from "./GameHeader";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { CardCollectionGrid } from "./ui/card-collection-grid";
@@ -32,7 +33,9 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
   const [availablePacks] = useState(GachaSystemUtil.getAvailablePacks());
   const [showCollection, setShowCollection] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<"xp" | "coins">("xp");
-  const [coinSystem, setCoinSystem] = useState(dailyQuestManager.getCoinSystem());
+  const [coinSystem, setCoinSystem] = useState(
+    dailyQuestManager.getCoinSystem()
+  );
 
   // 時間ベースの回復システム用の定期更新
   useEffect(() => {
@@ -66,7 +69,9 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
     } else if (paymentMethod === "coins") {
       const coinCost = Math.floor(pack.cost / 2); // コインはXPの半分のコスト
       if (!dailyQuestManager.canAffordCoins(coinCost)) {
-        alert(`コインが不足しています。必要: ${coinCost}枚, 所持: ${coinSystem.current}枚`);
+        alert(
+          `コインが不足しています。必要: ${coinCost}枚, 所持: ${coinSystem.current}枚`
+        );
         return;
       }
     }
@@ -177,24 +182,28 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      {/* ヘッダー */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => navigate("/")}
-            className="flex items-center gap-2"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            戻る
-          </Button>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Gift className="w-8 h-8 text-purple-600" />
-            TOEIC単語ガチャ
-          </h1>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50">
+      {/* ゲームヘッダー */}
+      <GameHeader />
+      
+      <div className="max-w-6xl mx-auto p-6">
+        {/* ページタイトル */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate("/")}
+              className="flex items-center gap-2"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              戻る
+            </Button>
+            <h1 className="text-3xl font-bold flex items-center gap-2">
+              <Gift className="w-8 h-8 text-purple-600" />
+              TOEIC単語ガチャ
+            </h1>
+          </div>
         <div className="flex items-center gap-4">
           <Button
             variant="outline"
@@ -205,7 +214,7 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
             <Gift className="w-4 h-4" />
             {showCollection ? "パック選択" : "コレクション"}
           </Button>
-          
+
           {/* 支払い方法選択 */}
           <div className="flex items-center gap-2">
             <Button
@@ -226,28 +235,6 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
               <span className="text-sm">🪙</span>
               コイン
             </Button>
-          </div>
-          
-          {/* 残高表示 */}
-          <div className="text-right space-y-1">
-            <div className="flex items-center gap-2">
-              <Zap className="w-4 h-4 text-blue-500" />
-              <div>
-                <div className="text-xs text-gray-600">XP</div>
-                <div className="text-lg font-bold text-blue-600">
-                  {Math.max(0, userXP)}
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-sm">🪙</span>
-              <div>
-                <div className="text-xs text-gray-600">コイン</div>
-                <div className="text-lg font-bold text-yellow-600">
-                  {coinSystem.current}
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -333,8 +320,14 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
               const canOpenXP = GachaSystemUtil.canOpenPack(pack.id, userXP);
               const coinCost = Math.floor(pack.cost / 2);
               const canOpenCoins = dailyQuestManager.canAffordCoins(coinCost);
-              const canOpen = paymentMethod === "xp" ? canOpenXP : { canOpen: canOpenCoins, reason: canOpenCoins ? "" : "コイン不足" };
-              
+              const canOpen =
+                paymentMethod === "xp"
+                  ? canOpenXP
+                  : {
+                      canOpen: canOpenCoins,
+                      reason: canOpenCoins ? "" : "コイン不足",
+                    };
+
               const RarityIcon =
                 pack.rarity === "normal"
                   ? Star
@@ -388,7 +381,9 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
                         </span>
                       </div>
                       <div className="text-xs text-gray-500">
-                        {paymentMethod === "xp" ? "XP支払い選択中" : "コイン支払い選択中"}
+                        {paymentMethod === "xp"
+                          ? "XP支払い選択中"
+                          : "コイン支払い選択中"}
                       </div>
                     </div>
                     <div
@@ -568,6 +563,7 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
-import { Check, Clock, Star, X } from "lucide-react";
+import { Check, Star, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { DailyQuest, DailyQuestSystem, CoinSystem } from "../types/dailyQuest";
+import { CoinSystem, DailyQuest, DailyQuestSystem } from "../types/dailyQuest";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -24,7 +24,7 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
     };
 
     loadData();
-    
+
     // 1秒ごとに更新（進捗反映のため）
     const interval = setInterval(loadData, 1000);
     return () => clearInterval(interval);
@@ -47,19 +47,27 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
 
   const getRarityColor = (rarity: DailyQuest["rarity"]) => {
     switch (rarity) {
-      case "legendary": return "from-yellow-400 to-orange-500";
-      case "epic": return "from-purple-400 to-pink-500";
-      case "rare": return "from-blue-400 to-cyan-500";
-      default: return "from-gray-300 to-gray-400";
+      case "legendary":
+        return "from-yellow-400 to-orange-500";
+      case "epic":
+        return "from-purple-400 to-pink-500";
+      case "rare":
+        return "from-blue-400 to-cyan-500";
+      default:
+        return "from-gray-300 to-gray-400";
     }
   };
 
   const getRarityBorder = (rarity: DailyQuest["rarity"]) => {
     switch (rarity) {
-      case "legendary": return "border-yellow-400";
-      case "epic": return "border-purple-400";
-      case "rare": return "border-blue-400";
-      default: return "border-gray-300";
+      case "legendary":
+        return "border-yellow-400";
+      case "epic":
+        return "border-purple-400";
+      case "rare":
+        return "border-blue-400";
+      default:
+        return "border-gray-300";
     }
   };
 
@@ -69,7 +77,9 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
         <CardHeader className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white">
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-2xl font-bold">デイリークエスト</CardTitle>
+              <CardTitle className="text-2xl font-bold">
+                デイリークエスト
+              </CardTitle>
               <p className="text-teal-100 mt-1">全てのコンテンツを楽しもう！</p>
             </div>
             <Button
@@ -87,15 +97,21 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
           {/* 統計サマリー */}
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">{stats.completed}</div>
+              <div className="text-2xl font-bold text-green-600">
+                {stats.completed}
+              </div>
               <div className="text-sm text-gray-600">完了</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">{stats.total}</div>
+              <div className="text-2xl font-bold text-blue-600">
+                {stats.total}
+              </div>
               <div className="text-sm text-gray-600">総数</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600">{stats.streak}</div>
+              <div className="text-2xl font-bold text-purple-600">
+                {stats.streak}
+              </div>
               <div className="text-sm text-gray-600">連続日数</div>
             </div>
           </div>
@@ -116,11 +132,15 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
                 <span className="text-2xl">🪙</span>
                 <div>
                   <div className="font-bold text-yellow-700">ガチャコイン</div>
-                  <div className="text-sm text-yellow-600">ガチャに使用可能</div>
+                  <div className="text-sm text-yellow-600">
+                    ガチャに使用可能
+                  </div>
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-2xl font-bold text-yellow-700">{coinSystem.current}</div>
+                <div className="text-2xl font-bold text-yellow-700">
+                  {coinSystem.current}
+                </div>
                 <div className="text-sm text-yellow-600">枚</div>
               </div>
             </div>
@@ -157,7 +177,9 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
                     {/* クエスト情報 */}
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-1">
-                        <h4 className="font-bold text-gray-800">{quest.title}</h4>
+                        <h4 className="font-bold text-gray-800">
+                          {quest.title}
+                        </h4>
                         <Badge
                           variant="outline"
                           className={`text-xs ${
@@ -179,8 +201,10 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
                             : "⚪ 通常"}
                         </Badge>
                       </div>
-                      
-                      <p className="text-sm text-gray-600 mb-3">{quest.description}</p>
+
+                      <p className="text-sm text-gray-600 mb-3">
+                        {quest.description}
+                      </p>
 
                       {/* 進捗バー */}
                       <div className="mb-3">
@@ -191,14 +215,18 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
                           </span>
                         </div>
                         <Progress
-                          value={(quest.currentProgress / quest.targetAmount) * 100}
+                          value={
+                            (quest.currentProgress / quest.targetAmount) * 100
+                          }
                           className="h-2"
                         />
                       </div>
 
                       {/* 報酬表示 */}
                       <div className="space-y-1">
-                        <div className="text-xs font-medium text-gray-700">報酬:</div>
+                        <div className="text-xs font-medium text-gray-700">
+                          報酬:
+                        </div>
                         <div className="flex flex-wrap gap-2">
                           {quest.rewards.map((reward, index) => (
                             <div
@@ -253,7 +281,9 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
                   </div>
                   <div className="flex items-center space-x-1">
                     <span className="text-sm">🪙</span>
-                    <span className="text-sm font-medium">+50 ボーナスコイン</span>
+                    <span className="text-sm font-medium">
+                      +50 ボーナスコイン
+                    </span>
                   </div>
                 </div>
               </CardContent>
@@ -265,7 +295,9 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
             <Button onClick={onClose} className="w-full" size="lg">
               学習を続ける
             </Button>
-            <p className="text-xs text-gray-500 mt-2">- 空白をタップして閉じる -</p>
+            <p className="text-xs text-gray-500 mt-2">
+              - 空白をタップして閉じる -
+            </p>
           </div>
         </CardContent>
       </Card>
