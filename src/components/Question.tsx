@@ -306,11 +306,11 @@ export default function Question() {
     if (correct && Math.random() < 0.2) {
       const box = adrenalineManager.earnTreasureBox(difficulty);
       console.log("🎁 宝箱獲得:", box);
-
-      // 問題完了後に宝箱表示
+      
+      // 解説表示後に宝箱表示（即座に表示）
       setTimeout(() => {
         setShowTreasureBox(true);
-      }, 2000);
+      }, 500);
     }
   };
 

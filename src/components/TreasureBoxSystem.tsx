@@ -24,24 +24,33 @@ export default function TreasureBoxSystem({
     };
 
     loadTreasureBoxes();
-    const interval = setInterval(loadTreasureBoxes, 1000);
+    // 報酬表示中はintervalを停止（showRewardsがnullの場合のみ更新）
+    const interval = setInterval(() => {
+      if (!showRewards) {
+        loadTreasureBoxes();
+      }
+    }, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [showRewards]); // showRewardsを依存関係に追加
 
   const handleOpenBox = async (boxId: string) => {
+    console.log("🔍 宝箱開封開始:", boxId);
     setOpeningBox(boxId);
 
     // 開封アニメーション
+    console.log("🔍 開封アニメーション開始（1.5秒）");
     await new Promise((resolve) => setTimeout(resolve, 1500));
+    console.log("🔍 開封アニメーション完了");
 
     const rewards = adrenalineManager.openTreasureBox(boxId);
+    console.log("🔍 adrenalineManager.openTreasureBox結果:", rewards);
 
     // 報酬を適用
     const levelManager = getLevelManager();
     let totalXPGained = 0;
     let heartsRecovered = 0;
     let starsRecovered = 0;
-    
+
     rewards.forEach((reward) => {
       switch (reward.type) {
         case "xp":
@@ -54,14 +63,18 @@ export default function TreasureBoxSystem({
           levelManager.recoverAllHearts();
           const afterHearts = levelManager.getHeartSystem().current;
           heartsRecovered = afterHearts - beforeHearts;
-          console.log(`❤️ 体力回復: ${beforeHearts} → ${afterHearts} (+${heartsRecovered})`);
+          console.log(
+            `❤️ 体力回復: ${beforeHearts} → ${afterHearts} (+${heartsRecovered})`
+          );
           break;
         case "stars":
           const beforeStars = levelManager.getStarSystem().current;
           levelManager.recoverAllStars();
           const afterStars = levelManager.getStarSystem().current;
           starsRecovered = afterStars - beforeStars;
-          console.log(`⭐ スタミナ回復: ${beforeStars} → ${afterStars} (+${starsRecovered})`);
+          console.log(
+            `⭐ スタミナ回復: ${beforeStars} → ${afterStars} (+${starsRecovered})`
+          );
           break;
         case "gacha_ticket":
           // ガチャチケットの処理（実装予定）
@@ -74,7 +87,7 @@ export default function TreasureBoxSystem({
       }
     });
     saveLevelManager();
-    
+
     console.log("🎁 宝箱開封完了 - 総報酬:", {
       totalXPGained,
       heartsRecovered,
@@ -84,8 +97,21 @@ export default function TreasureBoxSystem({
 
     setShowRewards(rewards);
     setOpeningBox(null);
+    
+    console.log("🔍 宝箱UI状態更新:", {
+      showRewards: rewards,
+      rewardsLength: rewards.length,
+      openingBox: null,
+    });
 
-    // 宝箱リストを更新
+    // 一時的な解決策：アラートで報酬を表示
+    const rewardSummary = rewards.map(r => 
+      `${r.type === "xp" ? "⚡" : r.type === "hearts" ? "❤️" : r.type === "stars" ? "⭐" : r.type === "gacha_ticket" ? "🎫" : "✨"} ${r.description}: +${r.amount}`
+    ).join('\n');
+    
+    alert(`🎉 宝箱開封完了！\n\n${rewardSummary}\n\n合計: ${rewards.length}個の報酬を獲得しました！`);
+
+    // 報酬表示中は宝箱リストを更新しない（報酬表示完了後に更新）
     const system = adrenalineManager.getSystem();
     setTreasureBoxes(system.treasureBoxes.filter((box) => !box.isOpened));
 
@@ -137,7 +163,16 @@ export default function TreasureBoxSystem({
     }
   };
 
-  if (treasureBoxes.length === 0 && !showRewards) {
+  console.log("🔍 TreasureBoxSystem レンダリング状態:", {
+    treasureBoxesLength: treasureBoxes.length,
+    showRewards: showRewards ? showRewards.length : null,
+    showRewardsExists: !!showRewards,
+    openingBox,
+  });
+
+  // 報酬表示または宝箱がある場合のみ表示
+  if (!showRewards && treasureBoxes.length === 0) {
+    console.log("🔍 TreasureBoxSystem: 表示条件を満たさないため非表示");
     return null;
   }
 
@@ -146,7 +181,9 @@ export default function TreasureBoxSystem({
       <div className="max-w-md mx-auto p-4">
         {showRewards ? (
           // 報酬表示画面（大幅改善）
-          <Card className="border-0 shadow-2xl bg-gradient-to-br from-yellow-50 to-orange-100 animate-pulse">
+          <>
+            {console.log("🔍 報酬表示画面をレンダリング中:", showRewards)}
+            <Card className="border-0 shadow-2xl bg-gradient-to-br from-yellow-50 to-orange-100 animate-pulse">
             <CardHeader className="text-center">
               <div className="text-6xl mb-2 animate-bounce">🎉</div>
               <CardTitle className="text-3xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
@@ -201,14 +238,30 @@ export default function TreasureBoxSystem({
                         <div className="font-bold text-lg text-gray-800">
                           {reward.description}
                         </div>
-                        <Badge 
-                          variant="outline" 
+                        <Badge
+                          variant="outline"
                           className={`
                             text-sm font-medium
-                            ${reward.rarity === "legendary" ? "border-purple-500 text-purple-700 bg-purple-50" : ""}
-                            ${reward.rarity === "epic" ? "border-yellow-500 text-yellow-700 bg-yellow-50" : ""}
-                            ${reward.rarity === "rare" ? "border-blue-500 text-blue-700 bg-blue-50" : ""}
-                            ${reward.rarity === "common" ? "border-gray-500 text-gray-700 bg-gray-50" : ""}
+                            ${
+                              reward.rarity === "legendary"
+                                ? "border-purple-500 text-purple-700 bg-purple-50"
+                                : ""
+                            }
+                            ${
+                              reward.rarity === "epic"
+                                ? "border-yellow-500 text-yellow-700 bg-yellow-50"
+                                : ""
+                            }
+                            ${
+                              reward.rarity === "rare"
+                                ? "border-blue-500 text-blue-700 bg-blue-50"
+                                : ""
+                            }
+                            ${
+                              reward.rarity === "common"
+                                ? "border-gray-500 text-gray-700 bg-gray-50"
+                                : ""
+                            }
                           `}
                         >
                           {reward.rarity === "legendary"
@@ -226,10 +279,15 @@ export default function TreasureBoxSystem({
                         +{reward.amount}
                       </div>
                       <div className="text-sm text-green-500 font-medium">
-                        {reward.type === "xp" ? "XP" : 
-                         reward.type === "hearts" ? "体力" :
-                         reward.type === "stars" ? "スタミナ" :
-                         reward.type === "gacha_ticket" ? "チケット" : "アイテム"}
+                        {reward.type === "xp"
+                          ? "XP"
+                          : reward.type === "hearts"
+                          ? "体力"
+                          : reward.type === "stars"
+                          ? "スタミナ"
+                          : reward.type === "gacha_ticket"
+                          ? "チケット"
+                          : "アイテム"}
                       </div>
                     </div>
                   </div>
@@ -245,19 +303,26 @@ export default function TreasureBoxSystem({
                   <div className="grid grid-cols-3 gap-2 text-sm">
                     <div className="text-center">
                       <div className="text-lg font-bold text-blue-600">
-                        {showRewards.filter(r => r.type === "xp").reduce((sum, r) => sum + r.amount, 0)}
+                        {showRewards
+                          .filter((r) => r.type === "xp")
+                          .reduce((sum, r) => sum + r.amount, 0)}
                       </div>
                       <div className="text-xs text-blue-500">XP</div>
                     </div>
                     <div className="text-center">
                       <div className="text-lg font-bold text-red-600">
-                        {showRewards.filter(r => r.type === "hearts").length > 0 ? "FULL" : "0"}
+                        {showRewards.filter((r) => r.type === "hearts").length >
+                        0
+                          ? "FULL"
+                          : "0"}
                       </div>
                       <div className="text-xs text-red-500">体力</div>
                     </div>
                     <div className="text-center">
                       <div className="text-lg font-bold text-yellow-600">
-                        {showRewards.filter(r => r.type === "gacha_ticket").reduce((sum, r) => sum + r.amount, 0)}
+                        {showRewards
+                          .filter((r) => r.type === "gacha_ticket")
+                          .reduce((sum, r) => sum + r.amount, 0)}
                       </div>
                       <div className="text-xs text-yellow-500">チケット</div>
                     </div>
@@ -266,7 +331,13 @@ export default function TreasureBoxSystem({
               </div>
 
               <Button
-                onClick={() => setShowRewards(null)}
+                onClick={() => {
+                  setShowRewards(null);
+                  // 報酬表示完了後に宝箱リストを更新
+                  const system = adrenalineManager.getSystem();
+                  setTreasureBoxes(system.treasureBoxes.filter((box) => !box.isOpened));
+                  console.log("🔍 報酬表示完了 - 宝箱リスト更新");
+                }}
                 className="w-full mt-6 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold text-lg py-3"
                 size="lg"
               >
@@ -274,6 +345,7 @@ export default function TreasureBoxSystem({
               </Button>
             </CardContent>
           </Card>
+          </>
         ) : (
           // 宝箱選択画面
           <Card className="border-0 shadow-2xl">
