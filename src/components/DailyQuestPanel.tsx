@@ -119,7 +119,7 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
 
   return (
     <div 
-      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-4"
+      className="fixed inset-0 bg-black/50 flex items-start justify-center z-50 p-2 sm:p-4 pt-8 sm:pt-16"
       onClick={handleBackgroundClick}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
@@ -150,39 +150,7 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
           </div>
         </CardHeader>
 
-        <CardContent className="p-3 sm:p-6 space-y-4 sm:space-y-6">
-          {/* 統計サマリー */}
-          <div className="grid grid-cols-3 gap-2 sm:gap-4">
-            <div className="text-center">
-              <div className="text-lg sm:text-2xl font-bold text-green-600">
-                {stats.completed}
-              </div>
-              <div className="text-xs sm:text-sm text-gray-600">完了</div>
-            </div>
-            <div className="text-center">
-              <div className="text-lg sm:text-2xl font-bold text-blue-600">
-                {stats.total}
-              </div>
-              <div className="text-xs sm:text-sm text-gray-600">総数</div>
-            </div>
-            <div className="text-center">
-              <div className="text-lg sm:text-2xl font-bold text-purple-600">
-                {stats.streak}
-              </div>
-              <div className="text-xs sm:text-sm text-gray-600">連続日数</div>
-            </div>
-          </div>
-
-          {/* 進捗バー */}
-          <div>
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-xs sm:text-sm font-medium">今日の進捗</span>
-              <span className="text-xs sm:text-sm text-gray-600">
-                {stats.percentage}%
-              </span>
-            </div>
-            <Progress value={stats.percentage} className="h-3" />
-          </div>
+        <CardContent className="p-3 sm:p-4 space-y-3 sm:space-y-4">
 
           {/* コイン残高 */}
           <div className="bg-gradient-to-r from-yellow-50 to-orange-50 p-3 sm:p-4 rounded-lg border border-yellow-200">
