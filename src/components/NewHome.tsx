@@ -646,6 +646,18 @@ export function NewHome() {
             onClick={() => navigate("/learning/skill-tree")}
           />
 
+          {/* シナジー効果 */}
+          <SelectionCard
+            id="synergy-effect"
+            title="シナジー効果"
+            description="学習の相乗効果を最大化して効率アップ"
+            icon="🧠"
+            difficulty="相乗効果"
+            detail="学習効果+30-260%"
+            color="bg-indigo-50 border-indigo-200 text-indigo-800"
+            onClick={() => navigate("/learning/synergy")}
+          />
+
           {/* 文法クイズ */}
           <SelectionCard
             id="grammar-quiz"
@@ -787,14 +799,6 @@ export function NewHome() {
           >
             <Star className="w-4 h-4" />
             <span>学習フィードバック</span>
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => navigate("/learning/synergy")}
-            className="flex items-center space-x-2"
-          >
-            <Brain className="w-4 h-4" />
-            <span>シナジー効果</span>
           </Button>
         </div>
 
