@@ -118,11 +118,11 @@ export default function SynergyDashboard({
     return "シナジーなし";
   };
 
-  // 推奨コンテンツ（シナジーボーナスが高い順）
+  // 推奨コンテンツ（未完了のものを効果順に表示、多様性を確保）
   const recommendedContent = synergyProgress
-    .filter((p) => p.completionRate === 0 && p.synergyBonus > 1.0)
+    .filter((p) => p.completionRate === 0) // シナジーボーナスの条件を削除して多様性を確保
     .sort((a, b) => b.synergyBonus - a.synergyBonus)
-    .slice(0, 6);
+    .slice(0, 8); // 表示数を6→8に増加
 
   // 完了済みコンテンツの統計
   const completedCount = synergyProgress.filter(
@@ -306,12 +306,13 @@ export default function SynergyDashboard({
                 const bonusPercent = Math.round((progress.synergyBonus - 1) * 100);
                 const effectivenessPercent = Math.round(progress.effectivenessScore * 100);
                 
-                // 効果レベルの判定
+                // 効果レベルの判定（より多様性を確保）
                 const getEffectLevel = (bonus: number) => {
                   if (bonus >= 25) return { text: "超効果的", color: "bg-purple-100 text-purple-700 border-purple-300" };
-                  if (bonus >= 20) return { text: "とても効果的", color: "bg-blue-100 text-blue-700 border-blue-300" };
-                  if (bonus >= 15) return { text: "効果的", color: "bg-green-100 text-green-700 border-green-300" };
-                  return { text: "普通", color: "bg-gray-100 text-gray-700 border-gray-300" };
+                  if (bonus >= 15) return { text: "とても効果的", color: "bg-blue-100 text-blue-700 border-blue-300" };
+                  if (bonus >= 5) return { text: "効果的", color: "bg-green-100 text-green-700 border-green-300" };
+                  if (bonus >= 0) return { text: "普通", color: "bg-yellow-100 text-yellow-700 border-yellow-300" };
+                  return { text: "要注意", color: "bg-gray-100 text-gray-700 border-gray-300" };
                 };
 
                 const effectLevel = getEffectLevel(bonusPercent);
@@ -345,18 +346,28 @@ export default function SynergyDashboard({
                       <div className="flex items-center justify-between">
                         <span className="text-gray-600">おすすめ度:</span>
                         <div className="flex items-center space-x-1">
-                          {[...Array(5)].map((_, i) => (
-                            <span
-                              key={i}
-                              className={`text-xs ${
-                                i < Math.min(5, Math.ceil(effectivenessPercent / 20))
-                                  ? "text-yellow-500"
-                                  : "text-gray-300"
-                              }`}
-                            >
-                              ⭐
-                            </span>
-                          ))}
+                          {[...Array(5)].map((_, i) => {
+                            // より多様な星評価のための改善された計算
+                            let starCount;
+                            if (effectivenessPercent >= 90) starCount = 5;
+                            else if (effectivenessPercent >= 75) starCount = 4;
+                            else if (effectivenessPercent >= 60) starCount = 3;
+                            else if (effectivenessPercent >= 40) starCount = 2;
+                            else starCount = 1;
+
+                            return (
+                              <span
+                                key={i}
+                                className={`text-xs ${
+                                  i < starCount
+                                    ? "text-yellow-500"
+                                    : "text-gray-300"
+                                }`}
+                              >
+                                ⭐
+                              </span>
+                            );
+                          })}
                           <span className="text-gray-600 ml-1">
                             ({effectivenessPercent}%)
                           </span>
@@ -392,10 +403,10 @@ export default function SynergyDashboard({
             <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
               <h4 className="font-semibold text-blue-700 mb-2">💡 表示の見方</h4>
               <div className="space-y-2 text-sm text-blue-600">
-                <div>• <strong>学習効果 +30%</strong>：通常より30%多くXPがもらえます</div>
-                <div>• <strong>おすすめ度 ⭐⭐⭐⭐⭐</strong>：今のあなたにどれくらい適しているかを5段階で表示</div>
-                <div>• <strong>効果的レベル</strong>：超効果的 &gt; とても効果的 &gt; 効果的 &gt; 普通</div>
-                <div>• <strong>番号順</strong>：#1が最も効果的、#2、#3の順で効果が高い</div>
+                <div>• <strong>学習効果 +30%</strong>：通常より30%多くXPがもらえます（0%の場合は通常通り）</div>
+                <div>• <strong>おすすめ度</strong>：⭐⭐⭐⭐⭐（90%以上）、⭐⭐⭐⭐（75%以上）、⭐⭐⭐（60%以上）、⭐⭐（40%以上）、⭐（40%未満）</div>
+                <div>• <strong>効果的レベル</strong>：超効果的（+25%以上） &gt; とても効果的（+15%以上） &gt; 効果的（+5%以上） &gt; 普通（0%以上）</div>
+                <div>• <strong>番号順</strong>：#1が最も効果的、番号が大きくなるほど効果は下がりますが、全て学習価値があります</div>
               </div>
             </div>
           </CardContent>
