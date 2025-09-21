@@ -23,6 +23,7 @@ import {
 } from "../types/starSystem";
 import { DataManager } from "../utils/dataManager";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
+import { adrenalineManager } from "../utils/adrenalineManager";
 import {
   calculateRecoveredStars,
   canUseStars,
@@ -51,6 +52,10 @@ export function NewHome() {
 
   // レベルマネージャーの初期化
   const levelManager = getLevelManager();
+  
+  // アドレナリンシステムの初期化
+  const [dailyMultiplier, setDailyMultiplier] = useState(1.0);
+  const [consecutiveDays, setConsecutiveDays] = useState(0);
 
   // ハートシステムの状態を強制的に更新
   const forceRefreshHearts = () => {
@@ -127,6 +132,17 @@ export function NewHome() {
       if (stats.preStudySessions) {
         setPreStudySessions(stats.preStudySessions);
       }
+
+      // デイリーボーナスシステムの更新
+      const multiplier = adrenalineManager.updateDailyBonus();
+      const system = adrenalineManager.getSystem();
+      setDailyMultiplier(multiplier);
+      setConsecutiveDays(system.dailyBonus.consecutiveDays);
+      
+      console.log("🎯 デイリーボーナス更新:", {
+        multiplier,
+        consecutiveDays: system.dailyBonus.consecutiveDays,
+      });
     };
 
     refreshData();
@@ -525,6 +541,31 @@ export function NewHome() {
                   </span>
                 </div>
               </div>
+
+              {/* デイリーボーナス表示 */}
+              {dailyMultiplier > 1.0 && (
+                <div className="mb-3 p-2 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-lg">📅</span>
+                      <div>
+                        <div className="text-xs font-semibold text-yellow-700">
+                          デイリーボーナス
+                        </div>
+                        <div className="text-xs text-yellow-600">
+                          {consecutiveDays}日連続ログイン
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-bold text-yellow-700">
+                        ×{dailyMultiplier.toFixed(1)}
+                      </div>
+                      <div className="text-xs text-yellow-600">XP倍率</div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* 体力とスタミナの操作ボタン */}
               <div className="flex items-center justify-between">

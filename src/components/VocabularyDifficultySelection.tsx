@@ -2,7 +2,6 @@ import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useScrollToTop } from "../hooks/useScrollToTop";
-import { GachaSystem } from "../utils/gachaSystem";
 import { KnownWordsManager } from "../utils/knownWordsManager";
 import { VocabularyManager } from "../utils/vocabularyManager";
 import { Badge } from "./ui/badge";
@@ -20,16 +19,25 @@ export default function VocabularyDifficultySelection() {
   const navigate = useNavigate();
   useScrollToTop();
 
-  const [gachaStats, setGachaStats] = useState<LearningModeStats>({ total: 0, known: 0, remaining: 0 });
-  const [basicStats, setBasicStats] = useState<LearningModeStats>({ total: 0, known: 0, remaining: 0 });
+  const [gachaStats, setGachaStats] = useState<LearningModeStats>({
+    total: 0,
+    known: 0,
+    remaining: 0,
+  });
+  const [basicStats, setBasicStats] = useState<LearningModeStats>({
+    total: 0,
+    known: 0,
+    remaining: 0,
+  });
 
   // 2つの学習モードの統計を計算
   useEffect(() => {
     const calculateStats = () => {
       // ガチャカード専用統計
       const gachaCards = VocabularyManager.getGachaVocabularyWords();
-      const unknownGachaCards = KnownWordsManager.filterUnknownWords(gachaCards);
-      
+      const unknownGachaCards =
+        KnownWordsManager.filterUnknownWords(gachaCards);
+
       setGachaStats({
         total: gachaCards.length,
         known: gachaCards.length - unknownGachaCards.length,
@@ -38,8 +46,9 @@ export default function VocabularyDifficultySelection() {
 
       // 基本単語専用統計
       const basicWords = VocabularyManager.getStandardVocabularyWords();
-      const unknownBasicWords = KnownWordsManager.filterUnknownWords(basicWords);
-      
+      const unknownBasicWords =
+        KnownWordsManager.filterUnknownWords(basicWords);
+
       setBasicStats({
         total: basicWords.length,
         known: basicWords.length - unknownBasicWords.length,
@@ -47,8 +56,14 @@ export default function VocabularyDifficultySelection() {
       });
 
       console.log("語彙学習モード統計:", {
-        gacha: { total: gachaCards.length, remaining: unknownGachaCards.length },
-        basic: { total: basicWords.length, remaining: unknownBasicWords.length }
+        gacha: {
+          total: gachaCards.length,
+          remaining: unknownGachaCards.length,
+        },
+        basic: {
+          total: basicWords.length,
+          remaining: unknownBasicWords.length,
+        },
       });
     };
 
@@ -60,12 +75,18 @@ export default function VocabularyDifficultySelection() {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <Button variant="outline" onClick={() => navigate("/")} className="flex items-center">
+          <Button
+            variant="outline"
+            onClick={() => navigate("/")}
+            className="flex items-center"
+          >
             <ArrowLeft className="w-4 h-4 mr-2" />
             戻る
           </Button>
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-800">語彙学習モード選択</h1>
+            <h1 className="text-2xl font-bold text-gray-800">
+              語彙学習モード選択
+            </h1>
             <div className="flex justify-center mt-2">
               <Badge variant="outline" className="text-sm">
                 単語学習
@@ -125,13 +146,15 @@ export default function VocabularyDifficultySelection() {
               <div className="flex items-start space-x-2">
                 <span className="text-purple-600">🎁</span>
                 <div>
-                  <strong>ガチャカード学習</strong>: ガチャで獲得したカードのみを使用。レアリティが高いほど高度な語彙。楽しく学習継続。
+                  <strong>ガチャカード学習</strong>:
+                  ガチャで獲得したカードのみを使用。レアリティが高いほど高度な語彙。楽しく学習継続。
                 </div>
               </div>
               <div className="flex items-start space-x-2">
                 <span className="text-green-600">📚</span>
                 <div>
-                  <strong>基本単語学習</strong>: 体系的に整理された標準語彙。初級から上級まで段階的に学習。確実な基礎固め。
+                  <strong>基本単語学習</strong>:
+                  体系的に整理された標準語彙。初級から上級まで段階的に学習。確実な基礎固め。
                 </div>
               </div>
             </div>

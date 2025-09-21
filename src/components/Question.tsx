@@ -6,14 +6,18 @@ import { getQuestions } from "../data/questions";
 import { sentencePatternQuestions } from "../data/sentencePatternQuestions";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Category } from "../types";
+import { AdrenalineEventData } from "../types/adrenalineSystem";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 import { questionStatsManager } from "../utils/questionStatsManager";
 import { skillTreeManager } from "../utils/skillTreeManager";
+import { adrenalineManager } from "../utils/adrenalineManager";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Textarea } from "./ui/textarea";
+import AdrenalineEffects, { triggerAdrenalineEvent, calculateAdrenalineXP } from "./AdrenalineEffects";
+import TreasureBoxSystem from "./TreasureBoxSystem";
 
 export interface QuestionData {
   id: number;
@@ -74,6 +78,11 @@ export default function Question() {
   const [showExplanation, setShowExplanation] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [currentAnswer, setCurrentAnswer] = useState<string>("");
+  
+  // アドレナリンシステム
+  const [adrenalineEvents, setAdrenalineEvents] = useState<AdrenalineEventData[]>([]);
+  const [showTreasureBox, setShowTreasureBox] = useState(false);
+  const [earnedXP, setEarnedXP] = useState(0);
 
   // スキルツリー進捗更新関数
   const updateSkillTreeProgress = () => {
@@ -257,6 +266,24 @@ export default function Question() {
       setScore(score + 1);
     }
 
+    // アドレナリンシステム処理
+    const isCritical = Math.random() < 0.05; // 5%でクリティカル
+    const events = triggerAdrenalineEvent(correct, isCritical);
+    setAdrenalineEvents(events);
+
+    // アドレナリン効果を適用したXP計算
+    const baseXP = correct ? 10 : 0;
+    const { finalXP, multiplier, breakdown } = calculateAdrenalineXP(baseXP, isCritical);
+    setEarnedXP(finalXP);
+
+    console.log("🚀 アドレナリン効果:", {
+      baseXP,
+      finalXP,
+      multiplier,
+      breakdown,
+      events: events.map(e => e.message),
+    });
+
     // 統計を記録
     const timeSpent = startTime
       ? Math.round((new Date().getTime() - startTime.getTime()) / 1000)
@@ -266,6 +293,17 @@ export default function Question() {
       correct,
       timeSpent
     );
+
+    // 宝箱獲得判定（正解時のみ、20%の確率）
+    if (correct && Math.random() < 0.2) {
+      const box = adrenalineManager.earnTreasureBox(difficulty);
+      console.log("🎁 宝箱獲得:", box);
+      
+      // 問題完了後に宝箱表示
+      setTimeout(() => {
+        setShowTreasureBox(true);
+      }, 2000);
+    }
   };
 
   const handleNext = () => {
@@ -286,10 +324,17 @@ export default function Question() {
     } else {
       setIsComplete(true);
 
-      // XP獲得
+      // XP獲得（アドレナリン効果適用）
       const levelManager = getLevelManager();
-      const xpReward = Math.round(score * 10 + totalQuestions * 2);
-      levelManager.addXP(xpReward);
+      const baseXP = Math.round(score * 10 + totalQuestions * 2);
+      const { finalXP } = calculateAdrenalineXP(baseXP);
+      levelManager.addXP(finalXP);
+      
+      console.log("🎯 最終XP獲得:", {
+        baseXP,
+        finalXP,
+        adrenalineBonus: finalXP - baseXP,
+      });
 
       // スキルツリーの進捗を更新
       updateSkillTreeProgress();
@@ -367,6 +412,23 @@ export default function Question() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      {/* アドレナリンエフェクト */}
+      <AdrenalineEffects 
+        onEventTriggered={(event) => {
+          console.log("🎆 アドレナリンイベント発動:", event.message);
+        }}
+      />
+      
+      {/* 宝箱システム */}
+      {showTreasureBox && (
+        <TreasureBoxSystem 
+          onBoxOpened={(rewards) => {
+            console.log("🎁 宝箱開封報酬:", rewards);
+            setShowTreasureBox(false);
+          }}
+        />
+      )}
+      
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">

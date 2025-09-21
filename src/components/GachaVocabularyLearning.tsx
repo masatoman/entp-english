@@ -1,7 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useScrollToTop } from "../hooks/useScrollToTop";
-import { getLevelManager, saveLevelManager } from "../utils/levelManager";
+import { getLevelManager } from "../utils/levelManager";
 import { VocabularyManager } from "../utils/vocabularyManager";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -20,7 +20,9 @@ export default function GachaVocabularyLearning() {
         <div className="max-w-md mx-auto text-center space-y-4">
           <div className="text-6xl">💔</div>
           <h2 className="text-2xl font-bold text-gray-800">体力不足</h2>
-          <p className="text-gray-600">体力が回復してから再挑戦してください。</p>
+          <p className="text-gray-600">
+            体力が回復してから再挑戦してください。
+          </p>
           <Button onClick={() => navigate("/")} className="mt-4">
             ホームに戻る
           </Button>
@@ -46,7 +48,11 @@ export default function GachaVocabularyLearning() {
             <Button onClick={() => navigate("/games/gacha")} className="w-full">
               ガチャを引く
             </Button>
-            <Button variant="outline" onClick={() => navigate("/")} className="w-full">
+            <Button
+              variant="outline"
+              onClick={() => navigate("/")}
+              className="w-full"
+            >
               ホームに戻る
             </Button>
           </div>
@@ -69,7 +75,9 @@ export default function GachaVocabularyLearning() {
             戻る
           </Button>
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-800">ガチャカード学習</h1>
+            <h1 className="text-2xl font-bold text-gray-800">
+              ガチャカード学習
+            </h1>
             <div className="flex justify-center mt-2">
               <Badge variant="outline" className="text-sm bg-purple-100">
                 🎁 ガチャ限定

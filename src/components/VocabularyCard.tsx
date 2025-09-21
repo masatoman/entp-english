@@ -3,13 +3,17 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { VocabularyWord, getVocabularyWords } from "../data/vocabulary";
 import { useScrollToTop } from "../hooks/useScrollToTop";
+import { AdrenalineEventData } from "../types/adrenalineSystem";
 import { DataManager } from "../utils/dataManager";
 import { KnownWordsManager } from "../utils/knownWordsManager";
 import { LearningAnalyzer } from "../utils/learningAnalyzer";
 import { SoundManager } from "../utils/soundManager";
 import { SpeechSynthesisManager } from "../utils/speechSynthesis";
 import { VocabularyManager } from "../utils/vocabularyManager";
+import { adrenalineManager } from "../utils/adrenalineManager";
 import { calculateVocabularyXP } from "../utils/xpCalculator";
+import AdrenalineEffects, { triggerAdrenalineEvent, calculateAdrenalineXP } from "./AdrenalineEffects";
+import TreasureBoxSystem from "./TreasureBoxSystem";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader } from "./ui/card";
@@ -38,20 +42,22 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
-export default function VocabularyCard({ 
-  difficulty: propDifficulty, 
-  category: propCategory, 
-  isGachaMode = false 
+export default function VocabularyCard({
+  difficulty: propDifficulty,
+  category: propCategory,
+  isGachaMode = false,
 }: VocabularyCardProps = {}) {
   const navigate = useNavigate();
   const { difficulty: urlDifficulty, category: urlCategory } = useParams();
-  
+
   // propsが渡された場合はpropsを優先、そうでなければURLパラメータを使用
-  const actualDifficulty = propDifficulty || 
+  const actualDifficulty =
+    propDifficulty ||
     (urlDifficulty as "beginner" | "intermediate" | "advanced") ||
     "intermediate";
-  const actualCategory = propCategory || 
-    (urlCategory as "all" | "toeic" | "daily" | "gacha-only" | "basic-only") || 
+  const actualCategory =
+    propCategory ||
+    (urlCategory as "all" | "toeic" | "daily" | "gacha-only" | "basic-only") ||
     "all";
 
   // ページトップにスクロール
@@ -69,6 +75,9 @@ export default function VocabularyCard({
   const [showMeaning, setShowMeaning] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  
+  // アドレナリンシステム
+  const [showTreasureBox, setShowTreasureBox] = useState(false);
 
   useEffect(() => {
     let allWords: VocabularyWord[] = [];
@@ -77,12 +86,12 @@ export default function VocabularyCard({
     if (actualCategory === "gacha-only") {
       // ガチャカード専用モード
       allWords = VocabularyManager.getGachaVocabularyWords();
-      
+
       // ガチャカードのレベルフィルタリング（必要に応じて）
       if (actualDifficulty !== "intermediate") {
-        allWords = allWords.filter(word => word.level === actualDifficulty);
+        allWords = allWords.filter((word) => word.level === actualDifficulty);
       }
-      
+
       console.log("VocabularyCard - ガチャカード専用モード:", {
         actualDifficulty,
         totalGachaCards: allWords.length,
@@ -90,10 +99,10 @@ export default function VocabularyCard({
     } else if (actualCategory === "basic-only") {
       // 基本単語専用モード
       allWords = VocabularyManager.getStandardVocabularyWords();
-      
+
       // 難易度フィルタリング
-      allWords = allWords.filter(word => word.level === actualDifficulty);
-      
+      allWords = allWords.filter((word) => word.level === actualDifficulty);
+
       console.log("VocabularyCard - 基本単語専用モード:", {
         actualDifficulty,
         totalBasicCards: allWords.length,
@@ -104,7 +113,7 @@ export default function VocabularyCard({
         actualDifficulty,
         actualCategory
       );
-      
+
       console.log("VocabularyCard - 統合モード（後方互換性）:", {
         actualDifficulty,
         actualCategory,
@@ -122,7 +131,12 @@ export default function VocabularyCard({
       filteredWordsCount: filteredWords.length,
       excludedCount: allWords.length - filteredWords.length,
       isGachaMode,
-      mode: actualCategory === "gacha-only" ? "ガチャ専用" : actualCategory === "basic-only" ? "基本単語専用" : "統合",
+      mode:
+        actualCategory === "gacha-only"
+          ? "ガチャ専用"
+          : actualCategory === "basic-only"
+          ? "基本単語専用"
+          : "統合",
     });
 
     if (filteredWords.length === 0) {
@@ -211,6 +225,24 @@ export default function VocabularyCard({
   const handleAnswer = (known: boolean) => {
     if (!currentWord) return;
 
+    // アドレナリンシステム処理
+    const isCritical = Math.random() < 0.08; // 語彙学習では8%でクリティカル
+    const events = triggerAdrenalineEvent(known, isCritical);
+    
+    // アドレナリン効果を適用したXP計算
+    const baseXP = known ? 5 : 2; // 知ってる: 5XP, まだ: 2XP
+    const { finalXP, multiplier, breakdown } = calculateAdrenalineXP(baseXP, isCritical);
+    
+    console.log("🚀 語彙学習アドレナリン効果:", {
+      word: currentWord.word,
+      known,
+      baseXP,
+      finalXP,
+      multiplier,
+      breakdown,
+      events: events.map(e => e.message),
+    });
+
     // 「知ってる」を選択した場合、既知単語としてマーク
     if (known) {
       KnownWordsManager.markWordAsKnown(currentWord);
@@ -232,6 +264,17 @@ export default function VocabularyCard({
         handleSessionComplete();
         return;
       }
+    }
+
+    // 宝箱獲得判定（知ってる場合のみ、15%の確率）
+    if (known && Math.random() < 0.15) {
+      const box = adrenalineManager.earnTreasureBox("normal");
+      console.log("🎁 語彙学習で宝箱獲得:", box);
+      
+      // 少し遅れて宝箱表示
+      setTimeout(() => {
+        setShowTreasureBox(true);
+      }, 1000);
     }
 
     const newStudiedWords = new Set(session.studiedWords);
@@ -466,6 +509,23 @@ export default function VocabularyCard({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      {/* アドレナリンエフェクト */}
+      <AdrenalineEffects 
+        onEventTriggered={(event) => {
+          console.log("🎆 語彙学習アドレナリンイベント:", event.message);
+        }}
+      />
+      
+      {/* 宝箱システム */}
+      {showTreasureBox && (
+        <TreasureBoxSystem 
+          onBoxOpened={(rewards) => {
+            console.log("🎁 語彙学習宝箱開封報酬:", rewards);
+            setShowTreasureBox(false);
+          }}
+        />
+      )}
+      
       <div className="max-w-md mx-auto p-4 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between pt-8">

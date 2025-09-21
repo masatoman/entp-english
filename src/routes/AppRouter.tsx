@@ -5,6 +5,7 @@ import { ScrollToTop } from "../components/ScrollToTop";
 // 直接importに変更（lazy loadingの問題を回避）
 import Achievements from "../components/Achievements";
 import AppSettings from "../components/AppSettings";
+import BasicVocabularyLearning from "../components/BasicVocabularyLearning";
 import CardDetailContent from "../components/CardDetailContent";
 import CategorySelection from "../components/CategorySelection";
 import CombinedTest from "../components/CombinedTest";
@@ -19,6 +20,7 @@ import FoundationQuestionSetSelection from "../components/FoundationQuestionSetS
 import FoundationQuiz from "../components/FoundationQuiz";
 import GachaResultScreen from "../components/GachaResultScreen";
 import GachaSystem from "../components/GachaSystem";
+import GachaVocabularyLearning from "../components/GachaVocabularyLearning";
 import GrowthDashboard from "../components/GrowthDashboard";
 import IntegratedLearning from "../components/IntegratedLearning";
 import { MigrationProvider } from "../components/MigrationProvider";
@@ -37,8 +39,6 @@ import TimeAttackMode from "../components/TimeAttackMode";
 import VocabularyCard from "../components/VocabularyCard";
 import VocabularyCategorySelection from "../components/VocabularyCategorySelection";
 import VocabularyDifficultySelection from "../components/VocabularyDifficultySelection";
-import GachaVocabularyLearning from "../components/GachaVocabularyLearning";
-import BasicVocabularyLearning from "../components/BasicVocabularyLearning";
 import XPShopPage from "../components/XPShopPage";
 
 export function AppRouter() {
@@ -64,7 +64,7 @@ export function AppRouter() {
               path="/learning/vocabulary/study/:difficulty/:category"
               element={<VocabularyCard />}
             />
-            
+
             {/* 新しい分離された語彙学習モード */}
             <Route
               path="/learning/vocabulary/gacha-mode"

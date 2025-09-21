@@ -101,7 +101,11 @@ export default function BasicVocabularyLearning() {
                 "確実な基礎固め",
                 "ガチャカード除外",
               ]}
-              onClick={() => navigate(`/learning/vocabulary/study/${difficulty.level}/basic-only`)}
+              onClick={() =>
+                navigate(
+                  `/learning/vocabulary/study/${difficulty.level}/basic-only`
+                )
+              }
             />
           ))}
         </div>
@@ -112,15 +116,21 @@ export default function BasicVocabularyLearning() {
           <div className="space-y-2 text-sm text-gray-700">
             <div className="flex items-center space-x-2">
               <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-              <span><strong>体系的学習</strong>: 初級→中級→上級の論理的順序</span>
+              <span>
+                <strong>体系的学習</strong>: 初級→中級→上級の論理的順序
+              </span>
             </div>
             <div className="flex items-center space-x-2">
               <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-              <span><strong>確実な基礎</strong>: 英語学習の土台となる重要語彙</span>
+              <span>
+                <strong>確実な基礎</strong>: 英語学習の土台となる重要語彙
+              </span>
             </div>
             <div className="flex items-center space-x-2">
               <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
-              <span><strong>純粋学習</strong>: ガチャ要素に惑わされない集中学習</span>
+              <span>
+                <strong>純粋学習</strong>: ガチャ要素に惑わされない集中学習
+              </span>
             </div>
           </div>
         </div>
