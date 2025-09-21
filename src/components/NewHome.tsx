@@ -501,13 +501,7 @@ export function NewHome() {
           </Button>
         </div>
 
-        {/* レベル情報（フルワイド） */}
-        <div className="w-full">
-          <LevelDisplay
-            showDetailed={showDetailedView}
-            showChapterProgress={showDetailedView}
-          />
-        </div>
+        {/* レベル情報はGameHeaderに統合済み */}
 
         {/* デイリーチャレンジカード */}
         <div className="mb-6">
