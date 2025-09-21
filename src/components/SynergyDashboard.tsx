@@ -1,16 +1,30 @@
+import {
+  ArrowLeft,
+  ArrowRight,
+  BookOpen,
+  Brain,
+  Star,
+  Target,
+  TrendingUp,
+} from "lucide-react";
 import { useEffect, useState } from "react";
-import { ArrowLeft, ArrowRight, BookOpen, Brain, Star, Target, TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Category } from "../types";
-import { 
-  synergyManager, 
-  ContentMetadata, 
-  LearningPath, 
-  SynergyProgress 
+import {
+  ContentMetadata,
+  LearningPath,
+  synergyManager,
+  SynergyProgress,
 } from "../utils/contentMetadataManager";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
 import { Progress } from "./ui/progress";
 
 interface SynergyDashboardProps {
@@ -18,9 +32,9 @@ interface SynergyDashboardProps {
   currentCategory?: Category;
 }
 
-export default function SynergyDashboard({ 
-  userId = "default", 
-  currentCategory 
+export default function SynergyDashboard({
+  userId = "default",
+  currentCategory,
 }: SynergyDashboardProps) {
   const navigate = useNavigate();
   const [synergyProgress, setSynergyProgress] = useState<SynergyProgress[]>([]);
@@ -41,7 +55,7 @@ export default function SynergyDashboard({
       const saved = localStorage.getItem(`synergy-progress-${userId}`);
       const completed = saved ? JSON.parse(saved) : [];
       setCompletedContent(completed);
-      
+
       const progress = synergyManager.trackSynergyProgress(userId, completed);
       setSynergyProgress(progress);
     } catch (error) {
@@ -50,12 +64,15 @@ export default function SynergyDashboard({
   };
 
   const loadOptimalPath = (category: Category) => {
-    const path = synergyManager.getOptimalLearningPath(category, completedContent);
+    const path = synergyManager.getOptimalLearningPath(
+      category,
+      completedContent
+    );
     setOptimalPath(path);
   };
 
   const handleContentSelect = (contentId: string) => {
-    const metadata = synergyProgress.find(p => p.contentId === contentId);
+    const metadata = synergyProgress.find((p) => p.contentId === contentId);
     if (!metadata) return;
 
     // コンテンツタイプに応じて適切なページに遷移
@@ -63,9 +80,12 @@ export default function SynergyDashboard({
       navigate(`/learning/pre-study/content/${contentId}`);
     } else if (contentId.includes("quiz")) {
       const category = contentId.split("-")[0] as Category;
-      const difficulty = contentId.includes("easy") ? "easy" : 
-                       contentId.includes("normal") ? "normal" : "hard";
-      
+      const difficulty = contentId.includes("easy")
+        ? "easy"
+        : contentId.includes("normal")
+        ? "normal"
+        : "hard";
+
       if (category === "basic-grammar") {
         navigate(`/learning/grammar/pattern/${category}`);
       } else {
@@ -78,7 +98,7 @@ export default function SynergyDashboard({
     const updated = [...completedContent, contentId];
     setCompletedContent(updated);
     localStorage.setItem(`synergy-progress-${userId}`, JSON.stringify(updated));
-    
+
     // 進捗を再計算
     const progress = synergyManager.trackSynergyProgress(userId, updated);
     setSynergyProgress(progress);
@@ -100,16 +120,19 @@ export default function SynergyDashboard({
 
   // 推奨コンテンツ（シナジーボーナスが高い順）
   const recommendedContent = synergyProgress
-    .filter(p => p.completionRate === 0 && p.synergyBonus > 1.0)
+    .filter((p) => p.completionRate === 0 && p.synergyBonus > 1.0)
     .sort((a, b) => b.synergyBonus - a.synergyBonus)
     .slice(0, 6);
 
   // 完了済みコンテンツの統計
-  const completedCount = synergyProgress.filter(p => p.completionRate === 1.0).length;
+  const completedCount = synergyProgress.filter(
+    (p) => p.completionRate === 1.0
+  ).length;
   const totalCount = synergyProgress.length;
-  const averageSynergyBonus = totalCount > 0 
-    ? synergyProgress.reduce((sum, p) => sum + p.synergyBonus, 0) / totalCount 
-    : 1.0; // デフォルト値として1.0（100%）を設定
+  const averageSynergyBonus =
+    totalCount > 0
+      ? synergyProgress.reduce((sum, p) => sum + p.synergyBonus, 0) / totalCount
+      : 1.0; // デフォルト値として1.0（100%）を設定
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
@@ -140,55 +163,70 @@ export default function SynergyDashboard({
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">完了コンテンツ</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                完了コンテンツ
+              </CardTitle>
               <Target className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{completedCount}/{totalCount}</div>
-              <Progress value={(completedCount / totalCount) * 100} className="mt-2" />
+              <div className="text-2xl font-bold">
+                {completedCount}/{totalCount}
+              </div>
+              <Progress
+                value={(completedCount / totalCount) * 100}
+                className="mt-2"
+              />
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">平均シナジー効果</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                平均シナジー効果
+              </CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {totalCount > 0 ? Math.round((averageSynergyBonus - 1) * 100) : 0}%
+                {totalCount > 0
+                  ? Math.round((averageSynergyBonus - 1) * 100)
+                  : 0}
+                %
               </div>
-              <p className="text-xs text-muted-foreground">
-                学習効果の向上率
-              </p>
+              <p className="text-xs text-muted-foreground">学習効果の向上率</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">解放コンテンツ</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                解放コンテンツ
+              </CardTitle>
               <Star className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {synergyProgress.reduce((sum, p) => sum + p.unlockedContent.length, 0)}
+                {synergyProgress.reduce(
+                  (sum, p) => sum + p.unlockedContent.length,
+                  0
+                )}
               </div>
-              <p className="text-xs text-muted-foreground">
-                新たに利用可能
-              </p>
+              <p className="text-xs text-muted-foreground">新たに利用可能</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">推奨コンテンツ</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                推奨コンテンツ
+              </CardTitle>
               <BookOpen className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{recommendedContent.length}</div>
-              <p className="text-xs text-muted-foreground">
-                シナジー効果あり
-              </p>
+              <div className="text-2xl font-bold">
+                {recommendedContent.length}
+              </div>
+              <p className="text-xs text-muted-foreground">シナジー効果あり</p>
             </CardContent>
           </Card>
         </div>
@@ -215,7 +253,7 @@ export default function SynergyDashboard({
                   難易度: {optimalPath.difficulty}
                 </Badge>
               </div>
-              
+
               <div className="space-y-2">
                 {optimalPath.steps.map((step, index) => (
                   <div
@@ -234,7 +272,9 @@ export default function SynergyDashboard({
                       </div>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Badge className={getSynergyLevelColor(step.synergyBonus)}>
+                      <Badge
+                        className={getSynergyLevelColor(step.synergyBonus)}
+                      >
                         {getSynergyLevelText(step.synergyBonus)}
                       </Badge>
                       <Button
@@ -270,23 +310,25 @@ export default function SynergyDashboard({
                 >
                   <div className="flex items-start justify-between mb-2">
                     <h4 className="font-medium text-sm">
-                      {progress.contentId.replace(/-/g, ' ').toUpperCase()}
+                      {progress.contentId.replace(/-/g, " ").toUpperCase()}
                     </h4>
-                    <Badge className={getSynergyLevelColor(progress.synergyBonus)}>
+                    <Badge
+                      className={getSynergyLevelColor(progress.synergyBonus)}
+                    >
                       +{Math.round((progress.synergyBonus - 1) * 100)}%
                     </Badge>
                   </div>
-                  
+
                   <p className="text-xs text-gray-600 mb-3">
                     効果スコア: {Math.round(progress.effectivenessScore * 100)}%
                   </p>
-                  
+
                   {progress.recommendedNext.length > 0 && (
                     <div className="text-xs text-blue-600">
                       次の推奨: {progress.recommendedNext.length}件
                     </div>
                   )}
-                  
+
                   {progress.unlockedContent.length > 0 && (
                     <div className="text-xs text-green-600">
                       解放コンテンツ: {progress.unlockedContent.length}件
@@ -301,38 +343,152 @@ export default function SynergyDashboard({
         {/* シナジー効果の説明 */}
         <Card>
           <CardHeader>
-            <CardTitle>シナジー効果とは？</CardTitle>
+            <CardTitle>🧠 シナジー効果とは？</CardTitle>
+            <CardDescription>
+              理論学習と実践練習を組み合わせることで、学習効果が大幅に向上する仕組みです
+            </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-6">
+            {/* 基本的な流れ */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="text-center">
                 <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-2">
                   <BookOpen className="w-6 h-6 text-blue-600" />
                 </div>
-                <h4 className="font-semibold mb-1">理論学習</h4>
+                <h4 className="font-semibold mb-1">📚 理論学習</h4>
                 <p className="text-sm text-gray-600">
                   事前学習で基礎理論を習得
                 </p>
               </div>
-              
+
               <div className="text-center">
                 <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-2">
                   <Target className="w-6 h-6 text-green-600" />
                 </div>
-                <h4 className="font-semibold mb-1">実践練習</h4>
-                <p className="text-sm text-gray-600">
-                  文法クイズで理解を定着
-                </p>
+                <h4 className="font-semibold mb-1">🎯 実践練習</h4>
+                <p className="text-sm text-gray-600">文法クイズで理解を定着</p>
               </div>
-              
+
               <div className="text-center">
                 <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-2">
                   <TrendingUp className="w-6 h-6 text-purple-600" />
                 </div>
-                <h4 className="font-semibold mb-1">相乗効果</h4>
-                <p className="text-sm text-gray-600">
-                  学習効果が最大200%向上
-                </p>
+                <h4 className="font-semibold mb-1">🚀 相乗効果</h4>
+                <p className="text-sm text-gray-600">学習効果が最大260%向上</p>
+              </div>
+            </div>
+
+            {/* 具体例 */}
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg border">
+              <h4 className="font-semibold mb-3 text-center">📖 具体例：時制の学習</h4>
+              
+              <div className="space-y-4">
+                {/* ステップ1 */}
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center font-bold">1</div>
+                  <div className="flex-1">
+                    <h5 className="font-medium text-blue-700">📚 事前学習：「時制の完全マスター」</h5>
+                    <p className="text-sm text-gray-600">現在完了形の理論を詳しく学習</p>
+                    <div className="text-xs text-blue-600 mt-1">
+                      例：「have + 過去分詞」の3つの用法（継続・経験・完了）
+                    </div>
+                  </div>
+                </div>
+
+                {/* 矢印 */}
+                <div className="text-center">
+                  <ArrowRight className="w-5 h-5 text-gray-400 mx-auto" />
+                </div>
+
+                {/* ステップ2 */}
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 rounded-full bg-green-500 text-white text-xs flex items-center justify-center font-bold">2</div>
+                  <div className="flex-1">
+                    <h5 className="font-medium text-green-700">🎯 実践練習：「時制クイズ」</h5>
+                    <p className="text-sm text-gray-600">学んだ理論を問題で確認</p>
+                    <div className="text-xs text-green-600 mt-1">
+                      例：「私は3年間英語を勉強しています」→「I have studied English for 3 years.」
+                    </div>
+                  </div>
+                </div>
+
+                {/* 矢印 */}
+                <div className="text-center">
+                  <ArrowRight className="w-5 h-5 text-gray-400 mx-auto" />
+                </div>
+
+                {/* ステップ3 */}
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 rounded-full bg-purple-500 text-white text-xs flex items-center justify-center font-bold">3</div>
+                  <div className="flex-1">
+                    <h5 className="font-medium text-purple-700">🚀 シナジー効果発動！</h5>
+                    <p className="text-sm text-gray-600">理論×実践で学習効果が大幅アップ</p>
+                    <div className="text-xs text-purple-600 mt-1">
+                      基本80 XP → シナジーボーナス+30% → 104 XP獲得！
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 効果比較 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-red-50 p-4 rounded-lg border border-red-200">
+                <h4 className="font-semibold text-red-700 mb-2">❌ 単体学習の場合</h4>
+                <div className="space-y-2 text-sm">
+                  <div>• 文法クイズのみ：80 XP</div>
+                  <div>• 理解度：70%</div>
+                  <div>• 定着率：50%</div>
+                  <div className="font-bold text-red-600">合計効果：100%</div>
+                </div>
+              </div>
+
+              <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                <h4 className="font-semibold text-green-700 mb-2">✅ シナジー学習の場合</h4>
+                <div className="space-y-2 text-sm">
+                  <div>• 事前学習 + 文法クイズ：104 XP</div>
+                  <div>• 理解度：95%</div>
+                  <div>• 定着率：85%</div>
+                  <div className="font-bold text-green-600">合計効果：130%（+30%向上）</div>
+                </div>
+              </div>
+            </div>
+
+            {/* さらなる活用法 */}
+            <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+              <h4 className="font-semibold text-yellow-700 mb-3">💡 さらなる活用法</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <h5 className="font-medium text-gray-700 mb-1">🎁 ガチャ語彙との組み合わせ</h5>
+                  <p className="text-gray-600">ガチャで覚えた単語を文法クイズで活用 → +50%効果</p>
+                </div>
+                <div>
+                  <h5 className="font-medium text-gray-700 mb-1">🏆 XPショップのブースター</h5>
+                  <p className="text-gray-600">相乗効果マルチプライヤー購入 → 効果2倍（最大260%）</p>
+                </div>
+              </div>
+            </div>
+
+            {/* 推奨学習パターン */}
+            <div className="bg-indigo-50 p-4 rounded-lg border border-indigo-200">
+              <h4 className="font-semibold text-indigo-700 mb-3">🎯 推奨学習パターン</h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center space-x-2">
+                  <span className="w-4 h-4 rounded-full bg-indigo-500 text-white text-xs flex items-center justify-center">1</span>
+                  <span>朝：事前学習で理論習得（⭐️1個消費）</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="w-4 h-4 rounded-full bg-indigo-500 text-white text-xs flex items-center justify-center">2</span>
+                  <span>昼：関連する文法クイズで実践（♥1個消費）</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="w-4 h-4 rounded-full bg-indigo-500 text-white text-xs flex items-center justify-center">3</span>
+                  <span>夕：統合学習でガチャ語彙を活用（♥1個消費）</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="w-4 h-4 rounded-full bg-purple-500 text-white text-xs flex items-center justify-center">🚀</span>
+                  <span className="font-bold text-purple-600">結果：通常の2.6倍の学習効果！</span>
+                </div>
               </div>
             </div>
           </CardContent>
