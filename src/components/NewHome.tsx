@@ -620,7 +620,7 @@ export function NewHome() {
             color="bg-purple-50 border-purple-200 text-purple-800"
             onClick={() => navigate("/games/gacha")}
           />
-          
+
           {/* ⭐️事前学習 */}
           <SelectionCard
             id="pre-study"
@@ -633,7 +633,7 @@ export function NewHome() {
             isLocked={!canUseStars(starSystem)}
             onClick={() => canUseStars(starSystem) && handlePreStudyMenuOpen()}
           />
-          
+
           {/* スキルツリー */}
           <SelectionCard
             id="skill-tree"
@@ -645,7 +645,7 @@ export function NewHome() {
             color="bg-emerald-50 border-emerald-200 text-emerald-800"
             onClick={() => navigate("/learning/skill-tree")}
           />
-          
+
           {/* 文法クイズ */}
           <SelectionCard
             id="grammar-quiz"

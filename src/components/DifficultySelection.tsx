@@ -1,9 +1,11 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Clock, Star, Trophy, Zap } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Category } from "../types";
+import { GRAMMAR_SKILL_TREE } from "../utils/skillTreeManager";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { SelectionCard } from "./ui/selection-card";
 
 // ルーター対応版 - propsは不要
@@ -29,6 +31,11 @@ export default function DifficultySelection() {
   const actualCategory = urlCategory || "basic-grammar";
   const pattern = urlPattern;
   useScrollToTop();
+
+  // スキルツリーからノード情報を取得
+  const skillNode = GRAMMAR_SKILL_TREE.find(
+    (node) => node.category === actualCategory
+  );
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-2xl mx-auto">
@@ -62,6 +69,69 @@ export default function DifficultySelection() {
         <p className="text-center text-gray-600 mb-6">
           難易度を選択してください
         </p>
+
+        {/* スキル詳細情報 */}
+        {skillNode && (
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <span className="text-2xl mr-2">{skillNode.icon}</span>
+                {skillNode.name}
+              </CardTitle>
+              <p className="text-sm text-gray-600">{skillNode.description}</p>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex flex-wrap gap-2">
+                <Badge variant="outline">Level {skillNode.level}</Badge>
+                <Badge variant="outline">{skillNode.difficulty}</Badge>
+                <Badge variant="outline">
+                  <Clock className="w-3 h-3 mr-1" />
+                  {skillNode.estimatedTime}分
+                </Badge>
+              </div>
+
+              <div>
+                <h4 className="font-semibold mb-2">報酬</h4>
+                <div className="space-y-1">
+                  <div className="flex items-center text-sm">
+                    <Zap className="w-4 h-4 mr-2 text-yellow-600" />
+                    {skillNode.rewards.xp} XP
+                  </div>
+                  {skillNode.rewards.badges.map((badge) => (
+                    <div key={badge} className="flex items-center text-sm">
+                      <Trophy className="w-4 h-4 mr-2 text-purple-600" />
+                      {badge}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {skillNode.unlocks.length > 0 && (
+                <div>
+                  <h4 className="font-semibold mb-2">解放されるスキル</h4>
+                  <div className="space-y-1">
+                    {skillNode.unlocks.map((unlockId) => {
+                      const unlockNode = GRAMMAR_SKILL_TREE.find(
+                        (n) => n.id === unlockId
+                      );
+                      return (
+                        <div
+                          key={unlockId}
+                          className="flex items-center text-sm"
+                        >
+                          <Star className="w-4 h-4 mr-2 text-blue-600" />
+                          <span className="text-blue-800">
+                            {unlockNode?.name || unlockId}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <SelectionCard

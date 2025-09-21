@@ -30,7 +30,6 @@ export default function SkillTree() {
   const [skillTreeState, setSkillTreeState] = useState<SkillTreeState | null>(
     null
   );
-  const [selectedNode, setSelectedNode] = useState<SkillNode | null>(null);
 
   useEffect(() => {
     loadSkillTreeState();
@@ -45,7 +44,8 @@ export default function SkillTree() {
     if (!skillTreeState) return;
 
     if (skillTreeState.unlockedNodes.includes(node.id)) {
-      setSelectedNode(node);
+      // 直接学習を開始（詳細パネル表示ではなく）
+      handleStartLearning(node);
     }
   };
 
@@ -342,139 +342,8 @@ export default function SkillTree() {
             </Card>
           </div>
 
-          {/* サイドパネル */}
-          <div className="w-full lg:w-80 space-y-4">
-            {/* 選択されたノードの詳細 */}
-            {selectedNode && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <span className="text-2xl mr-2">{selectedNode.icon}</span>
-                    {selectedNode.name}
-                  </CardTitle>
-                  <CardDescription>{selectedNode.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex flex-wrap gap-2">
-                    <Badge variant="outline">Level {selectedNode.level}</Badge>
-                    <Badge variant="outline">{selectedNode.difficulty}</Badge>
-                    <Badge variant="outline">
-                      <Clock className="w-3 h-3 mr-1" />
-                      {selectedNode.estimatedTime}分
-                    </Badge>
-                  </div>
-
-                  {skillTreeState.progress[selectedNode.id] && (
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span>習熟度</span>
-                        <span>
-                          {
-                            skillTreeState.progress[selectedNode.id]
-                              .masteryLevel
-                          }
-                          %
-                        </span>
-                      </div>
-                      <Progress
-                        value={
-                          skillTreeState.progress[selectedNode.id].masteryLevel
-                        }
-                      />
-                    </div>
-                  )}
-
-                  <div>
-                    <h4 className="font-semibold mb-2">報酬</h4>
-                    <div className="space-y-1">
-                      <div className="flex items-center text-sm">
-                        <Zap className="w-4 h-4 mr-2 text-yellow-600" />
-                        {selectedNode.rewards.xp} XP
-                      </div>
-                      {selectedNode.rewards.badges.map((badge) => (
-                        <div key={badge} className="flex items-center text-sm">
-                          <Trophy className="w-4 h-4 mr-2 text-purple-600" />
-                          {badge}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {selectedNode.prerequisites.length > 0 && (
-                    <div>
-                      <h4 className="font-semibold mb-2">前提条件</h4>
-                      <div className="space-y-1">
-                        {selectedNode.prerequisites.map((prereqId) => {
-                          const prereqNode = GRAMMAR_SKILL_TREE.find(
-                            (n) => n.id === prereqId
-                          );
-                          const isCompleted =
-                            skillTreeState.completedNodes.includes(prereqId);
-
-                          return (
-                            <div
-                              key={prereqId}
-                              className="flex items-center text-sm"
-                            >
-                              {isCompleted ? (
-                                <Trophy className="w-4 h-4 mr-2 text-green-600" />
-                              ) : (
-                                <Lock className="w-4 h-4 mr-2 text-gray-400" />
-                              )}
-                              <span
-                                className={
-                                  isCompleted
-                                    ? "text-green-800"
-                                    : "text-gray-600"
-                                }
-                              >
-                                {prereqNode?.name || prereqId}
-                              </span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  {selectedNode.unlocks.length > 0 && (
-                    <div>
-                      <h4 className="font-semibold mb-2">解放されるスキル</h4>
-                      <div className="space-y-1">
-                        {selectedNode.unlocks.map((unlockId) => {
-                          const unlockNode = GRAMMAR_SKILL_TREE.find(
-                            (n) => n.id === unlockId
-                          );
-                          return (
-                            <div
-                              key={unlockId}
-                              className="flex items-center text-sm"
-                            >
-                              <Star className="w-4 h-4 mr-2 text-blue-600" />
-                              <span className="text-blue-800">
-                                {unlockNode?.name || unlockId}
-                              </span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  {skillTreeState.availableNodes.includes(selectedNode.id) && (
-                    <Button
-                      onClick={() => handleStartLearning(selectedNode)}
-                      className="w-full"
-                      size="lg"
-                    >
-                      学習を開始
-                    </Button>
-                  )}
-                </CardContent>
-              </Card>
-            )}
-
-            {/* 推奨次学習 */}
+          {/* 推奨次学習 */}
+          <div className="w-full lg:w-80">
             <Card>
               <CardHeader>
                 <CardTitle>推奨次学習</CardTitle>
@@ -490,7 +359,7 @@ export default function SkillTree() {
                         className={`p-3 rounded-lg border cursor-pointer transition-colors ${getStatusColor(
                           status
                         )}`}
-                        onClick={() => setSelectedNode(node)}
+                        onClick={() => handleNodeClick(node)}
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
@@ -505,48 +374,6 @@ export default function SkillTree() {
                             </div>
                           </div>
                           {getStatusIcon(status)}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* レベル別統計 */}
-            <Card>
-              <CardHeader>
-                <CardTitle>レベル別進捗</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((level) => {
-                    const levelNodes = GRAMMAR_SKILL_TREE.filter(
-                      (n) => n.level === level
-                    );
-                    const completedInLevel = levelNodes.filter((n) =>
-                      skillTreeState.completedNodes.includes(n.id)
-                    ).length;
-
-                    return (
-                      <div
-                        key={level}
-                        className="flex items-center justify-between"
-                      >
-                        <span className="text-sm font-medium">
-                          Level {level}
-                        </span>
-                        <div className="flex items-center space-x-2">
-                          <span className="text-sm text-gray-600">
-                            {completedInLevel}/{levelNodes.length}
-                          </span>
-                          <div className="w-20">
-                            <Progress
-                              value={
-                                (completedInLevel / levelNodes.length) * 100
-                              }
-                            />
-                          </div>
                         </div>
                       </div>
                     );
