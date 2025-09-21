@@ -39,7 +39,6 @@ import DailyQuestPanel from "./DailyQuestPanel";
 import GameHeader from "./GameHeader";
 import { LearningFeedbackForm } from "./LearningFeedbackForm";
 import { LevelDisplay } from "./LevelDisplay";
-import { PWAInstallButton } from "./PWAInstallButton";
 import { StatusAllocationComponent } from "./StatusAllocation";
 // PreStudyContentViewerはRouter経由で使用するため、直接importを削除
 import { Button } from "./ui/button";

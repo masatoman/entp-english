@@ -1,4 +1,4 @@
-import { Heart, Plus, Star, Target } from "lucide-react";
+import { Heart, Plus, Star, Target, Clock } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useHeartSystem } from "../hooks/useHeartSystem";
@@ -6,7 +6,6 @@ import { useLevelSystem } from "../hooks/useLevelSystem";
 import { StarData } from "../types/starSystem";
 import { adrenalineManager } from "../utils/adrenalineManager";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
-import { DataManager } from "../utils/dataManager";
 import { getLevelManager } from "../utils/levelManager";
 import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
@@ -67,34 +66,34 @@ export default function GameHeader({
     requiredXP > 0 ? Math.min(100, (progressXP / requiredXP) * 100) : 0;
 
   return (
-    <div className="bg-gradient-to-r from-slate-800 via-purple-800 to-slate-800 text-white p-4 shadow-lg border-b border-purple-700/50">
+    <div className="bg-gradient-to-r from-blue-900 via-indigo-800 to-purple-900 text-white p-4 shadow-lg border-b border-blue-600/30">
       <div className="max-w-6xl mx-auto">
         {/* 上段: ユーザー情報とレベル */}
         <div className="flex items-center justify-between mb-4">
           {/* ユーザー情報 */}
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg border-2 border-white/50 shadow-lg">
+            <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-gray-900 font-bold text-lg border-3 border-white shadow-xl">
               {userLevel.level || 1}
             </div>
             <div>
-              <div className="text-lg font-bold text-white drop-shadow-sm">
+              <div className="text-lg font-bold text-white drop-shadow-md">
                 Level {userLevel.level || 1}
               </div>
-              <div className="text-sm text-purple-100">中級編</div>
+              <div className="text-sm text-blue-200 font-medium">中級編</div>
             </div>
           </div>
 
           {/* XP進捗 */}
           <div className="flex-1 max-w-md mx-6">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-sm text-purple-100">経験値</span>
-              <span className="text-sm text-white font-medium drop-shadow-sm">
+              <span className="text-sm text-blue-200 font-medium">経験値</span>
+              <span className="text-sm text-white font-bold drop-shadow-md">
                 {progressXP.toFixed(0)}/{requiredXP} XP
               </span>
             </div>
             <Progress
               value={progressPercentage}
-              className="h-3 bg-purple-900/70 border border-purple-600/30"
+              className="h-3 bg-blue-900/50 border border-blue-500/40"
             />
           </div>
 
@@ -104,7 +103,7 @@ export default function GameHeader({
               variant="outline"
               size="sm"
               onClick={onQuestClick}
-              className="border-teal-400 text-teal-300 hover:bg-teal-400/20 relative"
+              className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600 border-2 border-white/20 shadow-lg font-bold relative"
             >
               <Target className="w-4 h-4 mr-1" />
               クエスト
@@ -118,12 +117,12 @@ export default function GameHeader({
         </div>
 
         {/* 下段: リソース表示 */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-around bg-indigo-900/40 rounded-lg p-3 shadow-inner border border-blue-600/30">
           {/* 体力（ハート） */}
           <div className="flex items-center space-x-2">
             <div className="flex items-center space-x-1">
               <Heart className="w-5 h-5 text-red-400" />
-              <span className="text-lg font-bold text-white">
+              <span className="text-lg font-bold text-white drop-shadow-md">
                 {heartSystem.current}/{heartSystem.max}
               </span>
             </div>
@@ -149,7 +148,7 @@ export default function GameHeader({
           <div className="flex items-center space-x-2">
             <div className="flex items-center space-x-1">
               <Star className="w-5 h-5 text-yellow-400" />
-              <span className="text-lg font-bold text-white">
+              <span className="text-lg font-bold text-white drop-shadow-md">
                 {starSystem.current}/{starSystem.max}
               </span>
             </div>
@@ -176,7 +175,7 @@ export default function GameHeader({
           <div className="flex items-center space-x-2">
             <div className="flex items-center space-x-1">
               <span className="text-lg">🪙</span>
-              <span className="text-lg font-bold text-yellow-300">
+              <span className="text-lg font-bold text-white drop-shadow-md">
                 {coinSystem.current}
               </span>
             </div>
@@ -210,17 +209,17 @@ export default function GameHeader({
           {/* 総XP表示 */}
           <div className="flex items-center space-x-1">
             <span className="text-sm">⚡</span>
-            <span className="text-lg font-bold text-blue-300">
+            <span className="text-lg font-bold text-white drop-shadow-md">
               {totalXP.toLocaleString()}
             </span>
-            <span className="text-sm text-blue-200">XP</span>
+            <span className="text-sm text-blue-200 font-medium">XP</span>
           </div>
         </div>
 
         {/* 回復時間表示（必要時のみ） */}
         {(heartSystem.current < heartSystem.max ||
           starSystem.current < starSystem.max) && (
-          <div className="mt-3 flex items-center justify-center space-x-4 text-xs text-purple-300">
+          <div className="mt-3 flex items-center justify-center space-x-4 text-xs text-blue-200 font-medium">
             {heartSystem.current < heartSystem.max && (
               <div className="flex items-center space-x-1">
                 <Heart className="w-3 h-3" />
