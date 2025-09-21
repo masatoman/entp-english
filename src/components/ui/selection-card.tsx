@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "./card";
+import { baseColors, accentColors } from "../../styles/colors";
 
 export interface SelectionCardProps {
   id: string;
@@ -47,56 +48,119 @@ export function SelectionCard({
     switch (difficulty) {
       case "初級":
       case "beginner":
-        return "bg-green-100 text-green-800 border-green-200";
+        return {
+          backgroundColor: `${accentColors.successGreen}20`,
+          color: accentColors.successGreen,
+          borderColor: `${accentColors.successGreen}40`,
+        };
       case "初〜中級":
       case "intermediate":
-        return "bg-yellow-100 text-yellow-800 border-yellow-200";
+        return {
+          backgroundColor: `${accentColors.accentOrange}20`,
+          color: accentColors.accentOrangeDark,
+          borderColor: `${accentColors.accentOrange}40`,
+        };
       case "中級":
-        return "bg-orange-100 text-orange-800 border-orange-200";
+        return {
+          backgroundColor: `${baseColors.delftBlue}20`,
+          color: baseColors.delftBlue,
+          borderColor: `${baseColors.delftBlue}40`,
+        };
       case "上級":
       case "advanced":
-        return "bg-red-100 text-red-800 border-red-200";
+        return {
+          backgroundColor: `${accentColors.warningRed}20`,
+          color: accentColors.warningRed,
+          borderColor: `${accentColors.warningRed}40`,
+        };
       default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
+        return {
+          backgroundColor: `${baseColors.gunmetalLight}20`,
+          color: baseColors.gunmetal,
+          borderColor: `${baseColors.gunmetalLight}40`,
+        };
     }
   };
 
+  // カードの状態別スタイル
+  const getCardStyle = () => {
+    if (isLocked) {
+      return {
+        backgroundColor: `${baseColors.gunmetalLight}10`,
+        borderColor: `${baseColors.gunmetalLight}30`,
+        color: baseColors.gunmetalLight,
+      };
+    }
+    if (isCompleted) {
+      return {
+        backgroundColor: `${accentColors.successGreen}15`,
+        borderColor: accentColors.successGreen,
+        color: baseColors.gunmetal,
+      };
+    }
+    return {
+      backgroundColor: baseColors.ghostWhite,
+      borderColor: baseColors.periwinkle,
+      color: baseColors.gunmetal,
+    };
+  };
+
+  const cardStyle = getCardStyle();
   const cardClassName = cn(
-    "cursor-pointer transition-all duration-200 border-2 hover:shadow-lg active:scale-[0.98]",
+    "cursor-pointer transition-all duration-200 border-2 hover:shadow-card game-button",
     isLocked && "cursor-not-allowed opacity-60",
-    isCompleted && "border-green-300 bg-green-50",
-    isRecommended && "ring-2 ring-blue-400 ring-opacity-50",
-    !isLocked && !isCompleted && color,
-    isLocked && "bg-gray-50 border-gray-200"
+    isRecommended && "ring-2 ring-opacity-50",
   );
 
   return (
-    <Card className={cardClassName} onClick={() => !isLocked && onClick(id)}>
+    <Card 
+      className={cardClassName} 
+      onClick={() => !isLocked && onClick(id)}
+      style={{
+        ...cardStyle,
+        ...(isRecommended && {
+          boxShadow: `0 0 0 2px ${accentColors.accentOrange}80`,
+        }),
+      }}
+    >
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             {icon && <span className="text-lg">{icon}</span>}
             <CardTitle className="text-lg">{title}</CardTitle>
-            {isCompleted && <span className="text-green-600">✓</span>}
-            {isLocked && <span className="text-gray-400">🔒</span>}
+            {isCompleted && <span style={{ color: accentColors.successGreen }}>✓</span>}
+            {isLocked && <span style={{ color: baseColors.gunmetalLight }}>🔒</span>}
           </div>
           <div className="flex gap-2">
             {difficulty && (
               <Badge
                 variant="outline"
-                className={cn("text-xs", getDifficultyColor(difficulty))}
+                className="text-xs border"
+                style={getDifficultyColor(difficulty)}
               >
                 {difficulty}
               </Badge>
             )}
             {level && (
-              <Badge variant="outline" className="text-xs">
+              <Badge 
+                variant="outline" 
+                className="text-xs border"
+                style={{
+                  backgroundColor: `${baseColors.delftBlue}15`,
+                  color: baseColors.delftBlue,
+                  borderColor: `${baseColors.delftBlue}40`,
+                }}
+              >
                 Level {level}
               </Badge>
             )}
           </div>
         </div>
-        <CardDescription className={isLocked ? "text-gray-400" : ""}>
+        <CardDescription 
+          style={{ 
+            color: isLocked ? baseColors.gunmetalLight : baseColors.gunmetalLight 
+          }}
+        >
           {description}
         </CardDescription>
       </CardHeader>

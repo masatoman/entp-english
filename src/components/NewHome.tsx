@@ -38,12 +38,12 @@ import { DailyChallengeCard } from "./DailyChallengeCard";
 import DailyQuestPanel from "./DailyQuestPanel";
 import GameHeader from "./GameHeader";
 import { LearningFeedbackForm } from "./LearningFeedbackForm";
-import { LevelDisplay } from "./LevelDisplay";
 import { StatusAllocationComponent } from "./StatusAllocation";
 // PreStudyContentViewerはRouter経由で使用するため、直接importを削除
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { SelectionCard } from "./ui/selection-card";
+import { baseColors, accentColors } from "../styles/colors";
 
 // NewHomeProps は不要（React Router使用）
 
@@ -445,7 +445,12 @@ export function NewHome() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div 
+      className="min-h-screen"
+      style={{
+        background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkleLight} 100%)`,
+      }}
+    >
       {/* ゲームヘッダー */}
       <GameHeader
         onQuestClick={() => setShowDailyQuests(true)}
@@ -525,7 +530,6 @@ export function NewHome() {
             icon="🎁"
             difficulty="ガチャ"
             detail="XP消費"
-            color="bg-purple-50 border-purple-200 text-purple-800"
             onClick={() => navigate("/games/gacha")}
           />
 
@@ -537,7 +541,6 @@ export function NewHome() {
             icon="⭐️"
             difficulty="理論"
             detail="必要スター: 1 ⭐️"
-            color="bg-purple-50 border-purple-200 text-purple-800"
             isLocked={!canUseStars(starSystem)}
             onClick={() => canUseStars(starSystem) && handlePreStudyMenuOpen()}
           />
@@ -550,7 +553,6 @@ export function NewHome() {
             icon="🌳"
             difficulty="進捗"
             detail="体力不要"
-            color="bg-emerald-50 border-emerald-200 text-emerald-800"
             onClick={() => navigate("/learning/skill-tree")}
           />
 
@@ -562,7 +564,6 @@ export function NewHome() {
             icon="🧠"
             difficulty="相乗効果"
             detail="学習効果+30-260%"
-            color="bg-indigo-50 border-indigo-200 text-indigo-800"
             onClick={() => navigate("/learning/synergy")}
           />
 
@@ -574,7 +575,6 @@ export function NewHome() {
             icon="✏️"
             difficulty="文法"
             detail="必要体力: 1 ♥"
-            color="bg-blue-50 border-blue-200 text-blue-800"
             isLocked={!canStartLearning}
             onClick={() => canStartLearning && handleStartLearning("grammar")}
           />
@@ -587,7 +587,6 @@ export function NewHome() {
             icon="📚"
             difficulty="語彙"
             detail="必要体力: 1 ♥"
-            color="bg-green-50 border-green-200 text-green-800"
             isLocked={!canStartLearning}
             onClick={() =>
               canStartLearning && handleStartLearning("vocabulary")
@@ -602,7 +601,6 @@ export function NewHome() {
             icon="🧠"
             difficulty="統合"
             detail="必要体力: 1 ♥ • ガチャカード活用"
-            color="bg-purple-50 border-purple-200 text-purple-800"
             isLocked={!canStartLearning}
             onClick={() =>
               canStartLearning &&
@@ -618,7 +616,6 @@ export function NewHome() {
             icon="🎯"
             difficulty="総合"
             detail="必要体力: 1 ♥"
-            color="bg-purple-50 border-purple-200 text-purple-800"
             isLocked={!canStartLearning}
             onClick={() => canStartLearning && handleStartLearning("combined")}
           />
@@ -631,7 +628,6 @@ export function NewHome() {
             icon="⏰"
             difficulty="スピード"
             detail="必要体力: 1 ♥"
-            color="bg-orange-50 border-orange-200 text-orange-800"
             isLocked={!canStartLearning}
             onClick={() =>
               canStartLearning && handleStartLearning("timeattack")
@@ -646,7 +642,6 @@ export function NewHome() {
             icon="✍️"
             difficulty="ライティング"
             detail="必要体力: 1 ♥"
-            color="bg-indigo-50 border-indigo-200 text-indigo-800"
             isLocked={!canStartLearning}
             onClick={() => {
               if (canStartLearning) {
@@ -668,7 +663,6 @@ export function NewHome() {
             icon="🎮"
             difficulty="準備中"
             detail="機能改善中"
-            color="bg-gray-50 border-gray-200 text-gray-500"
             isLocked={true}
             onClick={() => {}}
           />
@@ -681,7 +675,6 @@ export function NewHome() {
             icon="🏆"
             difficulty="進捗"
             detail="体力不要"
-            color="bg-yellow-50 border-yellow-200 text-yellow-800"
             onClick={() => navigate("/progress/achievements")}
           />
 
@@ -693,7 +686,6 @@ export function NewHome() {
             icon="📈"
             difficulty="分析"
             detail="体力不要"
-            color="bg-green-50 border-green-200 text-green-800"
             onClick={() => handleShowGrowthDashboard()}
           />
         </div>

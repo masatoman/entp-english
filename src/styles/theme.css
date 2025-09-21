@@ -1,0 +1,203 @@
+/**
+ * ENTP英語学習アプリ - テーマカラー定義
+ * Tailwind CSS v4 + shadcn/ui + ゲーミフィケーション対応
+ */
+
+@layer base {
+  :root {
+    /* ==========================================
+     * ベースカラー（信頼感・安定感）
+     * ========================================== */
+
+    /* メインベースカラー */
+    --color-gunmetal: 48 52 63; /* #30343F - メインテキスト */
+    --color-gunmetal-light: 74 78 89; /* #4A4E59 - サブテキスト */
+    --color-gunmetal-dark: 28 31 38; /* #1C1F26 - 強調境界線 */
+    --color-ghost-white: 250 250 255; /* #FAFAFF - メイン背景 */
+    --color-periwinkle: 228 217 255; /* #E4D9FF - セクション背景 */
+    --color-periwinkle-light: 240 235 255; /* #F0EBFF - 軽い背景 */
+    --color-periwinkle-dark: 209 196 255; /* #D1C4FF - ホバー状態 */
+    --color-delft-blue: 39 52 105; /* #273469 - 重要なボタン */
+    --color-delft-blue-light: 58 75 124; /* #3A4B7C - ホバー状態 */
+    --color-delft-blue-dark: 31 40 86; /* #1F2856 - プレス状態 */
+    --color-space-cadet: 30 39 73; /* #1E2749 - アクティブ状態 */
+
+    /* ==========================================
+     * アクセントカラー（ゲーミフィケーション）
+     * ========================================== */
+
+    /* 行動促進・報酬用 */
+    --color-accent-orange: 255 170 102; /* #FFAA66 - XP獲得、報酬 */
+    --color-accent-orange-light: 255 187 136; /* #FFBB88 - ホバー */
+    --color-accent-orange-dark: 255 153 68; /* #FF9944 - プレス */
+
+    /* 成功・レベルアップ用 */
+    --color-success-green: 112 224 0; /* #70E000 - 成功、達成 */
+    --color-success-green-light: 136 232 34; /* #88E822 - ホバー */
+    --color-success-green-dark: 88 184 0; /* #58B800 - プレス */
+
+    /* 失敗・エラー用 */
+    --color-warning-red: 255 77 109; /* #FF4D6D - エラー、警告 */
+    --color-warning-red-light: 255 107 133; /* #FF6B85 - ホバー */
+    --color-warning-red-dark: 255 47 85; /* #FF2F55 - プレス */
+
+    /* ==========================================
+     * shadcn/ui 互換カラー
+     * ========================================== */
+
+    --background: var(--color-ghost-white);
+    --foreground: var(--color-gunmetal);
+    --card: var(--color-ghost-white);
+    --card-foreground: var(--color-gunmetal);
+    --popover: var(--color-ghost-white);
+    --popover-foreground: var(--color-gunmetal);
+    --primary: var(--color-delft-blue);
+    --primary-foreground: var(--color-ghost-white);
+    --secondary: var(--color-periwinkle);
+    --secondary-foreground: var(--color-gunmetal);
+    --muted: var(--color-periwinkle-light);
+    --muted-foreground: var(--color-gunmetal-light);
+    --accent: var(--color-accent-orange);
+    --accent-foreground: var(--color-gunmetal-dark);
+    --destructive: var(--color-warning-red);
+    --destructive-foreground: var(--color-ghost-white);
+    --border: var(--color-periwinkle);
+    --input: var(--color-periwinkle-light);
+    --ring: var(--color-delft-blue);
+    --chart-1: var(--color-delft-blue);
+    --chart-2: var(--color-accent-orange);
+    --chart-3: var(--color-success-green);
+    --chart-4: var(--color-warning-red);
+    --chart-5: var(--color-periwinkle-dark);
+  }
+
+  .dark {
+    /* ダークモード対応（将来的な拡張用） */
+    --background: var(--color-gunmetal-dark);
+    --foreground: var(--color-ghost-white);
+    --card: var(--color-gunmetal);
+    --card-foreground: var(--color-ghost-white);
+    --popover: var(--color-gunmetal);
+    --popover-foreground: var(--color-ghost-white);
+    --primary: var(--color-delft-blue-light);
+    --primary-foreground: var(--color-ghost-white);
+    --secondary: var(--color-gunmetal-light);
+    --secondary-foreground: var(--color-ghost-white);
+    --muted: var(--color-gunmetal-light);
+    --muted-foreground: var(--color-periwinkle);
+    --accent: var(--color-accent-orange);
+    --accent-foreground: var(--color-gunmetal-dark);
+    --destructive: var(--color-warning-red);
+    --destructive-foreground: var(--color-ghost-white);
+    --border: var(--color-gunmetal-light);
+    --input: var(--color-gunmetal);
+    --ring: var(--color-delft-blue-light);
+  }
+}
+
+/* ==========================================
+ * ユーティリティクラス
+ * ========================================== */
+
+@layer utilities {
+  /* ゲーミフィケーション専用ユーティリティ */
+  .text-xp {
+    color: rgb(var(--color-accent-orange));
+  }
+  .text-level-up {
+    color: rgb(var(--color-success-green));
+  }
+  .text-heart {
+    color: rgb(var(--color-warning-red));
+  }
+  .text-star {
+    color: rgb(var(--color-accent-orange));
+  }
+  .text-coin {
+    color: rgb(var(--color-accent-orange));
+  }
+
+  .bg-xp {
+    background-color: rgb(var(--color-accent-orange));
+  }
+  .bg-level-up {
+    background-color: rgb(var(--color-success-green));
+  }
+  .bg-heart {
+    background-color: rgb(var(--color-warning-red));
+  }
+  .bg-star {
+    background-color: rgb(var(--color-accent-orange));
+  }
+  .bg-coin {
+    background-color: rgb(var(--color-accent-orange));
+  }
+
+  /* ゲーミフィケーション用グラデーション */
+  .bg-xp-gradient {
+    background-image: var(--tw-gradient-stops),
+      linear-gradient(
+        90deg,
+        rgb(var(--color-accent-orange)),
+        rgb(var(--color-accent-orange-dark))
+      );
+  }
+  .bg-level-gradient {
+    background-image: var(--tw-gradient-stops),
+      linear-gradient(
+        90deg,
+        rgb(var(--color-success-green)),
+        rgb(var(--color-success-green-dark))
+      );
+  }
+  .bg-heart-gradient {
+    background-image: var(--tw-gradient-stops),
+      linear-gradient(
+        90deg,
+        rgb(var(--color-warning-red)),
+        rgb(var(--color-warning-red-dark))
+      );
+  }
+
+  /* アニメーション効果付きクラス */
+  .xp-glow {
+    box-shadow: 0 0 12px 0 rgba(var(--color-accent-orange), 0.4);
+    animation: xp-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .level-up-effect {
+    animation: level-bounce 1s ease-in-out 3;
+    box-shadow: 0 0 20px 0 rgba(var(--color-success-green), 0.5);
+  }
+
+  .treasure-effect {
+    animation: treasure-shake 0.5s ease-in-out;
+    box-shadow: 0 0 15px 0 rgba(var(--color-accent-orange), 0.6);
+  }
+
+  /* ホバー効果 */
+  .hover-lift {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px 0 rgba(var(--color-gunmetal), 0.15);
+  }
+
+  /* ゲームライクなボタン効果 */
+  .game-button {
+    transition: all 0.2s ease-in-out;
+    transform: translateY(0);
+  }
+
+  .game-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px 0 rgba(var(--color-gunmetal), 0.2);
+  }
+
+  .game-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px 0 rgba(var(--color-gunmetal), 0.2);
+  }
+}

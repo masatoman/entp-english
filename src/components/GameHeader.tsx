@@ -1,8 +1,9 @@
-import { Heart, Plus, Star, Target, Clock } from "lucide-react";
+import { Heart, Plus, Star, Target } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useHeartSystem } from "../hooks/useHeartSystem";
 import { useLevelSystem } from "../hooks/useLevelSystem";
+import { accentColors, baseColors } from "../styles/colors";
 import { StarData } from "../types/starSystem";
 import { adrenalineManager } from "../utils/adrenalineManager";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
@@ -12,11 +13,31 @@ import { Progress } from "./ui/progress";
 
 // 章情報の定義
 const CHAPTER_INFO = {
-  1: { name: "初級編", color: "bg-green-500", description: "基礎から始める英語学習" },
-  2: { name: "中級編", color: "bg-blue-500", description: "実用的な英語力を身につける" },
-  3: { name: "上級編", color: "bg-purple-500", description: "高度な英語表現をマスター" },
-  4: { name: "専門編", color: "bg-red-500", description: "専門分野の英語を習得" },
-  5: { name: "達人編", color: "bg-yellow-500", description: "ネイティブレベルを目指す" },
+  1: {
+    name: "初級編",
+    color: "bg-green-500",
+    description: "基礎から始める英語学習",
+  },
+  2: {
+    name: "中級編",
+    color: "bg-blue-500",
+    description: "実用的な英語力を身につける",
+  },
+  3: {
+    name: "上級編",
+    color: "bg-purple-500",
+    description: "高度な英語表現をマスター",
+  },
+  4: {
+    name: "専門編",
+    color: "bg-red-500",
+    description: "専門分野の英語を習得",
+  },
+  5: {
+    name: "達人編",
+    color: "bg-yellow-500",
+    description: "ネイティブレベルを目指す",
+  },
 };
 
 interface GameHeaderProps {
@@ -75,37 +96,60 @@ export default function GameHeader({
     requiredXP > 0 ? Math.min(100, (progressXP / requiredXP) * 100) : 0;
 
   return (
-    <div className="bg-gradient-to-r from-blue-900 via-indigo-800 to-purple-900 text-white p-4 shadow-lg border-b border-blue-600/30" style={{
-      background: 'linear-gradient(to right, rgb(30 58 138), rgb(55 48 163), rgb(88 28 135))',
-      color: 'white'
-    }}>
+    <div
+      className="text-white p-4 shadow-game border-b"
+      style={{
+        background: `linear-gradient(to right, ${baseColors.spaceCadet}, ${baseColors.delftBlue}, ${baseColors.spaceCadet})`,
+        color: baseColors.ghostWhite,
+        borderBottomColor: `${baseColors.delftBlue}50`,
+      }}
+    >
       <div className="max-w-6xl mx-auto">
         {/* 上段: ユーザー情報とレベル */}
         <div className="flex items-center justify-between mb-3 sm:mb-4">
           {/* ユーザー情報 */}
           <div className="flex items-center space-x-2 sm:space-x-3">
             {/* レベルアバター */}
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-gray-900 font-bold text-base sm:text-lg border-2 sm:border-3 border-white shadow-xl">
+            <div
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-base sm:text-lg border-2 sm:border-3 border-white shadow-level"
+              style={{
+                background: `linear-gradient(to bottom right, ${accentColors.accentOrange}, ${accentColors.accentOrangeDark})`,
+                color: baseColors.gunmetal,
+              }}
+            >
               {userLevel.level || 1}
             </div>
-            
+
             {/* 章アバター（スマホでは非表示） */}
-            <div className="hidden sm:flex w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full items-center justify-center text-white font-bold text-sm border-2 border-white/70 shadow-lg">
+            <div
+              className="hidden sm:flex w-8 h-8 rounded-full items-center justify-center font-bold text-sm border-2 border-white/70 shadow-lg"
+              style={{
+                background: `linear-gradient(to bottom right, ${baseColors.delftBlue}, ${baseColors.delftBlueLight})`,
+                color: baseColors.ghostWhite,
+              }}
+            >
               {userLevel.chapter || 2}
             </div>
-            
+
             <div>
-              <div className="text-base sm:text-lg font-bold text-white drop-shadow-md" style={{ 
-                color: 'white', 
-                textShadow: '2px 2px 4px rgba(0,0,0,0.8)' 
-              }}>
+              <div
+                className="text-base sm:text-lg font-bold drop-shadow-md"
+                style={{
+                  color: baseColors.ghostWhite,
+                  textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
+                }}
+              >
                 Level {userLevel.level || 1}
               </div>
-              <div className="text-xs sm:text-sm text-blue-200 font-medium" style={{ 
-                color: 'rgb(191 219 254)', 
-                textShadow: '1px 1px 2px rgba(0,0,0,0.6)' 
-              }}>
-                第{userLevel.chapter || 2}章 • {CHAPTER_INFO[userLevel.chapter || 2]?.name || "中級編"}
+              <div
+                className="text-xs sm:text-sm font-medium"
+                style={{
+                  color: baseColors.periwinkle,
+                  textShadow: "1px 1px 2px rgba(0,0,0,0.6)",
+                }}
+              >
+                第{userLevel.chapter || 2}章 •{" "}
+                {CHAPTER_INFO[userLevel.chapter || 2]?.name || "中級編"}
               </div>
             </div>
           </div>
@@ -113,29 +157,46 @@ export default function GameHeader({
           {/* XP進捗 */}
           <div className="flex-1 max-w-xs sm:max-w-md mx-3 sm:mx-6">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-xs sm:text-sm text-blue-200 font-medium" style={{ 
-                color: 'rgb(191 219 254)', 
-                textShadow: '1px 1px 2px rgba(0,0,0,0.6)' 
-              }}>経験値</span>
-              <span className="text-xs sm:text-sm text-white font-bold drop-shadow-md" style={{ 
-                color: 'white', 
-                textShadow: '2px 2px 4px rgba(0,0,0,0.8)' 
-              }}>
+              <span
+                className="text-xs sm:text-sm font-medium"
+                style={{
+                  color: baseColors.periwinkle,
+                  textShadow: "1px 1px 2px rgba(0,0,0,0.6)",
+                }}
+              >
+                経験値
+              </span>
+              <span
+                className="text-xs sm:text-sm font-bold drop-shadow-md"
+                style={{
+                  color: accentColors.accentOrange,
+                  textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
+                }}
+              >
                 {progressXP.toFixed(0)}/{requiredXP} XP
               </span>
             </div>
             <Progress
               value={progressPercentage}
-              className="h-2 sm:h-3 bg-blue-900/50 border border-blue-500/40"
+              className="h-2 sm:h-3 border"
+              style={{
+                backgroundColor: `${baseColors.spaceCadet}80`,
+                borderColor: `${baseColors.delftBlue}60`,
+              }}
             />
-            
+
             {/* 章の進捗（スマホでは非表示） */}
-            <div className="hidden sm:flex items-center justify-between text-xs text-blue-300 mt-1" style={{ 
-              color: 'rgb(147 197 253)', 
-              textShadow: '1px 1px 2px rgba(0,0,0,0.5)' 
-            }}>
+            <div
+              className="hidden sm:flex items-center justify-between text-xs mt-1"
+              style={{
+                color: baseColors.periwinkle,
+                textShadow: "1px 1px 2px rgba(0,0,0,0.5)",
+              }}
+            >
               <span>第{userLevel.chapter || 2}章進捗</span>
-              <span>{((userLevel.level || 1) % 10 * 10).toFixed(0)}%</span>
+              <span style={{ color: accentColors.accentOrange }}>
+                {(((userLevel.level || 1) % 10) * 10).toFixed(0)}%
+              </span>
             </div>
           </div>
 
@@ -145,11 +206,17 @@ export default function GameHeader({
               variant="outline"
               size="sm"
               onClick={onQuestClick}
-              className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600 border-2 border-white/20 shadow-lg font-bold relative text-xs sm:text-sm px-2 sm:px-3"
+              className="font-bold relative text-xs sm:text-sm px-2 sm:px-3 border-2 shadow-button transition-all duration-200"
               style={{
-                background: 'linear-gradient(to right, rgb(16 185 129), rgb(20 184 166))',
-                color: 'white',
-                border: '2px solid rgba(255,255,255,0.3)'
+                background: `linear-gradient(to right, ${accentColors.successGreen}, ${accentColors.successGreenLight})`,
+                color: baseColors.ghostWhite,
+                border: `2px solid ${baseColors.ghostWhite}50`,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = `linear-gradient(to right, ${accentColors.successGreenLight}, ${accentColors.successGreen})`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = `linear-gradient(to right, ${accentColors.successGreen}, ${accentColors.successGreenLight})`;
               }}
             >
               <Target className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
@@ -165,15 +232,27 @@ export default function GameHeader({
         </div>
 
         {/* 下段: リソース表示 */}
-        <div className="flex items-center justify-around bg-indigo-900/40 rounded-lg p-2 sm:p-3 shadow-inner border border-blue-600/30">
+        <div
+          className="flex items-center justify-around rounded-lg p-2 sm:p-3 shadow-inner border"
+          style={{
+            backgroundColor: `${baseColors.spaceCadet}60`,
+            borderColor: `${baseColors.delftBlue}50`,
+          }}
+        >
           {/* 体力（ハート） */}
           <div className="flex items-center space-x-1 sm:space-x-2">
             <div className="flex items-center space-x-1">
-              <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-red-400" />
-              <span className="text-sm sm:text-lg font-bold text-white drop-shadow-md" style={{ 
-                color: 'white', 
-                textShadow: '2px 2px 4px rgba(0,0,0,0.8)' 
-              }}>
+              <Heart
+                className="w-4 h-4 sm:w-5 sm:h-5"
+                style={{ color: accentColors.warningRed }}
+              />
+              <span
+                className="text-sm sm:text-lg font-bold text-white drop-shadow-md"
+                style={{
+                  color: "white",
+                  textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
+                }}
+              >
                 {heartSystem.current}/{heartSystem.max}
               </span>
             </div>
@@ -199,10 +278,13 @@ export default function GameHeader({
           <div className="flex items-center space-x-1 sm:space-x-2">
             <div className="flex items-center space-x-1">
               <Star className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400" />
-              <span className="text-sm sm:text-lg font-bold text-white drop-shadow-md" style={{ 
-                color: 'white', 
-                textShadow: '2px 2px 4px rgba(0,0,0,0.8)' 
-              }}>
+              <span
+                className="text-sm sm:text-lg font-bold text-white drop-shadow-md"
+                style={{
+                  color: "white",
+                  textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
+                }}
+              >
                 {starSystem.current}/{starSystem.max}
               </span>
             </div>
@@ -229,10 +311,13 @@ export default function GameHeader({
           <div className="flex items-center space-x-2">
             <div className="flex items-center space-x-1">
               <span className="text-lg">🪙</span>
-              <span className="text-lg font-bold text-white drop-shadow-md" style={{ 
-                color: 'white', 
-                textShadow: '2px 2px 4px rgba(0,0,0,0.8)' 
-              }}>
+              <span
+                className="text-lg font-bold text-white drop-shadow-md"
+                style={{
+                  color: "white",
+                  textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
+                }}
+              >
                 {coinSystem.current}
               </span>
             </div>
