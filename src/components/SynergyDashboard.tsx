@@ -120,9 +120,15 @@ export default function SynergyDashboard({
 
   // 推奨コンテンツ（未完了のものを効果順に表示、多様性を確保）
   const recommendedContent = synergyProgress
-    .filter((p) => p.completionRate === 0) // シナジーボーナスの条件を削除して多様性を確保
-    .sort((a, b) => b.synergyBonus - a.synergyBonus)
-    .slice(0, 8); // 表示数を6→8に増加
+    .filter((p) => p.completionRate === 0) // 未完了のコンテンツのみ
+    .filter((p) => !isNaN(p.effectivenessScore) && !isNaN(p.synergyBonus)) // NaNデータを除外
+    .sort((a, b) => {
+      // 効果の高い順にソート（synergyBonus優先、effectivenessScore副次）
+      const bonusDiff = b.synergyBonus - a.synergyBonus;
+      if (Math.abs(bonusDiff) > 0.01) return bonusDiff;
+      return b.effectivenessScore - a.effectivenessScore;
+    })
+    .slice(0, 8); // 表示数を8個に設定
 
   // 完了済みコンテンツの統計
   const completedCount = synergyProgress.filter(
@@ -303,16 +309,39 @@ export default function SynergyDashboard({
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {recommendedContent.map((progress, index) => {
-                const bonusPercent = Math.round((progress.synergyBonus - 1) * 100);
-                const effectivenessPercent = Math.round(progress.effectivenessScore * 100);
-                
+                const bonusPercent = Math.round(
+                  (progress.synergyBonus - 1) * 100
+                );
+                const effectivenessPercent = isNaN(progress.effectivenessScore) 
+                  ? 50 // デフォルト値
+                  : Math.round(progress.effectivenessScore * 100);
+
                 // 効果レベルの判定（より多様性を確保）
                 const getEffectLevel = (bonus: number) => {
-                  if (bonus >= 25) return { text: "超効果的", color: "bg-purple-100 text-purple-700 border-purple-300" };
-                  if (bonus >= 15) return { text: "とても効果的", color: "bg-blue-100 text-blue-700 border-blue-300" };
-                  if (bonus >= 5) return { text: "効果的", color: "bg-green-100 text-green-700 border-green-300" };
-                  if (bonus >= 0) return { text: "普通", color: "bg-yellow-100 text-yellow-700 border-yellow-300" };
-                  return { text: "要注意", color: "bg-gray-100 text-gray-700 border-gray-300" };
+                  if (bonus >= 25)
+                    return {
+                      text: "超効果的",
+                      color: "bg-purple-100 text-purple-700 border-purple-300",
+                    };
+                  if (bonus >= 15)
+                    return {
+                      text: "とても効果的",
+                      color: "bg-blue-100 text-blue-700 border-blue-300",
+                    };
+                  if (bonus >= 5)
+                    return {
+                      text: "効果的",
+                      color: "bg-green-100 text-green-700 border-green-300",
+                    };
+                  if (bonus >= 0)
+                    return {
+                      text: "普通",
+                      color: "bg-yellow-100 text-yellow-700 border-yellow-300",
+                    };
+                  return {
+                    text: "要注意",
+                    color: "bg-gray-100 text-gray-700 border-gray-300",
+                  };
                 };
 
                 const effectLevel = getEffectLevel(bonusPercent);
@@ -325,7 +354,9 @@ export default function SynergyDashboard({
                   >
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center space-x-2">
-                        <span className="text-lg font-bold text-gray-700">#{index + 1}</span>
+                        <span className="text-lg font-bold text-gray-700">
+                          #{index + 1}
+                        </span>
                         <Badge variant="outline" className="text-xs">
                           {effectLevel.text}
                         </Badge>
@@ -377,7 +408,11 @@ export default function SynergyDashboard({
                       {bonusPercent > 0 && (
                         <div className="bg-white/50 p-2 rounded text-center">
                           <div className="text-gray-700 font-medium">
-                            通常より<span className="text-green-600 font-bold">{bonusPercent}%</span>多くXPがもらえる！
+                            通常より
+                            <span className="text-green-600 font-bold">
+                              {bonusPercent}%
+                            </span>
+                            多くXPがもらえる！
                           </div>
                         </div>
                       )}
@@ -401,12 +436,27 @@ export default function SynergyDashboard({
 
             {/* 説明セクション */}
             <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-              <h4 className="font-semibold text-blue-700 mb-2">💡 表示の見方</h4>
+              <h4 className="font-semibold text-blue-700 mb-2">
+                💡 表示の見方
+              </h4>
               <div className="space-y-2 text-sm text-blue-600">
-                <div>• <strong>学習効果 +30%</strong>：通常より30%多くXPがもらえます（0%の場合は通常通り）</div>
-                <div>• <strong>おすすめ度</strong>：⭐⭐⭐⭐⭐（90%以上）、⭐⭐⭐⭐（75%以上）、⭐⭐⭐（60%以上）、⭐⭐（40%以上）、⭐（40%未満）</div>
-                <div>• <strong>効果的レベル</strong>：超効果的（+25%以上） &gt; とても効果的（+15%以上） &gt; 効果的（+5%以上） &gt; 普通（0%以上）</div>
-                <div>• <strong>番号順</strong>：#1が最も効果的、番号が大きくなるほど効果は下がりますが、全て学習価値があります</div>
+                <div>
+                  • <strong>学習効果 +30%</strong>
+                  ：通常より30%多くXPがもらえます（0%の場合は通常通り）
+                </div>
+                <div>
+                  • <strong>おすすめ度</strong>
+                  ：⭐⭐⭐⭐⭐（90%以上）、⭐⭐⭐⭐（75%以上）、⭐⭐⭐（60%以上）、⭐⭐（40%以上）、⭐（40%未満）
+                </div>
+                <div>
+                  • <strong>効果的レベル</strong>：超効果的（+25%以上） &gt;
+                  とても効果的（+15%以上） &gt; 効果的（+5%以上） &gt;
+                  普通（0%以上）
+                </div>
+                <div>
+                  • <strong>番号順</strong>
+                  ：#1が最も効果的、番号が大きくなるほど効果は下がりますが、全て学習価値があります
+                </div>
               </div>
             </div>
           </CardContent>
