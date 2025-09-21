@@ -78,12 +78,14 @@ export default function GameHeader({
     return () => clearInterval(interval);
   }, [processRecovery]);
 
-  // XP進捗計算
-  const currentLevelXP = (userLevel.level || 1) * 100;
-  const nextLevelXP = ((userLevel.level || 1) + 1) * 100;
-  const progressXP = (userLevel.totalXP || 0) - currentLevelXP;
+  // XP進捗計算（LevelDisplayと同じロジックを使用）
+  const currentLevel = userLevel.level || 1;
+  const totalXP = userLevel.totalXP || 0;
+  const currentLevelXP = (currentLevel - 1) * 100;
+  const nextLevelXP = currentLevel * 100;
+  const progressXP = Math.max(0, totalXP - currentLevelXP);
   const requiredXP = nextLevelXP - currentLevelXP;
-  const progressPercentage = requiredXP > 0 ? (progressXP / requiredXP) * 100 : 0;
+  const progressPercentage = requiredXP > 0 ? Math.min(100, (progressXP / requiredXP) * 100) : 0;
 
   return (
     <div className="bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 text-white p-4 shadow-lg">
@@ -106,7 +108,7 @@ export default function GameHeader({
             <div className="flex items-center justify-between mb-1">
               <span className="text-sm text-purple-200">経験値</span>
               <span className="text-sm text-white font-medium">
-                {progressXP}/{requiredXP} XP
+                {progressXP.toFixed(0)}/{requiredXP} XP
               </span>
             </div>
             <Progress
@@ -235,7 +237,7 @@ export default function GameHeader({
           <div className="flex items-center space-x-1">
             <span className="text-sm">⚡</span>
             <span className="text-lg font-bold text-blue-300">
-              {(userLevel.totalXP || 0).toLocaleString()}
+              {totalXP.toLocaleString()}
             </span>
             <span className="text-sm text-blue-200">XP</span>
           </div>
