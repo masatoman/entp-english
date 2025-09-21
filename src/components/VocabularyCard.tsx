@@ -3,16 +3,18 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { VocabularyWord, getVocabularyWords } from "../data/vocabulary";
 import { useScrollToTop } from "../hooks/useScrollToTop";
-import { AdrenalineEventData } from "../types/adrenalineSystem";
+import { adrenalineManager } from "../utils/adrenalineManager";
 import { DataManager } from "../utils/dataManager";
 import { KnownWordsManager } from "../utils/knownWordsManager";
 import { LearningAnalyzer } from "../utils/learningAnalyzer";
 import { SoundManager } from "../utils/soundManager";
 import { SpeechSynthesisManager } from "../utils/speechSynthesis";
 import { VocabularyManager } from "../utils/vocabularyManager";
-import { adrenalineManager } from "../utils/adrenalineManager";
 import { calculateVocabularyXP } from "../utils/xpCalculator";
-import AdrenalineEffects, { triggerAdrenalineEvent, calculateAdrenalineXP } from "./AdrenalineEffects";
+import AdrenalineEffects, {
+  calculateAdrenalineXP,
+  triggerAdrenalineEvent,
+} from "./AdrenalineEffects";
 import TreasureBoxSystem from "./TreasureBoxSystem";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -75,7 +77,7 @@ export default function VocabularyCard({
   const [showMeaning, setShowMeaning] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  
+
   // アドレナリンシステム
   const [showTreasureBox, setShowTreasureBox] = useState(false);
 
@@ -228,11 +230,14 @@ export default function VocabularyCard({
     // アドレナリンシステム処理
     const isCritical = Math.random() < 0.08; // 語彙学習では8%でクリティカル
     const events = triggerAdrenalineEvent(known, isCritical);
-    
+
     // アドレナリン効果を適用したXP計算
     const baseXP = known ? 5 : 2; // 知ってる: 5XP, まだ: 2XP
-    const { finalXP, multiplier, breakdown } = calculateAdrenalineXP(baseXP, isCritical);
-    
+    const { finalXP, multiplier, breakdown } = calculateAdrenalineXP(
+      baseXP,
+      isCritical
+    );
+
     console.log("🚀 語彙学習アドレナリン効果:", {
       word: currentWord.word,
       known,
@@ -240,7 +245,7 @@ export default function VocabularyCard({
       finalXP,
       multiplier,
       breakdown,
-      events: events.map(e => e.message),
+      events: events.map((e) => e.message),
     });
 
     // 「知ってる」を選択した場合、既知単語としてマーク
@@ -270,7 +275,7 @@ export default function VocabularyCard({
     if (known && Math.random() < 0.15) {
       const box = adrenalineManager.earnTreasureBox("normal");
       console.log("🎁 語彙学習で宝箱獲得:", box);
-      
+
       // 少し遅れて宝箱表示
       setTimeout(() => {
         setShowTreasureBox(true);
@@ -510,22 +515,22 @@ export default function VocabularyCard({
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* アドレナリンエフェクト */}
-      <AdrenalineEffects 
+      <AdrenalineEffects
         onEventTriggered={(event) => {
           console.log("🎆 語彙学習アドレナリンイベント:", event.message);
         }}
       />
-      
+
       {/* 宝箱システム */}
       {showTreasureBox && (
-        <TreasureBoxSystem 
+        <TreasureBoxSystem
           onBoxOpened={(rewards) => {
             console.log("🎁 語彙学習宝箱開封報酬:", rewards);
             setShowTreasureBox(false);
           }}
         />
       )}
-      
+
       <div className="max-w-md mx-auto p-4 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between pt-8">

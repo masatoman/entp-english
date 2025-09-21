@@ -90,9 +90,9 @@ export interface AdrenalineSystem {
 }
 
 // アドレナリンイベントの種類
-export type AdrenalineEvent = 
+export type AdrenalineEvent =
   | "combo_start"
-  | "combo_break" 
+  | "combo_break"
   | "critical_hit"
   | "fever_time_start"
   | "fever_time_end"

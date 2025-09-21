@@ -1,15 +1,10 @@
-import { 
-  AdrenalineSystem, 
-  AdrenalineEvent, 
+import {
+  AdrenalineEvent,
   AdrenalineEventData,
-  ComboSystem,
-  CriticalHitSystem,
-  DailyBonusSystem,
-  FeverTimeSystem,
-  PressureGauge,
+  AdrenalineStats,
+  AdrenalineSystem,
   TreasureBox,
   TreasureReward,
-  AdrenalineStats
 } from "../types/adrenalineSystem";
 
 const STORAGE_KEY = "entp-english-adrenaline-system";
@@ -115,20 +110,31 @@ export class AdrenalineManager {
     const now = Date.now();
 
     // コンボ処理
-    if (now - this.system.combo.lastCorrectTime < this.system.combo.comboTimeout) {
+    if (
+      now - this.system.combo.lastCorrectTime <
+      this.system.combo.comboTimeout
+    ) {
       this.system.combo.currentCombo++;
     } else {
       this.system.combo.currentCombo = 1;
     }
 
     this.system.combo.lastCorrectTime = now;
-    this.system.combo.maxCombo = Math.max(this.system.combo.maxCombo, this.system.combo.currentCombo);
+    this.system.combo.maxCombo = Math.max(
+      this.system.combo.maxCombo,
+      this.system.combo.currentCombo
+    );
 
     // コンボ乗数計算
     const oldMultiplier = this.system.combo.comboMultiplier;
-    this.system.combo.comboMultiplier = this.calculateComboMultiplier(this.system.combo.currentCombo);
+    this.system.combo.comboMultiplier = this.calculateComboMultiplier(
+      this.system.combo.currentCombo
+    );
 
-    if (this.system.combo.currentCombo >= 3 && oldMultiplier !== this.system.combo.comboMultiplier) {
+    if (
+      this.system.combo.currentCombo >= 3 &&
+      oldMultiplier !== this.system.combo.comboMultiplier
+    ) {
       events.push({
         type: "combo_start",
         value: this.system.combo.currentCombo,
@@ -158,9 +164,12 @@ export class AdrenalineManager {
     }
 
     // フィーバータイム判定
-    if (!this.system.feverTime.isActive && 
-        now - this.system.feverTime.lastTrigger > this.system.feverTime.cooldownTime &&
-        Math.random() < this.system.feverTime.triggerRate) {
+    if (
+      !this.system.feverTime.isActive &&
+      now - this.system.feverTime.lastTrigger >
+        this.system.feverTime.cooldownTime &&
+      Math.random() < this.system.feverTime.triggerRate
+    ) {
       this.startFeverTime(events);
     }
 
@@ -170,7 +179,10 @@ export class AdrenalineManager {
       this.system.pressureGauge.max
     );
 
-    if (this.system.pressureGauge.current >= this.system.pressureGauge.burstThreshold) {
+    if (
+      this.system.pressureGauge.current >=
+      this.system.pressureGauge.burstThreshold
+    ) {
       this.triggerPressureBurst(events);
     }
 
@@ -227,7 +239,9 @@ export class AdrenalineManager {
       type: "fever_time_start",
       value: this.system.feverTime.duration / 1000,
       multiplier: this.system.feverTime.multiplier,
-      message: `🎊 FEVER TIME! ${this.system.feverTime.duration / 1000}秒間XP${this.system.feverTime.multiplier}倍！`,
+      message: `🎊 FEVER TIME! ${this.system.feverTime.duration / 1000}秒間XP${
+        this.system.feverTime.multiplier
+      }倍！`,
       timestamp: now,
       effects: ["fever_background", "sparkle_effect", "music_change"],
     });
@@ -253,7 +267,9 @@ export class AdrenalineManager {
       type: "pressure_burst",
       value: this.system.pressureGauge.burstDuration / 1000,
       multiplier: this.system.pressureGauge.burstMultiplier,
-      message: `💥 PRESSURE BURST! ${this.system.pressureGauge.burstDuration / 60000}分間XP${this.system.pressureGauge.burstMultiplier}倍！`,
+      message: `💥 PRESSURE BURST! ${
+        this.system.pressureGauge.burstDuration / 60000
+      }分間XP${this.system.pressureGauge.burstMultiplier}倍！`,
       timestamp: now,
       effects: ["burst_effect", "screen_pulse", "energy_aura"],
     });
@@ -267,13 +283,16 @@ export class AdrenalineManager {
     return box;
   }
 
-  private generateTreasureBox(difficulty: "easy" | "normal" | "hard"): TreasureBox {
+  private generateTreasureBox(
+    difficulty: "easy" | "normal" | "hard"
+  ): TreasureBox {
     const rarityRoll = Math.random();
     let type: TreasureBox["type"];
     let rarity: number;
 
     // 難易度別の宝箱確率
-    const difficultyBonus = difficulty === "hard" ? 0.2 : difficulty === "normal" ? 0.1 : 0;
+    const difficultyBonus =
+      difficulty === "hard" ? 0.2 : difficulty === "normal" ? 0.1 : 0;
     const adjustedRarity = rarityRoll + difficultyBonus;
 
     if (adjustedRarity >= 0.99) {
@@ -299,7 +318,9 @@ export class AdrenalineManager {
     };
   }
 
-  private generateTreasureRewards(boxType: TreasureBox["type"]): TreasureReward[] {
+  private generateTreasureRewards(
+    boxType: TreasureBox["type"]
+  ): TreasureReward[] {
     const rewards: TreasureReward[] = [];
 
     switch (boxType) {
@@ -378,7 +399,7 @@ export class AdrenalineManager {
   }
 
   openTreasureBox(boxId: string): TreasureReward[] {
-    const box = this.system.treasureBoxes.find(b => b.id === boxId);
+    const box = this.system.treasureBoxes.find((b) => b.id === boxId);
     if (!box || box.isOpened) {
       return [];
     }
@@ -393,8 +414,10 @@ export class AdrenalineManager {
 
   // デイリーボーナスシステム
   updateDailyBonus(): number {
-    const today = new Date().toISOString().split('T')[0];
-    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    const today = new Date().toISOString().split("T")[0];
+    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000)
+      .toISOString()
+      .split("T")[0];
 
     if (this.system.dailyBonus.lastLoginDate === today) {
       return this.system.dailyBonus.currentMultiplier;
@@ -448,7 +471,10 @@ export class AdrenalineManager {
 
     // プレッシャーバースト乗数
     const now = Date.now();
-    if (now - this.system.pressureGauge.lastBurst < this.system.pressureGauge.burstDuration) {
+    if (
+      now - this.system.pressureGauge.lastBurst <
+      this.system.pressureGauge.burstDuration
+    ) {
       multiplier *= this.system.pressureGauge.burstMultiplier;
     }
 
@@ -456,7 +482,10 @@ export class AdrenalineManager {
   }
 
   // XP計算（アドレナリン効果適用）
-  calculateBoostedXP(baseXP: number, isCritical: boolean = false): {
+  calculateBoostedXP(
+    baseXP: number,
+    isCritical: boolean = false
+  ): {
     finalXP: number;
     multiplier: number;
     breakdown: string[];
@@ -467,11 +496,15 @@ export class AdrenalineManager {
     breakdown.push(`基本XP: ${baseXP}`);
 
     if (this.system.combo.currentCombo >= 3) {
-      breakdown.push(`🔥 コンボ×${this.system.combo.comboMultiplier} (${this.system.combo.currentCombo}連続)`);
+      breakdown.push(
+        `🔥 コンボ×${this.system.combo.comboMultiplier} (${this.system.combo.currentCombo}連続)`
+      );
     }
 
     if (this.system.dailyBonus.currentMultiplier > 1.0) {
-      breakdown.push(`📅 デイリーボーナス×${this.system.dailyBonus.currentMultiplier} (${this.system.dailyBonus.consecutiveDays}日連続)`);
+      breakdown.push(
+        `📅 デイリーボーナス×${this.system.dailyBonus.currentMultiplier} (${this.system.dailyBonus.consecutiveDays}日連続)`
+      );
     }
 
     if (this.system.feverTime.isActive) {
@@ -480,7 +513,9 @@ export class AdrenalineManager {
 
     if (isCritical) {
       multiplier *= this.system.critical.criticalMultiplier;
-      breakdown.push(`⚡ クリティカル×${this.system.critical.criticalMultiplier}`);
+      breakdown.push(
+        `⚡ クリティカル×${this.system.critical.criticalMultiplier}`
+      );
     }
 
     const finalXP = Math.round(baseXP * multiplier);
@@ -500,8 +535,11 @@ export class AdrenalineManager {
 
   getComboStatus(): { combo: number; multiplier: number; timeLeft: number } {
     const now = Date.now();
-    const timeLeft = Math.max(0, this.system.combo.comboTimeout - (now - this.system.combo.lastCorrectTime));
-    
+    const timeLeft = Math.max(
+      0,
+      this.system.combo.comboTimeout - (now - this.system.combo.lastCorrectTime)
+    );
+
     return {
       combo: this.system.combo.currentCombo,
       multiplier: this.system.combo.comboMultiplier,
@@ -515,8 +553,11 @@ export class AdrenalineManager {
     }
 
     const now = Date.now();
-    const timeLeft = Math.max(0, this.system.feverTime.duration - (now - this.system.feverTime.startTime));
-    
+    const timeLeft = Math.max(
+      0,
+      this.system.feverTime.duration - (now - this.system.feverTime.startTime)
+    );
+
     if (timeLeft === 0) {
       this.endFeverTime();
       return { isActive: false, timeLeft: 0 };
@@ -525,12 +566,21 @@ export class AdrenalineManager {
     return { isActive: true, timeLeft };
   }
 
-  getPressureGaugeStatus(): { current: number; max: number; percentage: number; canBurst: boolean } {
+  getPressureGaugeStatus(): {
+    current: number;
+    max: number;
+    percentage: number;
+    canBurst: boolean;
+  } {
     return {
       current: this.system.pressureGauge.current,
       max: this.system.pressureGauge.max,
-      percentage: (this.system.pressureGauge.current / this.system.pressureGauge.max) * 100,
-      canBurst: this.system.pressureGauge.current >= this.system.pressureGauge.burstThreshold,
+      percentage:
+        (this.system.pressureGauge.current / this.system.pressureGauge.max) *
+        100,
+      canBurst:
+        this.system.pressureGauge.current >=
+        this.system.pressureGauge.burstThreshold,
     };
   }
 

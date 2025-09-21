@@ -21,9 +21,9 @@ import {
   PreStudySession,
   StarData,
 } from "../types/starSystem";
+import { adrenalineManager } from "../utils/adrenalineManager";
 import { DataManager } from "../utils/dataManager";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
-import { adrenalineManager } from "../utils/adrenalineManager";
 import {
   calculateRecoveredStars,
   canUseStars,
@@ -52,7 +52,7 @@ export function NewHome() {
 
   // レベルマネージャーの初期化
   const levelManager = getLevelManager();
-  
+
   // アドレナリンシステムの初期化
   const [dailyMultiplier, setDailyMultiplier] = useState(1.0);
   const [consecutiveDays, setConsecutiveDays] = useState(0);
@@ -138,7 +138,7 @@ export function NewHome() {
       const system = adrenalineManager.getSystem();
       setDailyMultiplier(multiplier);
       setConsecutiveDays(system.dailyBonus.consecutiveDays);
-      
+
       console.log("🎯 デイリーボーナス更新:", {
         multiplier,
         consecutiveDays: system.dailyBonus.consecutiveDays,
