@@ -23,6 +23,13 @@ interface TimeAttackQuestion {
   timeLimit: number; // 秒
 }
 
+interface QuestionResult {
+  question: TimeAttackQuestion;
+  userAnswer: string;
+  isCorrect: boolean;
+  timeUsed: number;
+}
+
 export default function TimeAttackMode() {
   const navigate = useNavigate();
   useScrollToTop();
@@ -37,6 +44,8 @@ export default function TimeAttackMode() {
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
+  const [questionResults, setQuestionResults] = useState<QuestionResult[]>([]);
+  const [showExplanations, setShowExplanations] = useState(false);
 
   // 相乗効果データ取得
   const [synergyStats, setSynergyStats] = useState({
@@ -162,6 +171,8 @@ export default function TimeAttackMode() {
     setIsPlaying(true);
     setIsCompleted(false);
     setShowResult(false);
+    setQuestionResults([]);
+    setShowExplanations(false);
 
     if (newQuestions.length > 0) {
       setTimeLeft(newQuestions[0].timeLimit);
@@ -193,6 +204,16 @@ export default function TimeAttackMode() {
 
     const currentQuestion = questions[currentQuestionIndex];
     const correct = answer === currentQuestion.correctAnswer;
+    const timeUsed = currentQuestion.timeLimit - timeLeft;
+
+    // 回答履歴を保存
+    const result: QuestionResult = {
+      question: currentQuestion,
+      userAnswer: answer,
+      isCorrect: correct,
+      timeUsed: timeUsed,
+    };
+    setQuestionResults(prev => [...prev, result]);
 
     setIsCorrect(correct);
     setShowResult(true);
@@ -221,10 +242,13 @@ export default function TimeAttackMode() {
         saveResults();
       } else {
         // 次の問題へ
-        setCurrentQuestionIndex((prev) => prev + 1);
-        setTimeLeft(questions[currentQuestionIndex + 1].timeLimit);
-        setShowResult(false);
-        setSelectedAnswer("");
+        const nextIndex = currentQuestionIndex + 1;
+        if (nextIndex < questions.length) {
+          setCurrentQuestionIndex(nextIndex);
+          setTimeLeft(questions[nextIndex].timeLimit);
+          setShowResult(false);
+          setSelectedAnswer("");
+        }
       }
     }, 2000);
   };
@@ -306,6 +330,14 @@ export default function TimeAttackMode() {
               </div>
 
               <div className="mt-6 space-y-3">
+                <Button 
+                  onClick={() => setShowExplanations(!showExplanations)}
+                  variant="secondary"
+                  className="w-full"
+                  size="lg"
+                >
+                  {showExplanations ? "解説を隠す" : "解説を見る"}
+                </Button>
                 <Button onClick={startGame} className="w-full" size="lg">
                   もう一度挑戦
                 </Button>
@@ -319,6 +351,77 @@ export default function TimeAttackMode() {
               </div>
             </CardContent>
           </Card>
+
+          {/* 解説セクション */}
+          {showExplanations && questionResults.length > 0 && (
+            <Card className="border-0 shadow-lg">
+              <CardHeader>
+                <CardTitle className="text-lg font-bold text-center">
+                  📚 問題解説
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {questionResults.map((result, index) => (
+                  <Card 
+                    key={index}
+                    className={`border-2 ${
+                      result.isCorrect 
+                        ? "border-green-300 bg-green-50" 
+                        : "border-red-300 bg-red-50"
+                    }`}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-start gap-3">
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
+                          result.isCorrect ? "bg-green-500" : "bg-red-500"
+                        }`}>
+                          {index + 1}
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium mb-2">{result.question.question}</p>
+                          
+                          <div className="space-y-2 text-sm">
+                            <div className="flex items-center gap-2">
+                              <span className="text-gray-600">あなたの回答:</span>
+                              <span className={`font-medium ${
+                                result.isCorrect ? "text-green-600" : "text-red-600"
+                              }`}>
+                                {result.userAnswer}
+                              </span>
+                            </div>
+                            
+                            {!result.isCorrect && (
+                              <div className="flex items-center gap-2">
+                                <span className="text-gray-600">正解:</span>
+                                <span className="font-medium text-green-600">
+                                  {result.question.correctAnswer}
+                                </span>
+                              </div>
+                            )}
+                            
+                            <div className="flex items-center gap-2">
+                              <span className="text-gray-600">回答時間:</span>
+                              <span className="font-medium">
+                                {result.timeUsed.toFixed(1)}秒
+                              </span>
+                            </div>
+                            
+                            {result.question.explanation && (
+                              <div className="mt-3 p-3 bg-blue-50 rounded-lg">
+                                <p className="text-sm text-blue-800">
+                                  <strong>💡 解説:</strong> {result.question.explanation}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     );
