@@ -30,26 +30,26 @@ class BGMManager {
 
     try {
       // BGMファイルのパス
-      const bgmPath = '/BGM2.mp3';
-      
+      const bgmPath = "/BGM2.mp3";
+
       this.audio = new Audio(bgmPath);
       this.audio.loop = this.settings.loop;
       this.audio.volume = this.settings.volume;
-      this.audio.preload = 'auto';
+      this.audio.preload = "auto";
 
       // エラーハンドリング
-      this.audio.addEventListener('error', (e) => {
-        console.warn('BGM読み込みエラー:', e);
+      this.audio.addEventListener("error", (e) => {
+        console.warn("BGM読み込みエラー:", e);
       });
 
       // 再生準備完了
-      this.audio.addEventListener('canplaythrough', () => {
-        console.log('🎵 BGM準備完了');
+      this.audio.addEventListener("canplaythrough", () => {
+        console.log("🎵 BGM準備完了");
       });
 
       this.isInitialized = true;
     } catch (error) {
-      console.warn('BGM初期化エラー:', error);
+      console.warn("BGM初期化エラー:", error);
     }
   }
 
@@ -61,9 +61,9 @@ class BGMManager {
 
     try {
       await this.audio.play();
-      console.log('🎵 BGM再生開始');
+      console.log("🎵 BGM再生開始");
     } catch (error) {
-      console.warn('BGM再生エラー:', error);
+      console.warn("BGM再生エラー:", error);
     }
   }
 
@@ -73,7 +73,7 @@ class BGMManager {
   pause(): void {
     if (this.audio && !this.audio.paused) {
       this.audio.pause();
-      console.log('🎵 BGM一時停止');
+      console.log("🎵 BGM一時停止");
     }
   }
 
@@ -84,7 +84,7 @@ class BGMManager {
     if (this.audio) {
       this.audio.pause();
       this.audio.currentTime = 0;
-      console.log('🎵 BGM停止');
+      console.log("🎵 BGM停止");
     }
   }
 
@@ -94,11 +94,11 @@ class BGMManager {
   setVolume(volume: number): void {
     const clampedVolume = Math.max(0, Math.min(1, volume));
     this.settings.volume = clampedVolume;
-    
+
     if (this.audio) {
       this.audio.volume = clampedVolume;
     }
-    
+
     this.saveSettings();
     console.log(`🎵 音量設定: ${Math.round(clampedVolume * 100)}%`);
   }
@@ -108,15 +108,15 @@ class BGMManager {
    */
   setEnabled(enabled: boolean): void {
     this.settings.enabled = enabled;
-    
+
     if (enabled) {
       this.play();
     } else {
       this.pause();
     }
-    
+
     this.saveSettings();
-    console.log(`🎵 BGM ${enabled ? '有効' : '無効'}`);
+    console.log(`🎵 BGM ${enabled ? "有効" : "無効"}`);
   }
 
   /**
@@ -124,11 +124,11 @@ class BGMManager {
    */
   setLoop(loop: boolean): void {
     this.settings.loop = loop;
-    
+
     if (this.audio) {
       this.audio.loop = loop;
     }
-    
+
     this.saveSettings();
   }
 
@@ -165,9 +165,9 @@ class BGMManager {
    */
   private saveSettings(): void {
     try {
-      localStorage.setItem('bgmSettings', JSON.stringify(this.settings));
+      localStorage.setItem("bgmSettings", JSON.stringify(this.settings));
     } catch (error) {
-      console.warn('BGM設定保存エラー:', error);
+      console.warn("BGM設定保存エラー:", error);
     }
   }
 
@@ -176,13 +176,13 @@ class BGMManager {
    */
   private loadSettings(): void {
     try {
-      const saved = localStorage.getItem('bgmSettings');
+      const saved = localStorage.getItem("bgmSettings");
       if (saved) {
         const parsed = JSON.parse(saved);
         this.settings = { ...this.settings, ...parsed };
       }
     } catch (error) {
-      console.warn('BGM設定読み込みエラー:', error);
+      console.warn("BGM設定読み込みエラー:", error);
     }
   }
 
@@ -205,7 +205,7 @@ class BGMManager {
   destroy(): void {
     if (this.audio) {
       this.audio.pause();
-      this.audio.src = '';
+      this.audio.src = "";
       this.audio = null;
     }
     this.isInitialized = false;
@@ -216,8 +216,8 @@ class BGMManager {
 export const bgmManager = new BGMManager();
 
 // ページの可視性変更を監視
-if (typeof document !== 'undefined') {
-  document.addEventListener('visibilitychange', () => {
+if (typeof document !== "undefined") {
+  document.addEventListener("visibilitychange", () => {
     bgmManager.handleVisibilityChange();
   });
 }

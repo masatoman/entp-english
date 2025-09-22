@@ -3,8 +3,8 @@
  * 全ページでBGMを自動再生・制御する
  */
 
-import { useEffect } from 'react';
-import { bgmManager } from '../utils/bgmManager';
+import { useEffect } from "react";
+import { bgmManager } from "../utils/bgmManager";
 
 export function BGMPlayer() {
   useEffect(() => {
@@ -12,13 +12,13 @@ export function BGMPlayer() {
     const initializeBGM = async () => {
       try {
         await bgmManager.initialize();
-        
+
         // ユーザーがBGMを有効にしている場合のみ再生
         if (bgmManager.isEnabled()) {
           await bgmManager.play();
         }
       } catch (error) {
-        console.warn('BGM初期化エラー:', error);
+        console.warn("BGM初期化エラー:", error);
       }
     };
 

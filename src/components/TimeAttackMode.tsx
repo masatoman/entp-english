@@ -9,6 +9,7 @@ import { DataManager } from "../utils/dataManager";
 import { GachaSystem } from "../utils/gachaSystem";
 import { KnownWordsManager } from "../utils/knownWordsManager";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
+import { SoundManager } from "../utils/soundManager";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
@@ -218,7 +219,9 @@ export default function TimeAttackMode() {
     setIsCorrect(correct);
     setShowResult(true);
 
+    // 効果音を再生
     if (correct) {
+      SoundManager.sounds.correct();
       const newCombo = combo + 1;
       setCombo(newCombo);
       setMaxCombo((prev) => Math.max(prev, newCombo));
@@ -230,6 +233,7 @@ export default function TimeAttackMode() {
 
       setScore((prev) => prev + baseScore + comboBonus + timeBonus);
     } else {
+      SoundManager.sounds.incorrect();
       setCombo(0);
     }
 
@@ -237,6 +241,7 @@ export default function TimeAttackMode() {
     setTimeout(() => {
       if (currentQuestionIndex + 1 >= questions.length) {
         // ゲーム終了
+        SoundManager.sounds.complete();
         setIsCompleted(true);
         setIsPlaying(false);
         saveResults();

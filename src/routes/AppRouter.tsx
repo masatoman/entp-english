@@ -5,7 +5,7 @@ import { ScrollToTop } from "../components/ScrollToTop";
 
 // 直接importに変更（lazy loadingの問題を回避）
 import Achievements from "../components/Achievements";
-import AppSettings from "../components/AppSettings";
+import { AppSettings } from "../components/AppSettings";
 import BasicVocabularyLearning from "../components/BasicVocabularyLearning";
 import CardDetailContent from "../components/CardDetailContent";
 import CategorySelection from "../components/CategorySelection";

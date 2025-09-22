@@ -19,6 +19,7 @@ import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { DataManager } from "../utils/dataManager";
 import { GachaSystem } from "../utils/gachaSystem";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
+import { SoundManager } from "../utils/soundManager";
 import { Badge } from "./ui/badge";
 import { baseColors } from "../styles/colors";
 import { Button } from "./ui/button";
@@ -198,11 +199,15 @@ export default function CombinedTest() {
     const correct = checkAnswer(answer, currentQuestion.correctAnswer);
     setIsCorrect(correct);
 
+    // 効果音を再生
     if (correct) {
+      SoundManager.sounds.correct();
       setScore((prev) => prev + 1);
       setTotalXP((prev) => prev + currentQuestion.xpReward);
       setCurrentXP(currentQuestion.xpReward);
       setShowXPAnimation(true);
+    } else {
+      SoundManager.sounds.incorrect();
     }
 
     setShowResult(true);
@@ -282,6 +287,7 @@ export default function CombinedTest() {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
       // テスト完了
+      SoundManager.sounds.complete();
       const accuracy = (score / questions.length) * 100;
 
       // デイリークエスト進捗更新（80%以上の場合）
