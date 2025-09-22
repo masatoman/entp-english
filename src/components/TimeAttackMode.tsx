@@ -213,7 +213,7 @@ export default function TimeAttackMode() {
       isCorrect: correct,
       timeUsed: timeUsed,
     };
-    setQuestionResults(prev => [...prev, result]);
+    setQuestionResults((prev) => [...prev, result]);
 
     setIsCorrect(correct);
     setShowResult(true);
@@ -330,7 +330,7 @@ export default function TimeAttackMode() {
               </div>
 
               <div className="mt-6 space-y-3">
-                <Button 
+                <Button
                   onClick={() => setShowExplanations(!showExplanations)}
                   variant="secondary"
                   className="w-full"
@@ -362,34 +362,44 @@ export default function TimeAttackMode() {
               </CardHeader>
               <CardContent className="space-y-4">
                 {questionResults.map((result, index) => (
-                  <Card 
+                  <Card
                     key={index}
                     className={`border-2 ${
-                      result.isCorrect 
-                        ? "border-green-300 bg-green-50" 
+                      result.isCorrect
+                        ? "border-green-300 bg-green-50"
                         : "border-red-300 bg-red-50"
                     }`}
                   >
                     <CardContent className="p-4">
                       <div className="flex items-start gap-3">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
-                          result.isCorrect ? "bg-green-500" : "bg-red-500"
-                        }`}>
+                        <div
+                          className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
+                            result.isCorrect ? "bg-green-500" : "bg-red-500"
+                          }`}
+                        >
                           {index + 1}
                         </div>
                         <div className="flex-1">
-                          <p className="font-medium mb-2">{result.question.question}</p>
-                          
+                          <p className="font-medium mb-2">
+                            {result.question.question}
+                          </p>
+
                           <div className="space-y-2 text-sm">
                             <div className="flex items-center gap-2">
-                              <span className="text-gray-600">あなたの回答:</span>
-                              <span className={`font-medium ${
-                                result.isCorrect ? "text-green-600" : "text-red-600"
-                              }`}>
+                              <span className="text-gray-600">
+                                あなたの回答:
+                              </span>
+                              <span
+                                className={`font-medium ${
+                                  result.isCorrect
+                                    ? "text-green-600"
+                                    : "text-red-600"
+                                }`}
+                              >
                                 {result.userAnswer}
                               </span>
                             </div>
-                            
+
                             {!result.isCorrect && (
                               <div className="flex items-center gap-2">
                                 <span className="text-gray-600">正解:</span>
@@ -398,18 +408,19 @@ export default function TimeAttackMode() {
                                 </span>
                               </div>
                             )}
-                            
+
                             <div className="flex items-center gap-2">
                               <span className="text-gray-600">回答時間:</span>
                               <span className="font-medium">
                                 {result.timeUsed.toFixed(1)}秒
                               </span>
                             </div>
-                            
+
                             {result.question.explanation && (
                               <div className="mt-3 p-3 bg-blue-50 rounded-lg">
                                 <p className="text-sm text-blue-800">
-                                  <strong>💡 解説:</strong> {result.question.explanation}
+                                  <strong>💡 解説:</strong>{" "}
+                                  {result.question.explanation}
                                 </p>
                               </div>
                             )}

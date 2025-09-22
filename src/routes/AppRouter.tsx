@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BGMPlayer } from "../components/BGMPlayer";
 import { NewHome } from "../components/NewHome";
 import { ScrollToTop } from "../components/ScrollToTop";
 
@@ -46,6 +47,7 @@ export function AppRouter() {
     <BrowserRouter>
       <ScrollToTop />
       <MigrationProvider>
+        <BGMPlayer />
         <div className="min-h-screen bg-background">
           <Routes>
             {/* ホーム */}

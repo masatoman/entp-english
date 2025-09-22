@@ -4,9 +4,12 @@ import {
   CheckCircle,
   Clock,
   Download,
+  Music,
+  MusicOff,
   Target,
   TestTube,
   Trash2,
+  Volume2,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -20,6 +23,7 @@ import {
   NotificationSettings,
 } from "../utils/notificationManager";
 import { SoundManager } from "../utils/soundManager";
+import { bgmManager } from "../utils/bgmManager";
 import { Button } from "./ui/button";
 import { PWAInstallButton } from "./PWAInstallButton";
 import {
@@ -58,6 +62,8 @@ export default function AppSettings() {
   const [isSupported, setIsSupported] = useState(false);
   const [isTesting, setIsTesting] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(SoundManager.getEnabled());
+  const [bgmEnabled, setBgmEnabled] = useState(bgmManager.isEnabled());
+  const [bgmVolume, setBgmVolume] = useState(bgmManager.getVolume());
 
   useEffect(() => {
     loadSettings();
@@ -95,6 +101,16 @@ export default function AppSettings() {
     if (enabled) {
       SoundManager.sounds.click();
     }
+  };
+
+  const handleBgmToggle = (enabled: boolean) => {
+    setBgmEnabled(enabled);
+    bgmManager.setEnabled(enabled);
+  };
+
+  const handleBgmVolumeChange = (volume: number) => {
+    setBgmVolume(volume);
+    bgmManager.setVolume(volume);
   };
 
   const handlePermissionRequest = async () => {
@@ -323,6 +339,53 @@ export default function AppSettings() {
                 checked={soundEnabled}
                 onCheckedChange={handleSoundToggle}
               />
+            </div>
+
+            {/* BGM Settings */}
+            <div className="space-y-4 pt-4 border-t">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label htmlFor="bgm-enabled" className="flex items-center gap-2">
+                    <Music className="w-4 h-4" />
+                    BGMを有効にする
+                  </Label>
+                  <p className="text-sm text-muted-foreground">
+                    背景音楽を有効/無効にします
+                  </p>
+                </div>
+                <Switch
+                  id="bgm-enabled"
+                  checked={bgmEnabled}
+                  onCheckedChange={handleBgmToggle}
+                />
+              </div>
+
+              {bgmEnabled && (
+                <div className="space-y-2">
+                  <Label htmlFor="bgm-volume" className="flex items-center gap-2">
+                    <Volume2 className="w-4 h-4" />
+                    BGM音量: {Math.round(bgmVolume * 100)}%
+                  </Label>
+                  <input
+                    id="bgm-volume"
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.1"
+                    value={bgmVolume}
+                    onChange={(e) => handleBgmVolumeChange(parseFloat(e.target.value))}
+                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                    style={{
+                      background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${bgmVolume * 100}%, #e5e7eb ${bgmVolume * 100}%, #e5e7eb 100%)`
+                    }}
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>0%</span>
+                    <span>50%</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
