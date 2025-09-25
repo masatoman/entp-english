@@ -21,7 +21,6 @@ import { GachaSystem } from "../utils/gachaSystem";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 import { SoundManager } from "../utils/soundManager";
 import { Badge } from "./ui/badge";
-import { baseColors } from "../styles/colors";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";

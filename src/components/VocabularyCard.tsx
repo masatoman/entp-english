@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { VocabularyWord, getVocabularyWords } from "../data/vocabulary";
 import { useScrollToTop } from "../hooks/useScrollToTop";
+import { baseColors } from "../styles/colors";
 import { adrenalineManager } from "../utils/adrenalineManager";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { DataManager } from "../utils/dataManager";
@@ -17,12 +18,11 @@ import AdrenalineEffects, {
   triggerAdrenalineEvent,
 } from "./AdrenalineEffects";
 import GameHeader from "./GameHeader";
-import TreasureBoxSystem from "./TreasureBoxSystem";
+import TreasureBoxResultModal from "./TreasureBoxResultModal";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Progress } from "./ui/progress";
-import { baseColors } from "../styles/colors";
 
 interface StudySession {
   totalWords: number;
@@ -82,7 +82,7 @@ export default function VocabularyCard({
   const [isSpeaking, setIsSpeaking] = useState(false);
 
   // アドレナリンシステム
-  const [showTreasureBox, setShowTreasureBox] = useState(false);
+  const [showTreasureBoxModal, setShowTreasureBoxModal] = useState(false);
 
   useEffect(() => {
     let allWords: VocabularyWord[] = [];
@@ -279,8 +279,10 @@ export default function VocabularyCard({
       const box = adrenalineManager.earnTreasureBox("normal");
       console.log("🎁 語彙学習で宝箱獲得:", box);
 
-      // 即座に宝箱表示（遅延を削除）
-      setShowTreasureBox(true);
+      // 宝箱獲得イベントを発火
+      window.dispatchEvent(
+        new CustomEvent("treasureBoxEarned", { detail: box })
+      );
     }
 
     const newStudiedWords = new Set(session.studiedWords);
@@ -360,7 +362,7 @@ export default function VocabularyCard({
 
   if (!currentWord) {
     return (
-      <div 
+      <div
         className="min-h-screen flex items-center justify-center"
         style={{
           background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
@@ -447,14 +449,19 @@ export default function VocabularyCard({
       "intermediate"
     );
 
+    // 宝箱の獲得数を取得
+    const system = adrenalineManager.getSystem();
+    const unopenedBoxes = system.treasureBoxes.filter((box) => !box.isOpened);
+    const treasureBoxCount = unopenedBoxes.length;
+
     return (
-      <div 
+      <div
         className="min-h-screen"
         style={{
           background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
         }}
       >
-        <div className="max-w-md mx-auto p-4 space-y-6">
+        <div className="max-w-4xl mx-auto p-4 space-y-6">
           {/* Header */}
           <div className="flex items-center justify-between pt-8">
             <Button
@@ -468,7 +475,7 @@ export default function VocabularyCard({
             <div className="w-10" />
           </div>
 
-          {/* 完了メッセージ */}
+          {/* 結果サマリー */}
           <Card className="text-center border-0 shadow-lg bg-gradient-to-br from-green-50 to-emerald-50">
             <CardContent className="p-8">
               <div className="text-6xl mb-4">🎉</div>
@@ -505,6 +512,29 @@ export default function VocabularyCard({
                 </div>
               )}
 
+              {/* 宝箱獲得サマリー */}
+              {treasureBoxCount > 0 && (
+                <div className="mb-6 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border-2 border-yellow-200">
+                  <div className="flex items-center justify-center space-x-2 mb-3">
+                    <span className="text-3xl">🎁</span>
+                    <h3 className="text-xl font-bold text-yellow-800">
+                      宝箱を獲得しました！
+                    </h3>
+                  </div>
+                  <p className="text-lg text-yellow-700 mb-4">
+                    未開封の宝箱:{" "}
+                    <span className="font-bold">{treasureBoxCount}個</span>
+                  </p>
+                  <Button
+                    onClick={() => setShowTreasureBoxModal(true)}
+                    className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold"
+                    size="lg"
+                  >
+                    🎁 宝箱をまとめて開封する 🎁
+                  </Button>
+                </div>
+              )}
+
               {/* アクションボタン */}
               <div className="space-y-3">
                 <Button onClick={handleRestart} className="w-full" size="lg">
@@ -523,13 +553,83 @@ export default function VocabularyCard({
               </div>
             </CardContent>
           </Card>
+
+          {/* 詳細な学習結果 */}
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-center text-xl">
+                📚 学習結果詳細
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {Array.from(session.studiedWords).map((word, index) => {
+                const wordData = words.find((w) => w.content === word);
+                const isKnown = session.knownWords.has(word);
+
+                return (
+                  <div key={word} className="space-y-4">
+                    <div className="flex items-start justify-between">
+                      <span className="text-lg font-medium">
+                        単語 {index + 1}
+                      </span>
+                      <Badge variant={isKnown ? "default" : "secondary"}>
+                        {isKnown ? "理解済み" : "学習中"}
+                      </Badge>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                        <span className="font-medium text-blue-800">
+                          単語：
+                        </span>
+                        <p className="text-blue-700 mt-1 text-lg font-semibold">
+                          {word}
+                        </p>
+                      </div>
+
+                      {wordData && (
+                        <>
+                          <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                            <span className="font-medium text-green-800">
+                              意味：
+                            </span>
+                            <p className="text-green-700 mt-1">
+                              {wordData.meaning}
+                            </p>
+                          </div>
+
+                          {wordData.examples.length > 0 && (
+                            <div className="p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                              <span className="font-medium text-purple-800">
+                                例文：
+                              </span>
+                              <p className="text-purple-700 mt-1 italic">
+                                "{wordData.examples[0].sentence}"
+                              </p>
+                              <p className="text-purple-600 mt-1 text-sm">
+                                {wordData.examples[0].translation}
+                              </p>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
+
+                    {index < session.studiedWords.size - 1 && (
+                      <div className="border-t border-gray-200 pt-4" />
+                    )}
+                  </div>
+                );
+              })}
+            </CardContent>
+          </Card>
         </div>
       </div>
     );
   }
 
   return (
-    <div 
+    <div
       className="min-h-screen"
       style={{
         background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
@@ -545,15 +645,11 @@ export default function VocabularyCard({
         }}
       />
 
-      {/* 宝箱システム */}
-      {showTreasureBox && (
-        <TreasureBoxSystem
-          onBoxOpened={(rewards) => {
-            console.log("🎁 語彙学習宝箱開封報酬:", rewards);
-            setShowTreasureBox(false);
-          }}
-        />
-      )}
+      {/* 宝箱結果モーダル */}
+      <TreasureBoxResultModal
+        isOpen={showTreasureBoxModal}
+        onClose={() => setShowTreasureBoxModal(false)}
+      />
 
       <div className="max-w-md mx-auto p-4 space-y-6">
         {/* Header */}

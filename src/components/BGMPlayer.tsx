@@ -34,3 +34,4 @@ export function BGMPlayer() {
   // このコンポーネントはUIを表示しない
   return null;
 }
+

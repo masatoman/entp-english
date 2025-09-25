@@ -5,6 +5,7 @@ import { getGrammarQuizQuestions } from "../data/grammarQuizCategorized";
 import { getQuestions } from "../data/questions";
 import { sentencePatternQuestions } from "../data/sentencePatternQuestions";
 import { useScrollToTop } from "../hooks/useScrollToTop";
+import { baseColors } from "../styles/colors";
 import { Category } from "../types";
 import { AdrenalineEventData } from "../types/adrenalineSystem";
 import { adrenalineManager } from "../utils/adrenalineManager";
@@ -17,12 +18,11 @@ import AdrenalineEffects, {
   triggerAdrenalineEvent,
 } from "./AdrenalineEffects";
 import GameHeader from "./GameHeader";
-import TreasureBoxSystem from "./TreasureBoxSystem";
+import TreasureBoxResultModal from "./TreasureBoxResultModal";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
-import { baseColors } from "../styles/colors";
 import { Textarea } from "./ui/textarea";
 
 export interface QuestionData {
@@ -89,8 +89,11 @@ export default function Question() {
   const [adrenalineEvents, setAdrenalineEvents] = useState<
     AdrenalineEventData[]
   >([]);
-  const [showTreasureBox, setShowTreasureBox] = useState(false);
+  const [showTreasureBoxModal, setShowTreasureBoxModal] = useState(false);
   const [earnedXP, setEarnedXP] = useState(0);
+  const [userAnswers, setUserAnswers] = useState<
+    Array<{ questionId: number; answer: string; isCorrect: boolean }>
+  >([]);
 
   // スキルツリー進捗更新関数
   const updateSkillTreeProgress = () => {
@@ -245,7 +248,7 @@ export default function Question() {
 
   if (!category || !difficulty || questions.length === 0) {
     return (
-      <div 
+      <div
         className="min-h-screen p-4"
         style={{
           background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
@@ -278,6 +281,16 @@ export default function Question() {
     if (correct) {
       setScore(score + 1);
     }
+
+    // 回答履歴を記録
+    setUserAnswers((prev) => [
+      ...prev,
+      {
+        questionId: currentQuestion.id,
+        answer: answer,
+        isCorrect: correct,
+      },
+    ]);
 
     // アドレナリンシステム処理
     const isCritical = Math.random() < 0.05; // 5%でクリティカル
@@ -315,10 +328,10 @@ export default function Question() {
       const box = adrenalineManager.earnTreasureBox(difficulty);
       console.log("🎁 宝箱獲得:", box);
 
-      // 解説表示後に宝箱表示（即座に表示）
-      setTimeout(() => {
-        setShowTreasureBox(true);
-      }, 500);
+      // 宝箱獲得イベントを発火
+      window.dispatchEvent(
+        new CustomEvent("treasureBoxEarned", { detail: box })
+      );
     }
   };
 
@@ -388,14 +401,27 @@ export default function Question() {
   const canSubmit = difficulty === "easy" ? selectedAnswer : userInput.trim();
 
   if (isComplete) {
+    // 宝箱の獲得数を取得
+    const system = adrenalineManager.getSystem();
+    const unopenedBoxes = system.treasureBoxes.filter((box) => !box.isOpened);
+    const treasureBoxCount = unopenedBoxes.length;
+
+    // デバッグログ
+    console.log("🎁 サマリーページ - 宝箱データ:", {
+      system,
+      unopenedBoxes,
+      treasureBoxCount,
+    });
+
     return (
-      <div 
+      <div
         className="min-h-screen p-4"
         style={{
           background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
         }}
       >
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto space-y-6">
+          {/* 結果サマリー */}
           <Card className="shadow-lg">
             <CardHeader>
               <CardTitle className="text-center text-2xl">問題完了！</CardTitle>
@@ -412,6 +438,30 @@ export default function Question() {
                   +{Math.round(score * 10 + totalQuestions * 2)} XP獲得！
                 </Badge>
               </div>
+
+              {/* 宝箱獲得サマリー */}
+              {treasureBoxCount > 0 && (
+                <div className="mb-6 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border-2 border-yellow-200">
+                  <div className="flex items-center justify-center space-x-2 mb-3">
+                    <span className="text-3xl">🎁</span>
+                    <h3 className="text-xl font-bold text-yellow-800">
+                      宝箱を獲得しました！
+                    </h3>
+                  </div>
+                  <p className="text-lg text-yellow-700 mb-4">
+                    未開封の宝箱:{" "}
+                    <span className="font-bold">{treasureBoxCount}個</span>
+                  </p>
+                  <Button
+                    onClick={() => setShowTreasureBoxModal(true)}
+                    className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold"
+                    size="lg"
+                  >
+                    🎁 宝箱をまとめて開封する 🎁
+                  </Button>
+                </div>
+              )}
+
               <div className="space-y-4">
                 <Button
                   onClick={() => navigate("/learning/grammar/category")}
@@ -429,13 +479,82 @@ export default function Question() {
               </div>
             </CardContent>
           </Card>
+
+          {/* 詳細な解答と解説 */}
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-center text-xl">
+                📚 解答と解説
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {questions.map((question, index) => {
+                const userAnswer = userAnswers?.find(
+                  (a) => a.questionId === question.id
+                );
+                const isCorrect = userAnswer?.isCorrect || false;
+
+                return (
+                  <div key={question.id} className="space-y-4">
+                    <div className="flex items-start justify-between">
+                      <span className="text-lg font-medium">
+                        問題 {index + 1}
+                      </span>
+                      <Badge variant={isCorrect ? "default" : "destructive"}>
+                        {isCorrect ? "正解" : "不正解"}
+                      </Badge>
+                    </div>
+
+                    <div className="space-y-3">
+                      <p className="text-lg font-medium text-gray-800">
+                        {question.japanese}
+                      </p>
+
+                      {userAnswer && (
+                        <div className="p-3 bg-gray-50 rounded-lg">
+                          <span className="font-medium text-gray-700">
+                            あなたの回答：
+                          </span>
+                          <p className="text-gray-800 mt-1">
+                            {userAnswer.answer}
+                          </p>
+                        </div>
+                      )}
+
+                      <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <span className="font-medium text-green-800">
+                          正解：
+                        </span>
+                        <p className="text-green-700 mt-1">
+                          {question.correctAnswer}
+                        </p>
+                      </div>
+
+                      <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                        <span className="font-medium text-blue-800">
+                          解説：
+                        </span>
+                        <p className="text-blue-700 mt-1">
+                          {question.explanation}
+                        </p>
+                      </div>
+                    </div>
+
+                    {index < questions.length - 1 && (
+                      <div className="border-t border-gray-200 pt-4" />
+                    )}
+                  </div>
+                );
+              })}
+            </CardContent>
+          </Card>
         </div>
       </div>
     );
   }
 
   return (
-    <div 
+    <div
       className="min-h-screen"
       style={{
         background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
@@ -451,15 +570,11 @@ export default function Question() {
         }}
       />
 
-      {/* 宝箱システム */}
-      {showTreasureBox && (
-        <TreasureBoxSystem
-          onBoxOpened={(rewards) => {
-            console.log("🎁 宝箱開封報酬:", rewards);
-            setShowTreasureBox(false);
-          }}
-        />
-      )}
+      {/* 宝箱結果モーダル */}
+      <TreasureBoxResultModal
+        isOpen={showTreasureBoxModal}
+        onClose={() => setShowTreasureBoxModal(false)}
+      />
 
       <div className="max-w-4xl mx-auto p-4">
         {/* Header */}

@@ -171,7 +171,7 @@ export const Home = React.memo(function Home({
         available: true,
         onClick: () => {
           SoundManager.sounds.click();
-          // アプリ設定画面への遷移は現在無効
+          navigate("/settings/app");
         },
       },
       {

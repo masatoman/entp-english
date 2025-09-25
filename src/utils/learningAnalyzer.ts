@@ -225,6 +225,7 @@ export class LearningAnalyzer {
     userStats: any
   ): LearningPattern["preferredDifficulty"] {
     // 実際の選択履歴から判定（仮実装）
+    const sessions = this.getStudySessions();
     return this.analyzeDifficultyPreference(sessions);
   }
 
@@ -233,6 +234,7 @@ export class LearningAnalyzer {
    */
   private static getPreferredCategory(userStats: any): string {
     // 最も多く学習したカテゴリを返す（仮実装）
+    const sessions = this.getStudySessions();
     return this.analyzeContentPreference(sessions);
   }
 
@@ -254,7 +256,6 @@ export class LearningAnalyzer {
    */
   private static findPeakPerformanceHour(sessions: any[]): number {
     // 時間別の正解率を分析（仮実装）
-    const currentHour = new Date().getHours();
     return this.analyzeBestStudyTime(sessions);
   }
 
@@ -293,6 +294,7 @@ export class LearningAnalyzer {
    */
   static getAnalytics(): LearningAnalytics {
     const userStats = DataManager.getUserStats();
+    const sessions = this.getStudySessions();
 
     return {
       totalStudySessions: userStats.totalQuestions || 0,
@@ -353,16 +355,17 @@ export class LearningAnalyzer {
    */
   private static analyzeDifficultyPreference(sessions: any[]): string {
     if (sessions.length === 0) return "beginner";
-    
+
     const difficultyCounts = sessions.reduce((acc, session) => {
       const difficulty = session.difficulty || "normal";
       acc[difficulty] = (acc[difficulty] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
-    
-    const mostUsed = Object.entries(difficultyCounts)
-      .sort(([,a], [,b]) => b - a)[0];
-    
+
+    const mostUsed = Object.entries(difficultyCounts).sort(
+      ([, a], [, b]) => b - a
+    )[0];
+
     return mostUsed ? mostUsed[0] : "beginner";
   }
 
@@ -371,16 +374,17 @@ export class LearningAnalyzer {
    */
   private static analyzeContentPreference(sessions: any[]): string {
     if (sessions.length === 0) return "grammar";
-    
+
     const contentCounts = sessions.reduce((acc, session) => {
       const type = session.type || "grammar";
       acc[type] = (acc[type] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
-    
-    const mostUsed = Object.entries(contentCounts)
-      .sort(([,a], [,b]) => b - a)[0];
-    
+
+    const mostUsed = Object.entries(contentCounts).sort(
+      ([, a], [, b]) => b - a
+    )[0];
+
     return mostUsed ? mostUsed[0] : "grammar";
   }
 
@@ -389,11 +393,11 @@ export class LearningAnalyzer {
    */
   private static analyzeBestStudyTime(sessions: any[]): number {
     if (sessions.length === 0) return new Date().getHours();
-    
+
     const hourPerformance = sessions.reduce((acc, session) => {
       const hour = session.hour || new Date().getHours();
       const score = session.score || 0;
-      
+
       if (!acc[hour]) {
         acc[hour] = { totalScore: 0, count: 0 };
       }
@@ -401,10 +405,10 @@ export class LearningAnalyzer {
       acc[hour].count += 1;
       return acc;
     }, {} as Record<number, { totalScore: number; count: number }>);
-    
+
     let bestHour = new Date().getHours();
     let bestAverage = 0;
-    
+
     Object.entries(hourPerformance).forEach(([hour, data]) => {
       const average = data.totalScore / data.count;
       if (average > bestAverage) {
@@ -412,7 +416,7 @@ export class LearningAnalyzer {
         bestHour = parseInt(hour);
       }
     });
-    
+
     return bestHour;
   }
 
@@ -430,11 +434,11 @@ export class LearningAnalyzer {
    */
   private static analyzeStrongestCategories(sessions: any[]): string[] {
     if (sessions.length === 0) return ["grammar", "vocabulary"];
-    
+
     const categoryPerformance = sessions.reduce((acc, session) => {
       const category = session.category || "grammar";
       const score = session.score || 0;
-      
+
       if (!acc[category]) {
         acc[category] = { totalScore: 0, count: 0 };
       }
@@ -442,15 +446,15 @@ export class LearningAnalyzer {
       acc[category].count += 1;
       return acc;
     }, {} as Record<string, { totalScore: number; count: number }>);
-    
+
     const averages = Object.entries(categoryPerformance)
       .map(([category, data]) => ({
         category,
-        average: data.totalScore / data.count
+        average: data.totalScore / data.count,
       }))
       .sort((a, b) => b.average - a.average);
-    
-    return averages.slice(0, 2).map(item => item.category);
+
+    return averages.slice(0, 2).map((item) => item.category);
   }
 
   /**
@@ -459,17 +463,19 @@ export class LearningAnalyzer {
   private static calculateWeeklyProgress(sessions: any[]): number[] {
     const weeklyData = new Array(7).fill(0);
     const now = new Date();
-    
-    sessions.forEach(session => {
+
+    sessions.forEach((session) => {
       const sessionDate = new Date(session.timestamp || now);
-      const daysDiff = Math.floor((now.getTime() - sessionDate.getTime()) / (1000 * 60 * 60 * 24));
-      
+      const daysDiff = Math.floor(
+        (now.getTime() - sessionDate.getTime()) / (1000 * 60 * 60 * 24)
+      );
+
       if (daysDiff < 7) {
         const dayIndex = 6 - daysDiff; // 今日を6、昨日を5...
         weeklyData[dayIndex] += session.score || 0;
       }
     });
-    
+
     return weeklyData;
   }
 }

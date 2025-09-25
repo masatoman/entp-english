@@ -502,6 +502,16 @@ export function NewHome() {
           >
             <Settings className="w-4 h-4" />
             <span className="hidden sm:inline">ステータス設定</span>
+            <span className="sm:hidden">ステータス</span>
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate("/settings/app")}
+            className="flex items-center gap-2"
+          >
+            <Settings className="w-4 h-4" />
+            <span className="hidden sm:inline">アプリ設定</span>
             <span className="sm:hidden">設定</span>
           </Button>
         </div>
