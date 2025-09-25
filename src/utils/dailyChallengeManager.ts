@@ -1,5 +1,4 @@
 import { DailyChallenge, DailyChallengeProgress } from "../types";
-import { dailyQuestManager } from "./dailyQuestManager";
 import { DataManager } from "./dataManager";
 
 const DAILY_CHALLENGE_KEY = "entp-daily-challenge";
@@ -90,8 +89,8 @@ export class DailyChallengeManager {
           },
           {
             type: "word-count",
-            value: 5,
-            description: "最低5問解答",
+            value: 10,
+            description: "最低10問解答",
           },
         ],
         bonusXP: 75,
@@ -338,28 +337,8 @@ export class DailyChallengeManager {
         progress.streakCount = 1;
       }
 
-      // コイン報酬を付与
-      const coinReward = this.calculateCoinReward(progress.currentChallenge);
-      dailyQuestManager.addCoins(coinReward, "challenges");
-
-      console.log("🎯 デイリーチャレンジ完了:", {
-        challenge: progress.currentChallenge.name,
-        coinReward,
-        streak: progress.streakCount,
-      });
-
       this.saveProgress(progress);
     }
-  }
-
-  /**
-   * チャレンジ完了時のコイン報酬を計算
-   */
-  private static calculateCoinReward(challenge: DailyChallenge): number {
-    // 基本報酬 + ボーナスXPに基づく追加報酬
-    const baseReward = 50;
-    const bonusReward = Math.floor(challenge.bonusXP / 10);
-    return baseReward + bonusReward;
   }
 
   /**

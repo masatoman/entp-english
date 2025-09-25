@@ -356,6 +356,7 @@ class DailyQuestManager {
   }
 
   public addCoins(amount: number, source: keyof CoinSystem["sources"]): void {
+    const oldTotal = this.coinSystem.current;
     this.coinSystem.current += amount;
     this.coinSystem.totalEarned += amount;
     this.coinSystem.sources[source] += amount;
@@ -365,7 +366,9 @@ class DailyQuestManager {
     console.log("🪙 コイン獲得:", {
       amount,
       source,
+      oldTotal,
       newTotal: this.coinSystem.current,
+      sources: this.coinSystem.sources,
     });
   }
 

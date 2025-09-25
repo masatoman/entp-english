@@ -18,23 +18,13 @@ export function DailyChallengeCard() {
   const [stats, setStats] = useState<any>(null);
 
   useEffect(() => {
-    const updateChallengeData = () => {
-      const todayChallenge = DailyChallengeManager.getTodayChallenge();
-      const challengeProgress = DailyChallengeManager.getProgress();
-      const challengeStats = DailyChallengeManager.getStats();
+    const todayChallenge = DailyChallengeManager.getTodayChallenge();
+    const challengeProgress = DailyChallengeManager.getProgress();
+    const challengeStats = DailyChallengeManager.getStats();
 
-      setChallenge(todayChallenge);
-      setProgress(challengeProgress);
-      setStats(challengeStats);
-    };
-
-    // 初回読み込み
-    updateChallengeData();
-
-    // 定期的に更新（2秒間隔）
-    const interval = setInterval(updateChallengeData, 2000);
-
-    return () => clearInterval(interval);
+    setChallenge(todayChallenge);
+    setProgress(challengeProgress);
+    setStats(challengeStats);
   }, []);
 
   const handleStartChallenge = () => {

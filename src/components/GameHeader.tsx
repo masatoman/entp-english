@@ -85,7 +85,7 @@ export default function GameHeader({
     };
 
     updateResources();
-    const interval = setInterval(updateResources, 2000); // 2秒に短縮して即座に反映
+    const interval = setInterval(updateResources, 1000); // 1秒に短縮して即座に反映
     return () => clearInterval(interval);
   }, []); // 依存配列を空にして無限再レンダリングを防ぐ
 

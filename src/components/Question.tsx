@@ -389,6 +389,16 @@ export default function Question() {
         difficulty: difficulty,
       };
 
+      console.log("🎯 デイリーチャレンジ判定:", {
+        challenge: challenge.name,
+        sessionData,
+        rules: challenge.rules,
+        canComplete: DailyChallengeManager.canCompleteChallenge(
+          challenge,
+          sessionData
+        ),
+      });
+
       if (DailyChallengeManager.canCompleteChallenge(challenge, sessionData)) {
         DailyChallengeManager.completeChallenge(sessionData);
         console.log("🎯 デイリーチャレンジ完了:", challenge.name);
