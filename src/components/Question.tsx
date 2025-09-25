@@ -9,6 +9,7 @@ import { baseColors } from "../styles/colors";
 import { Category } from "../types";
 import { AdrenalineEventData } from "../types/adrenalineSystem";
 import { adrenalineManager } from "../utils/adrenalineManager";
+import { DailyChallengeManager } from "../utils/dailyChallengeManager";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 import { questionStatsManager } from "../utils/questionStatsManager";
@@ -282,6 +283,14 @@ export default function Question() {
       setScore(score + 1);
     }
 
+    // スタミナ消費（問題に回答するたびに1消費）
+    const levelManager = getLevelManager();
+    if (levelManager.consumeStar()) {
+      console.log("⭐ スタミナを1消費しました");
+    } else {
+      console.log("⭐ スタミナが不足しています");
+    }
+
     // 回答履歴を記録
     setUserAnswers((prev) => [
       ...prev,
@@ -367,6 +376,23 @@ export default function Question() {
 
       // デイリークエスト進捗更新
       dailyQuestManager.recordGrammarQuizCompletion();
+
+      // デイリーチャレンジ完了判定
+      const challenge = DailyChallengeManager.getTodayChallenge();
+      const sessionData = {
+        xpEarned: finalXP,
+        timeSpent: startTime
+          ? Math.round((new Date().getTime() - startTime.getTime()) / 1000)
+          : 0,
+        questionsAnswered: totalQuestions,
+        accuracy: score / totalQuestions,
+        difficulty: difficulty,
+      };
+
+      if (DailyChallengeManager.canCompleteChallenge(challenge, sessionData)) {
+        DailyChallengeManager.completeChallenge(sessionData);
+        console.log("🎯 デイリーチャレンジ完了:", challenge.name);
+      }
 
       // スキルツリーの進捗を更新
       updateSkillTreeProgress();

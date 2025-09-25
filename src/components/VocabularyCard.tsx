@@ -230,6 +230,14 @@ export default function VocabularyCard({
   const handleAnswer = (known: boolean) => {
     if (!currentWord) return;
 
+    // スタミナ消費（単語を学習するたびに1消費）
+    const levelManager = getLevelManager();
+    if (levelManager.consumeStar()) {
+      console.log("⭐ スタミナを1消費しました");
+    } else {
+      console.log("⭐ スタミナが不足しています");
+    }
+
     // アドレナリンシステム処理
     const isCritical = Math.random() < 0.08; // 語彙学習では8%でクリティカル
     const events = triggerAdrenalineEvent(known, isCritical);

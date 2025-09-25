@@ -75,13 +75,17 @@ export default function GameHeader({
       // コインシステム更新
       setCoinSystem(dailyQuestManager.getCoinSystem());
 
+      // スターシステム更新
+      const levelManager = getLevelManager();
+      setStarSystem(levelManager.getStarSystem());
+
       // デイリーボーナス更新
       const multiplier = adrenalineManager.updateDailyBonus();
       setDailyMultiplier(multiplier);
     };
 
     updateResources();
-    const interval = setInterval(updateResources, 10000); // 10秒に変更
+    const interval = setInterval(updateResources, 2000); // 2秒に短縮して即座に反映
     return () => clearInterval(interval);
   }, []); // 依存配列を空にして無限再レンダリングを防ぐ
 

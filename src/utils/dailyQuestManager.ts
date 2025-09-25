@@ -54,7 +54,13 @@ class DailyQuestManager {
       totalEarned: 100,
       totalSpent: 0,
       lastEarned: null,
-      sources: { quests: 100, achievements: 0, dailyBonus: 0, special: 0 },
+      sources: {
+        quests: 100,
+        achievements: 0,
+        dailyBonus: 0,
+        special: 0,
+        challenges: 0,
+      },
     };
   }
 
