@@ -89,8 +89,8 @@ export class DailyChallengeManager {
           },
           {
             type: "word-count",
-            value: 10,
-            description: "最低10問解答",
+            value: 5,
+            description: "最低5問解答",
           },
         ],
         bonusXP: 75,
