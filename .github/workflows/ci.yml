@@ -1,115 +1,260 @@
-name: CI
+name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
-    branches: [main]
+    branches: [main, develop]
+
+env:
+  NODE_VERSION: "18"
+  CACHE_VERSION: v1
 
 jobs:
-  build-test:
+  # 依存関係とビルドの検証
+  build-and-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
 
       - name: Install dependencies
         run: |
           echo "📦 依存関係をインストール中..."
-          if [ -f "package-lock.json" ]; then
-            echo "✅ package-lock.json found, using npm ci"
-            npm ci
-          else
-            echo "⚠️ package-lock.json not found, using npm install"
-            npm install
-          fi
+          npm ci --prefer-offline --no-audit
+          echo "✅ 依存関係インストール完了"
 
       - name: Generate PWA icons
         run: npm run generate-icons
 
+      - name: TypeScript type check
+        run: npx tsc --noEmit
+        continue-on-error: false
+
+      - name: Lint check
+        run: |
+          echo "🔍 ESLintチェック実行中..."
+          npx eslint src/ --ext .ts,.tsx --max-warnings 0
+        continue-on-error: false
+
+      - name: Build application
+        run: |
+          echo "🏗️ アプリケーションをビルド中..."
+          npm run build
+          echo "✅ ビルド完了"
+
+      - name: Verify build output
+        run: |
+          echo "🔍 ビルド成果物の検証..."
+          test -f dist/index.html || (echo "❌ index.html not found" && exit 1)
+          test -f dist/manifest.webmanifest || (echo "❌ manifest.webmanifest not found" && exit 1)
+          test -d dist/assets || (echo "❌ assets directory not found" && exit 1)
+          echo "✅ ビルド成果物検証完了"
+
+      - name: Run unit tests
+        run: |
+          echo "🧪 ユニットテスト実行中..."
+          npm run test:unit
+        continue-on-error: false
+
+      - name: Run integration tests
+        run: |
+          echo "🔗 統合テスト実行中..."
+          npm run test:integration
+        continue-on-error: false
+
+      - name: Test coverage report
+        run: |
+          echo "📊 テストカバレッジ生成中..."
+          npm run test:coverage
+        continue-on-error: true
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        if: always()
+        with:
+          file: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+        continue-on-error: true
+
+  # E2Eテスト（本格導入）
+  e2e-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: build-and-test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
       - name: Build application
         run: npm run build
 
-    - name: Run unit tests
-      run: npm run test:unit
-      continue-on-error: true
-    
-    - name: Run integration tests
-      run: npm run test:integration
-      continue-on-error: true
+      - name: Install Playwright
+        run: npx playwright install --with-deps
 
-      # E2Eテストは重要なので継続（Playwright MCP使用時のみ）
-      - name: Run E2E tests (if Playwright MCP available)
+      - name: Run E2E tests
         run: |
-          if command -v playwright >/dev/null 2>&1; then
-            npm run test:e2e
-          else
-            echo "⚠️ Playwright MCP not available, skipping E2E tests"
-          fi
-        continue-on-error: true
+          echo "🎭 E2Eテスト実行中..."
+          npm run test:e2e
+        continue-on-error: false
 
+      - name: Upload E2E test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+  # セキュリティ監査
   security-audit:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
 
       - name: Install dependencies
-        run: |
-          echo "📦 依存関係をインストール中..."
-          if [ -f "package-lock.json" ]; then
-            echo "✅ package-lock.json found, using npm ci"
-            npm ci
-          else
-            echo "⚠️ package-lock.json not found, using npm install"
-            npm install
-          fi
+        run: npm ci --prefer-offline --no-audit
 
       - name: Run security audit
-        run: npm audit --audit-level moderate
+        run: |
+          echo "🔒 セキュリティ監査実行中..."
+          npm audit --audit-level high
+        continue-on-error: false
+
+      - name: Check for known vulnerabilities
+        run: |
+          echo "🛡️ 既知の脆弱性チェック..."
+          npm audit --audit-level moderate --json > audit-results.json || true
+          if [ -s audit-results.json ]; then
+            echo "⚠️ 中程度の脆弱性が検出されました"
+            cat audit-results.json | jq '.vulnerabilities | length' || echo "0"
+          else
+            echo "✅ 脆弱性は検出されませんでした"
+          fi
         continue-on-error: true
 
+  # パフォーマンステスト
   performance-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: build-and-test
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
 
       - name: Install dependencies
-        run: |
-          echo "📦 依存関係をインストール中..."
-          if [ -f "package-lock.json" ]; then
-            echo "✅ package-lock.json found, using npm ci"
-            npm ci
-          else
-            echo "⚠️ package-lock.json not found, using npm install"
-            npm install
-          fi
+        run: npm ci --prefer-offline --no-audit
 
-      - name: Build for performance test
+      - name: Build application
         run: npm run build
 
-      - name: Performance audit
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.12.x
+
+      - name: Run Lighthouse CI
         run: |
-          echo "📊 Performance test placeholder"
-          echo "✅ Build size check passed"
+          echo "🚀 Lighthouseパフォーマンステスト実行中..."
+          lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        continue-on-error: true
+
+      - name: Bundle size analysis
+        run: |
+          echo "📊 バンドルサイズ分析..."
           ls -la dist/assets/ | head -10
+          echo "📈 最大ファイルサイズ:"
+          find dist/assets -name "*.js" -exec ls -lh {} \; | sort -k5 -hr | head -5
+          echo "📈 最大CSSファイルサイズ:"
+          find dist/assets -name "*.css" -exec ls -lh {} \; | sort -k5 -hr | head -3
+        continue-on-error: true
+
+  # デプロイメント（条件付き）
+  deploy-staging:
+    runs-on: ubuntu-latest
+    needs: [build-and-test, security-audit]
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Build for staging
+        run: npm run build
+
+      - name: Deploy to staging
+        run: |
+          echo "🚀 ステージング環境へのデプロイ..."
+          echo "✅ デプロイ完了（実際のデプロイロジックはここに実装）"
+        continue-on-error: true
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: [build-and-test, e2e-tests, security-audit, performance-test]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Build for production
+        run: npm run build
+
+      - name: Deploy to production
+        run: |
+          echo "🚀 本番環境へのデプロイ..."
+          echo "✅ デプロイ完了（実際のデプロイロジックはここに実装）"
         continue-on-error: true

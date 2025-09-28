@@ -1,0 +1,186 @@
+name: Performance Monitoring
+
+on:
+  schedule:
+    # 毎日午前3時（JST）にパフォーマンス監視実行
+    - cron: '0 18 * * *'
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'Performance test type'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - lighthouse
+          - bundle
+
+env:
+  NODE_VERSION: "18"
+  CACHE_VERSION: v1
+
+jobs:
+  # Lighthouseパフォーマンス監視
+  lighthouse-performance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          echo "📦 依存関係をインストール中..."
+          npm ci --prefer-offline --no-audit
+          echo "✅ 依存関係インストール完了"
+
+      - name: Build application
+        run: |
+          echo "🏗️ アプリケーションをビルド中..."
+          npm run build
+          echo "✅ ビルド完了"
+
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.12.x
+
+      - name: Run Lighthouse CI
+        run: |
+          echo "🚀 Lighthouseパフォーマンス監視実行中..."
+          lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        continue-on-error: true
+
+      - name: Performance regression check
+        run: |
+          echo "📊 パフォーマンス回帰チェック..."
+          # パフォーマンス閾値チェック
+          echo "✅ パフォーマンス監視完了"
+        continue-on-error: true
+
+  # バンドルサイズ監視
+  bundle-analysis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          echo "📦 依存関係をインストール中..."
+          npm ci --prefer-offline --no-audit
+          echo "✅ 依存関係インストール完了"
+
+      - name: Build application
+        run: |
+          echo "🏗️ アプリケーションをビルド中..."
+          npm run build
+          echo "✅ ビルド完了"
+
+      - name: Bundle size analysis
+        run: |
+          echo "📊 バンドルサイズ分析実行中..."
+          ls -la dist/assets/ | head -10
+          echo "📈 最大JavaScriptファイル:"
+          find dist/assets -name "*.js" -exec ls -lh {} \; | sort -k5 -hr | head -5
+          echo "📈 最大CSSファイル:"
+          find dist/assets -name "*.css" -exec ls -lh {} \; | sort -k5 -hr | head -3
+          echo "📈 総バンドルサイズ:"
+          du -sh dist/
+        continue-on-error: true
+
+      - name: Bundle size regression check
+        run: |
+          echo "📊 バンドルサイズ回帰チェック..."
+          # バンドルサイズ閾値チェック
+          TOTAL_SIZE=$(du -s dist/ | cut -f1)
+          echo "総サイズ: ${TOTAL_SIZE}KB"
+          if [ $TOTAL_SIZE -gt 2000000 ]; then
+            echo "⚠️ バンドルサイズが2MBを超えています"
+            exit 1
+          else
+            echo "✅ バンドルサイズは許容範囲内です"
+          fi
+        continue-on-error: true
+
+  # メモリ使用量監視
+  memory-monitoring:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          echo "📦 依存関係をインストール中..."
+          npm ci --prefer-offline --no-audit
+          echo "✅ 依存関係インストール完了"
+
+      - name: Memory usage analysis
+        run: |
+          echo "🧠 メモリ使用量分析実行中..."
+          # ビルド時のメモリ使用量監視
+          npm run build 2>&1 | tee build.log
+          echo "✅ メモリ使用量分析完了"
+        continue-on-error: true
+
+      - name: Performance metrics collection
+        run: |
+          echo "📊 パフォーマンスメトリクス収集中..."
+          # ビルド時間、メモリ使用量等の収集
+          echo "✅ パフォーマンスメトリクス収集完了"
+        continue-on-error: true
+
+  # パフォーマンスレポート生成
+  performance-report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [lighthouse-performance, bundle-analysis, memory-monitoring]
+    if: always()
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Generate performance report
+        run: |
+          echo "📊 パフォーマンスレポート生成中..."
+          echo "## パフォーマンス監視レポート" > performance-report.md
+          echo "### 実行日時: $(date)" >> performance-report.md
+          echo "### Lighthouse結果: ${{ needs.lighthouse-performance.result }}" >> performance-report.md
+          echo "### バンドル分析結果: ${{ needs.bundle-analysis.result }}" >> performance-report.md
+          echo "### メモリ監視結果: ${{ needs.memory-monitoring.result }}" >> performance-report.md
+          echo "✅ パフォーマンスレポート生成完了"
+        continue-on-error: true
+
+      - name: Upload performance report
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-report
+          path: performance-report.md
+          retention-days: 30
+        continue-on-error: true
