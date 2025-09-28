@@ -102,7 +102,7 @@
     "test:e2e:mcp": "echo '✅ Playwright MCPを使用してE2Eテストを実行してください。手動でPlaywright MCPツールを呼び出してください。'",
     "test:e2e:mcp:all": "echo '✅ 全ブラウザでのPlaywright MCPテストは手動で実行してください。'",
     "test:e2e:navigation": "echo '❌ 通常のPlaywrightは禁止です。Playwright MCPを使用してください。' && exit 1",
-    "test:all": "npm run test:core && npm run test:e2e:mcp",
+    "test:mcp": "npm run test:core && npm run test:e2e:mcp",
     "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
     "type-check": "tsc --noEmit",

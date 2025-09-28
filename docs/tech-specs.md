@@ -53,17 +53,29 @@
 - **Local State**: コンポーネント内での状態管理
 - **DataManager**: 学習データの永続化
 
-#### インテリジェント学習システム（2025年9月新規追加）
+#### インテリジェント学習システム（2025 年 9 月実装完了）
 
 - **個人化学習**: ユーザー履歴に基づく最適コンテンツ推奨
-- **適応的難易度**: リアルタイム難易度調整（目標正答率75%）
+- **適応的難易度**: リアルタイム難易度調整（目標正答率 75%）
 - **弱点分析**: 包括的分析・具体的改善策・予想改善時間
-- **パフォーマンス最適化**: Core Web Vitals監視・メモリリーク検出
+- **パフォーマンス最適化**: Core Web Vitals 監視・メモリリーク検出
+- **統合学習サービス**: 全機能の連携による相乗効果
+- **学習インサイト**: 個人の学習パターン分析・改善提案
 
-#### 品質管理システム（2025年9月新規追加）
+#### 高度なゲーミフィケーションシステム（2025 年 9 月実装完了）
+
+- **アドレナリンシステム**: コンボ・クリティカルヒット・フィーバータイム
+- **ガチャシステム**: TOEIC 特化カード収集・レアリティシステム
+- **宝箱システム**: 学習達成による特別報酬・レアリティ別アイテム
+- **ハートシステム**: 継続学習のための体力管理
+- **スターシステム**: 事前学習コンテンツの消費エネルギー
+- **XP ショップ**: 学習成果をゲーム内アイテムに交換
+- **日替わりクエスト**: 毎日異なる学習チャレンジ・ストリーク管理
+
+#### 品質管理システム（2025 年 9 月新規追加）
 
 - **統一ログシステム**: 開発環境専用・本番最適化
-- **エラーハンドリング**: AppErrorクラス・重要度別処理
+- **エラーハンドリング**: AppError クラス・重要度別処理
 - **型安全性**: 型ガード・バリデーション・定数管理
 - **パフォーマンス監視**: 自動監視・最適化・レポート
 
@@ -75,37 +87,74 @@ src/
 │   ├── ui/              # 再利用可能なUIコンポーネント
 │   ├── Home.tsx         # ホーム画面
 │   ├── VocabularyCard.tsx # 語彙学習
+│   ├── EnhancedVocabularyCard.tsx # 拡張語彙学習
 │   ├── GrammarQuiz.tsx  # 文法クイズ
+│   ├── EnhancedGrammarQuiz.tsx # 拡張文法クイズ
 │   ├── CombinedTest.tsx # 総合テスト
+│   ├── EssayWriting.tsx # 英作文機能
 │   ├── TimeAttackMode.tsx # タイムアタックモード
 │   ├── SimpleTowerDefense.tsx # タワーディフェンスゲーム
 │   ├── Achievements.tsx # 実績画面
+│   ├── GachaSystem.tsx  # ガチャシステム
+│   ├── AdrenalineEffects.tsx # アドレナリンシステム
+│   ├── TreasureBoxSystem.tsx # 宝箱システム
+│   ├── HeartSystem.tsx  # ハートシステム
+│   ├── SkillTree.tsx    # スキルツリー
+│   ├── XPShop.tsx       # XPショップ
+│   ├── DailyQuestPanel.tsx # 日替わりクエスト
+│   ├── IntegratedLearning.tsx # 統合学習システム
+│   ├── SynergyDashboard.tsx # シナジーダッシュボード
+│   ├── PersonalInsights.tsx # 個人化インサイト
 │   ├── PWAInstallPrompt.tsx # PWAインストールプロンプト
 │   ├── PWAUpdatePrompt.tsx # PWA更新プロンプト
 │   └── ...
 ├── data/                # データファイル
 │   ├── questions.ts     # 問題データ
+│   ├── enhancedQuestions.ts # 拡張問題データ
 │   ├── vocabulary.ts    # 語彙データ
 │   ├── achievements.ts  # 実績データ
+│   ├── synergyAchievements.ts # シナジー実績データ
 │   ├── combinedTest.ts  # 総合テストデータ
+│   ├── essayPrompts.ts  # 英作文プロンプトデータ
+│   ├── toeicGachaCards.ts # TOEICガチャカードデータ
+│   ├── additionalToeicCards.ts # 追加TOEICカードデータ
 │   ├── xpShop.ts        # XPショップデータ
+│   ├── preStudyContents.ts # 事前学習コンテンツデータ
+│   ├── foundationQuestions.ts # 基礎問題データ
+│   ├── sentencePatternQuestions.ts # 文型問題データ
+│   ├── levelConfig.ts   # レベル設定データ
 │   └── ...
 ├── types/               # TypeScript型定義
 │   ├── index.ts         # 基本型定義
-│   └── simple-game.ts   # ゲーム関連型定義
+│   ├── simple-game.ts   # ゲーム関連型定義
+│   ├── adrenalineSystem.ts # アドレナリンシステム型定義
+│   ├── essay.ts         # 英作文型定義
+│   ├── starSystem.ts    # スターシステム型定義
+│   ├── dailyQuest.ts    # 日替わりクエスト型定義
+│   ├── learningItem.ts  # 学習アイテム型定義
+│   ├── gacha.ts         # ガチャシステム型定義
+│   └── timeAttack.ts    # タイムアタック型定義
 ├── constants/           # 定数定義
 │   └── index.ts
 ├── utils/               # ユーティリティ関数
 │   ├── dataManager.ts   # データ管理
 │   ├── xpCalculator.ts  # XP計算
+│   ├── newXpCalculator.ts # 新XP計算システム
 │   ├── tower-defense-data.ts # ゲームデータ
-│   ├── logger.ts        # 統一ログシステム (NEW)
-│   ├── errorHandler.ts  # エラーハンドリング (NEW)
-│   ├── personalizedLearning.ts # 個人化学習 (NEW)
-│   ├── adaptiveDifficulty.ts # 適応的難易度 (NEW)
-│   ├── performanceOptimizer.ts # パフォーマンス最適化 (NEW)
-│   ├── weaknessAnalyzer.ts # 弱点分析 (NEW)
-│   ├── intelligentLearningService.ts # 統合サービス (NEW)
+│   ├── logger.ts        # 統一ログシステム
+│   ├── errorHandler.ts  # エラーハンドリング
+│   ├── personalizedLearning.ts # 個人化学習
+│   ├── adaptiveDifficulty.ts # 適応的難易度
+│   ├── performanceOptimizer.ts # パフォーマンス最適化
+│   ├── weaknessAnalyzer.ts # 弱点分析
+│   ├── intelligentLearningService.ts # 統合サービス
+│   ├── gachaSystem.ts   # ガチャシステム
+│   ├── adrenalineManager.ts # アドレナリン管理
+│   ├── starUtils.ts     # スターシステム
+│   ├── dailyQuestManager.ts # 日替わりクエスト管理
+│   ├── learningAnalytics.ts # 学習分析
+│   ├── skillTreeManager.ts # スキルツリー管理
+│   ├── essayHistoryManager.ts # 英作文履歴管理
 │   └── ...
 ├── styles/              # スタイルファイル
 │   └── globals.css
