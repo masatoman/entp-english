@@ -8,11 +8,11 @@ import {
   UserStats,
 } from "../data/achievements";
 import { useScrollToTop } from "../hooks/useScrollToTop";
+import { baseColors } from "../styles/colors";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { DataManager } from "../utils/dataManager";
 import { KnownWordsManager } from "../utils/knownWordsManager";
 import { Badge } from "./ui/badge";
-import { baseColors } from "../styles/colors";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Progress } from "./ui/progress";
@@ -164,8 +164,13 @@ export default function Achievements() {
   const lockedAchievements = achievements.filter((a) => !a.isUnlocked);
 
   return (
-    <div className="min-h-screen" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
-      <div className="max-w-md mx-auto p-4 space-y-6">
+    <div
+      className="min-h-screen"
+      style={{
+        background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
+      }}
+    >
+      <div className="max-w-md mx-auto p-4 space-y-6 bg-white rounded-lg shadow-sm">
         {/* Header */}
         <div className="flex items-center justify-between pt-8">
           <Button variant="ghost" onClick={() => navigate("/")} className="p-2">

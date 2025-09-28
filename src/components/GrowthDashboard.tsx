@@ -11,8 +11,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { UserStats } from "../data/achievements";
 import { useScrollToTop } from "../hooks/useScrollToTop";
-import { Badge } from "./ui/badge";
 import { baseColors } from "../styles/colors";
+import { Badge } from "./ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
 
@@ -20,18 +20,41 @@ export default function GrowthDashboard() {
   const navigate = useNavigate();
   useScrollToTop();
 
-  // 仮のユーザー統計データ（実際の実装では適切なデータソースから取得）
-  const userStats: UserStats = {
-    totalXP: 0,
-    level: 1,
-    streak: 0,
-    maxStreak: 0,
-    totalQuestions: 0,
-    correctAnswers: 0,
-    studyTimeMinutes: 0,
-    achievements: [],
-    preStudySessions: [],
-  };
+  // 実際のユーザー統計データを取得
+  const userStats: UserStats = (() => {
+    try {
+      const stored = localStorage.getItem("userStats");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        return {
+          totalXP: parsed.totalXP || 0,
+          level: parsed.level || 1,
+          streak: parsed.streak || 0,
+          maxStreak: parsed.maxStreak || 0,
+          totalQuestions: parsed.totalQuestions || 0,
+          correctAnswers: parsed.correctAnswers || 0,
+          studyTimeMinutes: parsed.studyTimeMinutes || 0,
+          achievements: parsed.achievements || [],
+          preStudySessions: parsed.preStudySessions || [],
+        };
+      }
+    } catch (error) {
+      console.error("Failed to parse userStats from localStorage:", error);
+    }
+
+    // デフォルト値
+    return {
+      totalXP: 0,
+      level: 1,
+      streak: 0,
+      maxStreak: 0,
+      totalQuestions: 0,
+      correctAnswers: 0,
+      studyTimeMinutes: 0,
+      achievements: [],
+      preStudySessions: [],
+    };
+  })();
   // 成長指標の計算
   const calculateGrowthMetrics = () => {
     const sessions = userStats.preStudySessions || [];
@@ -185,8 +208,13 @@ export default function GrowthDashboard() {
   );
 
   return (
-    <div className="min-h-screen" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
-      <div className="max-w-4xl mx-auto p-4 space-y-6">
+    <div
+      className="min-h-screen"
+      style={{
+        background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
+      }}
+    >
+      <div className="max-w-4xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-sm">
         {/* Header */}
         <div className="flex items-center justify-between pt-8">
           <button
@@ -209,7 +237,7 @@ export default function GrowthDashboard() {
               <div
                 className={`inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br ${growthLevel.color} mb-4`}
               >
-                <span className="text-2xl font-bold text-white">
+                <span className="text-2xl font-bold text-black">
                   {growthLevel.level}
                 </span>
               </div>
@@ -224,7 +252,7 @@ export default function GrowthDashboard() {
 
         {/* 主要指標 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0 shadow-lg">
+          <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-black border-0 shadow-lg">
             <CardContent className="p-4 text-center">
               <Brain className="w-8 h-8 mx-auto mb-2" />
               <div className="text-2xl font-bold">
@@ -237,7 +265,7 @@ export default function GrowthDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white border-0 shadow-lg">
+          <Card className="bg-gradient-to-br from-green-500 to-green-600 text-black border-0 shadow-lg">
             <CardContent className="p-4 text-center">
               <Calendar className="w-8 h-8 mx-auto mb-2" />
               <div className="text-2xl font-bold">{metrics.totalStudyDays}</div>
@@ -245,7 +273,7 @@ export default function GrowthDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white border-0 shadow-lg">
+          <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-black border-0 shadow-lg">
             <CardContent className="p-4 text-center">
               <Target className="w-8 h-8 mx-auto mb-2" />
               <div className="text-2xl font-bold">
@@ -255,7 +283,7 @@ export default function GrowthDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-orange-500 to-orange-600 text-white border-0 shadow-lg">
+          <Card className="bg-gradient-to-br from-orange-500 to-orange-600 text-black border-0 shadow-lg">
             <CardContent className="p-4 text-center">
               <Award className="w-8 h-8 mx-auto mb-2" />
               <div className="text-2xl font-bold">{userStats.totalXP}</div>
@@ -440,7 +468,7 @@ export default function GrowthDashboard() {
             <div className="space-y-3">
               <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-black text-sm font-bold">
                     1
                   </div>
                   <div>
@@ -459,7 +487,7 @@ export default function GrowthDashboard() {
 
               <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-black text-sm font-bold">
                     {metrics.totalStudyDays}
                   </div>
                   <div>
@@ -474,7 +502,7 @@ export default function GrowthDashboard() {
 
               <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                  <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-black text-sm font-bold">
                     ★
                   </div>
                   <div>

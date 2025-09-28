@@ -1,4 +1,3 @@
-import { ArrowLeft, Brain, CheckCircle, Clock, Target } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -8,13 +7,10 @@ import {
 } from "../types/learningItem";
 import { KnownWordsManager } from "../utils/knownWordsManager";
 import { LearningItemManager } from "../utils/learningItemManager";
+import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 import { SpeechSynthesisManager } from "../utils/speechSynthesis";
 import { calculateVocabularyXP } from "../utils/xpCalculator";
-import { Button } from "./ui/button";
-import { baseColors } from "../styles/colors";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Progress } from "./ui/progress";
-import { getLevelManager, saveLevelManager } from "../utils/levelManager";
+import QuizInterface, { QuizQuestion } from "./QuizInterface";
 
 /**
  * 統合学習コンポーネント
@@ -33,13 +29,8 @@ export default function IntegratedLearning() {
   const { level, category, mode } = useParams();
 
   const [session, setSession] = useState<LearningSession | null>(null);
-  const [currentItem, setCurrentItem] = useState<LearningItem | null>(null);
-  const [currentQuestion, setCurrentQuestion] =
-    useState<LearningQuestion | null>(null);
-  const [showAnswer, setShowAnswer] = useState(false);
-  const [userAnswer, setUserAnswer] = useState<string>("");
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [showHint, setShowHint] = useState(false);
+  const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>([]);
+  const [isQuizMode, setIsQuizMode] = useState(false);
   const [sessionStats, setSessionStats] = useState({
     correct: 0,
     total: 0,
@@ -133,18 +124,40 @@ export default function IntegratedLearning() {
     };
 
     setSession(newSession);
-    setCurrentItem(filteredItems[0]);
 
-    // モードに応じて最初のコンテンツを設定
+    // クイズモードの場合は問題を準備
     if (actualMode === "question" || actualMode === "mixed") {
-      setCurrentQuestion(selectQuestionForItem(filteredItems[0]));
+      const questions = filteredItems.slice(0, 10).map((item, index) => {
+        const question = selectQuestionForItem(item);
+        return {
+          id: index + 1,
+          question: question.question,
+          correctAnswer: question.correctAnswer.toString(),
+          explanation: question.explanation,
+          hint: question.hint,
+          choices: question.choices,
+        };
+      });
+      setQuizQuestions(questions);
+      setIsQuizMode(true);
     }
   };
 
   const selectQuestionForItem = (
     item: LearningItem
   ): LearningQuestion | null => {
-    if (item.questions.length === 0) return null;
+    if (item.questions.length === 0) {
+      // 問題がない場合はデフォルトの問題を生成
+      return {
+        id: `default-${item.id}`,
+        question: `${item.content}の意味を答えてください。`,
+        correctAnswer: item.meaning,
+        explanation: `${item.content}は「${item.meaning}」という意味です。`,
+        hint: item.examples[0]?.sentence || "",
+        difficulty: "easy",
+        choices: [item.meaning, "選択肢1", "選択肢2", "選択肢3"],
+      };
+    }
 
     // 簡単な問題から始める
     const easyQuestions = item.questions.filter((q) => q.difficulty === "easy");
@@ -308,13 +321,29 @@ export default function IntegratedLearning() {
     setUserAnswer("");
   };
 
-  const showSessionResults = () => {
-    // TODO: 結果画面に遷移
-    console.log("Session completed:", sessionStats);
-    navigate("/learning/results");
+  const handleQuizComplete = (score: number, totalQuestions: number) => {
+    // XP計算
+    const levelManager = getLevelManager();
+    const baseXP = Math.round(score * 10 + totalQuestions * 2);
+    levelManager.addXP(baseXP);
+    saveLevelManager();
+
+    console.log("統合学習完了:", { score, totalQuestions, xpEarned: baseXP });
+
+    // 結果を表示
+    setSessionStats((prev) => ({
+      ...prev,
+      correct: score,
+      total: totalQuestions,
+      xpEarned: baseXP,
+    }));
   };
 
-  if (!session || !currentItem) {
+  const handleBack = () => {
+    navigate("/");
+  };
+
+  if (!session) {
     return (
       <div className="min-h-screen p-4 flex items-center justify-center">
         <div className="text-center">
@@ -322,6 +351,19 @@ export default function IntegratedLearning() {
           <p>学習セッションを準備中...</p>
         </div>
       </div>
+    );
+  }
+
+  // クイズモードの場合はQuizInterfaceを使用
+  if (isQuizMode && quizQuestions.length > 0) {
+    return (
+      <QuizInterface
+        title="統合学習"
+        subtitle={`${level} • ${category} • ${mode}モード`}
+        questions={quizQuestions}
+        onComplete={handleQuizComplete}
+        onBack={handleBack}
+      />
     );
   }
 
@@ -392,7 +434,8 @@ export default function IntegratedLearning() {
 
           <CardContent>
             {/* 単語学習モード: 意味と例文を表示 */}
-            {(session.mode === "card" || (session.mode === "mixed" && !currentQuestion)) && (
+            {(session.mode === "card" ||
+              (session.mode === "mixed" && !currentQuestion)) && (
               <div className="space-y-4">
                 <div className="text-center p-6 bg-gray-50 rounded-lg">
                   <h3 className="text-2xl font-bold mb-2">
@@ -432,7 +475,8 @@ export default function IntegratedLearning() {
             )}
 
             {/* 問題モード: 意味・例文を隠して問題のみ表示 */}
-            {(session.mode === "question" || (session.mode === "mixed" && currentQuestion)) &&
+            {(session.mode === "question" ||
+              (session.mode === "mixed" && currentQuestion)) &&
               currentQuestion && (
                 <div className="space-y-4">
                   <div className="p-4 bg-yellow-50 rounded-lg">
@@ -473,15 +517,22 @@ export default function IntegratedLearning() {
                   {showAnswer && (
                     <div className="p-4 bg-green-50 rounded-lg">
                       <h4 className="font-semibold mb-2">解説</h4>
-                      <p>"{currentItem.content}"は「{currentItem.meaning}」という意味です。</p>
+                      <p>
+                        "{currentItem.content}"は「{currentItem.meaning}
+                        」という意味です。
+                      </p>
                       {currentItem.examples.length > 0 && (
                         <div className="mt-3">
                           <p className="font-medium">例文:</p>
-                          <p className="italic">"{currentItem.examples[0].sentence}"</p>
-                          <p className="text-sm text-gray-600">{currentItem.examples[0].translation}</p>
+                          <p className="italic">
+                            "{currentItem.examples[0].sentence}"
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            {currentItem.examples[0].translation}
+                          </p>
                         </div>
                       )}
-                      <Button onClick={moveToNext} className="mt-4">
+                      <Button onClick={moveToNext} className="mt-4 w-full">
                         次へ
                       </Button>
                     </div>

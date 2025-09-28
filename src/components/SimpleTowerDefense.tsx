@@ -441,7 +441,7 @@ export default function SimpleTowerDefense() {
                         onClick={() => handleFieldClick(position)}
                       >
                         {tower && (
-                          <div className="w-full h-full flex items-center justify-center text-white text-xs">
+                          <div className="w-full h-full flex items-center justify-center text-black text-xs">
                             {tower.type === "basic"
                               ? "🔫"
                               : tower.type === "sniper"
@@ -450,7 +450,7 @@ export default function SimpleTowerDefense() {
                           </div>
                         )}
                         {enemy && (
-                          <div className="w-full h-full flex items-center justify-center text-white text-xs">
+                          <div className="w-full h-full flex items-center justify-center text-black text-xs">
                             👾
                           </div>
                         )}

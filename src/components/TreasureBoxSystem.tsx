@@ -25,26 +25,32 @@ export default function TreasureBoxSystem({
     };
 
     loadTreasureBoxes();
-    
+
     // AdrenalineEffectsからの宝箱開封イベントをリスン
     const handleOpenTreasureBoxes = (event: CustomEvent) => {
       console.log("🎁 宝箱開封イベント受信:", event.detail);
       setForceShow(true); // 強制表示を有効化
       loadTreasureBoxes(); // 宝箱リストを更新して表示
     };
-    
-    window.addEventListener('openTreasureBoxes', handleOpenTreasureBoxes as EventListener);
-    
+
+    window.addEventListener(
+      "openTreasureBoxes",
+      handleOpenTreasureBoxes as EventListener
+    );
+
     // 報酬表示中はintervalを停止（showRewardsがnullの場合のみ更新）
     const interval = setInterval(() => {
       if (!showRewards) {
         loadTreasureBoxes();
       }
     }, 1000);
-    
+
     return () => {
       clearInterval(interval);
-      window.removeEventListener('openTreasureBoxes', handleOpenTreasureBoxes as EventListener);
+      window.removeEventListener(
+        "openTreasureBoxes",
+        handleOpenTreasureBoxes as EventListener
+      );
     };
   }, [showRewards]); // showRewardsを依存関係に追加
 
@@ -205,7 +211,7 @@ export default function TreasureBoxSystem({
     console.log("🔍 TreasureBoxSystem: 表示条件を満たさないため非表示");
     return null;
   }
-  
+
   // 宝箱がない場合は強制表示フラグをリセット
   if (treasureBoxes.length === 0 && forceShow) {
     console.log("🔍 TreasureBoxSystem: 宝箱がないため強制表示フラグをリセット");
@@ -215,7 +221,7 @@ export default function TreasureBoxSystem({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="max-w-md mx-auto p-4">
+      <div className="max-w-md mx-auto p-4 bg-white rounded-lg shadow-sm">
         {showRewards ? (
           // 報酬表示画面（大幅改善）
           <>
@@ -368,17 +374,17 @@ export default function TreasureBoxSystem({
                 </div>
 
                 <Button
-                   onClick={() => {
-                     setShowRewards(null);
-                     setForceShow(false); // 強制表示フラグをリセット
-                     // 報酬表示完了後に宝箱リストを更新
-                     const system = adrenalineManager.getSystem();
-                     setTreasureBoxes(
-                       system.treasureBoxes.filter((box) => !box.isOpened)
-                     );
-                     console.log("🔍 報酬表示完了 - 宝箱リスト更新");
-                   }}
-                  className="w-full mt-6 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold text-lg py-3"
+                  onClick={() => {
+                    setShowRewards(null);
+                    setForceShow(false); // 強制表示フラグをリセット
+                    // 報酬表示完了後に宝箱リストを更新
+                    const system = adrenalineManager.getSystem();
+                    setTreasureBoxes(
+                      system.treasureBoxes.filter((box) => !box.isOpened)
+                    );
+                    console.log("🔍 報酬表示完了 - 宝箱リスト更新");
+                  }}
+                  className="w-full mt-6 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-black font-bold text-lg py-3"
                   size="lg"
                 >
                   🚀 学習を続ける 🚀

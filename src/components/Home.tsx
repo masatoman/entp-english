@@ -11,6 +11,7 @@ import {
   Zap,
 } from "lucide-react";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { UserStats } from "../data/achievements";
 import { DataManager } from "../utils/dataManager";
 import {
@@ -21,6 +22,7 @@ import {
   analyzeLearningData,
   getLearningSessions,
   sendLearningDataToNetlify,
+  type LearningAnalytics,
 } from "../utils/learningAnalytics";
 import { SoundManager } from "../utils/soundManager";
 import { HeartSystemDisplay } from "./HeartSystem";
@@ -47,11 +49,14 @@ export const Home = React.memo(function Home({
   onNavigateToTimeAttack,
   onNavigateToSimpleTowerDefense,
 }: HomeProps) {
+  const navigate = useNavigate();
   const [userStats, setUserStats] = useState<UserStats>(
     DataManager.getUserStats()
   );
   const [todayXP, setTodayXP] = useState(0);
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+  const [learningAnalytics, setLearningAnalytics] =
+    useState<LearningAnalytics | null>(null);
 
   // メモ化された日次XP目標の取得
   const dailyXPGoal = useMemo(() => {
@@ -305,7 +310,7 @@ export const Home = React.memo(function Home({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <div className="max-w-md mx-auto p-4 space-y-6">
+      <div className="max-w-md mx-auto p-4 space-y-6 bg-white rounded-lg shadow-sm">
         {/* Header */}
         <div className="text-center pt-8 pb-4">
           <h1 className="text-3xl bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
@@ -406,6 +411,41 @@ export const Home = React.memo(function Home({
           <StatusAllocationComponent readOnly={true} />
           <HeartSystemDisplay compact={false} />
         </div>
+
+        {/* 学習分析データの表示 */}
+        {learningAnalytics && (
+          <Card className="bg-gradient-to-r from-green-500 to-green-600 text-foreground border-0">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-foreground flex items-center space-x-2">
+                <BookOpen className="w-5 h-5" />
+                <span>学習分析</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-100">
+                    {learningAnalytics.totalSessions}
+                  </div>
+                  <div className="text-green-200">学習セッション</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-100">
+                    {Math.round(learningAnalytics.averageAccuracy * 100)}%
+                  </div>
+                  <div className="text-green-200">平均正解率</div>
+                </div>
+              </div>
+              {learningAnalytics.streak > 0 && (
+                <div className="text-center">
+                  <div className="text-sm text-green-200">
+                    最長連続学習: {learningAnalytics.streak}日
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
 
         {/* フィードバックボタン */}
         <div className="flex justify-center">

@@ -1,12 +1,12 @@
 import { ArrowLeft, CheckCircle, Clock, Lightbulb, Star } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { baseColors } from "../styles/colors";
 import { DailyChallengeManager } from "../utils/dailyChallengeManager";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { DataManager } from "../utils/dataManager";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 import { Button } from "./ui/button";
-import { baseColors } from "../styles/colors";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Textarea } from "./ui/textarea";
@@ -140,12 +140,17 @@ export default function CreativeWritingChallenge({}: CreativeWritingChallengePro
 
   if (isCompleted) {
     return (
-      <div className="min-h-screen p-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
+      <div
+        className="min-h-screen p-4"
+        style={{
+          background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
+        }}
+      >
         <div className="max-w-2xl mx-auto">
           <Card className="text-center">
             <CardHeader>
               <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <CheckCircle className="w-8 h-8 text-white" />
+                <CheckCircle className="w-8 h-8 text-black" />
               </div>
               <CardTitle className="text-2xl text-purple-600">
                 🎉 創造力テスト完了！
@@ -167,7 +172,7 @@ export default function CreativeWritingChallenge({}: CreativeWritingChallengePro
                 </div>
               </div>
 
-              <div className="p-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg">
+              <div className="p-4 bg-gradient-to-r from-purple-500 to-pink-500 text-black rounded-lg">
                 <div className="flex items-center justify-center gap-2 mb-2">
                   <Star className="w-5 h-5" />
                   <span className="font-bold">獲得XP</span>
@@ -221,7 +226,12 @@ export default function CreativeWritingChallenge({}: CreativeWritingChallengePro
   }
 
   return (
-    <div className="min-h-screen p-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
+    <div
+      className="min-h-screen p-4"
+      style={{
+        background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
+      }}
+    >
       <div className="max-w-2xl mx-auto">
         {/* ヘッダー */}
         <div className="flex items-center justify-between mb-6">

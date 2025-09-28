@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { BGMPlayer } from "../components/BGMPlayer";
+import { ErrorBoundary } from "../components/ErrorBoundary";
 import { NewHome } from "../components/NewHome";
 import { ScrollToTop } from "../components/ScrollToTop";
 
@@ -46,163 +47,180 @@ export function AppRouter() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <MigrationProvider>
-        <BGMPlayer />
-        <div className="min-h-screen bg-background">
-          <Routes>
-            {/* ホーム */}
-            <Route path="/" element={<NewHome />} />
+      <ErrorBoundary>
+        <MigrationProvider>
+          <BGMPlayer />
+          <div className="min-h-screen bg-background">
+            <Routes>
+              {/* ホーム */}
+              <Route path="/" element={<NewHome />} />
 
-            {/* 学習機能 */}
-            <Route
-              path="/learning/vocabulary/difficulty"
-              element={<VocabularyDifficultySelection />}
-            />
-            <Route
-              path="/learning/vocabulary/category"
-              element={<VocabularyCategorySelection />}
-            />
-            <Route
-              path="/learning/vocabulary/study/:difficulty/:category"
-              element={<VocabularyCard />}
-            />
+              {/* 学習機能 */}
+              <Route
+                path="/learning/vocabulary/difficulty"
+                element={<VocabularyDifficultySelection />}
+              />
+              <Route
+                path="/learning/vocabulary/category"
+                element={<VocabularyCategorySelection />}
+              />
+              <Route
+                path="/learning/vocabulary/study/:difficulty/:category"
+                element={<VocabularyCard />}
+              />
 
-            {/* 新しい分離された語彙学習モード */}
-            <Route
-              path="/learning/vocabulary/gacha-mode"
-              element={<GachaVocabularyLearning />}
-            />
-            <Route
-              path="/learning/vocabulary/basic-mode"
-              element={<BasicVocabularyLearning />}
-            />
+              {/* 新しい分離された語彙学習モード */}
+              <Route
+                path="/learning/vocabulary/gacha-mode"
+                element={<GachaVocabularyLearning />}
+              />
+              <Route
+                path="/learning/vocabulary/basic-mode"
+                element={<BasicVocabularyLearning />}
+              />
 
-            {/* 統合学習システム */}
-            <Route
-              path="/learning/integrated/:level/:category/:mode"
-              element={<IntegratedLearning />}
-            />
+              {/* 統合学習システム */}
+              <Route
+                path="/learning/integrated/:level/:category/:mode"
+                element={<IntegratedLearning />}
+              />
 
-            {/* 文法クイズ */}
-            <Route
-              path="/learning/grammar/category"
-              element={<CategorySelection />}
-            />
-            {/* 基本文型の場合：カテゴリー → 文型選択 → 難易度選択 → 問題集選択 */}
-            <Route
-              path="/learning/grammar/pattern/:category"
-              element={<SentencePatternSelection />}
-            />
-            <Route
-              path="/learning/grammar/difficulty/:category/:pattern?"
-              element={<DifficultySelection />}
-            />
-            <Route
-              path="/learning/grammar/sets/:category/:pattern/:difficulty"
-              element={<QuestionSetSelection />}
-            />
-            {/* 従来の問題一覧（統計用） */}
-            <Route
-              path="/learning/grammar/list/:category/:difficulty"
-              element={<QuestionListView />}
-            />
-            <Route
-              path="/learning/grammar/quiz/:category/:difficulty"
-              element={<EnhancedGrammarQuiz />}
-            />
-            <Route
-              path="/learning/grammar/question-set/:category/:pattern/:difficulty/:setId"
-              element={<Question />}
-            />
-            <Route
-              path="/learning/grammar/question/:category/:difficulty/:questionId?"
-              element={<Question />}
-            />
-            <Route
-              path="/learning/grammar/results/:category/:difficulty"
-              element={<Results />}
-            />
+              {/* 文法クイズ */}
+              <Route
+                path="/learning/grammar/category"
+                element={<CategorySelection />}
+              />
+              {/* 基本文型の場合：カテゴリー → 文型選択 → 難易度選択 → 問題集選択 */}
+              <Route
+                path="/learning/grammar/pattern/:category"
+                element={<SentencePatternSelection />}
+              />
+              <Route
+                path="/learning/grammar/difficulty/:category/:pattern?"
+                element={<DifficultySelection />}
+              />
+              <Route
+                path="/learning/grammar/sets/:category/:pattern/:difficulty"
+                element={<QuestionSetSelection />}
+              />
+              {/* 従来の問題一覧（統計用） */}
+              <Route
+                path="/learning/grammar/list/:category/:difficulty"
+                element={<QuestionListView />}
+              />
+              <Route
+                path="/learning/grammar/quiz/:category/:difficulty"
+                element={<EnhancedGrammarQuiz />}
+              />
+              <Route
+                path="/learning/grammar/question-set/:category/:pattern/:difficulty/:setId"
+                element={<Question />}
+              />
+              <Route
+                path="/learning/grammar/question/:category/:difficulty/:questionId?"
+                element={<Question />}
+              />
+              <Route
+                path="/learning/grammar/results/:category/:difficulty"
+                element={<Results />}
+              />
 
-            {/* シナジーダッシュボード */}
-            <Route path="/learning/synergy" element={<SynergyDashboard />} />
-            <Route
-              path="/learning/synergy/:category"
-              element={<SynergyDashboard />}
-            />
+              {/* シナジーダッシュボード */}
+              <Route path="/learning/synergy" element={<SynergyDashboard />} />
+              <Route
+                path="/learning/synergy/:category"
+                element={<SynergyDashboard />}
+              />
 
-            {/* スキルツリー */}
-            <Route path="/learning/skill-tree" element={<SkillTree />} />
+              {/* スキルツリー */}
+              <Route path="/learning/skill-tree" element={<SkillTree />} />
 
-            {/* 基礎英語学習 */}
-            <Route
-              path="/learning/foundation/category"
-              element={<FoundationCategorySelection />}
-            />
-            <Route
-              path="/learning/foundation/difficulty/:category"
-              element={<FoundationDifficultySelection />}
-            />
-            <Route
-              path="/learning/foundation/sets/:category/:difficulty"
-              element={<FoundationQuestionSetSelection />}
-            />
-            <Route
-              path="/learning/foundation/quiz/:category/:difficulty/:setId"
-              element={<FoundationQuiz />}
-            />
-            <Route
-              path="/learning/foundation/quiz/:category/:difficulty"
-              element={<FoundationQuiz />}
-            />
+              {/* 基礎英語学習 */}
+              <Route
+                path="/learning/foundation/category"
+                element={<FoundationCategorySelection />}
+              />
+              <Route
+                path="/learning/foundation/difficulty/:category"
+                element={<FoundationDifficultySelection />}
+              />
+              <Route
+                path="/learning/foundation/sets/:category/:difficulty"
+                element={<FoundationQuestionSetSelection />}
+              />
+              <Route
+                path="/learning/foundation/quiz/:category/:difficulty/:setId"
+                element={<FoundationQuiz />}
+              />
+              <Route
+                path="/learning/foundation/quiz/:category/:difficulty"
+                element={<FoundationQuiz />}
+              />
 
-            {/* 事前学習 */}
-            <Route path="/learning/pre-study/menu" element={<PreStudyMenu />} />
-            <Route
-              path="/learning/pre-study/content/:contentId"
-              element={<PreStudyContentViewer />}
-            />
+              {/* 事前学習 */}
+              <Route
+                path="/learning/pre-study/menu"
+                element={<PreStudyMenu />}
+              />
+              <Route
+                path="/learning/pre-study/content/:contentId"
+                element={<PreStudyContentViewer />}
+              />
 
-            {/* その他の学習機能 */}
-            <Route path="/learning/combined-test" element={<CombinedTest />} />
-            <Route path="/learning/time-attack" element={<TimeAttackMode />} />
-            <Route path="/learning/essay-writing" element={<EssayWriting />} />
-            <Route
-              path="/learning/creative-writing"
-              element={<CreativeWritingChallenge />}
-            />
-            <Route
-              path="/learning/essay-writing/history"
-              element={<EssayHistory />}
-            />
+              {/* その他の学習機能 */}
+              <Route
+                path="/learning/combined-test"
+                element={<CombinedTest />}
+              />
+              <Route
+                path="/learning/time-attack"
+                element={<TimeAttackMode />}
+              />
+              <Route
+                path="/learning/essay-writing"
+                element={<EssayWriting />}
+              />
+              <Route
+                path="/learning/creative-writing"
+                element={<CreativeWritingChallenge />}
+              />
+              <Route
+                path="/learning/essay-writing/history"
+                element={<EssayHistory />}
+              />
 
-            {/* ゲーム機能 */}
-            <Route
-              path="/games/tower-defense"
-              element={<SimpleTowerDefense />}
-            />
-            <Route path="/games/gacha" element={<GachaSystem />} />
-            <Route path="/games/gacha/result" element={<GachaResultScreen />} />
-            <Route
-              path="/games/gacha/card/:cardId"
-              element={<CardDetailContent />}
-            />
+              {/* ゲーム機能 */}
+              <Route
+                path="/games/tower-defense"
+                element={<SimpleTowerDefense />}
+              />
+              <Route path="/games/gacha" element={<GachaSystem />} />
+              <Route
+                path="/games/gacha/result"
+                element={<GachaResultScreen />}
+              />
+              <Route
+                path="/games/gacha/card/:cardId"
+                element={<CardDetailContent />}
+              />
 
-            {/* ショップ機能 */}
-            <Route path="/shop/xp" element={<XPShopPage />} />
+              {/* ショップ機能 */}
+              <Route path="/shop/xp" element={<XPShopPage />} />
 
-            {/* 進捗・統計 */}
-            <Route path="/progress/achievements" element={<Achievements />} />
-            <Route path="/progress/dashboard" element={<GrowthDashboard />} />
-            <Route path="/progress/insights" element={<PersonalInsights />} />
+              {/* 進捗・統計 */}
+              <Route path="/progress/achievements" element={<Achievements />} />
+              <Route path="/progress/dashboard" element={<GrowthDashboard />} />
+              <Route path="/progress/insights" element={<PersonalInsights />} />
 
-            {/* 設定 */}
-            <Route path="/settings/app" element={<AppSettings />} />
+              {/* 設定 */}
+              <Route path="/settings/app" element={<AppSettings />} />
 
-            {/* フォールバック */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </div>
-      </MigrationProvider>
+              {/* フォールバック */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </div>
+        </MigrationProvider>
+      </ErrorBoundary>
     </BrowserRouter>
   );
 }

@@ -490,7 +490,7 @@ export default function Question() {
                   </p>
                   <Button
                     onClick={() => setShowTreasureBoxModal(true)}
-                    className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold"
+                    className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold"
                     size="lg"
                   >
                     🎁 宝箱をまとめて開封する 🎁
@@ -612,7 +612,7 @@ export default function Question() {
         onClose={() => setShowTreasureBoxModal(false)}
       />
 
-      <div className="max-w-4xl mx-auto p-4">
+      <div className="max-w-4xl mx-auto p-4 bg-white rounded-lg shadow-sm">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <Button

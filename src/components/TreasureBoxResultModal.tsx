@@ -146,7 +146,7 @@ export default function TreasureBoxResultModal({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="max-w-md mx-auto p-4">
+      <div className="max-w-md mx-auto p-4 bg-white rounded-lg shadow-sm">
         {showRewards ? (
           // 報酬表示画面
           <Card className="border-0 shadow-2xl bg-gradient-to-br from-yellow-50 to-orange-100">
@@ -276,7 +276,7 @@ export default function TreasureBoxResultModal({
 
               <Button
                 onClick={onClose}
-                className="w-full mt-6 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold text-lg py-3"
+                className="w-full mt-6 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-black font-bold text-lg py-3"
                 size="lg"
               >
                 🚀 学習を続ける 🚀
@@ -302,7 +302,7 @@ export default function TreasureBoxResultModal({
               {treasureBoxes.length > 1 && (
                 <Button
                   onClick={handleOpenAllBoxes}
-                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold"
+                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-black font-bold"
                   size="lg"
                 >
                   🚀 全て開封する 🚀
@@ -363,4 +363,3 @@ export default function TreasureBoxResultModal({
     </div>
   );
 }
-

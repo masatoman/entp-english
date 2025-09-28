@@ -1,15 +1,13 @@
-import { Heart, Plus, Star, Target } from "lucide-react";
+import { Coins, Heart, Star, Target, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useHeartSystem } from "../hooks/useHeartSystem";
 import { useLevelSystem } from "../hooks/useLevelSystem";
-import { accentColors, baseColors } from "../styles/colors";
 import { StarData } from "../types/starSystem";
 import { adrenalineManager } from "../utils/adrenalineManager";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { getLevelManager } from "../utils/levelManager";
 import { Button } from "./ui/button";
-import { Progress } from "./ui/progress";
 
 // 章情報の定義
 const CHAPTER_INFO = {
@@ -101,285 +99,179 @@ export default function GameHeader({
 
   return (
     <div
-      className="text-white p-4 shadow-game border-b"
+      className="relative overflow-hidden shadow-2xl border-b-2 border-white/20"
       style={{
-        background: `linear-gradient(to right, ${baseColors.spaceCadet}, ${baseColors.delftBlue}, ${baseColors.spaceCadet})`,
-        color: baseColors.ghostWhite,
-        borderBottomColor: `${baseColors.delftBlue}50`,
+        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        color: "#ffffff",
       }}
     >
-      <div className="max-w-6xl mx-auto">
-        {/* 上段: ユーザー情報とレベル */}
-        <div className="flex items-center justify-between mb-3 sm:mb-4">
-          {/* ユーザー情報 */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
-            {/* レベルアバター */}
-            <div
-              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-base sm:text-lg border-2 sm:border-3 border-white shadow-level"
-              style={{
-                background: `linear-gradient(to bottom right, ${accentColors.accentOrange}, ${accentColors.accentOrangeDark})`,
-                color: baseColors.gunmetal,
-              }}
-            >
-              {userLevel.level || 1}
-            </div>
-
-            {/* 章アバター（スマホでは非表示） */}
-            <div
-              className="hidden sm:flex w-8 h-8 rounded-full items-center justify-center font-bold text-sm border-2 border-white/70 shadow-lg"
-              style={{
-                background: `linear-gradient(to bottom right, ${baseColors.delftBlue}, ${baseColors.delftBlueLight})`,
-                color: baseColors.ghostWhite,
-              }}
-            >
-              {userLevel.chapter || 2}
-            </div>
-
-            <div>
-              <div
-                className="text-base sm:text-lg font-bold drop-shadow-md"
-                style={{
-                  color: baseColors.ghostWhite,
-                  textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
-                }}
-              >
-                Level {userLevel.level || 1}
-              </div>
-              <div
-                className="text-xs sm:text-sm font-medium"
-                style={{
-                  color: baseColors.periwinkle,
-                  textShadow: "1px 1px 2px rgba(0,0,0,0.6)",
-                }}
-              >
-                第{userLevel.chapter || 2}章 •{" "}
-                {CHAPTER_INFO[userLevel.chapter || 2]?.name || "中級編"}
-              </div>
-            </div>
-          </div>
-
-          {/* XP進捗 */}
-          <div className="flex-1 max-w-xs sm:max-w-md mx-3 sm:mx-6">
-            <div className="flex items-center justify-between mb-1">
-              <span
-                className="text-xs sm:text-sm font-medium"
-                style={{
-                  color: baseColors.periwinkle,
-                  textShadow: "1px 1px 2px rgba(0,0,0,0.6)",
-                }}
-              >
-                経験値
-              </span>
-              <span
-                className="text-xs sm:text-sm font-bold drop-shadow-md"
-                style={{
-                  color: accentColors.accentOrange,
-                  textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
-                }}
-              >
-                {progressXP.toFixed(0)}/{requiredXP} XP
-              </span>
-            </div>
-            <Progress
-              value={progressPercentage}
-              className="h-2 sm:h-3 border"
-              style={{
-                backgroundColor: `${baseColors.spaceCadet}80`,
-                borderColor: `${baseColors.delftBlue}60`,
-              }}
-            />
-
-            {/* 章の進捗（スマホでは非表示） */}
-            <div
-              className="hidden sm:flex items-center justify-between text-xs mt-1"
-              style={{
-                color: baseColors.periwinkle,
-                textShadow: "1px 1px 2px rgba(0,0,0,0.5)",
-              }}
-            >
-              <span>第{userLevel.chapter || 2}章進捗</span>
-              <span style={{ color: accentColors.accentOrange }}>
-                {(((userLevel.level || 1) % 10) * 10).toFixed(0)}%
-              </span>
-            </div>
-          </div>
-
-          {/* デイリークエストボタン */}
-          {onQuestClick && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onQuestClick}
-              className="font-bold relative text-xs sm:text-sm px-2 sm:px-3 border-2 shadow-button transition-all duration-200"
-              style={{
-                background: `linear-gradient(to right, ${accentColors.successGreen}, ${accentColors.successGreenLight})`,
-                color: baseColors.ghostWhite,
-                border: `2px solid ${baseColors.ghostWhite}50`,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = `linear-gradient(to right, ${accentColors.successGreenLight}, ${accentColors.successGreen})`;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = `linear-gradient(to right, ${accentColors.successGreen}, ${accentColors.successGreenLight})`;
-              }}
-            >
-              <Target className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-              <span className="hidden sm:inline">クエスト</span>
-              <span className="sm:hidden">🎯</span>
-              {showQuestBadge && questCompletedCount > 0 && (
-                <span className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-red-500 text-white text-xs rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center text-xs font-bold">
-                  {questCompletedCount}
-                </span>
-              )}
-            </Button>
-          )}
-        </div>
-
-        {/* 下段: リソース表示 */}
+      {/* 動的な背景効果 */}
+      <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-transparent to-purple-500/20 animate-pulse" />
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white/10 to-transparent" />
+      <div className="relative z-10 max-w-6xl mx-auto px-4">
+        {/* ヘッダー全体レイアウト */}
         <div
-          className="flex items-center justify-around rounded-lg p-2 sm:p-3 shadow-inner border"
-          style={{
-            backgroundColor: `${baseColors.spaceCadet}60`,
-            borderColor: `${baseColors.delftBlue}50`,
-          }}
+          className="flex items-center justify-between"
+          style={{ height: "60px" }}
         >
-          {/* 体力（ハート） */}
-          <div className="flex items-center space-x-1 sm:space-x-2">
-            <div className="flex items-center space-x-1">
-              <Heart
-                className="w-4 h-4 sm:w-5 sm:h-5"
-                style={{ color: accentColors.warningRed }}
-              />
-              <span
-                className="text-sm sm:text-lg font-bold text-white drop-shadow-md"
-                style={{
-                  color: "white",
-                  textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
-                }}
+          {/* 左側: レベル&進捗ゲージ */}
+          <div className="flex items-center gap-4">
+            {/* レベル&進捗セクション */}
+            <div className="flex flex-col gap-1">
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-1">
+                <div
+                  className="text-lg font-bold"
+                  style={{
+                    color: "#ffffff",
+                    textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
+                  }}
+                >
+                  Level {userLevel.level || 1}
+                </div>
+              </div>
+              {/* 進捗ゲージ */}
+              <div
+                className="bg-white/20 backdrop-blur-sm rounded-lg p-1"
+                style={{ width: "140px" }}
               >
-                {heartSystem.current}/{heartSystem.max}
-              </span>
-            </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                const manager = getLevelManager();
-                if (manager.recoverAllHearts) {
-                  manager.recoverAllHearts();
-                  console.log("♥ 体力を全回復しました");
-                } else {
-                  console.log("♥ 回復機能が利用できません");
-                }
-              }}
-              className="text-red-300 hover:text-red-200 hover:bg-red-500/20 p-0.5 sm:p-1 hidden sm:block"
-            >
-              <Plus className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-            </Button>
-          </div>
-
-          {/* スタミナ（星） */}
-          <div className="flex items-center space-x-1 sm:space-x-2">
-            <div className="flex items-center space-x-1">
-              <Star className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400" />
-              <span
-                className="text-sm sm:text-lg font-bold text-white drop-shadow-md"
-                style={{
-                  color: "white",
-                  textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
-                }}
-              >
-                {starSystem.current}/{starSystem.max}
-              </span>
-            </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                const manager = getLevelManager();
-                if (manager.recoverAllStars) {
-                  manager.recoverAllStars();
-                  setStarSystem(manager.getStarSystem());
-                  console.log("⭐ スタミナを全回復しました");
-                } else {
-                  console.log("⭐ 回復機能が利用できません");
-                }
-              }}
-              className="text-yellow-300 hover:text-yellow-200 hover:bg-yellow-500/20 p-0.5 sm:p-1 hidden sm:block"
-            >
-              <Plus className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-            </Button>
-          </div>
-
-          {/* ガチャコイン */}
-          <div className="flex items-center space-x-2">
-            <div className="flex items-center space-x-1">
-              <span className="text-lg">🪙</span>
-              <span
-                className="text-lg font-bold text-white drop-shadow-md"
-                style={{
-                  color: "white",
-                  textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
-                }}
-              >
-                {coinSystem.current}
-              </span>
-            </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                dailyQuestManager.addCoins(10, "special");
-                setCoinSystem(dailyQuestManager.getCoinSystem());
-                console.log("🪙 コインを10枚追加しました");
-              }}
-              className="text-yellow-300 hover:text-yellow-200 hover:bg-yellow-500/20 p-1"
-            >
-              <Plus className="w-3 h-3" />
-            </Button>
-          </div>
-
-          {/* デイリーボーナス表示 */}
-          {dailyMultiplier > 1.0 && (
-            <div className="flex items-center space-x-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 px-3 py-1 rounded-full border border-yellow-400/30">
-              <span className="text-sm">📅</span>
-              <div className="text-sm">
-                <span className="text-yellow-300 font-bold">
-                  ×{dailyMultiplier.toFixed(1)}
-                </span>
-                <span className="text-yellow-200 ml-1">XP</span>
+                <div
+                  className="h-2 bg-gray-800/50 rounded overflow-hidden"
+                  style={{ height: "8px" }}
+                >
+                  <div
+                    className="h-full rounded transition-all duration-300 shadow-lg"
+                    style={{
+                      width: `${progressPercentage}%`,
+                      background: "linear-gradient(90deg, #ffd700, #ffed4e)",
+                      boxShadow: "0 0 10px rgba(255, 215, 0, 0.6)",
+                    }}
+                  />
+                </div>
               </div>
             </div>
-          )}
 
-          {/* 総XP表示 */}
-          <div className="flex items-center space-x-1">
-            <span className="text-sm">⚡</span>
-            <span className="text-lg font-bold text-white drop-shadow-md">
-              {totalXP.toLocaleString()}
-            </span>
-            <span className="text-sm text-blue-200 font-medium">XP</span>
+            {/* アイコン群 */}
+            <div className="flex items-center gap-3">
+              {/* ハート（体力） */}
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 flex items-center gap-2">
+                <Heart className="w-5 h-5" style={{ color: "#ff4757" }} />
+                <span
+                  className="text-sm font-bold"
+                  style={{
+                    color: "#ffffff",
+                    textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
+                  }}
+                >
+                  {heartSystem.current}/{heartSystem.max}
+                </span>
+              </div>
+
+              {/* スター（スタミナ） */}
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 flex items-center gap-2">
+                <Star className="w-5 h-5" style={{ color: "#ffa502" }} />
+                <span
+                  className="text-sm font-bold"
+                  style={{
+                    color: "#ffffff",
+                    textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
+                  }}
+                >
+                  {starSystem.current}/{starSystem.max}
+                </span>
+              </div>
+
+              {/* コイン */}
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 flex items-center gap-2">
+                <Coins className="w-5 h-5" style={{ color: "#ffd700" }} />
+                <span
+                  className="text-sm font-bold"
+                  style={{
+                    color: "#ffffff",
+                    textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
+                  }}
+                >
+                  {coinSystem.current}
+                </span>
+              </div>
+
+              {/* XP */}
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 flex items-center gap-2">
+                <Zap className="w-5 h-5" style={{ color: "#00d2ff" }} />
+                <span
+                  className="text-sm font-bold"
+                  style={{
+                    color: "#ffffff",
+                    textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
+                  }}
+                >
+                  {totalXP || 0}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* 右側: 倍率表示 */}
+          <div className="flex items-center gap-2">
+            {/* デイリーボーナス */}
+            {dailyMultiplier > 1.0 && (
+              <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg border border-blue-400/50">
+                ×{dailyMultiplier.toFixed(1)} XP
+              </div>
+            )}
+
+            {/* 総合効果 */}
+            {dailyMultiplier > 1.0 && (
+              <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg border border-orange-400/50">
+                ×{dailyMultiplier.toFixed(1)} 総合効果
+              </div>
+            )}
+
+            {/* コンボ効果 */}
+            {adrenalineManager.calculateTotalMultiplier() > 1.0 && (
+              <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg border border-purple-400/50">
+                ×{adrenalineManager.calculateTotalMultiplier().toFixed(1)}{" "}
+                コンボ
+              </div>
+            )}
+
+            {/* デイリークエストボタン */}
+            {onQuestClick && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onQuestClick}
+                className="header-button font-bold relative text-sm transition-all duration-200 shadow-lg hover:shadow-xl"
+                style={{
+                  background: "linear-gradient(135deg, #00d4aa, #00a085)",
+                  color: "#ffffff",
+                  padding: "8px 16px",
+                  borderRadius: "12px",
+                  border: "2px solid rgba(255,255,255,0.3)",
+                  boxShadow: "0 4px 15px rgba(0, 212, 170, 0.4)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background =
+                    "linear-gradient(135deg, #00a085, #00d4aa)";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background =
+                    "linear-gradient(135deg, #00d4aa, #00a085)";
+                  e.currentTarget.style.transform = "translateY(0px)";
+                }}
+              >
+                <Target className="w-4 h-4 mr-2" />
+                <span className="hidden sm:inline">クエスト</span>
+                <span className="sm:hidden">🎯</span>
+                {showQuestBadge && questCompletedCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shadow-lg">
+                    {questCompletedCount}
+                  </span>
+                )}
+              </Button>
+            )}
           </div>
         </div>
-
-        {/* 回復時間表示（必要時のみ） */}
-        {(heartSystem.current < heartSystem.max ||
-          starSystem.current < starSystem.max) && (
-          <div className="mt-3 flex items-center justify-center space-x-4 text-xs text-blue-200 font-medium">
-            {heartSystem.current < heartSystem.max && (
-              <div className="flex items-center space-x-1">
-                <Heart className="w-3 h-3" />
-                <span>5分で回復</span>
-              </div>
-            )}
-            {starSystem.current < starSystem.max && (
-              <div className="flex items-center space-x-1">
-                <Star className="w-3 h-3" />
-                <span>10分で回復</span>
-              </div>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );

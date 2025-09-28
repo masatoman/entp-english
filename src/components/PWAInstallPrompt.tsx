@@ -1,24 +1,25 @@
-import { useState, useEffect } from 'react';
-import { Button } from './ui/button';
-import { Download, X } from 'lucide-react';
+import { Download, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Button } from "./ui/button";
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
   readonly userChoice: Promise<{
-    outcome: 'accepted' | 'dismissed';
+    outcome: "accepted" | "dismissed";
     platform: string;
   }>;
   prompt(): Promise<void>;
 }
 
 export function PWAInstallPrompt() {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [deferredPrompt, setDeferredPrompt] =
+    useState<BeforeInstallPromptEvent | null>(null);
   const [showInstallPrompt, setShowInstallPrompt] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
 
   useEffect(() => {
     // Check if app is already installed
-    if (window.matchMedia('(display-mode: standalone)').matches) {
+    if (window.matchMedia("(display-mode: standalone)").matches) {
       setIsInstalled(true);
       return;
     }
@@ -37,12 +38,15 @@ export function PWAInstallPrompt() {
       setDeferredPrompt(null);
     };
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    window.addEventListener('appinstalled', handleAppInstalled);
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    window.addEventListener("appinstalled", handleAppInstalled);
 
     return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-      window.removeEventListener('appinstalled', handleAppInstalled);
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handleBeforeInstallPrompt
+      );
+      window.removeEventListener("appinstalled", handleAppInstalled);
     };
   }, []);
 
@@ -51,13 +55,13 @@ export function PWAInstallPrompt() {
 
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
-    
-    if (outcome === 'accepted') {
-      console.log('User accepted the install prompt');
+
+    if (outcome === "accepted") {
+      console.log("User accepted the install prompt");
     } else {
-      console.log('User dismissed the install prompt');
+      console.log("User dismissed the install prompt");
     }
-    
+
     setDeferredPrompt(null);
     setShowInstallPrompt(false);
   };
@@ -65,7 +69,7 @@ export function PWAInstallPrompt() {
   const handleDismiss = () => {
     setShowInstallPrompt(false);
     // Store dismissal in localStorage to avoid showing again for a while
-    localStorage.setItem('pwa-install-dismissed', Date.now().toString());
+    localStorage.setItem("pwa-install-dismissed", Date.now().toString());
   };
 
   // Don't show if already installed or if user recently dismissed
@@ -74,9 +78,10 @@ export function PWAInstallPrompt() {
   }
 
   // Check if user recently dismissed (within 7 days)
-  const dismissedTime = localStorage.getItem('pwa-install-dismissed');
+  const dismissedTime = localStorage.getItem("pwa-install-dismissed");
   if (dismissedTime) {
-    const daysSinceDismissed = (Date.now() - parseInt(dismissedTime)) / (1000 * 60 * 60 * 24);
+    const daysSinceDismissed =
+      (Date.now() - parseInt(dismissedTime)) / (1000 * 60 * 60 * 24);
     if (daysSinceDismissed < 7) {
       return null;
     }
@@ -87,7 +92,7 @@ export function PWAInstallPrompt() {
       <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-4">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-black mb-1">
               アプリをインストール
             </h3>
             <p className="text-xs text-gray-600 dark:text-gray-300 mb-3">

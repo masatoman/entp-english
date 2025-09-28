@@ -9,6 +9,7 @@ import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { DataManager } from "../utils/dataManager";
 import { KnownWordsManager } from "../utils/knownWordsManager";
 import { LearningAnalyzer } from "../utils/learningAnalyzer";
+import { getLevelManager } from "../utils/levelManager";
 import { SoundManager } from "../utils/soundManager";
 import { SpeechSynthesisManager } from "../utils/speechSynthesis";
 import { VocabularyManager } from "../utils/vocabularyManager";
@@ -389,7 +390,7 @@ export default function VocabularyCard({
   if (words.length === 0 && !isCompleted) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-red-50 to-white">
-        <div className="max-w-md mx-auto p-4 space-y-6">
+        <div className="max-w-md mx-auto p-4 space-y-6 bg-white rounded-lg shadow-sm">
           {/* Header */}
           <div className="flex items-center justify-between pt-8">
             <Button
@@ -469,7 +470,7 @@ export default function VocabularyCard({
           background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
         }}
       >
-        <div className="max-w-4xl mx-auto p-4 space-y-6">
+        <div className="max-w-4xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-sm">
           {/* Header */}
           <div className="flex items-center justify-between pt-8">
             <Button
@@ -535,7 +536,7 @@ export default function VocabularyCard({
                   </p>
                   <Button
                     onClick={() => setShowTreasureBoxModal(true)}
-                    className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold"
+                    className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold"
                     size="lg"
                   >
                     🎁 宝箱をまとめて開封する 🎁
@@ -659,7 +660,7 @@ export default function VocabularyCard({
         onClose={() => setShowTreasureBoxModal(false)}
       />
 
-      <div className="max-w-md mx-auto p-4 space-y-6">
+      <div className="max-w-md mx-auto p-4 space-y-6 bg-white rounded-lg shadow-sm">
         {/* Header */}
         <div className="flex items-center justify-between pt-8">
           <Button

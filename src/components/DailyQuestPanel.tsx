@@ -170,13 +170,13 @@ export default function DailyQuestPanel({ onClose }: DailyQuestPanelProps) {
                       <div
                         className={`w-10 h-10 sm:w-16 sm:h-16 rounded-lg bg-gradient-to-br ${getRarityColor(
                           quest.rarity
-                        )} flex items-center justify-center text-base sm:text-2xl text-white shadow-lg`}
+                        )} flex items-center justify-center text-base sm:text-2xl text-black shadow-lg`}
                       >
                         {quest.icon}
                       </div>
                       {quest.isCompleted && (
                         <div className="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-green-500 rounded-full flex items-center justify-center">
-                          <Check className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
+                          <Check className="w-3 h-3 sm:w-4 sm:h-4 text-black" />
                         </div>
                       )}
                     </div>

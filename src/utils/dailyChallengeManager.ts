@@ -254,7 +254,10 @@ export class DailyChallengeManager {
 
         case "special-mode":
           if (rule.value === "hard-mode") {
-            return sessionData.difficulty === "advanced";
+            return (
+              sessionData.difficulty === "hard" ||
+              sessionData.difficulty === "advanced"
+            );
           }
           if (rule.value === "creative-writing") {
             return sessionData.mode === "creative";

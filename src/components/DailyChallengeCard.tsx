@@ -27,6 +27,22 @@ export function DailyChallengeCard() {
     setStats(challengeStats);
   }, []);
 
+  // ページフォーカス時にチャレンジ状態を更新
+  useEffect(() => {
+    const handleFocus = () => {
+      const todayChallenge = DailyChallengeManager.getTodayChallenge();
+      const challengeProgress = DailyChallengeManager.getProgress();
+      const challengeStats = DailyChallengeManager.getStats();
+
+      setChallenge(todayChallenge);
+      setProgress(challengeProgress);
+      setStats(challengeStats);
+    };
+
+    window.addEventListener("focus", handleFocus);
+    return () => window.removeEventListener("focus", handleFocus);
+  }, []);
+
   const handleStartChallenge = () => {
     if (!challenge) return;
 
@@ -187,7 +203,7 @@ export function DailyChallengeCard() {
         {/* アクションボタン */}
         <div className="pt-2">
           {challenge.isCompleted ? (
-            <Button disabled className="w-full h-12 bg-green-500 text-white">
+            <Button disabled className="w-full h-12 bg-green-500 text-black">
               <div className="flex items-center space-x-2">
                 <span>✅ 今日のチャレンジ完了！</span>
               </div>
@@ -195,7 +211,7 @@ export function DailyChallengeCard() {
           ) : (
             <Button
               onClick={handleStartChallenge}
-              className="w-full h-12 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold"
+              className="w-full h-12 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-black font-semibold"
             >
               <div className="flex items-center space-x-2">
                 <Target className="w-5 h-5" />

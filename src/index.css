@@ -2802,8 +2802,8 @@
     color: var(--color-foreground);
   }
 
-  .text-white {
-    color: var(--color-white);
+  .text-black {
+    color: var(--color-black);
   }
 
   .text-yellow-300 {

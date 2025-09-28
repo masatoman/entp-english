@@ -2,7 +2,6 @@ import { Crown, Diamond, Sparkles, Star, Zap } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { WordCard } from "../../types/gacha";
 import { Badge } from "./badge";
-import { Card } from "./card";
 
 interface GachaCardProps {
   card: WordCard;
@@ -140,19 +139,18 @@ export function GachaCard({
   const sizeClass = sizeClasses[size];
 
   return (
-    <Card
+    <div
       className={cn(
-        "relative overflow-hidden cursor-pointer border-2 transition-all duration-300",
+        "relative overflow-hidden cursor-pointer transition-all duration-300",
         "bg-white", // 純白背景
-        // サイズ別の角丸 (デフォルトのrounded-smから調整)
-        size === "sm" ? "!rounded-md" : "!rounded-sm",
-        rarityInfo.borderColor,
-        rarityInfo.shadowColor,
+        // サイズ別の角丸
+        size === "sm" ? "rounded-md" : "rounded-sm",
+        // ボーダーなし、シンプルなシャドウ
+        "shadow-sm",
         sizeClass.card,
         // ホバー効果
         "hover:scale-105 hover:-translate-y-1",
-        `hover:${rarityInfo.glowColor}`,
-        "hover:shadow-xl",
+        "hover:shadow-md",
         // アニメーション
         isAnimated && "transform-gpu",
         // 新しいカードの場合
@@ -166,7 +164,7 @@ export function GachaCard({
       {/* 所持枚数表示 */}
       {count && count > 1 && (
         <div className="absolute top-2 left-2 z-10">
-          <Badge className="bg-blue-600 text-white text-xs font-bold">
+          <Badge className="bg-blue-600 text-black text-xs font-bold">
             ×{count}
           </Badge>
         </div>
@@ -174,14 +172,8 @@ export function GachaCard({
 
       {/* 新しいカードのバッジ */}
       {isNew && (
-        <div
-          className={cn(
-            "absolute top-2 z-10",
-            count && count > 1 ? "right-2" : "right-2",
-            onFavoriteToggle ? "right-10" : "right-2"
-          )}
-        >
-          <Badge className="bg-yellow-500 text-white text-xs animate-pulse">
+        <div className="absolute top-2 left-2 z-10">
+          <Badge className="bg-yellow-500 text-black text-xs animate-pulse">
             <Sparkles className="w-3 h-3 mr-1" />
             NEW
           </Badge>
@@ -191,7 +183,7 @@ export function GachaCard({
       {/* お気に入りボタン */}
       {onFavoriteToggle && (
         <button
-          className="absolute top-2 right-2 z-10 p-1 rounded-full hover:bg-black/10 transition-colors"
+          className="absolute top-2 right-12 z-10 p-1 rounded-full hover:bg-black/10 transition-colors"
           onClick={(e) => {
             e.stopPropagation();
             onFavoriteToggle();
@@ -208,7 +200,28 @@ export function GachaCard({
         </button>
       )}
 
-      {/* レアリティアイコンは削除 - ボーダーカラーで判別 */}
+      {/* レアリティバッジ */}
+      <div className="absolute top-2 right-2 z-10">
+        <Badge
+          className={cn(
+            "font-bold",
+            rarityInfo.badgeColor,
+            sizeClass.badge,
+            // レアリティに応じた文字色（黒のみ）
+            "text-black"
+          )}
+        >
+          <rarityInfo.icon
+            className={cn(
+              sizeClass.icon,
+              "mr-1",
+              // アイコンも黒のみ
+              "text-black"
+            )}
+          />
+          {rarityInfo.name}
+        </Badge>
+      </div>
 
       {/* カード内容 */}
       <div className="relative z-10 h-full flex flex-col justify-between pt-2">
@@ -248,6 +261,6 @@ export function GachaCard({
       </div>
 
       {/* ホバー時のオーバーレイは削除 - 純白背景を維持 */}
-    </Card>
+    </div>
   );
 }

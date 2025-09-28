@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { baseColors } from "../styles/colors";
 import { Category } from "../types";
 import {
   ContentMetadata,
@@ -18,7 +19,6 @@ import {
 } from "../utils/contentMetadataManager";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { Badge } from "./ui/badge";
-import { baseColors } from "../styles/colors";
 import { Button } from "./ui/button";
 import {
   Card,
@@ -139,13 +139,32 @@ export default function SynergyDashboard({
     (p) => p.completionRate === 1.0
   ).length;
   const totalCount = synergyProgress.length;
-  const averageSynergyBonus =
-    totalCount > 0
-      ? synergyProgress.reduce((sum, p) => sum + p.synergyBonus, 0) / totalCount
-      : 1.0; // デフォルト値として1.0（100%）を設定
+  const averageSynergyBonus = (() => {
+    if (totalCount === 0 || !synergyProgress || synergyProgress.length === 0) {
+      return 1.0; // デフォルト値として1.0（100%）を設定
+    }
+
+    const validBonuses = synergyProgress
+      .map((p) => p.synergyBonus)
+      .filter(
+        (bonus) => typeof bonus === "number" && !isNaN(bonus) && bonus > 0
+      );
+
+    if (validBonuses.length === 0) {
+      return 1.0; // 有効なボーナスがない場合はデフォルト値
+    }
+
+    const sum = validBonuses.reduce((acc, bonus) => acc + bonus, 0);
+    return sum / validBonuses.length;
+  })();
 
   return (
-    <div className="min-h-screenp-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
+    <div
+      className="min-h-screenp-4"
+      style={{
+        background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
+      }}
+    >
       <div className="max-w-6xl mx-auto space-y-6">
         {/* ヘッダー */}
         <div className="flex items-center justify-between mb-8">
@@ -570,7 +589,7 @@ export default function SynergyDashboard({
               <div className="space-y-4">
                 {/* ステップ1 */}
                 <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center font-bold">
+                  <div className="w-6 h-6 rounded-full bg-blue-500 text-black text-xs flex items-center justify-center font-bold">
                     1
                   </div>
                   <div className="flex-1">
@@ -593,7 +612,7 @@ export default function SynergyDashboard({
 
                 {/* ステップ2 */}
                 <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 rounded-full bg-green-500 text-white text-xs flex items-center justify-center font-bold">
+                  <div className="w-6 h-6 rounded-full bg-green-500 text-black text-xs flex items-center justify-center font-bold">
                     2
                   </div>
                   <div className="flex-1">
@@ -617,7 +636,7 @@ export default function SynergyDashboard({
 
                 {/* ステップ3 */}
                 <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 rounded-full bg-purple-500 text-white text-xs flex items-center justify-center font-bold">
+                  <div className="w-6 h-6 rounded-full bg-purple-500 text-black text-xs flex items-center justify-center font-bold">
                     3
                   </div>
                   <div className="flex-1">
@@ -696,25 +715,25 @@ export default function SynergyDashboard({
               </h4>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center space-x-2">
-                  <span className="w-4 h-4 rounded-full bg-indigo-500 text-white text-xs flex items-center justify-center">
+                  <span className="w-4 h-4 rounded-full bg-indigo-500 text-black text-xs flex items-center justify-center">
                     1
                   </span>
                   <span>朝：事前学習で理論習得（⭐️1個消費）</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <span className="w-4 h-4 rounded-full bg-indigo-500 text-white text-xs flex items-center justify-center">
+                  <span className="w-4 h-4 rounded-full bg-indigo-500 text-black text-xs flex items-center justify-center">
                     2
                   </span>
                   <span>昼：関連する文法クイズで実践（♥1個消費）</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <span className="w-4 h-4 rounded-full bg-indigo-500 text-white text-xs flex items-center justify-center">
+                  <span className="w-4 h-4 rounded-full bg-indigo-500 text-black text-xs flex items-center justify-center">
                     3
                   </span>
                   <span>夕：統合学習でガチャ語彙を活用（♥1個消費）</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <span className="w-4 h-4 rounded-full bg-purple-500 text-white text-xs flex items-center justify-center">
+                  <span className="w-4 h-4 rounded-full bg-purple-500 text-black text-xs flex items-center justify-center">
                     🚀
                   </span>
                   <span className="font-bold text-purple-600">

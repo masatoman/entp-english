@@ -320,7 +320,7 @@ export default function CombinedTest() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-white">
-      <div className="max-w-md mx-auto p-4 space-y-6">
+      <div className="max-w-md mx-auto p-4 space-y-6 bg-white rounded-lg shadow-sm">
         {/* Header */}
         <div className="flex items-center justify-between pt-8">
           <Button variant="ghost" onClick={() => navigate("/")} className="p-2">

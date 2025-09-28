@@ -92,7 +92,7 @@ export default function TimeAttackMode() {
               ),
               correctAnswer: card.word,
               explanation: `ガチャ語彙: ${card.word} - ${card.meaning}`,
-              timeLimit: 8, // ガチャ語彙は短時間で
+              timeLimit: 15, // ガチャ語彙は適度な時間で
             });
           }
         });
@@ -117,7 +117,7 @@ export default function TimeAttackMode() {
             options: q.choices,
             correctAnswer: q.correctAnswer,
             explanation: `文法復習: ${q.explanation}`,
-            timeLimit: 12, // 文法問題は少し長めに
+            timeLimit: 20, // 文法問題は十分な時間で
           });
         });
       }
@@ -145,12 +145,18 @@ export default function TimeAttackMode() {
           ].sort(() => Math.random() - 0.5),
           correctAnswer: word.word,
           explanation: word.meaning,
-          timeLimit: 10,
+          timeLimit: 18,
         });
       });
     }
 
-    return timeAttackQuestions.sort(() => Math.random() - 0.5).slice(0, 10);
+    // 重複を防ぐためにIDベースでフィルタリング
+    const uniqueQuestions = timeAttackQuestions.filter(
+      (question, index, self) =>
+        index === self.findIndex((q) => q.id === question.id)
+    );
+
+    return uniqueQuestions.sort(() => Math.random() - 0.5).slice(0, 10);
   };
 
   // ゲーム開始
@@ -282,7 +288,7 @@ export default function TimeAttackMode() {
   if (isCompleted) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-red-50 to-orange-50">
-        <div className="max-w-md mx-auto p-4 space-y-6">
+        <div className="max-w-md mx-auto p-4 space-y-6 bg-white rounded-lg shadow-sm">
           {/* Header */}
           <div className="flex items-center justify-between">
             <Button
@@ -378,7 +384,7 @@ export default function TimeAttackMode() {
                     <CardContent className="p-4">
                       <div className="flex items-start gap-3">
                         <div
-                          className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
+                          className={`w-8 h-8 rounded-full flex items-center justify-center text-black font-bold ${
                             result.isCorrect ? "bg-green-500" : "bg-red-500"
                           }`}
                         >
@@ -446,7 +452,7 @@ export default function TimeAttackMode() {
   if (!isPlaying) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-red-50 to-orange-50">
-        <div className="max-w-md mx-auto p-4 space-y-6">
+        <div className="max-w-md mx-auto p-4 space-y-6 bg-white rounded-lg shadow-sm">
           {/* Header */}
           <div className="flex items-center justify-between">
             <Button
@@ -502,7 +508,7 @@ export default function TimeAttackMode() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-orange-50">
-      <div className="max-w-md mx-auto p-4 space-y-6">
+      <div className="max-w-md mx-auto p-4 space-y-6 bg-white rounded-lg shadow-sm">
         {/* Header */}
         <div className="flex items-center justify-between">
           <Button variant="ghost" onClick={() => navigate("/")} className="p-2">

@@ -1,9 +1,9 @@
 import { ArrowLeft, Lock, Star, Trophy, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { baseColors } from "../styles/colors";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
-// import { getLevelManager, saveLevelManager } from "../utils/levelManager";
+import { getLevelManager } from "../utils/levelManager";
+import { saveLevelManager } from "../utils/dataManager";
 import {
   GRAMMAR_SKILL_TREE,
   SkillNode,
@@ -11,6 +11,7 @@ import {
   SkillTreeState,
 } from "../utils/skillTreeManager";
 import { Button } from "./ui/button";
+import { baseColors } from "../styles/colors";
 import {
   Card,
   CardContent,
@@ -53,8 +54,13 @@ export default function SkillTree() {
   };
 
   const handleStartLearning = (node: SkillNode) => {
-    // 一時的に体力消費を無効化してテスト
-    console.log("スキルツリーから学習開始:", node);
+    // ハートを消費して学習を開始
+    const levelManager = getLevelManager();
+    if (!levelManager.consumeHeart()) {
+      alert("体力が不足しています。回復を待ってから再試行してください。");
+      return;
+    }
+    saveLevelManager();
 
     // ノードに応じて適切な学習ページに遷移
     const foundationCategories = [
@@ -153,12 +159,7 @@ export default function SkillTree() {
 
   if (!skillTreeState) {
     return (
-      <div
-        className="min-h-screen p-4"
-        style={{
-          background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
-        }}
-      >
+      <div className="min-h-screenp-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center">読み込み中...</div>
         </div>
@@ -169,12 +170,7 @@ export default function SkillTree() {
   const completionPercentage = skillTreeManager.getCompletionPercentage();
 
   return (
-    <div
-      className="min-h-screenp-4"
-      style={{
-        background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
-      }}
-    >
+    <div className="min-h-screenp-4" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
       <div className="max-w-7xl mx-auto">
         {/* ヘッダー */}
         <div className="flex items-center justify-between mb-6">

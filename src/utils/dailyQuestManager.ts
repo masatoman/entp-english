@@ -1,5 +1,4 @@
 import { CoinSystem, DailyQuest, DailyQuestSystem } from "../types/dailyQuest";
-import { DataManager } from "./dataManager";
 
 class DailyQuestManager {
   private static instance: DailyQuestManager;
@@ -276,13 +275,13 @@ class DailyQuestManager {
     return this.questSystem.availableQuests;
   }
 
-  public updateQuestProgress(
+  public async updateQuestProgress(
     targetType: DailyQuest["targetType"],
     amount: number = 1
-  ): void {
+  ): Promise<void> {
     let anyUpdated = false;
 
-    this.questSystem.availableQuests.forEach((quest) => {
+    for (const quest of this.questSystem.availableQuests) {
       if (quest.targetType === targetType && !quest.isCompleted) {
         quest.currentProgress = Math.min(
           quest.currentProgress + amount,
@@ -296,16 +295,17 @@ class DailyQuestManager {
           this.questSystem.totalQuestsCompleted++;
 
           // 報酬を付与
-          quest.rewards.forEach((reward) => {
+          for (const reward of quest.rewards) {
             if (reward.type === "xp") {
-              const levelManager = DataManager.getLevelManager();
+              const { getLevelManager } = await import("./levelManager");
+              const levelManager = getLevelManager();
               levelManager.addXP(reward.amount);
               this.questSystem.totalRewardsEarned.xp += reward.amount;
             } else if (reward.type === "coins") {
               this.addCoins(reward.amount, "quests");
               this.questSystem.totalRewardsEarned.coins += reward.amount;
             }
-          });
+          }
 
           // ストリーク更新
           this.updateStreak();
@@ -319,7 +319,7 @@ class DailyQuestManager {
           anyUpdated = true;
         }
       }
-    });
+    }
 
     if (anyUpdated) {
       this.saveQuestSystem();
@@ -393,44 +393,44 @@ class DailyQuestManager {
   }
 
   // 特定アクションでクエスト進捗を更新
-  public recordGrammarQuizCompletion(): void {
-    this.updateQuestProgress("grammar", 1);
+  public async recordGrammarQuizCompletion(): Promise<void> {
+    await this.updateQuestProgress("grammar", 1);
   }
 
-  public recordVocabularyLearning(wordsLearned: number): void {
-    this.updateQuestProgress("vocabulary", wordsLearned);
+  public async recordVocabularyLearning(wordsLearned: number): Promise<void> {
+    await this.updateQuestProgress("vocabulary", wordsLearned);
   }
 
-  public recordCombinedTestCompletion(): void {
-    this.updateQuestProgress("combined", 1);
+  public async recordCombinedTestCompletion(): Promise<void> {
+    await this.updateQuestProgress("combined", 1);
   }
 
-  public recordTimeAttackCompletion(): void {
-    this.updateQuestProgress("time-attack", 1);
+  public async recordTimeAttackCompletion(): Promise<void> {
+    await this.updateQuestProgress("time-attack", 1);
   }
 
-  public recordEssayCompletion(): void {
-    this.updateQuestProgress("essay", 1);
+  public async recordEssayCompletion(): Promise<void> {
+    await this.updateQuestProgress("essay", 1);
   }
 
-  public recordSkillTreeVisit(): void {
-    this.updateQuestProgress("skill-tree", 1);
+  public async recordSkillTreeVisit(): Promise<void> {
+    await this.updateQuestProgress("skill-tree", 1);
   }
 
-  public recordGachaUsage(): void {
-    this.updateQuestProgress("gacha", 1);
+  public async recordGachaUsage(): Promise<void> {
+    await this.updateQuestProgress("gacha", 1);
   }
 
-  public recordPreStudyCompletion(): void {
-    this.updateQuestProgress("pre-study", 1);
+  public async recordPreStudyCompletion(): Promise<void> {
+    await this.updateQuestProgress("pre-study", 1);
   }
 
-  public recordSynergyVisit(): void {
-    this.updateQuestProgress("synergy", 1);
+  public async recordSynergyVisit(): Promise<void> {
+    await this.updateQuestProgress("synergy", 1);
   }
 
-  public recordAchievementsVisit(): void {
-    this.updateQuestProgress("achievements", 1);
+  public async recordAchievementsVisit(): Promise<void> {
+    await this.updateQuestProgress("achievements", 1);
   }
 
   // クエスト完了状況の統計

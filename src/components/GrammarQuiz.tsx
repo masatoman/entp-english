@@ -1,22 +1,26 @@
-import { useState, useEffect } from "react";
+import { ArrowLeft, RotateCcw } from "lucide-react";
+import { useEffect, useState } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
-import { Card, CardContent, CardHeader } from "./ui/card";
+import {
+  GrammarQuizQuestion,
+  getGrammarQuizQuestions,
+} from "../data/grammarQuiz";
 import { baseColors } from "../styles/colors";
-import { Button } from "./ui/button";
-import { Progress } from "./ui/progress";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
-import { ArrowLeft, RotateCcw } from "lucide-react";
-import { GrammarQuizQuestion, getGrammarQuizQuestions } from "../data/grammarQuiz";
-import { Badge } from "./ui/badge";
 import { DataManager } from "../utils/dataManager";
-import { SoundManager } from "../utils/soundManager";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
+import { SoundManager } from "../utils/soundManager";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader } from "./ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
+import { Progress } from "./ui/progress";
+import { Spinner } from "./ui/Spinner";
 
 interface GrammarQuizProps {
   onBack: () => void;
-  difficulty?: 'beginner' | 'intermediate' | 'advanced';
+  difficulty?: "beginner" | "intermediate" | "advanced";
 }
 
 interface DropZoneProps {
@@ -30,11 +34,11 @@ interface DraggableWordProps {
 }
 
 // Detect if device supports touch
-const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
 function DropZone({ blankId, droppedWord, onDrop }: DropZoneProps) {
   const [{ isOver }, drop] = useDrop({
-    accept: 'word',
+    accept: "word",
     drop: (item: { word: string }) => onDrop(blankId, item.word),
     collect: (monitor) => ({
       isOver: monitor.isOver(),
@@ -47,19 +51,19 @@ function DropZone({ blankId, droppedWord, onDrop }: DropZoneProps) {
       className={`
         inline-block min-w-[80px] h-8 px-3 mx-1 border-2 border-dashed rounded-md
         flex items-center justify-center text-center
-        ${isOver ? 'border-blue-500 bg-blue-50' : 'border-gray-300'}
-        ${droppedWord ? 'bg-blue-100 border-blue-400 border-solid' : ''}
+        ${isOver ? "border-blue-500 bg-blue-50" : "border-gray-300"}
+        ${droppedWord ? "bg-blue-100 border-blue-400 border-solid" : ""}
         transition-all duration-200
       `}
     >
-      {droppedWord || '_____'}
+      {droppedWord || "_____"}
     </span>
   );
 }
 
 function DraggableWord({ word }: DraggableWordProps) {
   const [{ isDragging }, drag] = useDrag({
-    type: 'word',
+    type: "word",
     item: { word },
     canDrag: true,
     collect: (monitor) => ({
@@ -73,7 +77,7 @@ function DraggableWord({ word }: DraggableWordProps) {
       className={`
         px-4 py-2 rounded-lg border cursor-move transition-all duration-200
         bg-white border-blue-200 hover:bg-blue-50 hover:border-blue-400 shadow-sm
-        ${isDragging ? 'opacity-50' : ''}
+        ${isDragging ? "opacity-50" : ""}
         select-none
       `}
     >
@@ -91,7 +95,10 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
-export function GrammarQuiz({ onBack, difficulty = 'intermediate' }: GrammarQuizProps) {
+export function GrammarQuiz({
+  onBack,
+  difficulty = "intermediate",
+}: GrammarQuizProps) {
   const [questions, setQuestions] = useState<GrammarQuizQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [droppedWords, setDroppedWords] = useState<Record<string, string>>({});
@@ -112,11 +119,14 @@ export function GrammarQuiz({ onBack, difficulty = 'intermediate' }: GrammarQuiz
 
     const allQuestions = getGrammarQuizQuestions(difficulty);
     const shuffled = shuffleArray(allQuestions);
-    
+
     // 設定された問題数に制限
     const appSettings = DataManager.getAppSettings();
-    const selectedQuestions = shuffled.slice(0, appSettings.grammarQuizQuestionCount);
-    
+    const selectedQuestions = shuffled.slice(
+      0,
+      appSettings.grammarQuizQuestionCount
+    );
+
     setQuestions(selectedQuestions);
   }, [difficulty]);
 
@@ -129,12 +139,13 @@ export function GrammarQuiz({ onBack, difficulty = 'intermediate' }: GrammarQuiz
   }, [questions, currentQuestionIndex]);
 
   const currentQuestion = questions[currentQuestionIndex];
-  const progress = questions.length > 0 ? ((currentQuestionIndex) / questions.length) * 100 : 0;
+  const progress =
+    questions.length > 0 ? (currentQuestionIndex / questions.length) * 100 : 0;
 
   const handleDrop = (blankId: string, word: string) => {
-    setDroppedWords(prev => ({
+    setDroppedWords((prev) => ({
       ...prev,
-      [blankId]: word
+      [blankId]: word,
     }));
     // 単語をはめた時の効果音
     SoundManager.sounds.drop();
@@ -143,21 +154,21 @@ export function GrammarQuiz({ onBack, difficulty = 'intermediate' }: GrammarQuiz
   const handleCheckAnswer = () => {
     if (!currentQuestion) return;
 
-    const allBlanksCompleted = currentQuestion.blanks.every(blank => 
-      droppedWords[blank.id] && droppedWords[blank.id].trim() !== ''
+    const allBlanksCompleted = currentQuestion.blanks.every(
+      (blank) => droppedWords[blank.id] && droppedWords[blank.id].trim() !== ""
     );
 
     if (!allBlanksCompleted) {
       return;
     }
 
-    const correct = currentQuestion.blanks.every(blank => 
-      droppedWords[blank.id] === blank.correctAnswer
+    const correct = currentQuestion.blanks.every(
+      (blank) => droppedWords[blank.id] === blank.correctAnswer
     );
 
     setIsCorrect(correct);
     if (correct) {
-      setScore(prev => prev + 1);
+      setScore((prev) => prev + 1);
       SoundManager.sounds.correct();
     } else {
       SoundManager.sounds.incorrect();
@@ -168,7 +179,7 @@ export function GrammarQuiz({ onBack, difficulty = 'intermediate' }: GrammarQuiz
   const handleNext = () => {
     setShowResult(false);
     if (currentQuestionIndex + 1 < questions.length) {
-      setCurrentQuestionIndex(prev => prev + 1);
+      setCurrentQuestionIndex((prev) => prev + 1);
     } else {
       // クイズ完了
       SoundManager.sounds.complete();
@@ -191,13 +202,13 @@ export function GrammarQuiz({ onBack, difficulty = 'intermediate' }: GrammarQuiz
     if (!currentQuestion) return null;
 
     // 文を単語に分割し、___を特別に処理
-    const words = currentQuestion.sentence.split(' ');
+    const words = currentQuestion.sentence.split(" ");
     let blankIndex = 0;
-    
+
     return (
       <div className="text-center text-lg leading-relaxed">
         {words.map((word, index) => {
-          if (word === '___') {
+          if (word === "___") {
             const blank = currentQuestion.blanks[blankIndex];
             blankIndex++;
             return (
@@ -209,14 +220,18 @@ export function GrammarQuiz({ onBack, difficulty = 'intermediate' }: GrammarQuiz
               />
             );
           }
-          return <span key={index} className="mx-1">{word}</span>;
+          return (
+            <span key={index} className="mx-1">
+              {word}
+            </span>
+          );
         })}
       </div>
     );
   };
 
-  const allBlanksCompleted = currentQuestion?.blanks.every(blank => 
-    droppedWords[blank.id] && droppedWords[blank.id].trim() !== ''
+  const allBlanksCompleted = currentQuestion?.blanks.every(
+    (blank) => droppedWords[blank.id] && droppedWords[blank.id].trim() !== ""
   );
 
   // 同じ単語を複数回使えるように、使用済み判定を削除
@@ -224,19 +239,26 @@ export function GrammarQuiz({ onBack, difficulty = 'intermediate' }: GrammarQuiz
 
   if (!currentQuestion) {
     return (
-      <div className="min-h-screenflex items-center justify-center" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p>問題を読み込み中...</p>
-        </div>
+      <div
+        className="min-h-screenflex items-center justify-center"
+        style={{
+          background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
+        }}
+      >
+        <Spinner size="lg" text="問題を読み込み中..." />
       </div>
     );
   }
 
   return (
     <DndProvider backend={isTouchDevice ? TouchBackend : HTML5Backend}>
-      <div className="min-h-screen" style={{ background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)` }}>
-        <div className="max-w-md mx-auto p-4 space-y-6">
+      <div
+        className="min-h-screen"
+        style={{
+          background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
+        }}
+      >
+        <div className="max-w-md mx-auto p-4 space-y-6 bg-white rounded-lg shadow-sm">
           {/* Header */}
           <div className="flex items-center justify-between pt-8">
             <Button variant="ghost" onClick={onBack} className="p-2">
@@ -252,7 +274,9 @@ export function GrammarQuiz({ onBack, difficulty = 'intermediate' }: GrammarQuiz
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <span className="text-sm">進捗</span>
-              <span className="text-sm">{currentQuestionIndex + 1} / {questions.length}</span>
+              <span className="text-sm">
+                {currentQuestionIndex + 1} / {questions.length}
+              </span>
             </div>
             <Progress value={progress} className="h-2" />
           </div>
@@ -268,14 +292,17 @@ export function GrammarQuiz({ onBack, difficulty = 'intermediate' }: GrammarQuiz
           <Card className="shadow-lg border-0">
             <CardHeader className="text-center pb-4">
               <Badge variant="secondary" className="mx-auto w-fit text-xs mb-2">
-                {currentQuestion.level === 'beginner' ? '初級' : 
-                 currentQuestion.level === 'intermediate' ? '中級' : '上級'}
+                {currentQuestion.level === "beginner"
+                  ? "初級"
+                  : currentQuestion.level === "intermediate"
+                  ? "中級"
+                  : "上級"}
               </Badge>
               <p className="text-sm text-muted-foreground mb-4">
                 空欄に適切な単語をドラッグして文を完成させてください
               </p>
             </CardHeader>
-            
+
             <CardContent className="space-y-6">
               {/* Sentence with blanks */}
               <div className="p-4 bg-gray-50 rounded-lg min-h-[80px] flex items-center justify-center">
@@ -284,13 +311,12 @@ export function GrammarQuiz({ onBack, difficulty = 'intermediate' }: GrammarQuiz
 
               {/* Word options */}
               <div className="space-y-3">
-                <p className="text-sm font-medium text-center">単語を選んでください</p>
+                <p className="text-sm font-medium text-center">
+                  単語を選んでください
+                </p>
                 <div className="flex flex-wrap gap-2 justify-center">
                   {shuffledOptions.map((word, index) => (
-                    <DraggableWord
-                      key={`${word}-${index}`}
-                      word={word}
-                    />
+                    <DraggableWord key={`${word}-${index}`} word={word} />
                   ))}
                 </div>
               </div>
@@ -310,8 +336,12 @@ export function GrammarQuiz({ onBack, difficulty = 'intermediate' }: GrammarQuiz
           <Dialog open={showResult} onOpenChange={setShowResult}>
             <DialogContent className="max-w-sm mx-auto">
               <DialogHeader>
-                <DialogTitle className={`text-center ${isCorrect ? 'text-emerald-600' : 'text-red-600'}`}>
-                  {isCorrect ? '正解！' : '不正解'}
+                <DialogTitle
+                  className={`text-center ${
+                    isCorrect ? "text-emerald-600" : "text-red-600"
+                  }`}
+                >
+                  {isCorrect ? "正解！" : "不正解"}
                 </DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
@@ -319,7 +349,9 @@ export function GrammarQuiz({ onBack, difficulty = 'intermediate' }: GrammarQuiz
                   <p className="text-sm">{currentQuestion.explanation}</p>
                 </div>
                 <Button onClick={handleNext} className="w-full">
-                  {currentQuestionIndex + 1 < questions.length ? '次の問題' : '完了'}
+                  {currentQuestionIndex + 1 < questions.length
+                    ? "次の問題"
+                    : "完了"}
                 </Button>
               </div>
             </DialogContent>
