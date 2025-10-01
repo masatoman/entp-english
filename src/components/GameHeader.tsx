@@ -108,14 +108,14 @@ export default function GameHeader({
       {/* 動的な背景効果 */}
       <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-transparent to-purple-500/20 animate-pulse" />
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white/10 to-transparent" />
-      <div className="relative z-10 max-w-6xl mx-auto px-4">
+      <div className="relative z-10 max-w-6xl mx-auto px-2 sm:px-4">
         {/* ヘッダー全体レイアウト */}
         <div
           className="flex items-center justify-between"
           style={{ height: "60px" }}
         >
           {/* 左側: レベル&進捗ゲージ */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             {/* レベル&進捗セクション */}
             <div className="flex flex-col gap-1">
               <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-1">
@@ -151,12 +151,12 @@ export default function GameHeader({
             </div>
 
             {/* アイコン群 */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1 sm:gap-3">
               {/* ハート（体力） */}
-              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 flex items-center gap-2">
-                <Heart className="w-5 h-5" style={{ color: "#ff4757" }} />
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-2 sm:px-3 py-1 sm:py-2 flex items-center gap-1 sm:gap-2">
+                <Heart className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: "#ff4757" }} />
                 <span
-                  className="text-sm font-bold"
+                  className="text-xs sm:text-sm font-bold"
                   style={{
                     color: "#ffffff",
                     textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
@@ -167,10 +167,10 @@ export default function GameHeader({
               </div>
 
               {/* スター（スタミナ） */}
-              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 flex items-center gap-2">
-                <Star className="w-5 h-5" style={{ color: "#ffa502" }} />
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-2 sm:px-3 py-1 sm:py-2 flex items-center gap-1 sm:gap-2">
+                <Star className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: "#ffa502" }} />
                 <span
-                  className="text-sm font-bold"
+                  className="text-xs sm:text-sm font-bold"
                   style={{
                     color: "#ffffff",
                     textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
@@ -180,8 +180,8 @@ export default function GameHeader({
                 </span>
               </div>
 
-              {/* コイン */}
-              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 flex items-center gap-2">
+              {/* コイン（スマホでは非表示） */}
+              <div className="hidden sm:flex bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 items-center gap-2">
                 <Coins className="w-5 h-5" style={{ color: "#ffd700" }} />
                 <span
                   className="text-sm font-bold"
@@ -194,8 +194,8 @@ export default function GameHeader({
                 </span>
               </div>
 
-              {/* XP */}
-              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 flex items-center gap-2">
+              {/* XP（スマホでは非表示） */}
+              <div className="hidden md:flex bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 items-center gap-2">
                 <Zap className="w-5 h-5" style={{ color: "#00d2ff" }} />
                 <span
                   className="text-sm font-bold"
@@ -210,8 +210,8 @@ export default function GameHeader({
             </div>
           </div>
 
-          {/* 右側: 倍率表示 */}
-          <div className="flex items-center gap-2">
+          {/* 右側: 倍率表示（スマホでは非表示） */}
+          <div className="hidden lg:flex items-center gap-2">
             {/* デイリーボーナス */}
             {dailyMultiplier > 1.0 && (
               <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg border border-blue-400/50">
@@ -240,11 +240,10 @@ export default function GameHeader({
                 variant="outline"
                 size="sm"
                 onClick={onQuestClick}
-                className="header-button font-bold relative text-sm transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="header-button font-bold relative text-xs sm:text-sm transition-all duration-200 shadow-lg hover:shadow-xl px-2 sm:px-4 py-2"
                 style={{
                   background: "linear-gradient(135deg, #00d4aa, #00a085)",
                   color: "#ffffff",
-                  padding: "8px 16px",
                   borderRadius: "12px",
                   border: "2px solid rgba(255,255,255,0.3)",
                   boxShadow: "0 4px 15px rgba(0, 212, 170, 0.4)",
@@ -260,7 +259,7 @@ export default function GameHeader({
                   e.currentTarget.style.transform = "translateY(0px)";
                 }}
               >
-                <Target className="w-4 h-4 mr-2" />
+                <Target className="w-4 h-4 mr-1 sm:mr-2 hidden sm:inline" />
                 <span className="hidden sm:inline">クエスト</span>
                 <span className="sm:hidden">🎯</span>
                 {showQuestBadge && questCompletedCount > 0 && (
