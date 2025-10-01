@@ -1,8 +1,8 @@
-import { ArrowLeft, Diamond, Gift, Star, Zap } from "lucide-react";
+import { ArrowLeft, Gift, Zap } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useScrollToTop } from "../hooks/useScrollToTop";
-import { GachaPack } from "../types/gacha";
+import { baseColors } from "../styles/colors";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { GachaSystem as GachaSystemUtil } from "../utils/gachaSystem";
 import { getLevelManager, saveLevelManager } from "../utils/levelManager";
@@ -10,7 +10,6 @@ import GameHeader from "./GameHeader";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { CardCollectionGrid } from "./ui/card-collection-grid";
-import { baseColors } from "../styles/colors";
 
 interface GachaSystemProps {
   onBack: () => void;
@@ -56,7 +55,10 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
     return () => clearInterval(interval);
   }, []);
 
-  const handleOpenPack = async (packId: string, paymentType?: "xp" | "coins") => {
+  const handleOpenPack = async (
+    packId: string,
+    paymentType?: "xp" | "coins"
+  ) => {
     const pack = GachaSystemUtil.getPackById(packId);
     if (!pack) return;
 
@@ -151,42 +153,8 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
     }
   };
 
-  const getPackThemeIcon = (theme: GachaPack["theme"]) => {
-    switch (theme) {
-      case "part1_2":
-        return "🎧";
-      case "part3_4":
-        return "💬";
-      case "part5_6":
-        return "📝";
-      case "part7":
-        return "📖";
-      case "mixed":
-        return "🎯";
-      default:
-        return "📦";
-    }
-  };
-
-  const getScoreBandColor = (scoreBand: string) => {
-    switch (scoreBand) {
-      case "400-500":
-        return "bg-green-100 text-green-800";
-      case "500-600":
-        return "bg-blue-100 text-blue-800";
-      case "600-700":
-        return "bg-purple-100 text-purple-800";
-      case "700-800":
-        return "bg-orange-100 text-orange-800";
-      case "800+":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
-
   return (
-    <div 
+    <div
       className="min-h-screen"
       style={{
         background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
@@ -223,79 +191,32 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
               <Gift className="w-4 h-4" />
               {showCollection ? "パック選択" : "コレクション"}
             </Button>
-
           </div>
         </div>
 
         {/* コレクション統計 */}
-        <Card className="p-4 mb-6">
-          <h3 className="font-semibold mb-2">コレクション統計</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-            <div>
-              <div className="text-gray-600">総カード数</div>
-              <div className="font-bold">
+        <div className="bg-white/80 backdrop-blur-sm rounded-lg p-3 mb-4 shadow-sm">
+          <div className="flex justify-center gap-6 text-sm">
+            <div className="text-center">
+              <div className="text-gray-600 text-xs">総カード</div>
+              <div className="font-bold text-lg">
                 {userGachaData.collection.totalCards}
               </div>
             </div>
-            <div>
-              <div className="text-gray-600">ユニークカード</div>
-              <div className="font-bold">
+            <div className="text-center">
+              <div className="text-gray-600 text-xs">ユニーク</div>
+              <div className="font-bold text-lg">
                 {userGachaData.collection.uniqueCards}
               </div>
             </div>
-            <div>
-              <div className="text-gray-600">開封パック数</div>
-              <div className="font-bold">{userGachaData.totalPacks}</div>
-            </div>
-            <div>
-              <div className="text-gray-600">利用可能パック</div>
-              <div className="font-bold">
-                {GachaSystemUtil.getAvailablePacksCount(userGachaData)}/2
+            <div className="text-center">
+              <div className="text-gray-600 text-xs">開封数</div>
+              <div className="font-bold text-lg">
+                {userGachaData.totalPacks}
               </div>
             </div>
           </div>
-        </Card>
-
-        {/* パック回復時間表示 */}
-        {GachaSystemUtil.getAvailablePacksCount(userGachaData) < 2 && (
-          <Card className="mb-6">
-            <div className="p-4">
-              <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
-                <Zap className="w-5 h-5 text-yellow-500" />
-                パック回復システム
-              </h3>
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600">次のパック回復まで</span>
-                  <span className="font-bold text-purple-600">
-                    {(() => {
-                      const nextTime =
-                        GachaSystemUtil.getNextPackRecoveryTime(userGachaData);
-                      const remaining = Math.max(0, nextTime - Date.now());
-                      const minutes = Math.ceil(remaining / (1000 * 60));
-                      return `${minutes}分`;
-                    })()}
-                  </span>
-                </div>
-                <div className="text-sm text-gray-500">
-                  💡 5分ごとに1パック回復します（最大2パック）
-                </div>
-                {/* 開発用リセットボタン */}
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    localStorage.removeItem("userGachaData");
-                    setUserGachaData(GachaSystemUtil.getUserGachaData());
-                  }}
-                  className="mt-2 text-xs"
-                >
-                  🔄 テスト用リセット
-                </Button>
-              </div>
-            </div>
-          </Card>
-        )}
+        </div>
 
         {/* パック選択またはコレクション表示 */}
         <div className="mb-8">
@@ -309,38 +230,15 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
                 const coinCost = 1; // 統一価格: 全パック1コイン
                 const canOpenCoins = dailyQuestManager.canAffordCoins(coinCost);
 
-                const RarityIcon =
-                  pack.rarity === "normal"
-                    ? Star
-                    : pack.rarity === "premium"
-                    ? Zap
-                    : Diamond;
-
                 return (
                   <Card
                     key={pack.id}
                     className={`p-4 transition-all hover:shadow-lg ${
                       selectedPack === pack.id ? "ring-2 ring-purple-500" : ""
                     } ${
-                      (!canOpenXP.canOpen && !canOpenCoins) ? "opacity-60" : ""
+                      !canOpenXP.canOpen && !canOpenCoins ? "opacity-60" : ""
                     }`}
                   >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="text-2xl">
-                          {getPackThemeIcon(pack.theme)}
-                        </span>
-                        <RarityIcon className="w-5 h-5 text-purple-600" />
-                      </div>
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${getScoreBandColor(
-                          pack.targetScore
-                        )}`}
-                      >
-                        {pack.targetScore}
-                      </span>
-                    </div>
-
                     <h3 className="font-bold text-lg mb-1">{pack.name}</h3>
                     <p className="text-sm text-gray-600 mb-4">
                       {pack.description}
@@ -356,7 +254,11 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
                             e.stopPropagation();
                             handleOpenPack(pack.id, "xp");
                           }}
-                          disabled={!canOpenXP.canOpen || isOpening || userXP < pack.cost}
+                          disabled={
+                            !canOpenXP.canOpen ||
+                            isOpening ||
+                            userXP < pack.cost
+                          }
                           className="flex-1 flex items-center gap-2"
                         >
                           <Zap className="w-4 h-4" />
@@ -369,14 +271,16 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
                             e.stopPropagation();
                             handleOpenPack(pack.id, "coins");
                           }}
-                          disabled={!canOpenCoins || isOpening || coinSystem.current < 1}
+                          disabled={
+                            !canOpenCoins || isOpening || coinSystem.current < 1
+                          }
                           className="flex-1 flex items-center gap-2"
                         >
                           <span>🪙</span>
                           <span className="font-bold">1 コイン</span>
                         </Button>
                       </div>
-                      
+
                       {/* 開封状態表示 */}
                       {isOpening && selectedPack === pack.id && (
                         <div className="text-center text-sm text-gray-600">

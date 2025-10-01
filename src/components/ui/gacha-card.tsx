@@ -119,7 +119,7 @@ export function GachaCard({
       phonetic: "text-xs",
     },
     md: {
-      card: "p-3 min-h-[140px]",
+      card: "p-3 min-h-[150px]",
       icon: "w-4 h-4",
       title: "text-sm font-bold",
       meaning: "text-xs",
@@ -127,7 +127,7 @@ export function GachaCard({
       phonetic: "text-xs",
     },
     lg: {
-      card: "p-4 min-h-[160px]",
+      card: "p-4 min-h-[180px]",
       icon: "w-5 h-5",
       title: "text-base font-bold",
       meaning: "text-sm",
@@ -145,7 +145,8 @@ export function GachaCard({
         "bg-white", // 純白背景
         // サイズ別の角丸
         size === "sm" ? "rounded-md" : "rounded-sm",
-        // ボーダーなし、シンプルなシャドウ
+        // レアリティに応じたボーダー
+        `border-2 ${rarityInfo.borderColor}`,
         "shadow-sm",
         sizeClass.card,
         // ホバー効果
@@ -159,14 +160,29 @@ export function GachaCard({
       )}
       onClick={onClick}
     >
-      {/* 背景は純白 - グラデーション装飾なし */}
+      {/* レアリティに応じた上部アクセントライン */}
+      <div
+        className={cn(
+          "absolute top-0 left-0 right-0 h-1",
+          `bg-gradient-to-r ${rarityInfo.gradient}`
+        )}
+      />
 
       {/* 所持枚数表示 */}
       {count && count > 1 && (
-        <div className="absolute top-2 left-2 z-10">
-          <Badge className="bg-blue-600 text-black text-xs font-bold">
+        <div className="absolute top-2 right-2 z-10">
+          <Badge className="bg-blue-600 text-white text-xs font-bold">
             ×{count}
           </Badge>
+        </div>
+      )}
+
+      {/* カードID連番表示（所持枚数表示がない場合のみ） */}
+      {showDetails && (!count || count <= 1) && (
+        <div className="absolute top-2 right-2 z-10">
+          <div className="text-xs text-gray-500 bg-white/80 px-2 py-1 rounded">
+            #{card.id}
+          </div>
         </div>
       )}
 
@@ -200,31 +216,10 @@ export function GachaCard({
         </button>
       )}
 
-      {/* レアリティバッジ */}
-      <div className="absolute top-2 right-2 z-10">
-        <Badge
-          className={cn(
-            "font-bold",
-            rarityInfo.badgeColor,
-            sizeClass.badge,
-            // レアリティに応じた文字色（黒のみ）
-            "text-black"
-          )}
-        >
-          <rarityInfo.icon
-            className={cn(
-              sizeClass.icon,
-              "mr-1",
-              // アイコンも黒のみ
-              "text-black"
-            )}
-          />
-          {rarityInfo.name}
-        </Badge>
-      </div>
+      {/* レアリティ表示（文字なし、枠の色のみ） */}
 
       {/* カード内容 */}
-      <div className="relative z-10 h-full flex flex-col justify-between pt-2">
+      <div className="relative z-10 h-full flex flex-col justify-between pt-8">
         {/* 単語情報 */}
         <div className="text-center flex-1 flex flex-col justify-center space-y-2">
           <h3
@@ -251,13 +246,6 @@ export function GachaCard({
             <p className="text-xs text-gray-500 italic">{card.partOfSpeech}</p>
           )}
         </div>
-
-        {/* フッター */}
-        {showDetails && (
-          <div className="flex justify-end mt-4">
-            <div className="text-xs text-gray-500">#{card.id}</div>
-          </div>
-        )}
       </div>
 
       {/* ホバー時のオーバーレイは削除 - 純白背景を維持 */}

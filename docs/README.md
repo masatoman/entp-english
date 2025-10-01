@@ -28,11 +28,21 @@
 - **[pwa-features.md](./pwa-features.md)** 📱 - PWA 機能
 - **[git-push-error-handling.md](./git-push-error-handling.md)** 🚨 - エラー対応
 
-### 4️⃣ **アーカイブ（参考のみ）**
+### 4️⃣ **TOEIC 拡張計画**
 
-- **[archive/](./archive/)** 📦
-  - **目的**: 過去のドキュメント・重複情報の保管
-  - **注意**: 情報が古い可能性があります
+- **[comprehensive-toeic-plan.md](./comprehensive-toeic-plan.md)** 🎯 - TOEIC990 点達成包括計画
+- **[toeic-implementation-roadmap.md](./toeic-implementation-roadmap.md)** 🚀 - 詳細実装計画
+
+### 5️⃣ **設計判断記録**
+
+- **[design-decision-records.md](./design-decision-records.md)** 🎯 - 設計判断の根拠と理由の記録
+
+### 6️⃣ **アーカイブ（削除済み）**
+
+- ~~**[archive/](./archive/)** 📦~~ ❌ **削除完了**
+  - **削除理由**: 過去の問題・実装済み内容で現在は不要
+  - **削除対象**: 8 個のアーカイブドキュメント
+  - **代替**: MASTER-DEVELOPMENT-GUIDE.md に統合済み
 
 ---
 
@@ -103,5 +113,5 @@
 
 **このドキュメント構成により、「ドキュメントを見て」の指示で迷わず効率的な開発が可能になります。**
 
-_最終更新: 2025 年 9 月 20 日_
-_管理対象: 23 個のドキュメント + 1 個のマスターガイド_
+_最終更新: 2025 年 1 月 1 日_
+_管理対象: 8 個のドキュメント + 1 個のマスターガイド（アーカイブ 8 個削除済み）_

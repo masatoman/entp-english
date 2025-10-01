@@ -258,18 +258,7 @@ export class GachaSystem {
       };
     }
 
-    const userData = this.getUserGachaData();
-    const availablePacks = this.getAvailablePacksCount(userData);
-
-    if (availablePacks <= 0) {
-      const nextPackTime = this.getNextPackRecoveryTime(userData);
-      return {
-        canOpen: false,
-        reason: "利用可能なパックがありません",
-        nextPackTime,
-      };
-    }
-
+    // XPとコインがあればいつでも開封可能（パック制限なし）
     return { canOpen: true };
   }
 
