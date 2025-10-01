@@ -18,7 +18,6 @@ import AdrenalineEffects, {
   calculateAdrenalineXP,
   triggerAdrenalineEvent,
 } from "./AdrenalineEffects";
-import GameHeader from "./GameHeader";
 import TreasureBoxResultModal from "./TreasureBoxResultModal";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -596,9 +595,6 @@ export default function Question() {
         background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
       }}
     >
-      {/* ゲームヘッダー */}
-      <GameHeader />
-
       {/* アドレナリンエフェクト */}
       <AdrenalineEffects
         onEventTriggered={(event) => {

@@ -10,7 +10,6 @@ import { SoundManager } from "../utils/soundManager";
 import { SpeechSynthesisManager } from "../utils/speechSynthesis";
 import { calculateVocabularyXP } from "../utils/xpCalculator";
 import AdrenalineEffects from "./AdrenalineEffects";
-import GameHeader from "./GameHeader";
 import TreasureBoxResultModal from "./TreasureBoxResultModal";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -351,9 +350,6 @@ export default function VocabularyCard({
         background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkle} 100%)`,
       }}
     >
-      {/* ゲームヘッダー */}
-      <GameHeader />
-
       {/* アドレナリンエフェクト */}
       <AdrenalineEffects
         onEventTriggered={(event) => {
