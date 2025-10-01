@@ -1,51 +1,26 @@
 import { ArrowLeft, RefreshCw, Star, Volume2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { VocabularyWord, getVocabularyWords } from "../data/vocabulary";
 import { useScrollToTop } from "../hooks/useScrollToTop";
+import { useVocabularySession } from "../hooks/useVocabularySession";
 import { baseColors } from "../styles/colors";
 import { adrenalineManager } from "../utils/adrenalineManager";
-import { dailyQuestManager } from "../utils/dailyQuestManager";
-import { DataManager } from "../utils/dataManager";
+import { calculateVocabularyXP } from "../utils/xpCalculator";
 import { KnownWordsManager } from "../utils/knownWordsManager";
-import { LearningAnalyzer } from "../utils/learningAnalyzer";
-import { getLevelManager } from "../utils/levelManager";
 import { SoundManager } from "../utils/soundManager";
 import { SpeechSynthesisManager } from "../utils/speechSynthesis";
-import { VocabularyManager } from "../utils/vocabularyManager";
-import { calculateVocabularyXP } from "../utils/xpCalculator";
-import AdrenalineEffects, {
-  calculateAdrenalineXP,
-  triggerAdrenalineEvent,
-} from "./AdrenalineEffects";
+import AdrenalineEffects from "./AdrenalineEffects";
 import GameHeader from "./GameHeader";
 import TreasureBoxResultModal from "./TreasureBoxResultModal";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { Card, CardContent, CardHeader } from "./ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
-
-interface StudySession {
-  totalWords: number;
-  currentIndex: number;
-  knownWords: number;
-  unknownWords: number;
-  studiedWords: Set<number>;
-}
 
 interface VocabularyCardProps {
   difficulty?: "beginner" | "intermediate" | "advanced";
   category?: "all" | "toeic" | "daily" | "gacha-only" | "basic-only";
   isGachaMode?: boolean;
-}
-
-function shuffleArray<T>(array: T[]): T[] {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
 }
 
 export default function VocabularyCard({
@@ -69,293 +44,24 @@ export default function VocabularyCard({
   // ページトップにスクロール
   useScrollToTop();
 
-  const [words, setWords] = useState<VocabularyWord[]>([]);
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [session, setSession] = useState<StudySession>({
-    totalWords: 0,
-    currentIndex: 0,
-    knownWords: 0,
-    unknownWords: 0,
-    studiedWords: new Set(),
-  });
-  const [showMeaning, setShowMeaning] = useState(false);
-  const [isCompleted, setIsCompleted] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
+  // カスタムフックでビジネスロジックを管理
+  const {
+    words,
+    currentWord,
+    session,
+    showMeaning,
+    isCompleted,
+    progress,
+    handleAnswer: sessionHandleAnswer,
+    handleRestart,
+    toggleMeaning,
+  } = useVocabularySession(actualDifficulty, actualCategory, isGachaMode);
 
-  // アドレナリンシステム
+  // UI固有の状態
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const [showTreasureBoxModal, setShowTreasureBoxModal] = useState(false);
 
-  useEffect(() => {
-    let allWords: VocabularyWord[] = [];
-
-    // モード別にデータを取得
-    if (actualCategory === "gacha-only") {
-      // ガチャカード専用モード
-      allWords = VocabularyManager.getGachaVocabularyWords();
-
-      // ガチャカードのレベルフィルタリング（必要に応じて）
-      if (actualDifficulty !== "intermediate") {
-        allWords = allWords.filter((word) => word.level === actualDifficulty);
-      }
-
-      console.log("VocabularyCard - ガチャカード専用モード:", {
-        actualDifficulty,
-        totalGachaCards: allWords.length,
-      });
-    } else if (actualCategory === "basic-only") {
-      // 基本単語専用モード
-      allWords = VocabularyManager.getStandardVocabularyWords();
-
-      // 難易度フィルタリング
-      allWords = allWords.filter((word) => word.level === actualDifficulty);
-
-      console.log("VocabularyCard - 基本単語専用モード:", {
-        actualDifficulty,
-        totalBasicCards: allWords.length,
-      });
-    } else {
-      // 従来の統合モード（後方互換性）
-      allWords = VocabularyManager.getFilteredVocabularyWords(
-        actualDifficulty,
-        actualCategory
-      );
-
-      console.log("VocabularyCard - 統合モード（後方互換性）:", {
-        actualDifficulty,
-        actualCategory,
-        totalWords: allWords.length,
-      });
-    }
-
-    // 既知単語を除外
-    const filteredWords = KnownWordsManager.filterUnknownWords(allWords);
-
-    console.log("VocabularyCard - フィルタリング結果:", {
-      actualDifficulty,
-      actualCategory,
-      totalWords: allWords.length,
-      filteredWordsCount: filteredWords.length,
-      excludedCount: allWords.length - filteredWords.length,
-      isGachaMode,
-      mode:
-        actualCategory === "gacha-only"
-          ? "ガチャ専用"
-          : actualCategory === "basic-only"
-          ? "基本単語専用"
-          : "統合",
-    });
-
-    if (filteredWords.length === 0) {
-      console.error("VocabularyCard - 該当する単語が見つかりません:", {
-        actualDifficulty,
-        actualCategory,
-        isGachaMode,
-      });
-      // エラー状態を設定
-      setWords([]);
-      setSession({
-        totalWords: 0,
-        currentIndex: 0,
-        knownWords: 0,
-        unknownWords: 0,
-        studiedWords: new Set(),
-      });
-      return;
-    }
-
-    // 設定された問題数を使用
-    const appSettings = DataManager.getAppSettings();
-    const wordCount = appSettings.vocabularyQuestionCount;
-    const shuffledWords = shuffleArray(filteredWords).slice(0, wordCount);
-    setWords(shuffledWords);
-    setSession({
-      totalWords: shuffledWords.length,
-      currentIndex: 0,
-      knownWords: 0,
-      unknownWords: 0,
-      studiedWords: new Set(),
-    });
-  }, [actualDifficulty, actualCategory, isGachaMode]);
-
-  // 語彙学習セッション完了時の処理
-  useEffect(() => {
-    // 全ての単語を学習し終わった場合（1周完了）
-    if (
-      session.currentIndex > 0 &&
-      session.currentIndex === session.totalWords &&
-      !isCompleted
-    ) {
-      // セッション完了時の処理
-      const xpEarned = calculateVocabularyXP(
-        session.studiedWords.size,
-        "intermediate"
-      );
-
-      // 学習セッションを記録
-      DataManager.recordLearningSession({
-        date: new Date().toISOString().split("T")[0],
-        type: "vocabulary",
-        score: Math.round(
-          (session.knownWords / session.studiedWords.size) * 100
-        ),
-        totalQuestions: session.studiedWords.size,
-        correctAnswers: session.knownWords,
-        xpEarned: xpEarned,
-        duration: 0, // 語彙学習の時間は記録していないので0
-      });
-
-      // 実績をチェック・更新
-      DataManager.checkAndUpdateAchievements();
-
-      // 学習セッションを記録（パーソナルインサイト用）
-      LearningAnalyzer.recordSession({
-        duration: 10, // 仮の学習時間（分）
-        accuracy:
-          session.knownWords / (session.knownWords + session.unknownWords),
-        category: "vocabulary",
-        difficulty: actualDifficulty,
-        xpGained: xpEarned,
-      });
-
-      // 完了状態を設定
-      setIsCompleted(true);
-    }
-  }, [session, isCompleted]);
-
-  const currentWord = words[currentWordIndex];
-  const progress =
-    session.totalWords > 0
-      ? (session.currentIndex / session.totalWords) * 100
-      : 0;
-
-  const handleAnswer = (known: boolean) => {
-    if (!currentWord) return;
-
-    // スタミナ消費（単語を学習するたびに1消費）
-    const levelManager = getLevelManager();
-    if (levelManager.consumeStar()) {
-      console.log("⭐ スタミナを1消費しました");
-    } else {
-      console.log("⭐ スタミナが不足しています");
-    }
-
-    // アドレナリンシステム処理
-    const isCritical = Math.random() < 0.08; // 語彙学習では8%でクリティカル
-    const events = triggerAdrenalineEvent(known, isCritical);
-
-    // アドレナリン効果を適用したXP計算
-    const baseXP = known ? 5 : 2; // 知ってる: 5XP, まだ: 2XP
-    const { finalXP, multiplier, breakdown } = calculateAdrenalineXP(
-      baseXP,
-      isCritical
-    );
-
-    console.log("🚀 語彙学習アドレナリン効果:", {
-      word: currentWord.word,
-      known,
-      baseXP,
-      finalXP,
-      multiplier,
-      breakdown,
-      events: events.map((e) => e.message),
-    });
-
-    // 「知ってる」を選択した場合、既知単語としてマーク
-    if (known) {
-      KnownWordsManager.markWordAsKnown(currentWord);
-      console.log(
-        `🎯 「${currentWord.word}」を既知単語に追加しました！今後の学習から除外されます。`
-      );
-
-      // 現在のセッションからも該当する単語を除外
-      const updatedWords = words.filter((word) => word.id !== currentWord.id);
-      setWords(updatedWords);
-
-      // インデックスを調整（除外により配列が短くなるため）
-      const newIndex = Math.min(currentWordIndex, updatedWords.length - 1);
-      setCurrentWordIndex(Math.max(0, newIndex));
-
-      // 残りの単語がない場合は学習完了
-      if (updatedWords.length === 0) {
-        console.log("🎊 すべての単語を学習完了！");
-        handleSessionComplete();
-        return;
-      }
-    }
-
-    // 宝箱獲得判定（知ってる場合のみ、15%の確率）
-    if (known && Math.random() < 0.15) {
-      const box = adrenalineManager.earnTreasureBox("normal");
-      console.log("🎁 語彙学習で宝箱獲得:", box);
-
-      // 宝箱獲得イベントを発火
-      window.dispatchEvent(
-        new CustomEvent("treasureBoxEarned", { detail: box })
-      );
-    }
-
-    const newStudiedWords = new Set(session.studiedWords);
-    newStudiedWords.add(currentWord.id);
-
-    const newSession = {
-      ...session,
-      currentIndex: session.currentIndex + 1,
-      knownWords: known ? session.knownWords + 1 : session.knownWords,
-      unknownWords: !known ? session.unknownWords + 1 : session.unknownWords,
-      studiedWords: newStudiedWords,
-    };
-
-    setSession(newSession);
-    setShowMeaning(false);
-
-    // 語彙学習の記録
-    DataManager.recordVocabularyStudy(currentWord.id);
-
-    // デイリークエスト進捗更新（「知ってる」の場合のみ）
-    if (known) {
-      dailyQuestManager.recordVocabularyLearning(1);
-    }
-
-    // 「まだ」の場合のみ次の単語に移動
-    if (!known) {
-      // 次の単語に移動（最後の単語の場合は最初に戻る）
-      if (currentWordIndex + 1 < words.length) {
-        setCurrentWordIndex(currentWordIndex + 1);
-      } else {
-        setCurrentWordIndex(0);
-      }
-    }
-    // 「知ってる」の場合は、除外処理により既にインデックスが調整済み
-  };
-
-  const handleSessionComplete = () => {
-    console.log("🎊 語彙学習セッション完了！");
-    // 結果画面に遷移するか、ホームに戻る
-    navigate("/");
-  };
-
-  const handleRestart = () => {
-    const filteredWords = getVocabularyWords(actualDifficulty, actualCategory);
-    const wordCount = 20; // 設定可能にする場合は、propsや設定から取得
-    const shuffledWords = shuffleArray(filteredWords).slice(0, wordCount);
-    setWords(shuffledWords);
-    setCurrentWordIndex(0);
-    setSession({
-      totalWords: shuffledWords.length,
-      currentIndex: 0,
-      knownWords: 0,
-      unknownWords: 0,
-      studiedWords: new Set(),
-    });
-    setShowMeaning(false);
-    setIsCompleted(false);
-  };
-
-  const toggleMeaning = () => {
-    setShowMeaning(!showMeaning);
-    SoundManager.sounds.click();
-  };
-
+  // 音声再生ハンドラー（UI専用）
   const handleSpeak = async () => {
     if (!currentWord || !SpeechSynthesisManager.isSupported()) return;
 
@@ -366,6 +72,16 @@ export default function VocabularyCard({
       console.error("音声再生エラー:", error);
     } finally {
       setIsSpeaking(false);
+    }
+  };
+
+  // 回答ハンドラー（音声フィードバック付き）
+  const handleAnswerWithSound = (known: boolean) => {
+    sessionHandleAnswer(known);
+    if (known) {
+      SoundManager.sounds.correct();
+    } else {
+      SoundManager.sounds.incorrect();
     }
   };
 
@@ -409,36 +125,27 @@ export default function VocabularyCard({
             <CardContent className="p-8">
               <div className="text-6xl mb-4">⚠️</div>
               <h2 className="text-2xl font-bold text-red-800 mb-2">
-                単語が見つかりません
+                データベースエラー
               </h2>
               <p className="text-red-700 mb-6">
-                選択した条件（
-                {actualDifficulty === "beginner"
-                  ? "初級"
-                  : actualDifficulty === "intermediate"
-                  ? "中級"
-                  : "上級"}{" "}
-                +
-                {actualCategory === "all"
-                  ? "すべて"
-                  : actualCategory === "toeic"
-                  ? "TOEIC"
-                  : actualCategory === "daily"
-                  ? "日常"
-                  : "学術"}
-                ）に該当する単語がありません。
+                申し訳ございません。現在、語彙データの読み込みに問題が発生しています。
+                しばらく時間をおいてから再度お試しください。
               </p>
 
               {/* アクションボタン */}
               <div className="space-y-3">
                 <Button
-                  onClick={() =>
-                    navigate("/learning/vocabulary/actualCategory")
-                  }
-                  className="w-full"
-                  size="lg"
+                  onClick={() => window.location.reload()}
+                  className="w-full bg-blue-600 hover:bg-blue-700"
                 >
-                  カテゴリ選択に戻る
+                  ページを再読み込み
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => navigate("/home")}
+                  className="w-full"
+                >
+                  ホームに戻る
                 </Button>
               </div>
             </CardContent>
@@ -785,10 +492,7 @@ export default function VocabularyCard({
           <Button
             variant="outline"
             size="lg"
-            onClick={() => {
-              handleAnswer(false);
-              SoundManager.sounds.incorrect();
-            }}
+            onClick={() => handleAnswerWithSound(false)}
             className="h-14 text-base border-orange-200 text-orange-700 hover:bg-orange-50"
           >
             まだ
@@ -798,8 +502,7 @@ export default function VocabularyCard({
             onClick={() => {
               // 既知単語としてマーク
               KnownWordsManager.markWordAsKnown(currentWord);
-              handleAnswer(true);
-              SoundManager.sounds.correct();
+              handleAnswerWithSound(true);
 
               // ENTPの即効性重視：視覚的フィードバック
               console.log(
