@@ -2056,7 +2056,7 @@ export const gachaPacks: GachaPack[] = [
     targetScore: "400-500",
     cards: [], // ランダム生成される
     rarity: "normal",
-    cost: 100,
+    cost: 100, // 統一価格: 100 XP または 1コイン
   },
   {
     id: "toeic_intermediate",
@@ -2066,7 +2066,7 @@ export const gachaPacks: GachaPack[] = [
     targetScore: "500-600",
     cards: [],
     rarity: "premium",
-    cost: 200,
+    cost: 100, // 統一価格: 100 XP または 1コイン
   },
   {
     id: "toeic_advanced",
@@ -2076,7 +2076,7 @@ export const gachaPacks: GachaPack[] = [
     targetScore: "600-700",
     cards: [],
     rarity: "premium",
-    cost: 300,
+    cost: 100, // 統一価格: 100 XP または 1コイン
   },
   {
     id: "toeic_reading",
@@ -2086,7 +2086,7 @@ export const gachaPacks: GachaPack[] = [
     targetScore: "700-800",
     cards: [],
     rarity: "legendary",
-    cost: 500,
+    cost: 100, // 統一価格: 100 XP または 1コイン
   },
   {
     id: "toeic_mixed",
@@ -2096,6 +2096,6 @@ export const gachaPacks: GachaPack[] = [
     targetScore: "800+",
     cards: [],
     rarity: "legendary",
-    cost: 800,
+    cost: 100, // 統一価格: 100 XP または 1コイン
   },
 ];

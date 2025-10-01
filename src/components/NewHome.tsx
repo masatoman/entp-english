@@ -38,6 +38,7 @@ import { DailyChallengeCard } from "./DailyChallengeCard";
 import DailyQuestPanel from "./DailyQuestPanel";
 import GameHeader from "./GameHeader";
 import { LearningFeedbackForm } from "./LearningFeedbackForm";
+import { LoginBonusNotification } from "./LoginBonusNotification";
 import { StatusAllocationComponent } from "./StatusAllocation";
 // PreStudyContentViewerはRouter経由で使用するため、直接importを削除
 import { baseColors } from "../styles/colors";
@@ -451,6 +452,9 @@ export function NewHome() {
         background: `linear-gradient(135deg, ${baseColors.ghostWhite} 0%, ${baseColors.periwinkleLight} 100%)`,
       }}
     >
+      {/* ログインボーナス通知 */}
+      <LoginBonusNotification />
+      
       {/* ゲームヘッダー */}
       <GameHeader
         onQuestClick={() => setShowDailyQuests(true)}

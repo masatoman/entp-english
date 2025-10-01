@@ -71,7 +71,7 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
         return;
       }
     } else if (finalPaymentMethod === "coins") {
-      const coinCost = Math.floor(pack.cost / 2); // コインはXPの半分のコスト
+      const coinCost = 1; // 統一価格: 全パック1コイン
       if (!dailyQuestManager.canAffordCoins(coinCost)) {
         alert(
           `コインが不足しています。必要: ${coinCost}枚, 所持: ${coinSystem.current}枚`
@@ -97,7 +97,7 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
         console.log("XP支払い:", userXP, "→", newXP);
         onXPChange(newXP);
       } else if (finalPaymentMethod === "coins") {
-        const coinCost = Math.floor(pack.cost / 2);
+        const coinCost = 1; // 統一価格: 全パック1コイン
         dailyQuestManager.spendCoins(coinCost);
         setCoinSystem(dailyQuestManager.getCoinSystem());
         console.log("コイン支払い:", coinCost, "枚");
@@ -306,7 +306,7 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {availablePacks.map((pack) => {
                 const canOpenXP = GachaSystemUtil.canOpenPack(pack.id, userXP);
-                const coinCost = Math.floor(pack.cost / 2);
+                const coinCost = 1; // 統一価格: 全パック1コイン
                 const canOpenCoins = dailyQuestManager.canAffordCoins(coinCost);
 
                 const RarityIcon =
@@ -369,11 +369,11 @@ export const GachaSystemComponent: React.FC<GachaSystemProps> = ({
                             e.stopPropagation();
                             handleOpenPack(pack.id, "coins");
                           }}
-                          disabled={!canOpenCoins || isOpening || coinSystem.current < Math.floor(pack.cost / 2)}
+                          disabled={!canOpenCoins || isOpening || coinSystem.current < 1}
                           className="flex-1 flex items-center gap-2"
                         >
                           <span>🪙</span>
-                          <span className="font-bold">{Math.floor(pack.cost / 2)} コイン</span>
+                          <span className="font-bold">1 コイン</span>
                         </Button>
                       </div>
                       
