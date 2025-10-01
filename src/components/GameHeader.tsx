@@ -87,15 +87,10 @@ export default function GameHeader({
     return () => clearInterval(interval);
   }, []); // 依存配列を空にして無限再レンダリングを防ぐ
 
-  // XP進捗計算（LevelDisplayと同じロジックを使用）
+  // XP進捗計算（既にlevelManager内で計算済み）
   const currentLevel = userLevel.level || 1;
-  const totalXP = userLevel.totalXP || 0;
-  const currentLevelXP = (currentLevel - 1) * 100;
-  const nextLevelXP = currentLevel * 100;
-  const progressXP = Math.max(0, totalXP - currentLevelXP);
-  const requiredXP = nextLevelXP - currentLevelXP;
-  const progressPercentage =
-    requiredXP > 0 ? Math.min(100, (progressXP / requiredXP) * 100) : 0;
+  const totalXP = userLevel.xp || 0; // ✅ 正しいプロパティ名
+  const progressPercentage = userLevel.progress || 0; // ✅ 既に計算済みの進捗%を使用
 
   return (
     <div
@@ -154,7 +149,10 @@ export default function GameHeader({
             <div className="flex items-center gap-1 sm:gap-3">
               {/* ハート（体力） */}
               <div className="bg-white/20 backdrop-blur-sm rounded-lg px-2 sm:px-3 py-1 sm:py-2 flex items-center gap-1 sm:gap-2">
-                <Heart className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: "#ff4757" }} />
+                <Heart
+                  className="w-4 h-4 sm:w-5 sm:h-5"
+                  style={{ color: "#ff4757" }}
+                />
                 <span
                   className="text-xs sm:text-sm font-bold"
                   style={{
@@ -168,7 +166,10 @@ export default function GameHeader({
 
               {/* スター（スタミナ） */}
               <div className="bg-white/20 backdrop-blur-sm rounded-lg px-2 sm:px-3 py-1 sm:py-2 flex items-center gap-1 sm:gap-2">
-                <Star className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: "#ffa502" }} />
+                <Star
+                  className="w-4 h-4 sm:w-5 sm:h-5"
+                  style={{ color: "#ffa502" }}
+                />
                 <span
                   className="text-xs sm:text-sm font-bold"
                   style={{
