@@ -1,4 +1,8 @@
 import { useEffect, useState } from "react";
+import {
+  calculateAdrenalineXP,
+  triggerAdrenalineEvent,
+} from "../components/AdrenalineEffects";
 import { VocabularyWord } from "../data/vocabulary";
 import { adrenalineManager } from "../utils/adrenalineManager";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
@@ -9,10 +13,6 @@ import { getLevelManager } from "../utils/levelManager";
 import { SoundManager } from "../utils/soundManager";
 import { VocabularyManager } from "../utils/vocabularyManager";
 import { calculateVocabularyXP } from "../utils/xpCalculator";
-import {
-  calculateAdrenalineXP,
-  triggerAdrenalineEvent,
-} from "../components/AdrenalineEffects";
 
 interface StudySession {
   totalWords: number;
@@ -392,4 +392,3 @@ export function useVocabularySession(
     toggleMeaning,
   };
 }
-

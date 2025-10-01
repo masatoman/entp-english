@@ -5,10 +5,10 @@ import { useScrollToTop } from "../hooks/useScrollToTop";
 import { useVocabularySession } from "../hooks/useVocabularySession";
 import { baseColors } from "../styles/colors";
 import { adrenalineManager } from "../utils/adrenalineManager";
-import { calculateVocabularyXP } from "../utils/xpCalculator";
 import { KnownWordsManager } from "../utils/knownWordsManager";
 import { SoundManager } from "../utils/soundManager";
 import { SpeechSynthesisManager } from "../utils/speechSynthesis";
+import { calculateVocabularyXP } from "../utils/xpCalculator";
 import AdrenalineEffects from "./AdrenalineEffects";
 import GameHeader from "./GameHeader";
 import TreasureBoxResultModal from "./TreasureBoxResultModal";
@@ -367,7 +367,7 @@ export default function VocabularyCard({
         onClose={() => setShowTreasureBoxModal(false)}
       />
 
-      <div className="max-w-md mx-auto p-4 space-y-6 bg-white rounded-lg shadow-sm">
+      <div className="max-w-4xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-sm">
         {/* Header */}
         <div className="flex items-center justify-between pt-8">
           <Button

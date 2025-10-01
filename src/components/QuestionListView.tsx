@@ -194,7 +194,7 @@ export default function QuestionListView() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <div className="max-w-md mx-auto p-4 space-y-6 bg-white rounded-lg shadow-sm">
+      <div className="max-w-4xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-sm">
         {/* Header */}
         <div className="flex items-center justify-between pt-8">
           <Button variant="ghost" onClick={handleBack} className="p-2">
