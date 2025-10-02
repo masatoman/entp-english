@@ -12,6 +12,7 @@ export const STORES = {
   VOCABULARY: "vocabulary",
   GRAMMAR: "grammar",
   LISTENING: "listening",
+  LISTENING_PROGRESS: "listeningProgress",
   AUDIO_FILES: "audioFiles",
   USER_PROGRESS: "userProgress",
   ACHIEVEMENTS: "achievements",
@@ -152,6 +153,18 @@ export class IndexedDBManager {
       });
       audioStore.createIndex("url", "url", { unique: true });
       audioStore.createIndex("lastAccessed", "lastAccessed", { unique: false });
+    }
+
+    // リスニング進捗ストア
+    if (!db.objectStoreNames.contains(STORES.LISTENING_PROGRESS)) {
+      const listeningProgressStore = db.createObjectStore(STORES.LISTENING_PROGRESS, {
+        keyPath: "id",
+      });
+      listeningProgressStore.createIndex("userId", "userId", { unique: false });
+      listeningProgressStore.createIndex("sessionId", "sessionId", { unique: true });
+      listeningProgressStore.createIndex("part", "part", { unique: false });
+      listeningProgressStore.createIndex("difficulty", "difficulty", { unique: false });
+      listeningProgressStore.createIndex("completedAt", "completedAt", { unique: false });
     }
 
     // ユーザー進捗ストア

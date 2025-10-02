@@ -38,6 +38,72 @@ export interface UserAnswer {
   isCorrect: boolean;
 }
 
+// リスニング学習進捗関連の型定義
+export interface ListeningProgress {
+  id: string;
+  userId: string;
+  sessionId: string;
+  part: 'part1' | 'part2' | 'part3' | 'part4';
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  totalQuestions: number;
+  correctAnswers: number;
+  score: number; // 正解率 (0-100)
+  timeSpent: number; // 学習時間（秒）
+  completedAt: Date;
+  questions: ListeningQuestionResult[];
+}
+
+export interface ListeningQuestionResult {
+  questionId: number;
+  userAnswer: string;
+  correctAnswer: string;
+  isCorrect: boolean;
+  timeSpent: number; // 回答時間（秒）
+  audioPlayed: boolean; // 音声を再生したか
+  transcriptViewed: boolean; // トランスクリプトを見たか
+}
+
+export interface ListeningStatistics {
+  totalSessions: number;
+  totalQuestions: number;
+  totalCorrectAnswers: number;
+  averageScore: number;
+  bestScore: number;
+  totalTimeSpent: number; // 総学習時間（秒）
+  partStats: {
+    part1: ListeningPartStats;
+    part2: ListeningPartStats;
+    part3: ListeningPartStats;
+    part4: ListeningPartStats;
+  };
+  difficultyStats: {
+    beginner: ListeningDifficultyStats;
+    intermediate: ListeningDifficultyStats;
+    advanced: ListeningDifficultyStats;
+  };
+  lastSessionDate?: Date;
+  currentStreak: number; // 連続学習日数
+  longestStreak: number; // 最長連続学習日数
+}
+
+export interface ListeningPartStats {
+  totalSessions: number;
+  totalQuestions: number;
+  correctAnswers: number;
+  averageScore: number;
+  bestScore: number;
+  totalTimeSpent: number;
+}
+
+export interface ListeningDifficultyStats {
+  totalSessions: number;
+  totalQuestions: number;
+  correctAnswers: number;
+  averageScore: number;
+  bestScore: number;
+  totalTimeSpent: number;
+}
+
 // 新仕様のインターフェース
 export interface UserLevel {
   level: number;

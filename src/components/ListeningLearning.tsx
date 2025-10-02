@@ -19,6 +19,8 @@ import {
 } from "../data/listeningQuestions";
 import { useDataManager } from "../hooks/useDataManager";
 import { useLevelSystem } from "../hooks/useLevelSystem";
+import { listeningProgressManager } from "../utils/listeningProgressManager";
+import { ListeningQuestionResult } from "../types";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
@@ -64,6 +66,9 @@ export default function ListeningLearning({
   const [score, setScore] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [showTranscript, setShowTranscript] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [sessionStartTime, setSessionStartTime] = useState<number>(0);
+  const [questionStartTime, setQuestionStartTime] = useState<number>(0);
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const { addXP } = useLevelSystem();
@@ -156,6 +161,29 @@ export default function ListeningLearning({
     const selectedQuestions = shuffled.slice(0, questionCount);
     console.log(`Selected ${selectedQuestions.length} questions`);
     setQuestions(selectedQuestions);
+
+    // リスニング学習セッションを開始
+    const startSession = async () => {
+      try {
+        const userId = "user_001"; // 実際の実装では認証システムから取得
+        const newSessionId = await listeningProgressManager.startSession(
+          userId,
+          part || "part1",
+          difficulty,
+          selectedQuestions.length
+        );
+        setSessionId(newSessionId);
+        setSessionStartTime(Date.now());
+        setQuestionStartTime(Date.now());
+        console.log(`📊 リスニング学習セッション開始: ${newSessionId}`);
+      } catch (error) {
+        console.error("セッション開始エラー:", error);
+      }
+    };
+
+    if (selectedQuestions.length > 0) {
+      startSession();
+    }
   }, [difficulty, part, questionCount]);
 
   const currentQuestion = questions[currentQuestionIndex];
@@ -180,7 +208,7 @@ export default function ListeningLearning({
 
 
   // 回答選択
-  const handleAnswerSelect = (answer: string) => {
+  const handleAnswerSelect = async (answer: string) => {
     if (isAnswered) return;
 
     setSelectedAnswer(answer);
@@ -188,26 +216,59 @@ export default function ListeningLearning({
     setShowExplanation(true);
 
     // 正解判定
-    if (answer === currentQuestion.correctAnswer) {
+    const isCorrect = answer === currentQuestion.correctAnswer;
+    if (isCorrect) {
       setScore((prev) => prev + 1);
       addXP(10); // 正解で10XP
     } else {
       addXP(2); // 不正解でも参加で2XP
     }
+
+    // 問題結果を記録
+    if (sessionId) {
+      try {
+        const questionResult: ListeningQuestionResult = {
+          questionId: currentQuestion.id,
+          userAnswer: answer,
+          correctAnswer: currentQuestion.correctAnswer,
+          isCorrect,
+          timeSpent: Math.round((Date.now() - questionStartTime) / 1000),
+          audioPlayed: isPlaying,
+          transcriptViewed: showTranscript,
+        };
+
+        await listeningProgressManager.recordQuestionResult(sessionId, questionResult);
+        console.log(`📝 問題結果記録: ${currentQuestion.id} - ${isCorrect ? '正解' : '不正解'}`);
+      } catch (error) {
+        console.error("問題結果記録エラー:", error);
+      }
+    }
   };
 
   // 次の問題へ
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
       setSelectedAnswer(null);
       setIsAnswered(false);
       setShowExplanation(false);
       setShowTranscript(false);
+      setQuestionStartTime(Date.now()); // 次の問題の開始時間を設定
       handleStopAudio();
     } else {
       // 学習完了
       setIsCompleted(true);
+      
+      // セッション完了を記録
+      if (sessionId) {
+        try {
+          await listeningProgressManager.completeSession(sessionId);
+          console.log(`✅ リスニング学習セッション完了: ${sessionId}`);
+        } catch (error) {
+          console.error("セッション完了記録エラー:", error);
+        }
+      }
+      
       onComplete?.(score, questions.length);
     }
   };
@@ -220,6 +281,7 @@ export default function ListeningLearning({
       setIsAnswered(false);
       setShowExplanation(false);
       setShowTranscript(false);
+      setQuestionStartTime(Date.now()); // 前の問題の開始時間を設定
       handleStopAudio();
     }
   };
