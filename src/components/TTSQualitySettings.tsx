@@ -1,34 +1,42 @@
 // TTS音声品質設定コンポーネント
-import React, { useState, useEffect } from 'react';
-import { useTTS } from '../hooks/useTTS';
-import { Button } from './ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Slider } from './ui/slider';
-import { Badge } from './ui/badge';
-import { Volume2, Gauge, Mic } from 'lucide-react';
+import { Gauge, Mic, Volume2 } from "lucide-react";
+import React, { useState } from "react";
+import { useTTS } from "../hooks/useTTS";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Slider } from "./ui/slider";
 
 interface TTSQualitySettingsProps {
   onClose?: () => void;
 }
 
-export const TTSQualitySettings: React.FC<TTSQualitySettingsProps> = ({ onClose }) => {
+export const TTSQualitySettings: React.FC<TTSQualitySettingsProps> = ({
+  onClose,
+}) => {
   const { isSupported, availableVoices, testVoiceQuality } = useTTS();
   const [rate, setRate] = useState(0.7);
   const [pitch, setPitch] = useState(0.9);
   const [volume, setVolume] = useState(0.9);
-  const [selectedVoice, setSelectedVoice] = useState<string>('');
+  const [selectedVoice, setSelectedVoice] = useState<string>("");
 
   // 高品質音声を優先表示
-  const highQualityVoices = availableVoices.filter(voice => 
-    ['Alex', 'Samantha', 'Victoria', 'Daniel', 'Moira'].some(name => 
+  const highQualityVoices = availableVoices.filter((voice) =>
+    ["Alex", "Samantha", "Victoria", "Daniel", "Moira"].some((name) =>
       voice.name.includes(name)
     )
   );
 
   const testSettings = async () => {
-    const testText = "Hello, this is a test of the current voice settings. How does it sound?";
-    console.log('🎤 音声設定テスト:', { rate, pitch, volume, voice: selectedVoice });
-    
+    const testText =
+      "Hello, this is a test of the current voice settings. How does it sound?";
+    console.log("🎤 音声設定テスト:", {
+      rate,
+      pitch,
+      volume,
+      voice: selectedVoice,
+    });
+
     // 実際のテストはTTSManagerで実装
     await testVoiceQuality();
   };
@@ -161,8 +169,13 @@ export const TTSQualitySettings: React.FC<TTSQualitySettingsProps> = ({ onClose 
 
         {/* 現在の設定表示 */}
         <div className="text-xs text-muted-foreground bg-muted p-3 rounded">
-          <p><strong>現在の設定:</strong></p>
-          <p>速度: {rate.toFixed(1)} | ピッチ: {pitch.toFixed(1)} | 音量: {Math.round(volume * 100)}%</p>
+          <p>
+            <strong>現在の設定:</strong>
+          </p>
+          <p>
+            速度: {rate.toFixed(1)} | ピッチ: {pitch.toFixed(1)} | 音量:{" "}
+            {Math.round(volume * 100)}%
+          </p>
           {selectedVoice && <p>音声: {selectedVoice}</p>}
         </div>
       </CardContent>

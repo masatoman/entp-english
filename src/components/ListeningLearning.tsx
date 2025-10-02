@@ -82,7 +82,12 @@ export default function ListeningLearning({
   const audioRef = useRef<HTMLAudioElement>(null);
   const { addXP } = useLevelSystem();
   const {} = useDataManager();
-  const { speak, stop: stopTTS, isSupported: ttsSupported, isPlaying: ttsPlaying } = useTTS();
+  const {
+    speak,
+    stop: stopTTS,
+    isSupported: ttsSupported,
+    isPlaying: ttsPlaying,
+  } = useTTS();
 
   // 音声再生機能（TTS優先、フォールバックで既存音声）
   const handlePlayAudio = async () => {
@@ -97,14 +102,16 @@ export default function ListeningLearning({
           setIsPlaying(false);
         } else {
           await speak(currentQuestion.transcript, {
-            rate: 0.7, // よりゆっくりで聞き取りやすく
-            pitch: 0.9, // 少し低めのピッチ
+            rate: 0.75, // TOEIC標準速度（ネイティブ発音を保つ）
+            pitch: 1.0, // 自然なピッチでネイティブらしさを維持
             volume: 0.9, // 適度な音量
           });
           setIsPlaying(true);
-          console.log(`🎤 TTS音声再生: ${currentQuestion.transcript.substring(0, 50)}...`);
+          console.log(
+            `🎤 TTS音声再生: ${currentQuestion.transcript.substring(0, 50)}...`
+          );
         }
-      } 
+      }
       // フォールバック: 既存の音声ファイル
       else if (currentQuestion.audioUrl && audioRef.current) {
         if (isPlaying) {
@@ -116,9 +123,10 @@ export default function ListeningLearning({
           setIsPlaying(true);
           console.log(`🎵 音声ファイル再生: ${currentQuestion.audioUrl}`);
         }
-      } 
-      else {
-        console.warn("音声再生手段がありません（TTS未サポート、音声ファイルなし）");
+      } else {
+        console.warn(
+          "音声再生手段がありません（TTS未サポート、音声ファイルなし）"
+        );
       }
     } catch (error) {
       console.error("音声再生エラー:", error);
@@ -131,13 +139,13 @@ export default function ListeningLearning({
     if (ttsPlaying) {
       stopTTS();
     }
-    
+
     // 既存音声ファイルを停止
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
     }
-    
+
     setIsPlaying(false);
     console.log("🎤 音声停止");
   };
