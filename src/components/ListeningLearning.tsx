@@ -19,6 +19,7 @@ import {
 } from "../data/listeningQuestions";
 import { useDataManager } from "../hooks/useDataManager";
 import { useLevelSystem } from "../hooks/useLevelSystem";
+import { useTTS } from "../hooks/useTTS";
 import { ListeningQuestionResult } from "../types";
 import {
   AchievementNotification,
@@ -81,17 +82,31 @@ export default function ListeningLearning({
   const audioRef = useRef<HTMLAudioElement>(null);
   const { addXP } = useLevelSystem();
   const {} = useDataManager();
+  const { speak, stop: stopTTS, isSupported: ttsSupported, isPlaying: ttsPlaying } = useTTS();
 
-  // 音声再生機能
+  // 音声再生機能（TTS優先、フォールバックで既存音声）
   const handlePlayAudio = async () => {
     const currentQuestion = questions[currentQuestionIndex];
-    if (!currentQuestion?.audioUrl) {
-      console.log("音声ファイルが設定されていません");
-      return;
-    }
+    if (!currentQuestion) return;
 
     try {
-      if (audioRef.current) {
+      // TTSがサポートされている場合はTTSを使用
+      if (ttsSupported && currentQuestion.transcript) {
+        if (ttsPlaying) {
+          stopTTS();
+          setIsPlaying(false);
+        } else {
+          await speak(currentQuestion.transcript, {
+            rate: 0.8, // TOEIC速度に調整
+            pitch: 1.0,
+            volume: 1.0,
+          });
+          setIsPlaying(true);
+          console.log(`🎤 TTS音声再生: ${currentQuestion.transcript.substring(0, 50)}...`);
+        }
+      } 
+      // フォールバック: 既存の音声ファイル
+      else if (currentQuestion.audioUrl && audioRef.current) {
         if (isPlaying) {
           audioRef.current.pause();
           setIsPlaying(false);
@@ -99,7 +114,11 @@ export default function ListeningLearning({
           audioRef.current.currentTime = 0;
           await audioRef.current.play();
           setIsPlaying(true);
+          console.log(`🎵 音声ファイル再生: ${currentQuestion.audioUrl}`);
         }
+      } 
+      else {
+        console.warn("音声再生手段がありません（TTS未サポート、音声ファイルなし）");
       }
     } catch (error) {
       console.error("音声再生エラー:", error);
@@ -108,14 +127,27 @@ export default function ListeningLearning({
 
   // 音声停止機能
   const handleStopAudio = () => {
+    // TTS音声を停止
+    if (ttsPlaying) {
+      stopTTS();
+    }
+    
+    // 既存音声ファイルを停止
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
-      setIsPlaying(false);
     }
+    
+    setIsPlaying(false);
+    console.log("🎤 音声停止");
   };
 
-  // 音声イベントハンドラー
+  // TTS状態の同期
+  useEffect(() => {
+    setIsPlaying(ttsPlaying);
+  }, [ttsPlaying]);
+
+  // 音声イベントハンドラー（既存音声ファイル用）
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
