@@ -355,8 +355,7 @@ export function NewHome() {
         onNavigateToVocabulary();
         break;
       case "listening":
-        // リスニング問題演習（現在は語彙学習にリダイレクト）
-        onNavigateToVocabulary();
+        navigate("/listening");
         break;
       case "reading":
         // リーディング問題演習（現在は語彙学習にリダイレクト）
@@ -454,7 +453,7 @@ export function NewHome() {
     >
       {/* ログインボーナス通知 */}
       <LoginBonusNotification />
-      
+
       {/* ゲームヘッダー */}
       <GameHeader
         onQuestClick={() => setShowDailyQuests(true)}
@@ -605,6 +604,18 @@ export function NewHome() {
             onClick={() =>
               canStartLearning && handleStartLearning("vocabulary")
             }
+          />
+
+          {/* リスニング学習 */}
+          <SelectionCard
+            id="listening"
+            title="リスニング学習"
+            description="TOEIC形式のリスニング問題で耳を鍛える"
+            icon="🎧"
+            difficulty="リスニング"
+            detail="必要体力: 1 ♥"
+            isLocked={!canStartLearning}
+            onClick={() => canStartLearning && handleStartLearning("listening")}
           />
 
           {/* 統合学習（新機能） */}

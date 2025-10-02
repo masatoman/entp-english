@@ -26,6 +26,8 @@ import GachaSystem from "../components/GachaSystem";
 import GachaVocabularyLearning from "../components/GachaVocabularyLearning";
 import GrowthDashboard from "../components/GrowthDashboard";
 import IntegratedLearning from "../components/IntegratedLearning";
+import ListeningLearning from "../components/ListeningLearning";
+import ListeningSelection from "../components/ListeningSelection";
 import { MigrationProvider } from "../components/MigrationProvider";
 import MockPrototypeDemo from "../components/MockPrototypeDemo";
 import PersonalInsights from "../components/PersonalInsights";
@@ -171,6 +173,13 @@ export function AppRouter() {
                 <Route
                   path="/learning/pre-study/content/:contentId"
                   element={<PreStudyContentViewer />}
+                />
+
+                {/* リスニング学習 */}
+                <Route path="/listening" element={<ListeningSelection />} />
+                <Route
+                  path="/listening/learn/:difficulty/:part?"
+                  element={<ListeningLearning />}
                 />
 
                 {/* その他の学習機能 */}

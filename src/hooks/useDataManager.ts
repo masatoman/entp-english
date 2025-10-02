@@ -278,8 +278,11 @@ export function useDataManager() {
   }, []);
 
   // 音声の再生
-  const playAudio = useCallback(async () => {
+  const playAudio = useCallback(async (audioUrl?: string) => {
     try {
+      if (audioUrl) {
+        await audioManager.load(audioUrl);
+      }
       await audioManager.play();
     } catch (error) {
       console.error("音声再生エラー:", error);
