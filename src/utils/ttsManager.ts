@@ -87,18 +87,18 @@ class TTSManager {
     // ネイティブ英語音声の優先順位（発音品質重視）
     const nativeEnglishVoices = [
       // macOSのネイティブ英語音声（高品質）
-      "Alex",           // 米国男性（高品質）
-      "Samantha",       // 米国女性（高品質）
-      "Victoria",       // 英国女性（高品質）
-      "Daniel",         // 英国男性（高品質）
-      "Moira",          // アイルランド女性（高品質）
-      "Karen",          // オーストラリア女性
-      "Lee",            // オーストラリア男性
+      "Alex", // 米国男性（高品質）
+      "Samantha", // 米国女性（高品質）
+      "Victoria", // 英国女性（高品質）
+      "Daniel", // 英国男性（高品質）
+      "Moira", // アイルランド女性（高品質）
+      "Karen", // オーストラリア女性
+      "Lee", // オーストラリア男性
       // Windowsのネイティブ英語音声
-      "Microsoft David Desktop",    // 米国男性
-      "Microsoft Zira Desktop",     // 米国女性
-      "Microsoft Hazel Desktop",    // 英国女性
-      "Microsoft Susan Desktop",    // 英国女性
+      "Microsoft David Desktop", // 米国男性
+      "Microsoft Zira Desktop", // 米国女性
+      "Microsoft Hazel Desktop", // 英国女性
+      "Microsoft Susan Desktop", // 英国女性
       // その他の高品質音声
       "Google US English",
       "Amazon Polly",
@@ -113,7 +113,9 @@ class TTSManager {
           v.name.toLowerCase().includes(voiceName.toLowerCase())
       );
       if (voice) {
-        console.log(`🎤 ネイティブ英語音声を選択: ${voice.name} (${voice.lang})`);
+        console.log(
+          `🎤 ネイティブ英語音声を選択: ${voice.name} (${voice.lang})`
+        );
         return voice;
       }
     }
@@ -137,11 +139,13 @@ class TTSManager {
     }
 
     // 最後の手段：英語音声の中で最も品質が高そうなものを選択
-    const fallbackVoice = englishVoices.find((voice) => 
-      voice.name.toLowerCase().includes("english") ||
-      voice.name.toLowerCase().includes("us") ||
-      voice.name.toLowerCase().includes("uk")
-    ) || englishVoices[0];
+    const fallbackVoice =
+      englishVoices.find(
+        (voice) =>
+          voice.name.toLowerCase().includes("english") ||
+          voice.name.toLowerCase().includes("us") ||
+          voice.name.toLowerCase().includes("uk")
+      ) || englishVoices[0];
 
     if (fallbackVoice) {
       console.log(
@@ -174,7 +178,9 @@ class TTSManager {
     if (englishVoice) {
       utterance.voice = englishVoice;
       utterance.lang = englishVoice.lang;
-      console.log(`🎤 音声言語設定: ${englishVoice.lang} (${englishVoice.name})`);
+      console.log(
+        `🎤 音声言語設定: ${englishVoice.lang} (${englishVoice.name})`
+      );
     } else {
       // フォールバック：米国英語を強制設定
       utterance.lang = "en-US";
@@ -298,20 +304,26 @@ class TTSManager {
     console.log("🎤 ネイティブ英語発音テスト開始...");
 
     // ネイティブ英語音声のみでテスト
-    const nativeVoices = this.availableVoices.filter((voice) => {
-      if (voice.lang.includes("ja") || voice.lang.includes("JP")) return false;
-      return voice.lang.startsWith("en") && (
-        voice.name.includes("Alex") ||
-        voice.name.includes("Samantha") ||
-        voice.name.includes("Victoria") ||
-        voice.name.includes("Daniel") ||
-        voice.name.includes("Microsoft David") ||
-        voice.name.includes("Microsoft Zira")
-      );
-    }).slice(0, 3);
+    const nativeVoices = this.availableVoices
+      .filter((voice) => {
+        if (voice.lang.includes("ja") || voice.lang.includes("JP"))
+          return false;
+        return (
+          voice.lang.startsWith("en") &&
+          (voice.name.includes("Alex") ||
+            voice.name.includes("Samantha") ||
+            voice.name.includes("Victoria") ||
+            voice.name.includes("Daniel") ||
+            voice.name.includes("Microsoft David") ||
+            voice.name.includes("Microsoft Zira"))
+        );
+      })
+      .slice(0, 3);
 
     if (nativeVoices.length === 0) {
-      console.log("🎤 ネイティブ英語音声が見つかりません。利用可能な音声でテストします。");
+      console.log(
+        "🎤 ネイティブ英語音声が見つかりません。利用可能な音声でテストします。"
+      );
       const testVoices = this.getAvailableEnglishVoices().slice(0, 2);
       for (let i = 0; i < testVoices.length; i++) {
         const voice = testVoices[i];
@@ -329,7 +341,9 @@ class TTSManager {
     } else {
       for (let i = 0; i < nativeVoices.length; i++) {
         const voice = nativeVoices[i];
-        console.log(`🎤 ネイティブ英語音声テスト ${i + 1}: ${voice.name} (${voice.lang})`);
+        console.log(
+          `🎤 ネイティブ英語音声テスト ${i + 1}: ${voice.name} (${voice.lang})`
+        );
 
         await this.speak(testText, {
           rate: 0.75,

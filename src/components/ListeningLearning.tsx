@@ -27,6 +27,7 @@ import {
 } from "../utils/listeningAchievementManager";
 import { listeningProgressManager } from "../utils/listeningProgressManager";
 import { AchievementNotificationContainer } from "./AchievementNotification";
+import { ListeningRecommendations } from "./ListeningRecommendations";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
@@ -78,6 +79,8 @@ export default function ListeningLearning({
   const [achievementNotifications, setAchievementNotifications] = useState<
     AchievementNotification[]
   >([]);
+  const [showRecommendations, setShowRecommendations] = useState(false);
+  const [sessionCompleted, setSessionCompleted] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const { addXP } = useLevelSystem();
@@ -312,6 +315,7 @@ export default function ListeningLearning({
     } else {
       // 学習完了
       setIsCompleted(true);
+      setSessionCompleted(true);
 
       // セッション完了を記録
       if (sessionId) {
@@ -331,6 +335,9 @@ export default function ListeningLearning({
             setAchievementNotifications(notifications);
             console.log(`🏆 アチーブメント達成: ${notifications.length}件`);
           }
+
+          // 推奨語彙を表示
+          setShowRecommendations(true);
         } catch (error) {
           console.error("セッション完了記録エラー:", error);
         }
@@ -668,6 +675,20 @@ export default function ListeningLearning({
         notifications={achievementNotifications}
         onRemoveNotification={handleRemoveNotification}
       />
+
+      {/* 推奨語彙表示 */}
+      {showRecommendations && sessionCompleted && (
+        <div className="mt-6">
+          <ListeningRecommendations
+            userId="user_001"
+            sessionScore={score}
+            sessionPart={part || "part1"}
+            onStartVocabularyLearning={() => {
+              setShowRecommendations(false);
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }
