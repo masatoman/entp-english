@@ -69,6 +69,67 @@ export default function ListeningLearning({
   const { addXP } = useLevelSystem();
   const { playAudio, stopAudio } = useDataManager();
 
+  // 音声再生機能
+  const handlePlayAudio = async () => {
+    const currentQuestion = questions[currentQuestionIndex];
+    if (!currentQuestion?.audioUrl) {
+      console.log("音声ファイルが設定されていません");
+      return;
+    }
+
+    try {
+      if (audioRef.current) {
+        if (isPlaying) {
+          audioRef.current.pause();
+          setIsPlaying(false);
+        } else {
+          audioRef.current.currentTime = 0;
+          await audioRef.current.play();
+          setIsPlaying(true);
+        }
+      }
+    } catch (error) {
+      console.error("音声再生エラー:", error);
+    }
+  };
+
+  // 音声停止機能
+  const handleStopAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setIsPlaying(false);
+    }
+  };
+
+  // 音声イベントハンドラー
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handleEnded = () => {
+      setIsPlaying(false);
+    };
+
+    const handlePlay = () => {
+      setIsPlaying(true);
+    };
+
+    const handlePause = () => {
+      setIsPlaying(false);
+    };
+
+    audio.addEventListener("ended", handleEnded);
+    audio.addEventListener("play", handlePlay);
+    audio.addEventListener("pause", handlePause);
+
+    return () => {
+      audio.removeEventListener("ended", handleEnded);
+      audio.removeEventListener("play", handlePlay);
+      audio.removeEventListener("pause", handlePause);
+    };
+  }, [currentQuestionIndex]);
+
   // 問題の初期化
   useEffect(() => {
     console.log("Initializing questions with:", {
@@ -117,28 +178,6 @@ export default function ListeningLearning({
     );
   }
 
-  // 音声再生
-  const handlePlayAudio = async () => {
-    if (!currentQuestion) return;
-
-    try {
-      if (currentQuestion.audioUrl) {
-        await playAudio(currentQuestion.audioUrl);
-        setIsPlaying(true);
-      } else {
-        // 音声ファイルがない場合のフォールバック（実際の実装では音声合成を使用）
-        console.log("音声ファイルが見つかりません:", currentQuestion.audioUrl);
-      }
-    } catch (error) {
-      console.error("音声再生エラー:", error);
-    }
-  };
-
-  // 音声停止
-  const handleStopAudio = () => {
-    stopAudio();
-    setIsPlaying(false);
-  };
 
   // 回答選択
   const handleAnswerSelect = (answer: string) => {
@@ -477,6 +516,16 @@ export default function ListeningLearning({
           </div>
         </CardContent>
       </Card>
+
+      {/* 音声要素 */}
+      <audio
+        ref={audioRef}
+        src={currentQuestion?.audioUrl}
+        preload="metadata"
+        onError={(e) => {
+          console.error("音声ファイルの読み込みエラー:", e);
+        }}
+      />
     </div>
   );
 }

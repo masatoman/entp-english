@@ -23,7 +23,7 @@ export const part1Questions: ListeningQuestion[] = [
     part: "part1",
     difficulty: "beginner",
     level: 1,
-    audioUrl: "/audio/listening/part1/1001.mp3",
+    audioUrl: "/correct01.mp3", // テスト用に既存の音声ファイルを使用
     transcript: "The woman is sitting at a desk, writing on a piece of paper.",
     question: "What is the woman doing?",
     choices: [
@@ -44,7 +44,7 @@ export const part1Questions: ListeningQuestion[] = [
     part: "part1",
     difficulty: "beginner",
     level: 1,
-    audioUrl: "/audio/listening/part1/1002.mp3",
+    audioUrl: "/correct01.mp3", // テスト用に既存の音声ファイルを使用
     transcript: "The man is standing near the window, looking outside.",
     question: "Where is the man standing?",
     choices: [
@@ -64,7 +64,7 @@ export const part1Questions: ListeningQuestion[] = [
     part: "part1",
     difficulty: "intermediate",
     level: 2,
-    audioUrl: "/audio/listening/part1/1003.mp3",
+    audioUrl: "/correct01.mp3", // テスト用に既存の音声ファイルを使用
     transcript:
       "Several people are gathered around a conference table, discussing a document.",
     question: "What are the people doing?",
