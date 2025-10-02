@@ -1,6 +1,10 @@
 import { GachaPack, WordCard } from "../types/gacha";
 import { additionalToeicCards } from "./additionalToeicCards";
+import { expandedBasicVocabulary } from "./expandedBasicVocabulary";
+import { expandedBasicVocabulary2 } from "./expandedBasicVocabulary2";
+import { intermediateBusinessVocabulary } from "./intermediateBusinessVocabulary";
 
+// 既存の語彙データを直接定義（循環参照を避けるため）
 export const toeicWordCards: WordCard[] = [
   // Common Cards (基本ビジネス語彙)
   {
@@ -1113,7 +1117,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "very_high",
-      scoreBand: "400-600",
+      scoreBand: "400-500",
       synonyms: ["due date", "time limit"],
       businessContext: "プロジェクト管理・スケジュール",
     },
@@ -1151,7 +1155,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "high",
-      scoreBand: "500-700",
+      scoreBand: "500-600",
       synonyms: ["allocation", "funding"],
       businessContext: "財務・会計",
     },
@@ -1189,7 +1193,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part4", "Part7"],
       frequency: "high",
-      scoreBand: "600-800",
+      scoreBand: "600-700",
       synonyms: ["income", "earnings"],
       businessContext: "財務・業績",
     },
@@ -1227,7 +1231,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "high",
-      scoreBand: "500-700",
+      scoreBand: "500-600",
       synonyms: ["effective", "productive"],
       businessContext: "業務効率・生産性",
     },
@@ -1265,7 +1269,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "medium",
-      scoreBand: "600-800",
+      scoreBand: "600-700",
       synonyms: ["cooperate", "work together"],
       businessContext: "チームワーク・パートナーシップ",
     },
@@ -1305,7 +1309,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "high",
-      scoreBand: "600-800",
+      scoreBand: "600-700",
       synonyms: ["manager", "director"],
       businessContext: "経営・管理職",
     },
@@ -1343,7 +1347,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part1", "Part3", "Part4", "Part7"],
       frequency: "very_high",
-      scoreBand: "400-600",
+      scoreBand: "400-500",
       synonyms: ["client", "consumer"],
       businessContext: "営業・サービス",
     },
@@ -1381,7 +1385,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "very_high",
-      scoreBand: "400-600",
+      scoreBand: "400-500",
       synonyms: ["worker", "staff member"],
       businessContext: "人事・雇用",
     },
@@ -1405,7 +1409,8 @@ export const toeicWordCards: WordCard[] = [
         type: "collocation",
         expression: "human resources department",
         meaning: "人事部",
-        example: "Contact the human resources department for benefits information.",
+        example:
+          "Contact the human resources department for benefits information.",
         translation: "福利厚生については人事部にお問い合わせください。",
       },
     ],
@@ -1419,7 +1424,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "very_high",
-      scoreBand: "400-600",
+      scoreBand: "400-500",
       synonyms: ["division", "section"],
       businessContext: "組織・部門",
     },
@@ -1457,7 +1462,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part1", "Part4", "Part7"],
       frequency: "high",
-      scoreBand: "500-700",
+      scoreBand: "500-600",
       synonyms: ["machinery", "apparatus"],
       businessContext: "設備・技術",
     },
@@ -1495,7 +1500,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part1", "Part4", "Part7"],
       frequency: "medium",
-      scoreBand: "600-800",
+      scoreBand: "600-700",
       synonyms: ["building", "establishment"],
       businessContext: "施設・インフラ",
     },
@@ -1535,7 +1540,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "medium",
-      scoreBand: "600-800",
+      scoreBand: "600-700",
       synonyms: ["stock", "supply"],
       businessContext: "物流・在庫管理",
     },
@@ -1573,7 +1578,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part4", "Part7"],
       frequency: "medium",
-      scoreBand: "600-800",
+      scoreBand: "600-700",
       synonyms: ["produce", "create"],
       businessContext: "製造・生産",
     },
@@ -1611,7 +1616,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "medium",
-      scoreBand: "600-800",
+      scoreBand: "600-700",
       synonyms: ["vendor", "provider"],
       businessContext: "調達・サプライチェーン",
     },
@@ -1649,7 +1654,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "medium",
-      scoreBand: "600-800",
+      scoreBand: "600-700",
       synonyms: ["rival", "opponent"],
       businessContext: "競争・市場戦略",
     },
@@ -1689,7 +1694,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part4", "Part7"],
       frequency: "low",
-      scoreBand: "700-900",
+      scoreBand: "700-800",
       synonyms: ["takeover", "purchase"],
       businessContext: "M&A・企業戦略",
     },
@@ -1727,7 +1732,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part4", "Part7"],
       frequency: "medium",
-      scoreBand: "700-900",
+      scoreBand: "700-800",
       synonyms: ["advancement", "breakthrough"],
       businessContext: "技術・研究開発",
     },
@@ -1765,7 +1770,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part4", "Part7"],
       frequency: "low",
-      scoreBand: "700-900",
+      scoreBand: "700-800",
       synonyms: ["business owner", "founder"],
       businessContext: "起業・ベンチャー",
     },
@@ -1781,7 +1786,8 @@ export const toeicWordCards: WordCard[] = [
     rarity: "epic",
     examples: [
       {
-        sentence: "The merger between the two companies created a global leader.",
+        sentence:
+          "The merger between the two companies created a global leader.",
         translation: "2社の合併により世界的リーダーが誕生しました。",
         situation: "TOEIC Part7 (企業合併)",
       },
@@ -1859,8 +1865,10 @@ export const toeicWordCards: WordCard[] = [
     rarity: "legendary",
     examples: [
       {
-        sentence: "The new technology represents a paradigm shift in our industry.",
-        translation: "新技術は私たちの業界におけるパラダイムシフトを表しています。",
+        sentence:
+          "The new technology represents a paradigm shift in our industry.",
+        translation:
+          "新技術は私たちの業界におけるパラダイムシフトを表しています。",
         situation: "TOEIC Part7 (技術革新)",
       },
     ],
@@ -1882,8 +1890,8 @@ export const toeicWordCards: WordCard[] = [
     ],
     toeicSpecific: {
       parts: ["Part7"],
-      frequency: "very_low",
-      scoreBand: "900+",
+      frequency: "low",
+      scoreBand: "800+",
       synonyms: ["framework", "model"],
       businessContext: "戦略的思考・概念",
     },
@@ -1897,7 +1905,8 @@ export const toeicWordCards: WordCard[] = [
     rarity: "legendary",
     examples: [
       {
-        sentence: "The merger will create significant synergy between the companies.",
+        sentence:
+          "The merger will create significant synergy between the companies.",
         translation: "合併により両社間に大きな相乗効果が生まれるでしょう。",
         situation: "TOEIC Part7 (企業戦略)",
       },
@@ -1920,8 +1929,8 @@ export const toeicWordCards: WordCard[] = [
     ],
     toeicSpecific: {
       parts: ["Part7"],
-      frequency: "very_low",
-      scoreBand: "900+",
+      frequency: "low",
+      scoreBand: "800+",
       synonyms: ["cooperation", "collaboration"],
       businessContext: "戦略・M&A",
     },
@@ -1961,7 +1970,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "high",
-      scoreBand: "500-700",
+      scoreBand: "500-600",
       synonyms: ["efficiency", "output"],
       businessContext: "業務効率・生産性",
     },
@@ -1999,7 +2008,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "medium",
-      scoreBand: "600-800",
+      scoreBand: "600-700",
       synonyms: ["advisor", "expert"],
       businessContext: "コンサルティング・専門サービス",
     },
@@ -2037,7 +2046,7 @@ export const toeicWordCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part4", "Part7"],
       frequency: "medium",
-      scoreBand: "600-800",
+      scoreBand: "600-700",
       synonyms: ["rule", "law"],
       businessContext: "法務・コンプライアンス",
     },
@@ -2045,6 +2054,11 @@ export const toeicWordCards: WordCard[] = [
 
   // 追加カードを統合
   ...additionalToeicCards,
+
+  // 新規追加の語彙データ
+  ...expandedBasicVocabulary,
+  ...expandedBasicVocabulary2,
+  ...intermediateBusinessVocabulary,
 ];
 
 export const gachaPacks: GachaPack[] = [

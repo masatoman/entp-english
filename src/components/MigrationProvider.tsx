@@ -6,7 +6,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { DataMigrationService } from "../utils/dataMigrationService";
+// import { DataMigrationService } from "../utils/dataMigrationService";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
@@ -47,7 +47,8 @@ export function MigrationProvider({ children }: MigrationProviderProps) {
     setIsLoading(true);
 
     try {
-      if (DataMigrationService.needsMigration()) {
+      if (false) {
+        // DataMigrationService.needsMigration()) {
         console.log("🔄 統合学習項目システムへの移行が必要です");
         await performMigration();
       } else {
@@ -64,7 +65,8 @@ export function MigrationProvider({ children }: MigrationProviderProps) {
 
   const performMigration = async () => {
     try {
-      const result = await DataMigrationService.performFullMigration();
+      // const result = await DataMigrationService.performFullMigration();
+      const result = { success: true, migratedItems: 0, errors: [] };
       setMigrationResult(result);
 
       if (result.success) {
@@ -85,7 +87,8 @@ export function MigrationProvider({ children }: MigrationProviderProps) {
   };
 
   const updateStats = () => {
-    const stats = DataMigrationService.getMigrationStats();
+    // const stats = DataMigrationService.getMigrationStats();
+    const stats = { totalItems: 0, migratedItems: 0, pendingItems: 0 };
     setMigrationStats(stats);
   };
 

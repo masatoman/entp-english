@@ -9,6 +9,18 @@ export interface VocabularyWord {
   category?: "toeic" | "daily";
 }
 
+// 新しい語彙データをインポート
+import { advancedAcademicVocabulary } from "./advancedAcademicVocabulary";
+import { artsCultureVocabulary } from "./artsCultureVocabulary";
+import { communicationMediaVocabulary } from "./communicationMediaVocabulary";
+import { economicFinancialVocabulary } from "./economicFinancialVocabulary";
+import { environmentScienceVocabulary } from "./environmentScienceVocabulary";
+import { healthMedicalVocabulary } from "./healthMedicalVocabulary";
+import { intermediateDailyVocabulary } from "./intermediateDailyVocabulary";
+import { professionalBusinessVocabulary } from "./professionalBusinessVocabulary";
+import { technologyDigitalVocabulary } from "./technologyDigitalVocabulary";
+import { travelLeisureVocabulary } from "./travelLeisureVocabulary";
+
 // 難易度別に語彙を取得する関数
 export function getVocabularyByDifficulty(
   difficulty: "beginner" | "intermediate" | "advanced"
@@ -847,6 +859,18 @@ export const vocabularyWords: VocabularyWord[] = [
     level: "advanced",
     category: "daily",
   },
+
+  // 新しく追加された語彙データ（ID 131-500）
+  ...intermediateDailyVocabulary,
+  ...advancedAcademicVocabulary,
+  ...professionalBusinessVocabulary,
+  ...economicFinancialVocabulary,
+  ...communicationMediaVocabulary,
+  ...technologyDigitalVocabulary,
+  ...healthMedicalVocabulary,
+  ...environmentScienceVocabulary,
+  ...artsCultureVocabulary,
+  ...travelLeisureVocabulary,
 ];
 
 export function getVocabularyWords(

@@ -37,7 +37,11 @@
 
 - **[design-decision-records.md](./design-decision-records.md)** 🎯 - 設計判断の根拠と理由の記録
 
-### 6️⃣ **アーカイブ（削除済み）**
+### 6️⃣ **開発進捗**
+
+- **[progress-log.md](./progress-log.md)** 📊 - 開発進捗の詳細記録と振り返り
+
+### 7️⃣ **アーカイブ（削除済み）**
 
 - ~~**[archive/](./archive/)** 📦~~ ❌ **削除完了**
   - **削除理由**: 過去の問題・実装済み内容で現在は不要
