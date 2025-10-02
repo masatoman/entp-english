@@ -3,14 +3,14 @@
  * IndexedDBを使用してリスニング学習の履歴と統計を管理
  */
 
-import { dbManager, STORES } from "./IndexedDBManager";
 import {
-  ListeningProgress,
-  ListeningStatistics,
-  ListeningQuestionResult,
-  ListeningPartStats,
   ListeningDifficultyStats,
+  ListeningPartStats,
+  ListeningProgress,
+  ListeningQuestionResult,
+  ListeningStatistics,
 } from "../types";
+import { dbManager, STORES } from "./IndexedDBManager";
 
 export class ListeningProgressManager {
   private static instance: ListeningProgressManager;
@@ -27,13 +27,18 @@ export class ListeningProgressManager {
    */
   async startSession(
     userId: string,
-    part: 'part1' | 'part2' | 'part3' | 'part4',
-    difficulty: 'beginner' | 'intermediate' | 'advanced',
+    part: "part1" | "part2" | "part3" | "part4",
+    difficulty: "beginner" | "intermediate" | "advanced",
     totalQuestions: number
   ): Promise<string> {
-    const sessionId = `listening_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    const progress: Omit<ListeningProgress, 'id' | 'completedAt' | 'questions'> = {
+    const sessionId = `listening_${Date.now()}_${Math.random()
+      .toString(36)
+      .substr(2, 9)}`;
+
+    const progress: Omit<
+      ListeningProgress,
+      "id" | "completedAt" | "questions"
+    > = {
       userId,
       sessionId,
       part,
@@ -51,7 +56,7 @@ export class ListeningProgressManager {
         completedAt: new Date(),
         questions: [],
       });
-      
+
       console.log(`📊 リスニング学習セッション開始: ${sessionId}`);
       return sessionId;
     } catch (error) {
@@ -79,15 +84,26 @@ export class ListeningProgressManager {
 
       // 問題結果を追加
       progress.questions.push(questionResult);
-      
+
       // 統計を更新
-      progress.correctAnswers = progress.questions.filter(q => q.isCorrect).length;
-      progress.score = Math.round((progress.correctAnswers / progress.totalQuestions) * 100);
-      progress.timeSpent = progress.questions.reduce((total, q) => total + q.timeSpent, 0);
+      progress.correctAnswers = progress.questions.filter(
+        (q) => q.isCorrect
+      ).length;
+      progress.score = Math.round(
+        (progress.correctAnswers / progress.totalQuestions) * 100
+      );
+      progress.timeSpent = progress.questions.reduce(
+        (total, q) => total + q.timeSpent,
+        0
+      );
 
       await dbManager.put(STORES.LISTENING_PROGRESS, progress);
-      
-      console.log(`📝 問題結果記録: ${questionResult.questionId} - ${questionResult.isCorrect ? '正解' : '不正解'}`);
+
+      console.log(
+        `📝 問題結果記録: ${questionResult.questionId} - ${
+          questionResult.isCorrect ? "正解" : "不正解"
+        }`
+      );
     } catch (error) {
       console.error("問題結果記録エラー:", error);
       throw error;
@@ -112,9 +128,11 @@ export class ListeningProgressManager {
       progress.completedAt = new Date();
 
       await dbManager.put(STORES.LISTENING_PROGRESS, progress);
-      
-      console.log(`✅ リスニング学習セッション完了: ${sessionId} (スコア: ${progress.score}%)`);
-      
+
+      console.log(
+        `✅ リスニング学習セッション完了: ${sessionId} (スコア: ${progress.score}%)`
+      );
+
       return progress;
     } catch (error) {
       console.error("学習セッション完了エラー:", error);
@@ -131,7 +149,7 @@ export class ListeningProgressManager {
         STORES.LISTENING_PROGRESS
       );
 
-      const userProgress = allProgress.filter(p => p.userId === userId);
+      const userProgress = allProgress.filter((p) => p.userId === userId);
 
       if (userProgress.length === 0) {
         return this.createEmptyStatistics();
@@ -139,29 +157,44 @@ export class ListeningProgressManager {
 
       // 基本統計の計算
       const totalSessions = userProgress.length;
-      const totalQuestions = userProgress.reduce((sum, p) => sum + p.totalQuestions, 0);
-      const totalCorrectAnswers = userProgress.reduce((sum, p) => sum + p.correctAnswers, 0);
-      const averageScore = Math.round(totalCorrectAnswers / totalQuestions * 100);
-      const bestScore = Math.max(...userProgress.map(p => p.score));
-      const totalTimeSpent = userProgress.reduce((sum, p) => sum + p.timeSpent, 0);
+      const totalQuestions = userProgress.reduce(
+        (sum, p) => sum + p.totalQuestions,
+        0
+      );
+      const totalCorrectAnswers = userProgress.reduce(
+        (sum, p) => sum + p.correctAnswers,
+        0
+      );
+      const averageScore = Math.round(
+        (totalCorrectAnswers / totalQuestions) * 100
+      );
+      const bestScore = Math.max(...userProgress.map((p) => p.score));
+      const totalTimeSpent = userProgress.reduce(
+        (sum, p) => sum + p.timeSpent,
+        0
+      );
 
       // Part別統計
       const partStats = {
-        part1: this.calculatePartStats(userProgress, 'part1'),
-        part2: this.calculatePartStats(userProgress, 'part2'),
-        part3: this.calculatePartStats(userProgress, 'part3'),
-        part4: this.calculatePartStats(userProgress, 'part4'),
+        part1: this.calculatePartStats(userProgress, "part1"),
+        part2: this.calculatePartStats(userProgress, "part2"),
+        part3: this.calculatePartStats(userProgress, "part3"),
+        part4: this.calculatePartStats(userProgress, "part4"),
       };
 
       // 難易度別統計
       const difficultyStats = {
-        beginner: this.calculateDifficultyStats(userProgress, 'beginner'),
-        intermediate: this.calculateDifficultyStats(userProgress, 'intermediate'),
-        advanced: this.calculateDifficultyStats(userProgress, 'advanced'),
+        beginner: this.calculateDifficultyStats(userProgress, "beginner"),
+        intermediate: this.calculateDifficultyStats(
+          userProgress,
+          "intermediate"
+        ),
+        advanced: this.calculateDifficultyStats(userProgress, "advanced"),
       };
 
       // 連続学習日数の計算
-      const { currentStreak, longestStreak } = this.calculateStreaks(userProgress);
+      const { currentStreak, longestStreak } =
+        this.calculateStreaks(userProgress);
 
       const statistics: ListeningStatistics = {
         totalSessions,
@@ -188,18 +221,27 @@ export class ListeningProgressManager {
   /**
    * 最近の学習履歴を取得
    */
-  async getRecentProgress(userId: string, limit: number = 10): Promise<ListeningProgress[]> {
+  async getRecentProgress(
+    userId: string,
+    limit: number = 10
+  ): Promise<ListeningProgress[]> {
     try {
       const allProgress = await dbManager.getAll<ListeningProgress>(
         STORES.LISTENING_PROGRESS
       );
 
       const userProgress = allProgress
-        .filter(p => p.userId === userId)
-        .sort((a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime())
+        .filter((p) => p.userId === userId)
+        .sort(
+          (a, b) =>
+            new Date(b.completedAt).getTime() -
+            new Date(a.completedAt).getTime()
+        )
         .slice(0, limit);
 
-      console.log(`📋 最近の学習履歴取得: ${userId} (${userProgress.length}件)`);
+      console.log(
+        `📋 最近の学習履歴取得: ${userId} (${userProgress.length}件)`
+      );
       return userProgress;
     } catch (error) {
       console.error("最近の学習履歴取得エラー:", error);
@@ -257,9 +299,9 @@ export class ListeningProgressManager {
    */
   private calculatePartStats(
     progress: ListeningProgress[],
-    part: 'part1' | 'part2' | 'part3' | 'part4'
+    part: "part1" | "part2" | "part3" | "part4"
   ): ListeningPartStats {
-    const partProgress = progress.filter(p => p.part === part);
+    const partProgress = progress.filter((p) => p.part === part);
 
     if (partProgress.length === 0) {
       return {
@@ -273,11 +315,20 @@ export class ListeningProgressManager {
     }
 
     const totalSessions = partProgress.length;
-    const totalQuestions = partProgress.reduce((sum, p) => sum + p.totalQuestions, 0);
-    const correctAnswers = partProgress.reduce((sum, p) => sum + p.correctAnswers, 0);
-    const averageScore = Math.round(correctAnswers / totalQuestions * 100);
-    const bestScore = Math.max(...partProgress.map(p => p.score));
-    const totalTimeSpent = partProgress.reduce((sum, p) => sum + p.timeSpent, 0);
+    const totalQuestions = partProgress.reduce(
+      (sum, p) => sum + p.totalQuestions,
+      0
+    );
+    const correctAnswers = partProgress.reduce(
+      (sum, p) => sum + p.correctAnswers,
+      0
+    );
+    const averageScore = Math.round((correctAnswers / totalQuestions) * 100);
+    const bestScore = Math.max(...partProgress.map((p) => p.score));
+    const totalTimeSpent = partProgress.reduce(
+      (sum, p) => sum + p.timeSpent,
+      0
+    );
 
     return {
       totalSessions,
@@ -294,9 +345,11 @@ export class ListeningProgressManager {
    */
   private calculateDifficultyStats(
     progress: ListeningProgress[],
-    difficulty: 'beginner' | 'intermediate' | 'advanced'
+    difficulty: "beginner" | "intermediate" | "advanced"
   ): ListeningDifficultyStats {
-    const difficultyProgress = progress.filter(p => p.difficulty === difficulty);
+    const difficultyProgress = progress.filter(
+      (p) => p.difficulty === difficulty
+    );
 
     if (difficultyProgress.length === 0) {
       return {
@@ -310,11 +363,20 @@ export class ListeningProgressManager {
     }
 
     const totalSessions = difficultyProgress.length;
-    const totalQuestions = difficultyProgress.reduce((sum, p) => sum + p.totalQuestions, 0);
-    const correctAnswers = difficultyProgress.reduce((sum, p) => sum + p.correctAnswers, 0);
-    const averageScore = Math.round(correctAnswers / totalQuestions * 100);
-    const bestScore = Math.max(...difficultyProgress.map(p => p.score));
-    const totalTimeSpent = difficultyProgress.reduce((sum, p) => sum + p.timeSpent, 0);
+    const totalQuestions = difficultyProgress.reduce(
+      (sum, p) => sum + p.totalQuestions,
+      0
+    );
+    const correctAnswers = difficultyProgress.reduce(
+      (sum, p) => sum + p.correctAnswers,
+      0
+    );
+    const averageScore = Math.round((correctAnswers / totalQuestions) * 100);
+    const bestScore = Math.max(...difficultyProgress.map((p) => p.score));
+    const totalTimeSpent = difficultyProgress.reduce(
+      (sum, p) => sum + p.timeSpent,
+      0
+    );
 
     return {
       totalSessions,
@@ -339,16 +401,13 @@ export class ListeningProgressManager {
 
     // 日付順にソート
     const sortedProgress = progress.sort(
-      (a, b) => new Date(a.completedAt).getTime() - new Date(b.completedAt).getTime()
+      (a, b) =>
+        new Date(a.completedAt).getTime() - new Date(b.completedAt).getTime()
     );
 
     // ユニークな日付を取得
     const uniqueDates = Array.from(
-      new Set(
-        sortedProgress.map(p => 
-          new Date(p.completedAt).toDateString()
-        )
-      )
+      new Set(sortedProgress.map((p) => new Date(p.completedAt).toDateString()))
     ).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
 
     let currentStreak = 0;
@@ -364,14 +423,14 @@ export class ListeningProgressManager {
       const lastDate = uniqueDates[uniqueDates.length - 1];
       if (lastDate === today || lastDate === yesterday) {
         currentStreak = 1;
-        
+
         // 過去に向かって連続日数を計算
         for (let i = uniqueDates.length - 2; i >= 0; i--) {
           const currentDate = new Date(uniqueDates[i + 1]);
           const previousDate = new Date(uniqueDates[i]);
           const diffTime = currentDate.getTime() - previousDate.getTime();
           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-          
+
           if (diffDays === 1) {
             currentStreak++;
           } else {
@@ -387,7 +446,7 @@ export class ListeningProgressManager {
       const previousDate = new Date(uniqueDates[i - 1]);
       const diffTime = currentDate.getTime() - previousDate.getTime();
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      
+
       if (diffDays === 1) {
         tempStreak++;
       } else {

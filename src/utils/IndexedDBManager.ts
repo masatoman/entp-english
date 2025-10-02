@@ -16,6 +16,7 @@ export const STORES = {
   AUDIO_FILES: "audioFiles",
   USER_PROGRESS: "userProgress",
   ACHIEVEMENTS: "achievements",
+  LISTENING_ACHIEVEMENTS: "listeningAchievements",
   GAME_DATA: "gameData",
   CACHE: "cache",
 } as const;
@@ -157,14 +158,45 @@ export class IndexedDBManager {
 
     // リスニング進捗ストア
     if (!db.objectStoreNames.contains(STORES.LISTENING_PROGRESS)) {
-      const listeningProgressStore = db.createObjectStore(STORES.LISTENING_PROGRESS, {
-        keyPath: "id",
-      });
+      const listeningProgressStore = db.createObjectStore(
+        STORES.LISTENING_PROGRESS,
+        {
+          keyPath: "id",
+        }
+      );
       listeningProgressStore.createIndex("userId", "userId", { unique: false });
-      listeningProgressStore.createIndex("sessionId", "sessionId", { unique: true });
+      listeningProgressStore.createIndex("sessionId", "sessionId", {
+        unique: true,
+      });
       listeningProgressStore.createIndex("part", "part", { unique: false });
-      listeningProgressStore.createIndex("difficulty", "difficulty", { unique: false });
-      listeningProgressStore.createIndex("completedAt", "completedAt", { unique: false });
+      listeningProgressStore.createIndex("difficulty", "difficulty", {
+        unique: false,
+      });
+      listeningProgressStore.createIndex("completedAt", "completedAt", {
+        unique: false,
+      });
+    }
+
+    // リスニングアチーブメントストア
+    if (!db.objectStoreNames.contains(STORES.LISTENING_ACHIEVEMENTS)) {
+      const listeningAchievementStore = db.createObjectStore(
+        STORES.LISTENING_ACHIEVEMENTS,
+        {
+          keyPath: "id",
+        }
+      );
+      listeningAchievementStore.createIndex("userId", "userId", {
+        unique: false,
+      });
+      listeningAchievementStore.createIndex("achievementId", "achievementId", {
+        unique: false,
+      });
+      listeningAchievementStore.createIndex("isCompleted", "isCompleted", {
+        unique: false,
+      });
+      listeningAchievementStore.createIndex("completedAt", "completedAt", {
+        unique: false,
+      });
     }
 
     // ユーザー進捗ストア

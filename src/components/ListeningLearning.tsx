@@ -19,8 +19,13 @@ import {
 } from "../data/listeningQuestions";
 import { useDataManager } from "../hooks/useDataManager";
 import { useLevelSystem } from "../hooks/useLevelSystem";
-import { listeningProgressManager } from "../utils/listeningProgressManager";
 import { ListeningQuestionResult } from "../types";
+import {
+  AchievementNotification,
+  listeningAchievementManager,
+} from "../utils/listeningAchievementManager";
+import { listeningProgressManager } from "../utils/listeningProgressManager";
+import { AchievementNotificationContainer } from "./AchievementNotification";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
@@ -67,12 +72,15 @@ export default function ListeningLearning({
   const [isCompleted, setIsCompleted] = useState(false);
   const [showTranscript, setShowTranscript] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
-  const [sessionStartTime, setSessionStartTime] = useState<number>(0);
+  const [_sessionStartTime, setSessionStartTime] = useState<number>(0);
   const [questionStartTime, setQuestionStartTime] = useState<number>(0);
+  const [achievementNotifications, setAchievementNotifications] = useState<
+    AchievementNotification[]
+  >([]);
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const { addXP } = useLevelSystem();
-  const { playAudio, stopAudio } = useDataManager();
+  const {} = useDataManager();
 
   // 音声再生機能
   const handlePlayAudio = async () => {
@@ -206,7 +214,6 @@ export default function ListeningLearning({
     );
   }
 
-
   // 回答選択
   const handleAnswerSelect = async (answer: string) => {
     if (isAnswered) return;
@@ -237,8 +244,15 @@ export default function ListeningLearning({
           transcriptViewed: showTranscript,
         };
 
-        await listeningProgressManager.recordQuestionResult(sessionId, questionResult);
-        console.log(`📝 問題結果記録: ${currentQuestion.id} - ${isCorrect ? '正解' : '不正解'}`);
+        await listeningProgressManager.recordQuestionResult(
+          sessionId,
+          questionResult
+        );
+        console.log(
+          `📝 問題結果記録: ${currentQuestion.id} - ${
+            isCorrect ? "正解" : "不正解"
+          }`
+        );
       } catch (error) {
         console.error("問題結果記録エラー:", error);
       }
@@ -258,17 +272,30 @@ export default function ListeningLearning({
     } else {
       // 学習完了
       setIsCompleted(true);
-      
+
       // セッション完了を記録
       if (sessionId) {
         try {
           await listeningProgressManager.completeSession(sessionId);
           console.log(`✅ リスニング学習セッション完了: ${sessionId}`);
+
+          // アチーブメントをチェック
+          const userId = "user_001"; // 実際の実装では認証システムから取得
+          const notifications =
+            await listeningAchievementManager.checkAchievementsOnSessionComplete(
+              userId,
+              sessionId
+            );
+
+          if (notifications.length > 0) {
+            setAchievementNotifications(notifications);
+            console.log(`🏆 アチーブメント達成: ${notifications.length}件`);
+          }
         } catch (error) {
           console.error("セッション完了記録エラー:", error);
         }
       }
-      
+
       onComplete?.(score, questions.length);
     }
   };
@@ -359,6 +386,13 @@ export default function ListeningLearning({
       </div>
     );
   }
+
+  // アチーブメント通知を削除
+  const handleRemoveNotification = (notificationId: string) => {
+    setAchievementNotifications((prev) =>
+      prev.filter((n) => n.id !== notificationId)
+    );
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
@@ -587,6 +621,12 @@ export default function ListeningLearning({
         onError={(e) => {
           console.error("音声ファイルの読み込みエラー:", e);
         }}
+      />
+
+      {/* アチーブメント通知 */}
+      <AchievementNotificationContainer
+        notifications={achievementNotifications}
+        onRemoveNotification={handleRemoveNotification}
       />
     </div>
   );

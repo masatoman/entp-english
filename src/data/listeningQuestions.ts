@@ -146,6 +146,46 @@ export const part2Questions: ListeningQuestion[] = [
     grammar: ["理由の表現", "because of"],
     category: "business",
   },
+  {
+    id: 2004,
+    part: "part2",
+    difficulty: "intermediate",
+    level: 2,
+    audioUrl: "/audio/listening/part2/2004.mp3",
+    transcript: "Question: Can you help me with this presentation?",
+    question: "How should you respond?",
+    choices: [
+      "Of course. I'm free this afternoon.",
+      "I don't like presentations.",
+      "The presentation is tomorrow.",
+      "I need more time.",
+    ],
+    correctAnswer: "Of course. I'm free this afternoon.",
+    explanation: "依頼に対して協力的な返答をすることが重要です。",
+    vocabulary: ["presentation", "help", "free", "afternoon"],
+    grammar: ["依頼への返答", "時間の表現"],
+    category: "business",
+  },
+  {
+    id: 2005,
+    part: "part2",
+    difficulty: "advanced",
+    level: 3,
+    audioUrl: "/audio/listening/part2/2005.mp3",
+    transcript: "Question: What's the status of the project?",
+    question: "How should you respond?",
+    choices: [
+      "We're ahead of schedule and should finish by next Friday.",
+      "I don't know about the project.",
+      "The project is cancelled.",
+      "We need more people.",
+    ],
+    correctAnswer: "We're ahead of schedule and should finish by next Friday.",
+    explanation: "プロジェクトの進捗状況を具体的に報告することが重要です。",
+    vocabulary: ["status", "project", "schedule", "finish", "ahead"],
+    grammar: ["現在進行形", "未来の表現"],
+    category: "business",
+  },
 ];
 
 // TOEIC Part 3: 会話問題
@@ -215,6 +255,58 @@ Woman: We should focus more resources on software development then.`,
     grammar: ["比較級", "受動態"],
     category: "business",
   },
+  {
+    id: 3003,
+    part: "part3",
+    difficulty: "beginner",
+    level: 2,
+    audioUrl: "/audio/listening/part3/3003.mp3",
+    transcript: `Woman: Hi Tom, how was your vacation?
+Man: It was fantastic! I went to Hawaii with my family.
+Woman: That sounds wonderful. What did you do there?
+Man: We spent most of our time at the beach and went snorkeling.`,
+    question: "What did Tom do in Hawaii?",
+    choices: [
+      "He went shopping.",
+      "He visited museums.",
+      "He went snorkeling.",
+      "He attended meetings.",
+    ],
+    correctAnswer: "He went snorkeling.",
+    explanation: "会話の中で具体的な活動を聞き取ることが重要です。",
+    vocabulary: ["vacation", "Hawaii", "beach", "snorkeling"],
+    grammar: ["過去形", "過去の経験"],
+    category: "daily",
+  },
+  {
+    id: 3004,
+    part: "part3",
+    difficulty: "advanced",
+    level: 3,
+    audioUrl: "/audio/listening/part3/3004.mp3",
+    transcript: `Man: Sarah, I need your opinion on the new marketing strategy.
+Woman: Sure, what specifically would you like to discuss?
+Man: We're considering expanding into the Asian market. What are your thoughts?
+Woman: I think it's a great opportunity, but we should conduct thorough market research first.`,
+    question: "What does Sarah recommend?",
+    choices: [
+      "Immediate expansion",
+      "Market research first",
+      "Postponing the decision",
+      "Focusing on domestic market",
+    ],
+    correctAnswer: "Market research first",
+    explanation: "提案に対する具体的なアドバイスを聞き取ることがポイントです。",
+    vocabulary: [
+      "marketing",
+      "strategy",
+      "expanding",
+      "opportunity",
+      "research",
+    ],
+    grammar: ["動名詞", "条件文"],
+    category: "business",
+  },
 ];
 
 // TOEIC Part 4: 説明文問題
@@ -281,6 +373,56 @@ export const part4Questions: ListeningQuestion[] = [
     ],
     grammar: ["現在完了形", "受動態", "分詞構文"],
     category: "culture",
+  },
+  {
+    id: 4003,
+    part: "part4",
+    difficulty: "beginner",
+    level: 2,
+    audioUrl: "/audio/listening/part4/4003.mp3",
+    transcript:
+      "Attention all passengers on flight 1234 to New York. Due to weather conditions, our departure has been delayed by approximately 30 minutes. We apologize for any inconvenience and will keep you updated on any further changes. Please remain near the gate.",
+    question: "What is the delay?",
+    choices: ["15 minutes", "30 minutes", "45 minutes", "1 hour"],
+    correctAnswer: "30 minutes",
+    explanation: "遅延時間を正確に聞き取ることが重要です。",
+    vocabulary: [
+      "passengers",
+      "departure",
+      "delayed",
+      "weather",
+      "inconvenience",
+    ],
+    grammar: ["受動態", "現在完了形"],
+    category: "transportation",
+  },
+  {
+    id: 4004,
+    part: "part4",
+    difficulty: "advanced",
+    level: 3,
+    audioUrl: "/audio/listening/part4/4004.mp3",
+    transcript:
+      "Good morning, everyone. I'm pleased to announce that our company has achieved record-breaking quarterly profits, exceeding our target by 25%. This success is attributed to our innovative product line and dedicated team. We're now planning to expand into three new markets and hire 50 additional staff members.",
+    question: "What is the company planning to do?",
+    choices: [
+      "Reduce staff",
+      "Expand into three new markets",
+      "Close some offices",
+      "Change product line",
+    ],
+    correctAnswer: "Expand into three new markets",
+    explanation: "将来の計画を聞き取ることがポイントです。",
+    vocabulary: [
+      "quarterly",
+      "profits",
+      "exceeding",
+      "innovative",
+      "expand",
+      "markets",
+    ],
+    grammar: ["現在完了形", "未来の表現"],
+    category: "business",
   },
 ];
 

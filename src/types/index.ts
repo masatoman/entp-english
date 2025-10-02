@@ -43,8 +43,8 @@ export interface ListeningProgress {
   id: string;
   userId: string;
   sessionId: string;
-  part: 'part1' | 'part2' | 'part3' | 'part4';
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  part: "part1" | "part2" | "part3" | "part4";
+  difficulty: "beginner" | "intermediate" | "advanced";
   totalQuestions: number;
   correctAnswers: number;
   score: number; // 正解率 (0-100)

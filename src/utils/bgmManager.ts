@@ -12,7 +12,7 @@ export interface BGMSettings {
 class BGMManager {
   private audio: HTMLAudioElement | null = null;
   private settings: BGMSettings = {
-    enabled: true,
+    enabled: false, // デフォルトミュート
     volume: 0.3, // デフォルト30%
     loop: true,
   };
@@ -221,4 +221,3 @@ if (typeof document !== "undefined") {
     bgmManager.handleVisibilityChange();
   });
 }
-
