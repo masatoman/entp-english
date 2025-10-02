@@ -17,6 +17,7 @@ export interface UseTTSReturn {
   
   // ユーティリティ
   getStatus: () => TTSStatus;
+  testVoiceQuality: () => Promise<void>;
 }
 
 /**
@@ -97,6 +98,15 @@ export const useTTS = (): UseTTSReturn => {
     return ttsManager.getStatus();
   }, []);
 
+  // 音声品質テスト
+  const testVoiceQuality = useCallback(async () => {
+    try {
+      await ttsManager.testVoiceQuality();
+    } catch (error) {
+      console.error('音声品質テストエラー:', error);
+    }
+  }, []);
+
   return {
     // 状態
     isSupported,
@@ -112,5 +122,6 @@ export const useTTS = (): UseTTSReturn => {
     
     // ユーティリティ
     getStatus,
+    testVoiceQuality,
   };
 };
