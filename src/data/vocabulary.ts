@@ -11,13 +11,20 @@ export interface VocabularyWord {
 
 // 新しい語彙データをインポート
 import { advancedAcademicVocabulary } from "./advancedAcademicVocabulary";
+import { advancedProfessionalVocabulary } from "./advancedProfessionalVocabulary";
 import { artsCultureVocabulary } from "./artsCultureVocabulary";
 import { communicationMediaVocabulary } from "./communicationMediaVocabulary";
 import { economicFinancialVocabulary } from "./economicFinancialVocabulary";
+import { educationAcademicVocabulary } from "./educationAcademicVocabulary";
+import { entertainmentMediaVocabulary } from "./entertainmentMediaVocabulary";
 import { environmentScienceVocabulary } from "./environmentScienceVocabulary";
+import { fashionBeautyVocabulary } from "./fashionBeautyVocabulary";
+import { foodCookingVocabulary } from "./foodCookingVocabulary";
 import { healthMedicalVocabulary } from "./healthMedicalVocabulary";
 import { intermediateDailyVocabulary } from "./intermediateDailyVocabulary";
+import { natureEnvironmentVocabulary } from "./natureEnvironmentVocabulary";
 import { professionalBusinessVocabulary } from "./professionalBusinessVocabulary";
+import { sportsFitnessVocabulary } from "./sportsFitnessVocabulary";
 import { technologyDigitalVocabulary } from "./technologyDigitalVocabulary";
 import { travelLeisureVocabulary } from "./travelLeisureVocabulary";
 
@@ -860,7 +867,7 @@ export const vocabularyWords: VocabularyWord[] = [
     category: "daily",
   },
 
-  // 新しく追加された語彙データ（ID 131-500）
+  // 新しく追加された語彙データ（ID 131-900）
   ...intermediateDailyVocabulary,
   ...advancedAcademicVocabulary,
   ...professionalBusinessVocabulary,
@@ -871,6 +878,15 @@ export const vocabularyWords: VocabularyWord[] = [
   ...environmentScienceVocabulary,
   ...artsCultureVocabulary,
   ...travelLeisureVocabulary,
+
+  // 最新追加の語彙データ（ID 501-900）
+  ...educationAcademicVocabulary,
+  ...sportsFitnessVocabulary,
+  ...foodCookingVocabulary,
+  ...fashionBeautyVocabulary,
+  ...entertainmentMediaVocabulary,
+  ...natureEnvironmentVocabulary,
+  ...advancedProfessionalVocabulary,
 ];
 
 export function getVocabularyWords(

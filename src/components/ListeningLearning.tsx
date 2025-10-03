@@ -6,6 +6,7 @@ import {
   Headphones,
   Pause,
   Play,
+  Repeat,
   RotateCcw,
   Volume2,
   XCircle,
@@ -81,6 +82,10 @@ export default function ListeningLearning({
   >([]);
   const [showRecommendations, setShowRecommendations] = useState(false);
   const [sessionCompleted, setSessionCompleted] = useState(false);
+  const [playbackRate, setPlaybackRate] = useState(1.0);
+  const [isRepeating, setIsRepeating] = useState(false);
+  const [repeatCount, setRepeatCount] = useState(0);
+  const [showAudioControls, setShowAudioControls] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const { addXP } = useLevelSystem();
@@ -105,7 +110,7 @@ export default function ListeningLearning({
           setIsPlaying(false);
         } else {
           await speak(currentQuestion.transcript, {
-            rate: 0.75, // TOEIC標準速度（ネイティブ発音を保つ）
+            rate: 0.75 * playbackRate, // 再生速度を適用
             pitch: 1.0, // 自然なピッチでネイティブらしさを維持
             volume: 0.9, // 適度な音量
           });
@@ -122,9 +127,12 @@ export default function ListeningLearning({
           setIsPlaying(false);
         } else {
           audioRef.current.currentTime = 0;
+          audioRef.current.playbackRate = playbackRate; // 再生速度を設定
           await audioRef.current.play();
           setIsPlaying(true);
-          console.log(`🎵 音声ファイル再生: ${currentQuestion.audioUrl}`);
+          console.log(
+            `🎵 音声ファイル再生: ${currentQuestion.audioUrl} (速度: ${playbackRate}x)`
+          );
         }
       } else {
         console.warn(
@@ -151,6 +159,46 @@ export default function ListeningLearning({
 
     setIsPlaying(false);
     console.log("🎤 音声停止");
+  };
+
+  // 音声の再再生機能
+  const handleReplayAudio = async () => {
+    const currentQuestion = questions[currentQuestionIndex];
+    if (!currentQuestion) return;
+
+    try {
+      // TTSの場合
+      if (ttsSupported && currentQuestion.transcript) {
+        await speak(currentQuestion.transcript, {
+          rate: 0.75 * playbackRate,
+          pitch: 1.0,
+          volume: 0.9,
+        });
+        setIsPlaying(true);
+        setRepeatCount((prev) => prev + 1);
+        console.log(`🔄 TTS音声再再生 (${repeatCount + 1}回目)`);
+      }
+      // 音声ファイルの場合
+      else if (currentQuestion.audioUrl && audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.playbackRate = playbackRate;
+        await audioRef.current.play();
+        setIsPlaying(true);
+        setRepeatCount((prev) => prev + 1);
+        console.log(`🔄 音声ファイル再再生 (${repeatCount + 1}回目)`);
+      }
+    } catch (error) {
+      console.error("音声再再生エラー:", error);
+    }
+  };
+
+  // 自動リピート機能
+  const handleToggleRepeat = () => {
+    setIsRepeating(!isRepeating);
+    if (!isRepeating) {
+      setRepeatCount(0);
+    }
+    console.log(`🔄 自動リピート: ${!isRepeating ? "ON" : "OFF"}`);
   };
 
   // TTS状態の同期
@@ -216,7 +264,7 @@ export default function ListeningLearning({
     // リスニング学習セッションを開始
     const startSession = async () => {
       try {
-        const userId = "user_001"; // 実際の実装では認証システムから取得
+        const userId = "default-user"; // 実際の実装では認証システムから取得
         const newSessionId = await listeningProgressManager.startSession(
           userId,
           part || "part1",
@@ -324,7 +372,7 @@ export default function ListeningLearning({
           console.log(`✅ リスニング学習セッション完了: ${sessionId}`);
 
           // アチーブメントをチェック
-          const userId = "user_001"; // 実際の実装では認証システムから取得
+          const userId = "default-user"; // 実際の実装では認証システムから取得
           const notifications =
             await listeningAchievementManager.checkAchievementsOnSessionComplete(
               userId,
@@ -441,33 +489,66 @@ export default function ListeningLearning({
     );
   };
 
+  // 正解数を計算（簡易版）
+  const correctAnswers = score;
+
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
+    <div className="max-w-4xl mx-auto p-4 sm:p-6 space-y-4 sm:space-y-6">
       {/* ヘッダー */}
       <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="flex items-center gap-2">
+        <CardHeader className="pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex-1">
+              <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
                 <Headphones className="w-5 h-5" />
                 リスニング学習
               </CardTitle>
-              <div className="flex items-center gap-2 mt-2">
-                <Badge variant="outline">
+              <div className="flex flex-wrap items-center gap-2 mt-2">
+                <Badge variant="outline" className="text-xs">
                   {currentQuestion.part.toUpperCase()}
                 </Badge>
-                <Badge variant="secondary">{currentQuestion.difficulty}</Badge>
-                <Badge variant="outline">Level {currentQuestion.level}</Badge>
+                <Badge variant="secondary" className="text-xs">
+                  {currentQuestion.difficulty}
+                </Badge>
+                <Badge variant="outline" className="text-xs">
+                  Level {currentQuestion.level}
+                </Badge>
               </div>
             </div>
-            <div className="text-right">
-              <div className="text-sm text-muted-foreground">
+            <div className="text-center sm:text-right">
+              <div className="text-sm text-muted-foreground mb-2">
                 問題 {currentQuestionIndex + 1} / {questions.length}
               </div>
               <Progress
                 value={((currentQuestionIndex + 1) / questions.length) * 100}
-                className="w-32 mt-1"
+                className="w-full sm:w-32"
               />
+              <div className="flex flex-wrap justify-center sm:justify-end items-center gap-2 sm:gap-4 mt-2 text-xs">
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span>正解: {correctAnswers}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                  <span>
+                    不正解:{" "}
+                    {questions.length -
+                      correctAnswers -
+                      (currentQuestionIndex + 1 - (isAnswered ? 1 : 0))}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <span>
+                    スコア:{" "}
+                    {Math.round(
+                      (correctAnswers / Math.max(currentQuestionIndex + 1, 1)) *
+                        100
+                    )}
+                    %
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </CardHeader>
@@ -476,17 +557,28 @@ export default function ListeningLearning({
       {/* 音声コントロール */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Volume2 className="w-5 h-5" />
-            音声を聞く
+          <CardTitle className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Volume2 className="w-5 h-5" />
+              音声を聞く
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowAudioControls(!showAudioControls)}
+              className="text-xs self-start sm:self-auto"
+            >
+              {showAudioControls ? "コントロールを隠す" : "詳細コントロール"}
+            </Button>
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="flex items-center gap-4">
+        <CardContent className="space-y-4">
+          {/* メイン音声コントロール */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4">
             <Button
               onClick={isPlaying ? handleStopAudio : handlePlayAudio}
               size="lg"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 flex-1 sm:flex-none"
             >
               {isPlaying ? (
                 <Pause className="w-5 h-5" />
@@ -497,14 +589,106 @@ export default function ListeningLearning({
             </Button>
 
             <Button
+              onClick={handleReplayAudio}
+              variant="outline"
+              size="lg"
+              className="flex items-center gap-2 flex-1 sm:flex-none"
+              disabled={!currentQuestion}
+            >
+              <Repeat className="w-4 h-4" />
+              再再生
+            </Button>
+
+            <Button
               onClick={() => setShowTranscript(!showTranscript)}
               variant="outline"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 flex-1 sm:flex-none"
             >
               <BookOpen className="w-4 h-4" />
               トランスクリプト
             </Button>
           </div>
+
+          {/* 詳細音声コントロール */}
+          {showAudioControls && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-muted rounded-lg">
+              {/* 再生速度調整 */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">再生速度</label>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setPlaybackRate(0.5)}
+                    className={playbackRate === 0.5 ? "bg-blue-100" : ""}
+                  >
+                    0.5x
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setPlaybackRate(0.75)}
+                    className={playbackRate === 0.75 ? "bg-blue-100" : ""}
+                  >
+                    0.75x
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setPlaybackRate(1.0)}
+                    className={playbackRate === 1.0 ? "bg-blue-100" : ""}
+                  >
+                    1.0x
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setPlaybackRate(1.25)}
+                    className={playbackRate === 1.25 ? "bg-blue-100" : ""}
+                  >
+                    1.25x
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setPlaybackRate(1.5)}
+                    className={playbackRate === 1.5 ? "bg-blue-100" : ""}
+                  >
+                    1.5x
+                  </Button>
+                </div>
+              </div>
+
+              {/* リピート機能 */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">リピート</label>
+                <Button
+                  variant={isRepeating ? "default" : "outline"}
+                  size="sm"
+                  onClick={handleToggleRepeat}
+                  className="w-full flex items-center gap-2"
+                >
+                  <Repeat className="w-4 h-4" />
+                  {isRepeating ? "自動リピート ON" : "自動リピート OFF"}
+                </Button>
+                {repeatCount > 0 && (
+                  <p className="text-xs text-muted-foreground">
+                    再再生回数: {repeatCount}回
+                  </p>
+                )}
+              </div>
+
+              {/* 音声情報 */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">音声情報</label>
+                <div className="text-xs space-y-1">
+                  <p>現在の速度: {playbackRate}x</p>
+                  <p>音声方式: {ttsSupported ? "TTS" : "ファイル"}</p>
+                  {isPlaying && <p className="text-green-600">再生中...</p>}
+                </div>
+              </div>
+            </div>
+          )}
 
           {showTranscript && (
             <div className="mt-4 p-4 bg-muted rounded-lg">
@@ -633,25 +817,25 @@ export default function ListeningLearning({
       {/* ナビゲーション */}
       <Card>
         <CardContent className="pt-6">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <Button
               onClick={handlePrevious}
               disabled={currentQuestionIndex === 0}
               variant="outline"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 w-full sm:w-auto"
             >
               <ArrowLeft className="w-4 h-4" />
               前の問題
             </Button>
 
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-muted-foreground text-center">
               スコア: {score} / {currentQuestionIndex + 1}
             </div>
 
             <Button
               onClick={handleNext}
               disabled={!isAnswered}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 w-full sm:w-auto"
             >
               次の問題
               <ArrowRight className="w-4 h-4" />
@@ -680,7 +864,7 @@ export default function ListeningLearning({
       {showRecommendations && sessionCompleted && (
         <div className="mt-6">
           <ListeningRecommendations
-            userId="user_001"
+            userId="default-user"
             sessionScore={score}
             sessionPart={part || "part1"}
             onStartVocabularyLearning={() => {

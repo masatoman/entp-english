@@ -1,4 +1,12 @@
-import { ArrowLeft, Flame, Star, Target, Trophy } from "lucide-react";
+import {
+  ArrowLeft,
+  Flame,
+  Headphones,
+  RefreshCw,
+  Star,
+  Target,
+  Trophy,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -9,9 +17,12 @@ import {
 } from "../data/achievements";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { baseColors } from "../styles/colors";
+import { achievementSyncManager } from "../utils/achievementSyncManager";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { DataManager } from "../utils/dataManager";
 import { KnownWordsManager } from "../utils/knownWordsManager";
+import { listeningAchievementManager } from "../utils/listeningAchievementManager";
+import { ListeningAchievements } from "./ListeningAchievements";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader } from "./ui/card";
@@ -147,18 +158,58 @@ export default function Achievements() {
     DataManager.getUserStats()
   );
   const [achievements, setAchievements] = useState<Achievement[]>([]);
+  const [listeningStats, setListeningStats] = useState<any>(null);
+  const [listeningXP, setListeningXP] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // データを読み込み
-    const stats = DataManager.getUserStats();
-    const achievementsData = DataManager.getAchievements();
-
-    setUserStats(stats);
-    setAchievements(achievementsData);
-
-    // 実績ページ訪問をデイリークエストに記録
-    dailyQuestManager.recordAchievementsVisit();
+    loadAllData();
   }, []);
+
+  const loadAllData = async () => {
+    try {
+      setLoading(true);
+
+      const userId = "default-user"; // デフォルトユーザーID
+
+      // データ同期を実行
+      await achievementSyncManager.syncAllData(userId);
+
+      // 統合統計を取得
+      const integratedStats =
+        await achievementSyncManager.getIntegratedUserStats(userId);
+
+      // 基本データを読み込み
+      const stats = integratedStats.mainStats;
+      const achievementsData = DataManager.getAchievements();
+
+      setUserStats(stats);
+      setAchievements(achievementsData);
+      setListeningStats(integratedStats.listeningStats);
+
+      // リスニングアチーブメントから獲得したXPを計算
+      const completedAchievements =
+        await listeningAchievementManager.getCompletedAchievements(userId);
+      const totalListeningXP = completedAchievements.reduce(
+        (total, achievement) => {
+          return total + achievement.reward.xp;
+        },
+        0
+      );
+      setListeningXP(totalListeningXP);
+
+      // 実績ページ訪問をデイリークエストに記録
+      dailyQuestManager.recordAchievementsVisit();
+    } catch (error) {
+      console.error("データ読み込みエラー:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRefresh = () => {
+    loadAllData();
+  };
 
   const unlockedAchievements = achievements.filter((a) => a.isUnlocked);
   const lockedAchievements = achievements.filter((a) => !a.isUnlocked);
@@ -177,7 +228,14 @@ export default function Achievements() {
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <h1 className="text-xl">実績</h1>
-          <div className="w-10" />
+          <Button
+            variant="ghost"
+            onClick={handleRefresh}
+            className="p-2"
+            disabled={loading}
+          >
+            <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />
+          </Button>
         </div>
 
         {/* Total XP Display */}
@@ -188,9 +246,16 @@ export default function Achievements() {
               <span className="text-lg">合計XP</span>
             </div>
             <div className="text-5xl font-bold mb-2">
-              {userStats.totalXP.toLocaleString()}
+              {(userStats.totalXP + listeningXP).toLocaleString()}
             </div>
-            <div className="text-blue-100">継続は力なり！</div>
+            <div className="text-blue-100">
+              継続は力なり！
+              {listeningXP > 0 && (
+                <div className="text-sm mt-1">
+                  (リスニング: +{listeningXP} XP)
+                </div>
+              )}
+            </div>
           </CardContent>
         </Card>
 
@@ -223,17 +288,48 @@ export default function Achievements() {
         <div className="grid grid-cols-2 gap-4">
           <StatCard
             icon={Target}
-            label="正解率"
-            value={`${userStats.averageScore}%`}
+            label="総合正解率"
+            value={`${
+              listeningStats
+                ? Math.round(
+                    ((userStats.correctAnswers +
+                      listeningStats.totalCorrectAnswers) /
+                      (userStats.totalQuestionsAnswered +
+                        listeningStats.totalQuestions)) *
+                      100
+                  )
+                : userStats.averageScore
+            }%`}
             color="from-emerald-500 to-green-600"
           />
           <StatCard
             icon={Star}
             label="総問題数"
-            value={userStats.totalQuestionsAnswered}
+            value={
+              userStats.totalQuestionsAnswered +
+              (listeningStats?.totalQuestions || 0)
+            }
             color="from-yellow-500 to-orange-500"
           />
         </div>
+
+        {/* Listening Statistics */}
+        {listeningStats && listeningStats.totalSessions > 0 && (
+          <div className="grid grid-cols-2 gap-4">
+            <StatCard
+              icon={Headphones}
+              label="リスニングセッション"
+              value={listeningStats.totalSessions}
+              color="from-blue-500 to-indigo-600"
+            />
+            <StatCard
+              icon={Target}
+              label="リスニング正解率"
+              value={`${listeningStats.averageScore}%`}
+              color="from-purple-500 to-pink-600"
+            />
+          </div>
+        )}
 
         {/* Achievement Progress Summary */}
         <Card className="border-0 shadow-md">
@@ -512,6 +608,9 @@ export default function Achievements() {
               </CardContent>
             </Card>
           )}
+
+        {/* Listening Achievements */}
+        <ListeningAchievements userId="default-user" />
 
         {/* Unlocked Achievements */}
         <div className="space-y-4">

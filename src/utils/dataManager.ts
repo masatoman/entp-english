@@ -1,8 +1,8 @@
 import { Achievement, UserStats } from "../data/achievements";
 import { VocabularyWord } from "../data/vocabulary";
 import { WordCard } from "../types/gacha";
-import { logError, logDebug, logInfo, logLearning, logCritical } from './logger';
-import { handleDataError } from './errorHandler';
+import { handleDataError } from "./errorHandler";
+import { logDebug, logError, logInfo, logLearning } from "./logger";
 
 // ローカルストレージのキー
 const STORAGE_KEYS = {
@@ -51,7 +51,7 @@ const DEFAULT_APP_SETTINGS: AppSettings = {
 export interface LearningSession {
   id: string;
   date: string;
-  type: "vocabulary" | "grammar-quiz" | "combined-test";
+  type: "vocabulary" | "grammar-quiz" | "combined-test" | "listening";
   category?: string;
   difficulty?: string;
   score: number;
@@ -79,7 +79,9 @@ export class DataManager {
         return JSON.parse(stored);
       }
     } catch (error) {
-      handleDataError("load user stats", error as Error, { component: 'DataManager' });
+      handleDataError("load user stats", error as Error, {
+        component: "DataManager",
+      });
     }
     return DEFAULT_USER_STATS;
   }

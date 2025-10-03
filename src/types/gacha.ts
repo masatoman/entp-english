@@ -62,6 +62,7 @@ export interface UserGachaData {
   lastPackDate: string; // 互換性のため残す
   availablePacks?: number; // 利用可能なパック数（最大2）
   lastPackOpenTime?: number; // 最後にパックを開封した時間
+  newlyAcquiredCards?: string[]; // 新規取得したカードのIDリスト（最新の開封結果）
   collection: {
     totalCards: number;
     uniqueCards: number;

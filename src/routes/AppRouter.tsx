@@ -13,10 +13,12 @@ import CategorySelection from "../components/CategorySelection";
 import CombinedTest from "../components/CombinedTest";
 import CreativeWritingChallenge from "../components/CreativeWritingChallenge";
 import { DataManagerProvider } from "../components/DataManagerProvider";
+import DetailedAnalyticsDashboard from "../components/DetailedAnalyticsDashboard";
 import DifficultySelection from "../components/DifficultySelection";
 import EnhancedGrammarQuiz from "../components/EnhancedGrammarQuiz";
 import EssayHistory from "../components/EssayHistory";
 import EssayWriting from "../components/EssayWriting";
+import FeedbackAnalytics from "../components/FeedbackAnalytics";
 import FoundationCategorySelection from "../components/FoundationCategorySelection";
 import FoundationDifficultySelection from "../components/FoundationDifficultySelection";
 import FoundationQuestionSetSelection from "../components/FoundationQuestionSetSelection";
@@ -26,6 +28,7 @@ import GachaSystem from "../components/GachaSystem";
 import GachaVocabularyLearning from "../components/GachaVocabularyLearning";
 import GrowthDashboard from "../components/GrowthDashboard";
 import IntegratedLearning from "../components/IntegratedLearning";
+import LearningPathChallengeDashboard from "../components/LearningPathChallengeDashboard"; // Added
 import ListeningLearning from "../components/ListeningLearning";
 import ListeningSelection from "../components/ListeningSelection";
 import { MigrationProvider } from "../components/MigrationProvider";
@@ -42,6 +45,9 @@ import PreStudyContentViewer from "../components/starSystem/PreStudyContentViewe
 import PreStudyMenu from "../components/starSystem/PreStudyMenu";
 import SynergyDashboard from "../components/SynergyDashboard";
 import TimeAttackMode from "../components/TimeAttackMode";
+import TOEICIntegratedDashboard from "../components/TOEICIntegratedDashboard";
+import TOEICMockTestContainer from "../components/TOEICMockTestContainer";
+import UserFeedback from "../components/UserFeedback";
 import VocabularyCard from "../components/VocabularyCard";
 import VocabularyCategorySelection from "../components/VocabularyCategorySelection";
 import VocabularyDifficultySelection from "../components/VocabularyDifficultySelection";
@@ -238,6 +244,34 @@ export function AppRouter() {
 
                 {/* 設定 */}
                 <Route path="/settings/app" element={<AppSettings />} />
+
+                {/* TOEIC模擬テスト */}
+                <Route
+                  path="/toeic/mock-test"
+                  element={<TOEICMockTestContainer />}
+                />
+                <Route
+                  path="/toeic/dashboard"
+                  element={<TOEICIntegratedDashboard />}
+                />
+                {/* 学習パスチャレンジ */}
+                <Route
+                  path="/learning-path-challenges"
+                  element={<LearningPathChallengeDashboard />}
+                />
+
+                {/* 詳細学習分析 */}
+                <Route
+                  path="/analytics/detailed"
+                  element={<DetailedAnalyticsDashboard />}
+                />
+
+                {/* フィードバック機能 */}
+                <Route path="/feedback" element={<UserFeedback />} />
+                <Route
+                  path="/feedback/analytics"
+                  element={<FeedbackAnalytics />}
+                />
 
                 {/* フォールバック */}
                 {/* モックプロトタイプ */}

@@ -315,20 +315,29 @@ function PersonalInsights() {
           </Card>
 
           {/* アクションボタン */}
-          <div className="grid grid-cols-2 gap-3 pt-4">
+          <div className="grid grid-cols-1 gap-3 pt-4">
             <Button
-              variant="outline"
-              onClick={() => navigate("/progress/achievements")}
-              className="h-12"
+              onClick={() => navigate("/analytics/detailed")}
+              className="h-12 bg-gradient-to-r from-purple-500 to-pink-500"
             >
-              実績を見る
+              <Brain className="w-4 h-4 mr-2" />
+              詳細学習分析を見る
             </Button>
-            <Button
-              onClick={() => navigate("/")}
-              className="h-12 bg-gradient-to-r from-blue-500 to-purple-500"
-            >
-              学習を始める
-            </Button>
+            <div className="grid grid-cols-2 gap-3">
+              <Button
+                variant="outline"
+                onClick={() => navigate("/progress/achievements")}
+                className="h-12"
+              >
+                実績を見る
+              </Button>
+              <Button
+                onClick={() => navigate("/")}
+                className="h-12 bg-gradient-to-r from-blue-500 to-purple-500"
+              >
+                学習を始める
+              </Button>
+            </div>
           </div>
 
           {/* Bottom padding */}

@@ -68,32 +68,65 @@ export default defineConfig({
     outDir: "dist",
     rollupOptions: {
       output: {
-        manualChunks: {
+        manualChunks: (id) => {
           // ベンダーライブラリを分離
-          vendor: ["react", "react-dom"],
-          // UIライブラリを分離
-          ui: [
-            "@radix-ui/react-dialog",
-            "@radix-ui/react-dropdown-menu",
-            "@radix-ui/react-progress",
-          ],
-          // ゲーム関連を分離
-          game: [
-            "./src/components/SimpleTowerDefense.tsx",
-            "./src/utils/tower-defense-data.ts",
-          ],
-          // 学習機能を分離
-          learning: [
-            "./src/components/VocabularyCard.tsx",
-            "./src/components/GrammarQuiz.tsx",
-            "./src/components/CombinedTest.tsx",
-          ],
-          // 実績・進捗管理を分離
-          progress: [
-            "./src/components/Achievements.tsx",
-            "./src/utils/dataManager.ts",
-            "./src/utils/xpCalculator.ts",
-          ],
+          if (id.includes("node_modules")) {
+            if (id.includes("react") || id.includes("react-dom")) {
+              return "vendor-react";
+            }
+            if (id.includes("@radix-ui") || id.includes("lucide-react")) {
+              return "vendor-ui";
+            }
+            if (id.includes("framer-motion") || id.includes("zustand")) {
+              return "vendor-animation";
+            }
+            return "vendor";
+          }
+
+          // アプリケーションコードの分離
+          if (id.includes("/src/components/")) {
+            if (
+              id.includes("SimpleTowerDefense") ||
+              id.includes("GachaSystem")
+            ) {
+              return "game";
+            }
+            if (id.includes("TOEIC") || id.includes("MockTest")) {
+              return "toeic";
+            }
+            if (
+              id.includes("Vocabulary") ||
+              id.includes("Grammar") ||
+              id.includes("Listening")
+            ) {
+              return "learning";
+            }
+            if (id.includes("Achievements") || id.includes("Dashboard")) {
+              return "progress";
+            }
+            return "components";
+          }
+
+          if (id.includes("/src/utils/")) {
+            if (id.includes("toeic") || id.includes("mockTest")) {
+              return "toeic";
+            }
+            if (id.includes("tower-defense") || id.includes("gacha")) {
+              return "game";
+            }
+            if (
+              id.includes("level") ||
+              id.includes("xp") ||
+              id.includes("achievement")
+            ) {
+              return "progress";
+            }
+            return "utils";
+          }
+
+          if (id.includes("/src/data/")) {
+            return "data";
+          }
         },
       },
     },

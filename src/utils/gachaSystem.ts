@@ -170,10 +170,25 @@ export class GachaSystem {
     // 利用可能パック数を現在時刻で更新
     const updatedUserData = this.updateAvailablePacksCount(userData);
 
+    // 既存のカードIDを取得
+    const existingCardIds = new Set(
+      updatedUserData.ownedCards.map((card) => card.id)
+    );
+
+    // 新規取得したカードのIDリストを初期化
+    const newlyAcquiredIds: string[] = [];
+
     // カードを追加（重複カードも含む）
     cards.forEach((card) => {
       updatedUserData.ownedCards.push(card);
+      // 新規取得したカード（既に所持していないカード）を記録
+      if (!existingCardIds.has(card.id)) {
+        newlyAcquiredIds.push(card.id);
+      }
     });
+
+    // 新規取得したカードのIDリストを保存
+    updatedUserData.newlyAcquiredCards = newlyAcquiredIds;
 
     // 統計を更新
     updatedUserData.collection.totalCards = updatedUserData.ownedCards.length;
@@ -192,6 +207,15 @@ export class GachaSystem {
     });
 
     this.saveUserGachaData(updatedUserData);
+  }
+
+  /**
+   * 新規取得したカードのマークをクリア
+   */
+  static clearNewlyAcquiredCards(): void {
+    const userData = this.getUserGachaData();
+    userData.newlyAcquiredCards = [];
+    this.saveUserGachaData(userData);
   }
 
   /**

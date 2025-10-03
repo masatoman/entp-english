@@ -34,7 +34,7 @@ export function LoginBonusNotification() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm">
       <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-8 max-w-md mx-4 shadow-2xl border-4 border-yellow-400 animate-in fade-in zoom-in duration-500">
         {/* 装飾 */}
         <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
@@ -45,10 +45,10 @@ export function LoginBonusNotification() {
 
         {/* タイトル */}
         <div className="text-center mt-4">
-          <h2 className="text-3xl font-bold text-yellow-800 mb-2">
+          <h2 className="text-3xl font-bold text-orange-700 mb-2">
             🎉 ログインボーナス！
           </h2>
-          <p className="text-gray-600">おかえりなさい！</p>
+          <p className="text-gray-700">おかえりなさい！</p>
         </div>
 
         {/* コイン獲得表示 */}
@@ -75,10 +75,11 @@ export function LoginBonusNotification() {
 
         {/* 説明 */}
         <div className="text-center mb-6">
-          <p className="text-sm text-gray-600">
-            毎日ログインして<span className="font-bold text-yellow-700">2コイン</span>をゲット！
+          <p className="text-sm text-gray-700">
+            毎日ログインして
+            <span className="font-bold text-orange-600">2コイン</span>をゲット！
           </p>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-gray-600 mt-1">
             コインはガチャパックの購入に使えます
           </p>
         </div>
@@ -94,4 +95,3 @@ export function LoginBonusNotification() {
     </div>
   );
 }
-

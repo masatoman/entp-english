@@ -266,7 +266,7 @@ export const TAGGED_CONTENTS: TaggedContent[] = [
     contentId: 'vocabulary-basic',
     contentType: 'vocabulary',
     tags: ['vocabulary', 'practice', 'card', 'beginner'],
-    url: '/learning/vocabulary/actualCategory',
+    url: '/learning/vocabulary/difficulty',
     title: '語彙学習（基礎）',
     description: '基本的な英単語をカード形式で学習'
   },
@@ -274,7 +274,7 @@ export const TAGGED_CONTENTS: TaggedContent[] = [
     contentId: 'vocabulary-toeic',
     contentType: 'vocabulary',
     tags: ['vocabulary', 'toeic', 'business', 'practice', 'card', 'intermediate'],
-    url: '/learning/vocabulary/actualCategory',
+    url: '/learning/vocabulary/difficulty',
     title: 'TOEIC語彙学習',
     description: 'TOEIC頻出語彙をカード形式で学習'
   },
@@ -282,7 +282,7 @@ export const TAGGED_CONTENTS: TaggedContent[] = [
     contentId: 'vocabulary-business',
     contentType: 'vocabulary',
     tags: ['vocabulary', 'business', 'practice', 'card', 'intermediate'],
-    url: '/learning/vocabulary/actualCategory',
+    url: '/learning/vocabulary/difficulty',
     title: 'ビジネス語彙学習',
     description: 'ビジネス場面で使用される語彙を学習'
   },

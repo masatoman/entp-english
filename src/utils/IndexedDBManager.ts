@@ -5,7 +5,7 @@
 
 // データベース設定
 const DB_NAME = "ENTPEnglishDB";
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 // ストア定義
 export const STORES = {
@@ -19,6 +19,7 @@ export const STORES = {
   LISTENING_ACHIEVEMENTS: "listeningAchievements",
   GAME_DATA: "gameData",
   CACHE: "cache",
+  FEEDBACK: "feedback",
 } as const;
 
 // データ型定義
@@ -229,6 +230,18 @@ export class IndexedDBManager {
       });
       cacheStore.createIndex("timestamp", "timestamp", { unique: false });
       cacheStore.createIndex("expiresAt", "expiresAt", { unique: false });
+    }
+
+    // フィードバックストア
+    if (!db.objectStoreNames.contains(STORES.FEEDBACK)) {
+      const feedbackStore = db.createObjectStore(STORES.FEEDBACK, {
+        keyPath: "id",
+      });
+      feedbackStore.createIndex("timestamp", "timestamp", { unique: false });
+      feedbackStore.createIndex("category", "category", { unique: false });
+      feedbackStore.createIndex("overallRating", "overallRating", {
+        unique: false,
+      });
     }
   }
 

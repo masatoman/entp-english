@@ -279,3 +279,6 @@ export interface DailyChallengeProgress {
   totalCompleted: number;
   lastCompletedDate: string;
 }
+
+// TOEIC模擬テスト関連の型定義
+export * from "./mockTest";

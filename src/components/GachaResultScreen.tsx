@@ -6,6 +6,7 @@ import { Button } from "./ui/button";
 import { baseColors } from "../styles/colors";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { GachaCard } from "./ui/gacha-card";
+import { GachaSystem } from "../utils/gachaSystem";
 
 export default function GachaResultScreen() {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ export default function GachaResultScreen() {
   // ローカルストレージから開封結果を取得
   let drawnCards: WordCard[] = [];
   let packName = "パック";
+  let newlyAcquiredCards: string[] = [];
   
   try {
     const resultData = localStorage.getItem("gachaResult");
@@ -23,6 +25,11 @@ export default function GachaResultScreen() {
       drawnCards = parsed.cards || [];
       packName = parsed.packName || "パック";
       console.log("Gacha result loaded:", drawnCards.length, "cards from", packName);
+      
+      // 新規取得したカードのIDリストを取得
+      const userGachaData = GachaSystem.getUserGachaData();
+      newlyAcquiredCards = userGachaData.newlyAcquiredCards || [];
+      console.log("Newly acquired cards:", newlyAcquiredCards);
       
       // 使用後は削除
       localStorage.removeItem("gachaResult");

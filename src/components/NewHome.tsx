@@ -4,6 +4,7 @@ import {
   Clock,
   Flame,
   Heart,
+  MessageSquare,
   Settings,
   Star,
   Target,
@@ -71,6 +72,15 @@ export function NewHome() {
   const [coinSystem, setCoinSystem] = useState(
     dailyQuestManager.getCoinSystem()
   );
+
+  // デイリーチャレンジシステム
+  const [showDailyChallenges, setShowDailyChallenges] = useState(false);
+  const [challengeStats, setChallengeStats] = useState({
+    completed: 0,
+    total: 0,
+    percentage: 0,
+    streak: 0,
+  });
 
   // ハートシステムの状態を強制的に更新
   const forceRefreshHearts = () => {
@@ -159,12 +169,22 @@ export function NewHome() {
       setQuestStats(questStatsData);
       setCoinSystem(dailyQuestManager.getCoinSystem());
 
+      // デイリーチャレンジシステムの更新
+      const challengeStatsData = {
+        completed: 0, // TODO: DailyChallengeManagerから取得
+        total: 1,
+        percentage: 0,
+        streak: 0,
+      };
+      setChallengeStats(challengeStatsData);
+
       console.log("🎯 デイリーボーナス更新:", {
         multiplier,
         consecutiveDays: system.dailyBonus.consecutiveDays,
       });
 
       console.log("🎯 デイリークエスト更新:", questStatsData);
+      console.log("🏆 デイリーチャレンジ更新:", challengeStatsData);
     };
 
     refreshData();
@@ -213,6 +233,9 @@ export function NewHome() {
         break;
       case "vocabulary":
         navigate("/learning/vocabulary/difficulty");
+        break;
+      case "listening":
+        navigate("/listening");
         break;
       case "writing":
         navigate("/learning/grammar/category"); // 英作文も文法カテゴリから
@@ -458,6 +481,8 @@ export function NewHome() {
       <GameHeader
         onQuestClick={() => setShowDailyQuests(true)}
         questCompletedCount={questStats.completed}
+        onChallengeClick={() => setShowDailyChallenges(true)}
+        challengeCompletedCount={challengeStats.completed}
       />
 
       <div className="max-w-6xl mx-auto space-y-6 p-4">
@@ -618,6 +643,35 @@ export function NewHome() {
             onClick={() => canStartLearning && handleStartLearning("listening")}
           />
 
+          {/* TOEIC模擬テスト */}
+          <SelectionCard
+            id="toeic-mock-test"
+            title="TOEIC模擬テスト"
+            description="本格的なTOEIC形式の模擬テストに挑戦"
+            icon="📊"
+            difficulty="模擬テスト"
+            detail="本格テスト"
+            onClick={() => navigate("/toeic/mock-test")}
+          />
+          <SelectionCard
+            id="toeic-dashboard"
+            title="TOEIC統合ダッシュボード"
+            description="全システムの進捗とシナジー効果を確認"
+            icon="📈"
+            difficulty="統合分析"
+            detail="全機能統合"
+            onClick={() => navigate("/toeic/dashboard")}
+          />
+          <SelectionCard
+            id="learning-path-challenges"
+            title="学習パスチャレンジ"
+            description="最適な学習パスに基づく段階的チャレンジ"
+            icon="🎯"
+            difficulty="チャレンジ"
+            detail="段階的学習"
+            onClick={() => navigate("/learning-path-challenges")}
+          />
+
           {/* 統合学習（新機能） */}
           <SelectionCard
             id="integrated"
@@ -716,7 +770,7 @@ export function NewHome() {
         </div>
 
         {/* フィードバックボタン */}
-        <div className="flex justify-center mt-6">
+        <div className="flex justify-center gap-4 mt-6">
           <Button
             variant="outline"
             onClick={() => setShowFeedbackForm(true)}
@@ -724,6 +778,14 @@ export function NewHome() {
           >
             <Star className="w-4 h-4" />
             <span>学習フィードバック</span>
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => navigate("/feedback")}
+            className="flex items-center space-x-2"
+          >
+            <MessageSquare className="w-4 h-4" />
+            <span>アプリフィードバック</span>
           </Button>
         </div>
 
@@ -795,6 +857,20 @@ export function NewHome() {
           </div>
         )}
 
+        {/* 詳細学習分析リンク */}
+        {userStats && (
+          <div className="flex justify-center mt-6">
+            <Button
+              onClick={() => navigate("/analytics/detailed")}
+              variant="outline"
+              className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200 hover:from-purple-100 hover:to-pink-100"
+            >
+              <Brain className="w-4 h-4 mr-2" />
+              詳細学習分析を見る
+            </Button>
+          </div>
+        )}
+
         {/* 体力不足時の警告 */}
         {!canStartLearning && (
           <Card className="border-yellow-200 bg-yellow-50">
@@ -828,6 +904,24 @@ export function NewHome() {
         {/* デイリークエストパネル */}
         {showDailyQuests && (
           <DailyQuestPanel onClose={() => setShowDailyQuests(false)} />
+        )}
+
+        {/* デイリーチャレンジパネル */}
+        {showDailyChallenges && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="w-full max-w-2xl">
+              <DailyChallengeCard />
+              <div className="mt-4 flex justify-center">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowDailyChallenges(false)}
+                  className="bg-white"
+                >
+                  閉じる
+                </Button>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>

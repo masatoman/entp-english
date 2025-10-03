@@ -1,4 +1,4 @@
-import { Coins, Heart, Star, Target, Zap } from "lucide-react";
+import { Coins, Heart, Star, Target, Trophy, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useHeartSystem } from "../hooks/useHeartSystem";
@@ -42,12 +42,18 @@ interface GameHeaderProps {
   onQuestClick?: () => void;
   showQuestBadge?: boolean;
   questCompletedCount?: number;
+  onChallengeClick?: () => void;
+  showChallengeBadge?: boolean;
+  challengeCompletedCount?: number;
 }
 
 export default function GameHeader({
   onQuestClick,
   showQuestBadge = true,
   questCompletedCount = 0,
+  onChallengeClick,
+  showChallengeBadge = true,
+  challengeCompletedCount = 0,
 }: GameHeaderProps) {
   const navigate = useNavigate();
   const { userLevel } = useLevelSystem();
@@ -212,7 +218,7 @@ export default function GameHeader({
           </div>
 
           {/* 右側: 倍率表示（スマホでは非表示） */}
-          <div className="hidden lg:flex items-center gap-2">
+          <div className="flex items-center gap-2">
             {/* デイリーボーナス */}
             {dailyMultiplier > 1.0 && (
               <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg border border-blue-400/50">
@@ -260,12 +266,48 @@ export default function GameHeader({
                   e.currentTarget.style.transform = "translateY(0px)";
                 }}
               >
-                <Target className="w-4 h-4 mr-1 sm:mr-2 hidden sm:inline" />
+                <Target className="w-4 h-4 mr-1 sm:mr-2" />
                 <span className="hidden sm:inline">クエスト</span>
                 <span className="sm:hidden">🎯</span>
                 {showQuestBadge && questCompletedCount > 0 && (
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shadow-lg">
                     {questCompletedCount}
+                  </span>
+                )}
+              </Button>
+            )}
+
+            {/* デイリーチャレンジボタン */}
+            {onChallengeClick && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onChallengeClick}
+                className="header-button font-bold relative text-xs sm:text-sm transition-all duration-200 shadow-lg hover:shadow-xl px-2 sm:px-4 py-2"
+                style={{
+                  background: "linear-gradient(135deg, #ff6b6b, #ee5a24)",
+                  color: "#ffffff",
+                  borderRadius: "12px",
+                  border: "2px solid rgba(255,255,255,0.3)",
+                  boxShadow: "0 4px 15px rgba(255, 107, 107, 0.4)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background =
+                    "linear-gradient(135deg, #ee5a24, #ff6b6b)";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background =
+                    "linear-gradient(135deg, #ff6b6b, #ee5a24)";
+                  e.currentTarget.style.transform = "translateY(0px)";
+                }}
+              >
+                <Trophy className="w-4 h-4 mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">チャレンジ</span>
+                <span className="sm:hidden">🏆</span>
+                {showChallengeBadge && challengeCompletedCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shadow-lg">
+                    {challengeCompletedCount}
                   </span>
                 )}
               </Button>

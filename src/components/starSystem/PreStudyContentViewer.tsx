@@ -89,16 +89,17 @@ function PreStudyContentViewer() {
     if (contentId) {
       const optimalNext = contentTagManager.getOptimalNextContent(contentId);
       if (optimalNext) {
+        console.log('推奨学習コンテンツ:', optimalNext);
         navigate(optimalNext.url);
         return;
       }
     }
     
-    // フォールバック: カテゴリに基づく従来の遷移
+    // フォールバック: カテゴリに基づく従来の遷移（正しいルートを使用）
     if (content?.category === 'vocabulary') {
-      navigate('/learning/vocabulary/actualCategory');
+      navigate('/learning/vocabulary/difficulty');
     } else if (content?.category === 'writing') {
-      navigate('/learning/writing/category');
+      navigate('/learning/essay-writing');
     } else {
       navigate('/learning/grammar/category');
     }

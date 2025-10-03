@@ -31,6 +31,31 @@ export interface DataManagerState {
   gameData: GameData | null;
 }
 
+// フィードバックデータ型
+export interface FeedbackData {
+  id: string;
+  timestamp: Date;
+  overallRating: number;
+  category: string;
+  specificRating: {
+    design: number;
+    usability: number;
+    performance: number;
+    content: number;
+    gamification: number;
+  };
+  feedback: string;
+  suggestions: string;
+  bugs: string;
+  deviceInfo: {
+    userAgent: string;
+    screenSize: string;
+    platform: string;
+  };
+  userType: string;
+  experience: string[];
+}
+
 // データ管理フック
 export function useDataManager() {
   const [state, setState] = useState<DataManagerState>({
@@ -373,6 +398,45 @@ export function useDataManager() {
     return "user-123";
   };
 
+  // ユーザーフィードバックの保存
+  const saveUserFeedback = useCallback(async (feedbackData: FeedbackData) => {
+    try {
+      console.log("📝 ユーザーフィードバック保存開始:", feedbackData.id);
+
+      // IndexedDBにフィードバックを保存
+      await dbManager.put(STORES.FEEDBACK, feedbackData);
+
+      console.log("✅ ユーザーフィードバック保存完了:", feedbackData.id);
+
+      // オンラインの場合はサーバーにも送信（将来実装）
+      if (navigator.onLine) {
+        console.log("🌐 フィードバックサーバー送信準備中...");
+        // TODO: サーバーAPIへの送信実装
+      }
+
+      return feedbackData.id;
+    } catch (error) {
+      console.error("❌ ユーザーフィードバック保存エラー:", error);
+      throw error;
+    }
+  }, []);
+
+  // ユーザーフィードバックの取得
+  const getUserFeedback = useCallback(async (userId?: string) => {
+    try {
+      console.log("📖 ユーザーフィードバック取得開始:", userId);
+
+      const targetUserId = userId || getCurrentUserId();
+      const feedback = await dbManager.getAll(STORES.FEEDBACK);
+
+      console.log("✅ ユーザーフィードバック取得完了:", feedback.length, "件");
+      return feedback as FeedbackData[];
+    } catch (error) {
+      console.error("❌ ユーザーフィードバック取得エラー:", error);
+      throw error;
+    }
+  }, []);
+
   return {
     // 状態
     ...state,
@@ -393,6 +457,10 @@ export function useDataManager() {
     refreshData,
     cleanupCache,
     getStorageUsage,
+
+    // フィードバック管理
+    saveUserFeedback,
+    getUserFeedback,
 
     // 初期化
     initializeDataManager,

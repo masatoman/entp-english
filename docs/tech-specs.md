@@ -62,6 +62,16 @@
 - **統合学習サービス**: 全機能の連携による相乗効果
 - **学習インサイト**: 個人の学習パターン分析・改善提案
 
+#### リスニング学習システム（2025 年 1 月実装完了）
+
+- **TOEIC 形式対応**: Part1（写真描写）・Part2（応答問題）・Part3（会話問題）・Part4（説明文問題）
+- **TTS 音声自動生成**: Web Speech API を使用した高品質英語音声
+- **音声品質最適化**: ネイティブ英語音声選択・速度・ピッチ・音量調整
+- **進捗追跡システム**: 詳細な学習履歴・スコア管理・統計分析
+- **アチーブメントシステム**: リスニング専用実績・進捗通知
+- **ガチャ連携システム**: リスニング結果に基づく語彙推奨・弱点分析
+- **レスポンシブ UI**: 音声コントロール・プログレス表示・詳細設定
+
 #### 高度なゲーミフィケーションシステム（2025 年 9 月実装完了）
 
 - **アドレナリンシステム**: コンボ・クリティカルヒット・フィーバータイム
@@ -90,6 +100,8 @@ src/
 │   ├── EnhancedVocabularyCard.tsx # 拡張語彙学習
 │   ├── GrammarQuiz.tsx  # 文法クイズ
 │   ├── EnhancedGrammarQuiz.tsx # 拡張文法クイズ
+│   ├── ListeningLearning.tsx # リスニング学習
+│   ├── ListeningSelection.tsx # リスニング選択画面
 │   ├── CombinedTest.tsx # 総合テスト
 │   ├── EssayWriting.tsx # 英作文機能
 │   ├── TimeAttackMode.tsx # タイムアタックモード
@@ -112,6 +124,8 @@ src/
 │   ├── questions.ts     # 問題データ
 │   ├── enhancedQuestions.ts # 拡張問題データ
 │   ├── vocabulary.ts    # 語彙データ
+│   ├── listeningQuestions.ts # リスニング問題データ
+│   ├── listeningAchievements.ts # リスニング実績データ
 │   ├── achievements.ts  # 実績データ
 │   ├── synergyAchievements.ts # シナジー実績データ
 │   ├── combinedTest.ts  # 総合テストデータ
@@ -138,6 +152,12 @@ src/
 │   └── index.ts
 ├── utils/               # ユーティリティ関数
 │   ├── dataManager.ts   # データ管理
+│   ├── IndexedDBManager.ts # IndexedDB管理
+│   ├── AudioManager.ts  # 音声管理
+│   ├── ttsManager.ts    # TTS音声管理
+│   ├── listeningProgressManager.ts # リスニング進捗管理
+│   ├── listeningAchievementManager.ts # リスニング実績管理
+│   ├── listeningGachaIntegration.ts # リスニング×ガチャ連携
 │   ├── xpCalculator.ts  # XP計算
 │   ├── newXpCalculator.ts # 新XP計算システム
 │   ├── tower-defense-data.ts # ゲームデータ
@@ -208,6 +228,34 @@ export interface VocabularyWord {
   exampleTranslation: string;
   level: "beginner" | "intermediate" | "advanced";
   category: "all" | "toeic" | "business" | "daily" | "academic";
+}
+
+// リスニング問題データ
+export interface ListeningQuestion {
+  id: number;
+  part: "part1" | "part2" | "part3" | "part4";
+  difficulty: "beginner" | "intermediate" | "advanced";
+  question: string;
+  transcript: string;
+  choices: string[];
+  correctAnswer: string;
+  explanation: string;
+  vocabulary: string[];
+  grammarPoints: string[];
+  audioUrl?: string;
+}
+
+// リスニング進捗データ
+export interface ListeningProgress {
+  id: string;
+  userId: string;
+  sessionId: string;
+  part: string;
+  difficulty: string;
+  questionId: number;
+  isCorrect: boolean;
+  timeSpent: number;
+  answeredAt: Date;
 }
 
 // 実績データ
