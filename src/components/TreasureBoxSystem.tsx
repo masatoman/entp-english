@@ -21,7 +21,12 @@ export default function TreasureBoxSystem({
   useEffect(() => {
     const loadTreasureBoxes = () => {
       const system = adrenalineManager.getSystem();
-      setTreasureBoxes(system.treasureBoxes.filter((box) => !box.isOpened));
+      const unopenedBoxes = system.treasureBoxes.filter((box) => !box.isOpened);
+      console.log("🔍 宝箱リスト更新:", {
+        total: system.treasureBoxes.length,
+        unopened: unopenedBoxes.length,
+      });
+      setTreasureBoxes(unopenedBoxes);
     };
 
     loadTreasureBoxes();
@@ -53,6 +58,17 @@ export default function TreasureBoxSystem({
       );
     };
   }, [showRewards]); // showRewardsを依存関係に追加
+
+  const handleOpenAllBoxes = async () => {
+    console.log("🔍 全宝箱一括開封開始");
+    const boxesToOpen = [...treasureBoxes];
+
+    for (const box of boxesToOpen) {
+      await handleOpenBox(box.id);
+      // 各宝箱の開封間に少し間隔を開ける
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    }
+  };
 
   const handleOpenBox = async (boxId: string) => {
     console.log("🔍 宝箱開封開始:", boxId);
@@ -125,28 +141,6 @@ export default function TreasureBoxSystem({
       openingBox: null,
     });
 
-    // 一時的な解決策：アラートで報酬を表示
-    const rewardSummary = rewards
-      .map(
-        (r) =>
-          `${
-            r.type === "xp"
-              ? "⚡"
-              : r.type === "hearts"
-              ? "❤️"
-              : r.type === "stars"
-              ? "⭐"
-              : r.type === "gacha_ticket"
-              ? "🎫"
-              : "✨"
-          } ${r.description}: +${r.amount}`
-      )
-      .join("\n");
-
-    alert(
-      `🎉 宝箱開封完了！\n\n${rewardSummary}\n\n合計: ${rewards.length}個の報酬を獲得しました！`
-    );
-
     // 報酬表示中は宝箱リストを更新しない（報酬表示完了後に更新）
     const system = adrenalineManager.getSystem();
     setTreasureBoxes(system.treasureBoxes.filter((box) => !box.isOpened));
@@ -204,6 +198,7 @@ export default function TreasureBoxSystem({
     showRewards: showRewards ? showRewards.length : null,
     showRewardsExists: !!showRewards,
     openingBox,
+    forceShow,
   });
 
   // 報酬表示または宝箱がある場合、または強制表示の場合のみ表示
@@ -213,7 +208,7 @@ export default function TreasureBoxSystem({
   }
 
   // 宝箱がない場合は強制表示フラグをリセット
-  if (treasureBoxes.length === 0 && forceShow) {
+  if (treasureBoxes.length === 0 && forceShow && !showRewards) {
     console.log("🔍 TreasureBoxSystem: 宝箱がないため強制表示フラグをリセット");
     setForceShow(false);
     return null;
@@ -407,6 +402,17 @@ export default function TreasureBoxSystem({
                 どの宝箱から開封しますか？
               </div>
 
+              {/* 一括開封ボタン */}
+              {treasureBoxes.length > 1 && (
+                <Button
+                  onClick={handleOpenAllBoxes}
+                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold"
+                  size="lg"
+                >
+                  🚀 まとめて開封する 🚀
+                </Button>
+              )}
+
               <div className="space-y-3">
                 {treasureBoxes.map((box) => (
                   <Card
@@ -416,7 +422,12 @@ export default function TreasureBoxSystem({
                       ${getBoxColor(box.type)}
                       ${openingBox === box.id ? "animate-pulse" : ""}
                     `}
-                    onClick={() => !openingBox && handleOpenBox(box.id)}
+                    onClick={() => {
+                      if (!openingBox) {
+                        console.log("🔍 宝箱クリック:", box.id);
+                        handleOpenBox(box.id);
+                      }
+                    }}
                   >
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between">

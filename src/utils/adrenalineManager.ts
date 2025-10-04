@@ -105,7 +105,7 @@ export class AdrenalineManager {
   }
 
   // コンボシステム
-  processCorrectAnswer(): AdrenalineEventData[] {
+  processCorrectAnswer(forceEvents: boolean = false): AdrenalineEventData[] {
     const events: AdrenalineEventData[] = [];
     const now = Date.now();
 
@@ -146,7 +146,7 @@ export class AdrenalineManager {
     }
 
     // クリティカルヒット判定
-    if (Math.random() < this.system.critical.criticalRate) {
+    if (forceEvents || Math.random() < this.system.critical.criticalRate) {
       this.system.critical.totalCriticals++;
       this.system.critical.criticalStreak++;
       this.system.critical.lastCriticalTime = now;
@@ -168,7 +168,7 @@ export class AdrenalineManager {
       !this.system.feverTime.isActive &&
       now - this.system.feverTime.lastTrigger >
         this.system.feverTime.cooldownTime &&
-      Math.random() < this.system.feverTime.triggerRate
+      (forceEvents || Math.random() < this.system.feverTime.triggerRate)
     ) {
       this.startFeverTime(events);
     }
@@ -276,11 +276,28 @@ export class AdrenalineManager {
   }
 
   // 宝箱システム
-  earnTreasureBox(difficulty: "easy" | "normal" | "hard"): TreasureBox {
+  earnTreasureBox(
+    difficulty: "easy" | "normal" | "hard",
+    forceEarn: boolean = false
+  ): TreasureBox {
     const box = this.generateTreasureBox(difficulty);
     this.system.treasureBoxes.push(box);
     this.saveSystem();
     return box;
+  }
+
+  // テスト用: 宝箱を強制獲得
+  forceEarnTreasureBox(
+    difficulty: "easy" | "normal" | "hard" = "normal"
+  ): TreasureBox {
+    console.log("🧪 テスト用: 宝箱を強制獲得");
+    return this.earnTreasureBox(difficulty, true);
+  }
+
+  // テスト用: 確率的イベントを強制発動
+  forceTriggerEvents(): AdrenalineEventData[] {
+    console.log("🧪 テスト用: 確率的イベントを強制発動");
+    return this.processCorrectAnswer(true);
   }
 
   private generateTreasureBox(

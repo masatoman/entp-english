@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { BGMPlayer } from "../components/BGMPlayer";
 import { ErrorBoundary } from "../components/ErrorBoundary";
 import { NewHome } from "../components/NewHome";
+import { ProbabilityFeatureTester } from "../components/ProbabilityFeatureTester";
 import { ScrollToTop } from "../components/ScrollToTop";
 
 // 直接importに変更（lazy loadingの問題を回避）
@@ -282,6 +283,7 @@ export function AppRouter() {
             </div>
           </DataManagerProvider>
         </MigrationProvider>
+        <ProbabilityFeatureTester />
       </ErrorBoundary>
     </BrowserRouter>
   );
