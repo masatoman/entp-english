@@ -1,7 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { BGMPlayer } from "../components/BGMPlayer";
 import { ErrorBoundary } from "../components/ErrorBoundary";
-import { NewHome } from "../components/NewHome";
+import Home from "../components/Home";
 import { ProbabilityFeatureTester } from "../components/ProbabilityFeatureTester";
 import { ScrollToTop } from "../components/ScrollToTop";
 
@@ -65,7 +65,7 @@ export function AppRouter() {
             <div className="min-h-screen bg-background">
               <Routes>
                 {/* ホーム */}
-                <Route path="/" element={<NewHome />} />
+                <Route path="/" element={<Home />} />
 
                 {/* 学習機能 */}
                 <Route
