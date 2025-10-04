@@ -7,6 +7,7 @@ import { StarData } from "../types/starSystem";
 import { adrenalineManager } from "../utils/adrenalineManager";
 import { dailyQuestManager } from "../utils/dailyQuestManager";
 import { getLevelManager } from "../utils/levelManager";
+import { formatDisplayNumber } from "../utils/numberDisplayUtils";
 import { Button } from "./ui/button";
 
 // 章情報の定義
@@ -96,6 +97,15 @@ export default function GameHeader({
   // XP進捗計算（既にlevelManager内で計算済み）
   const currentLevel = userLevel.level || 1;
   const totalXP = userLevel.xp || 0; // ✅ 正しいプロパティ名
+
+  // 数値表示の制限とフォーマット
+  const levelDisplay = formatDisplayNumber(currentLevel, "level");
+  const xpDisplay = formatDisplayNumber(totalXP, "xp");
+  const coinDisplay = formatDisplayNumber(coinSystem.current, "coins");
+  const heartDisplay = formatDisplayNumber(heartSystem.current, "hearts");
+  const heartMaxDisplay = formatDisplayNumber(heartSystem.max, "hearts");
+  const starDisplay = formatDisplayNumber(starSystem.current, "stars");
+  const starMaxDisplay = formatDisplayNumber(starSystem.max, "stars");
   const progressPercentage = userLevel.progress || 0; // ✅ 既に計算済みの進捗%を使用
 
   return (
@@ -110,16 +120,17 @@ export default function GameHeader({
       <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-transparent to-purple-500/20 animate-pulse" />
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white/10 to-transparent" />
       <div className="relative z-10 max-w-6xl mx-auto px-2 sm:px-4">
-        {/* ヘッダー全体レイアウト */}
-        <div
-          className="flex items-center justify-between"
-          style={{ height: "60px" }}
-        >
-          {/* 左側: レベル&進捗ゲージ */}
+        {/* ヘッダー全体レイアウト - 全部左寄せ */}
+        <div className="flex items-center gap-2 sm:gap-4 py-2">
+          {/* Level + ステータスバー（セット） */}
           <div className="flex items-center gap-2 sm:gap-4">
-            {/* レベル&進捗セクション */}
             <div className="flex flex-col gap-1">
-              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-1">
+              <div
+                className="bg-white/20 backdrop-blur-sm rounded-lg px-3 py-1 cursor-help"
+                title={`レベル: ${levelDisplay.full}${
+                  levelDisplay.isLimited ? " (制限済み)" : ""
+                }`}
+              >
                 <div
                   className="text-lg font-bold"
                   style={{
@@ -127,7 +138,7 @@ export default function GameHeader({
                     textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
                   }}
                 >
-                  Level {userLevel.level || 1}
+                  Level {levelDisplay.display}
                 </div>
               </div>
               {/* 進捗ゲージ */}
@@ -151,10 +162,36 @@ export default function GameHeader({
               </div>
             </div>
 
-            {/* アイコン群 */}
+            {/* 倍率表示（PCのみ） */}
+            {dailyMultiplier > 1 && (
+              <div className="hidden md:flex items-center">
+                <div className="bg-yellow-500/90 backdrop-blur-sm rounded-lg px-3 py-1">
+                  <div
+                    className="text-sm font-bold flex items-center gap-1"
+                    style={{
+                      color: "#000000",
+                      textShadow: "1px 1px 2px rgba(255,255,255,0.8)",
+                    }}
+                  >
+                    <Zap className="w-4 h-4" />
+                    {dailyMultiplier.toFixed(1)}x
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* 2x2の一塊 */}
+          <div className="flex flex-col gap-1">
+            {/* 上段: ハート・星 */}
             <div className="flex items-center gap-1 sm:gap-3">
               {/* ハート（体力） */}
-              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-2 sm:px-3 py-1 sm:py-2 flex items-center gap-1 sm:gap-2">
+              <div
+                className="bg-white/20 backdrop-blur-sm rounded-lg px-2 sm:px-3 py-1 sm:py-2 flex items-center gap-1 sm:gap-2 cursor-help"
+                title={`体力: ${heartDisplay.full}/${heartMaxDisplay.full}${
+                  heartDisplay.isLimited ? " (制限済み)" : ""
+                }`}
+              >
                 <Heart
                   className="w-4 h-4 sm:w-5 sm:h-5"
                   style={{ color: "#ff4757" }}
@@ -166,12 +203,17 @@ export default function GameHeader({
                     textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
                   }}
                 >
-                  {heartSystem.current}/{heartSystem.max}
+                  {heartDisplay.display}/{heartMaxDisplay.display}
                 </span>
               </div>
 
               {/* スター（スタミナ） */}
-              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-2 sm:px-3 py-1 sm:py-2 flex items-center gap-1 sm:gap-2">
+              <div
+                className="bg-white/20 backdrop-blur-sm rounded-lg px-2 sm:px-3 py-1 sm:py-2 flex items-center gap-1 sm:gap-2 cursor-help"
+                title={`スタミナ: ${starDisplay.full}/${starMaxDisplay.full}${
+                  starDisplay.isLimited ? " (制限済み)" : ""
+                }`}
+              >
                 <Star
                   className="w-4 h-4 sm:w-5 sm:h-5"
                   style={{ color: "#ffa502" }}
@@ -183,135 +225,102 @@ export default function GameHeader({
                     textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
                   }}
                 >
-                  {starSystem.current}/{starSystem.max}
+                  {starDisplay.display}/{starMaxDisplay.display}
                 </span>
               </div>
+            </div>
 
-              {/* コイン（スマホでは非表示） */}
-              <div className="hidden sm:flex bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 items-center gap-2">
-                <Coins className="w-5 h-5" style={{ color: "#ffd700" }} />
+            {/* 下段: コイン・XP */}
+            <div className="flex items-center gap-1 sm:gap-3">
+              {/* コイン */}
+              <div
+                className="bg-white/20 backdrop-blur-sm rounded-lg px-2 sm:px-3 py-1 sm:py-2 flex items-center gap-1 sm:gap-2 cursor-help"
+                title={`コイン: ${coinDisplay.full}${
+                  coinDisplay.isLimited ? " (制限済み)" : ""
+                }`}
+              >
+                <Coins
+                  className="w-4 h-4 sm:w-5 sm:h-5"
+                  style={{ color: "#ffd700" }}
+                />
                 <span
-                  className="text-sm font-bold"
+                  className="text-xs sm:text-sm font-bold"
                   style={{
                     color: "#ffffff",
                     textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
                   }}
                 >
-                  {coinSystem.current}
+                  {coinDisplay.display}
                 </span>
               </div>
 
-              {/* XP（スマホでは非表示） */}
-              <div className="hidden md:flex bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 items-center gap-2">
-                <Zap className="w-5 h-5" style={{ color: "#00d2ff" }} />
+              {/* XP */}
+              <div
+                className="bg-white/20 backdrop-blur-sm rounded-lg px-2 sm:px-3 py-1 sm:py-2 flex items-center gap-1 sm:gap-2 cursor-help"
+                title={`XP: ${xpDisplay.full}${
+                  xpDisplay.isLimited ? " (制限済み)" : ""
+                }`}
+              >
+                <Zap
+                  className="w-4 h-4 sm:w-5 sm:h-5"
+                  style={{ color: "#00d2ff" }}
+                />
                 <span
-                  className="text-sm font-bold"
+                  className="text-xs sm:text-sm font-bold"
                   style={{
                     color: "#ffffff",
                     textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
                   }}
                 >
-                  {totalXP || 0}
+                  {xpDisplay.display}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* 右側: 倍率表示（スマホでは非表示） */}
-          <div className="flex items-center gap-2">
-            {/* デイリーボーナス */}
-            {dailyMultiplier > 1.0 && (
-              <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg border border-blue-400/50">
-                ×{dailyMultiplier.toFixed(1)} XP
-              </div>
-            )}
+          {/* デイリー・スペシャルミッションセット */}
+          <div className="flex items-center gap-1 sm:gap-2">
+            {/* デイリークエスト */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onQuestClick}
+              className="relative p-2 hover:bg-white/20 transition-colors"
+            >
+              <Trophy className="w-5 h-5" style={{ color: "#ffd700" }} />
+              {showQuestBadge && questCompletedCount > 0 && (
+                <span
+                  className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+                  style={{
+                    fontSize: "10px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {questCompletedCount}
+                </span>
+              )}
+            </Button>
 
-            {/* 総合効果 */}
-            {dailyMultiplier > 1.0 && (
-              <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg border border-orange-400/50">
-                ×{dailyMultiplier.toFixed(1)} 総合効果
-              </div>
-            )}
-
-            {/* コンボ効果 */}
-            {adrenalineManager.calculateTotalMultiplier() > 1.0 && (
-              <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg border border-purple-400/50">
-                ×{adrenalineManager.calculateTotalMultiplier().toFixed(1)}{" "}
-                コンボ
-              </div>
-            )}
-
-            {/* デイリークエストボタン */}
-            {onQuestClick && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={onQuestClick}
-                className="header-button font-bold relative text-xs sm:text-sm transition-all duration-200 shadow-lg hover:shadow-xl px-2 sm:px-4 py-2"
-                style={{
-                  background: "linear-gradient(135deg, #00d4aa, #00a085)",
-                  color: "#ffffff",
-                  borderRadius: "12px",
-                  border: "2px solid rgba(255,255,255,0.3)",
-                  boxShadow: "0 4px 15px rgba(0, 212, 170, 0.4)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background =
-                    "linear-gradient(135deg, #00a085, #00d4aa)";
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background =
-                    "linear-gradient(135deg, #00d4aa, #00a085)";
-                  e.currentTarget.style.transform = "translateY(0px)";
-                }}
-              >
-                <Target className="w-4 h-4 mr-1 sm:mr-2" />
-                <span className="hidden sm:inline">クエスト</span>
-                <span className="sm:hidden">🎯</span>
-                {showQuestBadge && questCompletedCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shadow-lg">
-                    {questCompletedCount}
-                  </span>
-                )}
-              </Button>
-            )}
-
-            {/* デイリーチャレンジボタン */}
-            {onChallengeClick && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={onChallengeClick}
-                className="header-button font-bold relative text-xs sm:text-sm transition-all duration-200 shadow-lg hover:shadow-xl px-2 sm:px-4 py-2"
-                style={{
-                  background: "linear-gradient(135deg, #ff6b6b, #ee5a24)",
-                  color: "#ffffff",
-                  borderRadius: "12px",
-                  border: "2px solid rgba(255,255,255,0.3)",
-                  boxShadow: "0 4px 15px rgba(255, 107, 107, 0.4)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background =
-                    "linear-gradient(135deg, #ee5a24, #ff6b6b)";
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background =
-                    "linear-gradient(135deg, #ff6b6b, #ee5a24)";
-                  e.currentTarget.style.transform = "translateY(0px)";
-                }}
-              >
-                <Trophy className="w-4 h-4 mr-1 sm:mr-2" />
-                <span className="hidden sm:inline">チャレンジ</span>
-                <span className="sm:hidden">🏆</span>
-                {showChallengeBadge && challengeCompletedCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold shadow-lg">
-                    {challengeCompletedCount}
-                  </span>
-                )}
-              </Button>
-            )}
+            {/* スペシャルチャレンジ */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onChallengeClick}
+              className="relative p-2 hover:bg-white/20 transition-colors"
+            >
+              <Target className="w-5 h-5" style={{ color: "#ff6b6b" }} />
+              {showChallengeBadge && challengeCompletedCount > 0 && (
+                <span
+                  className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+                  style={{
+                    fontSize: "10px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {challengeCompletedCount}
+                </span>
+              )}
+            </Button>
           </div>
         </div>
       </div>
