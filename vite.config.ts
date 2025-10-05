@@ -1,4 +1,4 @@
-import react from "@vitejs/plugin-react-swc";
+import react from "@vitejs/plugin-react";
 import path from "path";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
@@ -87,49 +87,9 @@ export default defineConfig({
             return "vendor";
           }
 
-          // アプリケーションコードの分離
-          if (id.includes("/src/components/")) {
-            if (
-              id.includes("SimpleTowerDefense") ||
-              id.includes("GachaSystem")
-            ) {
-              return "game";
-            }
-            if (id.includes("TOEIC") || id.includes("MockTest")) {
-              return "toeic";
-            }
-            if (
-              id.includes("Vocabulary") ||
-              id.includes("Grammar") ||
-              id.includes("Listening")
-            ) {
-              return "learning";
-            }
-            if (id.includes("Achievements") || id.includes("Dashboard")) {
-              return "progress";
-            }
-            return "components";
-          }
-
-          if (id.includes("/src/utils/")) {
-            if (id.includes("toeic") || id.includes("mockTest")) {
-              return "toeic";
-            }
-            if (id.includes("tower-defense") || id.includes("gacha")) {
-              return "game";
-            }
-            if (
-              id.includes("level") ||
-              id.includes("xp") ||
-              id.includes("achievement")
-            ) {
-              return "progress";
-            }
-            return "utils";
-          }
-
-          if (id.includes("/src/data/")) {
-            return "data";
+          // アプリケーションコードの分離（現在はシンプルな構成のため最小限）
+          if (id.includes("/src/")) {
+            return "app";
           }
         },
       },
