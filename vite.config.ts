@@ -160,31 +160,4 @@ export default defineConfig({
     ],
     exclude: ["@vite/client", "@vite/env"],
   },
-  test: {
-    globals: true,
-    environment: "jsdom",
-    setupFiles: ["./src/test/setup.ts"],
-    include: ["**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
-    exclude: [
-      "**/node_modules/**",
-      "**/dist/**",
-      "**/cypress/**",
-      "**/.{idea,git,cache,output,temp}/**",
-      "**/{karma,rollup,webpack,vite,vitest,jest,playwright}.config.*",
-      "**/e2e/**",
-    ],
-    css: true,
-    coverage: {
-      provider: "v8",
-      reporter: ["text", "json", "html"],
-      exclude: [
-        "node_modules/",
-        "src/test/",
-        "**/*.d.ts",
-        "**/*.config.*",
-        "dist/",
-        "build/",
-      ],
-    },
-  },
 });

@@ -59,6 +59,12 @@ jobs:
           test -d dist/assets || (echo "❌ assets directory not found" && exit 1)
           echo "✅ ビルド成果物検証完了"
 
+      - name: Production build quality check
+        run: |
+          echo "🔍 本番ビルド品質チェック..."
+          npm run build:check
+          echo "✅ 本番ビルド品質チェック完了"
+
       - name: Run unit tests
         run: |
           echo "🧪 ユニットテスト実行中..."
