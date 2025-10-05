@@ -71,8 +71,12 @@ export default defineConfig({
         manualChunks: (id) => {
           // ベンダーライブラリを分離
           if (id.includes("node_modules")) {
-            if (id.includes("react") || id.includes("react-dom")) {
+            // React関連を最優先で分離
+            if (id.includes("react/") || id.includes("react-dom/")) {
               return "vendor-react";
+            }
+            if (id.includes("react-router") || id.includes("react-router-dom")) {
+              return "vendor-router";
             }
             if (id.includes("@radix-ui") || id.includes("lucide-react")) {
               return "vendor-ui";
