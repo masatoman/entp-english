@@ -326,7 +326,7 @@ export class LearningPathChallengeManager {
    * ユーザーの学習パスチャレンジ進捗を取得
    */
   static getUserChallengeProgress(
-    userId: string = "default"
+    _userId: string = "default"
   ): LearningPathChallenge[] {
     const stored = localStorage.getItem(`${this.CHALLENGE_KEY}-${userId}`);
     let challenges: LearningPathChallenge[] = stored
@@ -347,7 +347,7 @@ export class LearningPathChallengeManager {
    */
   private static updateChallengeProgress(
     challenge: LearningPathChallenge,
-    userId: string
+    _userId: string
   ): LearningPathChallenge {
     const updatedChallenge = { ...challenge };
 
@@ -452,7 +452,7 @@ export class LearningPathChallengeManager {
    */
   private static checkChallengeRequirements(
     challenge: LearningPathChallenge,
-    userId: string
+    _userId: string
   ): boolean {
     // レベルチェック（仮実装）
     // const userLevel = 1; // DataManager.getUserLevel(userId);
@@ -481,7 +481,7 @@ export class LearningPathChallengeManager {
    * チャレンジを完了
    */
   static completeChallenge(
-    userId: string,
+    _userId: string,
     challengeId: string,
     finalScore: number
   ): ChallengeCompletion | null {
@@ -522,7 +522,7 @@ export class LearningPathChallengeManager {
    * チャレンジ報酬を付与
    */
   private static grantChallengeRewards(
-    userId: string,
+    _userId: string,
     rewards: ChallengeRewards
   ): void {
     // XP付与（仮実装）
@@ -536,7 +536,7 @@ export class LearningPathChallengeManager {
 
     // 特別効果を適用
     if (rewards.specialEffects) {
-      for (const effect of rewards.specialEffects) {
+      for (const _effect of rewards.specialEffects) {
         this.applySpecialEffect(userId);
       }
     }
@@ -573,7 +573,7 @@ export class LearningPathChallengeManager {
    */
   private static generateNextRecommendations(
     challenge: LearningPathChallenge,
-    userId: string
+    _userId: string
   ): string[] {
     const recommendations: string[] = [];
 
@@ -594,7 +594,7 @@ export class LearningPathChallengeManager {
    * 学習パス推奨を生成
    */
   static generateLearningPathRecommendation(
-    userId: string
+    _userId: string
   ): LearningPathRecommendation {
     // const userLevel = 1; // DataManager.getUserLevel(userId);
     const challenges = this.getUserChallengeProgress(userId);
@@ -641,7 +641,7 @@ export class LearningPathChallengeManager {
    * ユーザーのチャレンジ進捗を保存
    */
   private static saveUserChallengeProgress(
-    userId: string,
+    _userId: string,
     challenges: LearningPathChallenge[]
   ): void {
     localStorage.setItem(

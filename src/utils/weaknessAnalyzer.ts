@@ -619,12 +619,12 @@ export class WeaknessAnalyzer {
     return secondAvg - firstAvg;
   }
 
-  private static _identifySpecificIssues(): string[] {
+  private static __identifySpecificIssues(): string[] {
     // カテゴリー別の具体的問題特定（簡略化）
     return ["詳細な問題分析が必要"];
   }
 
-  private static _generateRecommendations(): string[] {
+  private static __generateRecommendations(): string[] {
     // カテゴリー別推奨事項生成（簡略化）
     return ["基礎練習を強化する", "定期的な復習を行う"];
   }

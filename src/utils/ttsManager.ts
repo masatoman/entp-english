@@ -20,7 +20,7 @@ class TTSManager {
   private static instance: TTSManager;
   private currentUtterance: SpeechSynthesisUtterance | null = null;
   private availableVoices: SpeechSynthesisVoice[] = [];
-  private _isInitialized: boolean = false;
+  private __isInitialized: boolean = false;
 
   private constructor() {
     this.initializeVoices();

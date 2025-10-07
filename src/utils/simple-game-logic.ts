@@ -387,7 +387,7 @@ export function towerAttack(
     tower.damage +
     tower.tempBoosts.damageBoost +
     (activeBoosts?.damageBoost || 0);
-  const _speedBoostMultiplier =
+  const __speedBoostMultiplier =
     1 + tower.tempBoosts.speedBoost / 100 + (activeBoosts?.speedBoost || 0);
 
   // 射程内の生きている敵を探す（ステルス敵は見えない場合がある）

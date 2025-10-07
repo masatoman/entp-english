@@ -56,7 +56,7 @@ export function filterQuestionsByLevel(
     }
 
     // レベルに応じたランクのフィルタリング
-    const levelRank = determineQuestionRank(level);
+    const _levelRank = determineQuestionRank(level);
     const rankOrder = ["normal", "rare", "epic", "legendary"];
     const questionRankIndex = rankOrder.indexOf(question.rank);
 

@@ -232,7 +232,7 @@ export class LearningAnalyzer {
   /**
    * 好みのカテゴリを分析
    */
-  private static getPreferredCategory(userStats: any): string {
+  private static getPreferredCategory(_userStats: any): string {
     // 最も多く学習したカテゴリを返す（仮実装）
     const sessions = this.getStudySessions();
     return this.analyzeContentPreference(sessions);
