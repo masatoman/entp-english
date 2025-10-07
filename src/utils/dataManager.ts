@@ -80,7 +80,7 @@ export class DataManager {
       localStorage.removeItem(STORAGE_KEYS.APP_SETTINGS);
       logInfo("All data cleared successfully");
     } catch (error) {
-      logError("Error clearing data", error);
+      logError("Error clearing data", error as Error);
     }
   }
   // ユーザー統計の取得
@@ -101,7 +101,7 @@ export class DataManager {
     try {
       localStorage.setItem(STORAGE_KEYS.USER_STATS, JSON.stringify(stats));
     } catch (error) {
-      logError("Failed to save user stats", error);
+      logError("Failed to save user stats", error as Error);
     }
   }
 
@@ -113,7 +113,7 @@ export class DataManager {
         return JSON.parse(stored);
       }
     } catch (error) {
-      logError("Failed to load learning history", error);
+      logError("Failed to load learning history", error as Error);
     }
     return [];
   }
@@ -126,7 +126,7 @@ export class DataManager {
         JSON.stringify(history)
       );
     } catch (error) {
-      logError("Failed to save learning history", error);
+      logError("Failed to save learning history", error as Error);
     }
   }
 
@@ -138,7 +138,7 @@ export class DataManager {
         return JSON.parse(stored);
       }
     } catch (error) {
-      logError("Failed to load vocabulary progress", error);
+      logError("Failed to load vocabulary progress", error as Error);
     }
     return [];
   }
@@ -151,7 +151,7 @@ export class DataManager {
         JSON.stringify(progress)
       );
     } catch (error) {
-      logError("Failed to save vocabulary progress", error);
+      logError("Failed to save vocabulary progress", error as Error);
     }
   }
 
@@ -163,7 +163,7 @@ export class DataManager {
         return JSON.parse(stored);
       }
     } catch (error) {
-      logError("Failed to load achievements", error);
+      logError("Failed to load achievements", error as Error);
     }
     return [];
   }
@@ -176,7 +176,7 @@ export class DataManager {
         JSON.stringify(achievements)
       );
     } catch (error) {
-      logError("Failed to save achievements", error);
+      logError("Failed to save achievements", error as Error);
     }
   }
 
@@ -221,7 +221,7 @@ export class DataManager {
     // ストリークの更新
     logDebug("Streak calculation:", {
       lastStudyDate: stats.lastStudyDate || new Date().toISOString(),
-      today,
+      today: today,
       yesterday,
       currentStreak: stats.currentStreak,
     });
@@ -262,7 +262,7 @@ export class DataManager {
         await notificationManager.showStreakReminder(stats.currentStreak);
       }
     } catch (error) {
-      logError("Error sending notifications", error);
+      logError("Error sending notifications", error as Error);
     }
   }
 
@@ -549,7 +549,7 @@ export class DataManager {
 
       return true;
     } catch (error) {
-      logError("Failed to import data", error);
+      logError("Failed to import data", error as Error);
       return false;
     }
   }
@@ -563,7 +563,7 @@ export class DataManager {
         return { ...DEFAULT_APP_SETTINGS, ...parsed };
       }
     } catch (error) {
-      logError("Error loading app settings", error);
+      logError("Error loading app settings", error as Error);
     }
     return DEFAULT_APP_SETTINGS;
   }
@@ -578,7 +578,7 @@ export class DataManager {
         JSON.stringify(updatedSettings)
       );
     } catch (error) {
-      logError("Error saving app settings", error);
+      logError("Error saving app settings", error as Error);
     }
   }
 
@@ -590,6 +590,7 @@ export class DataManager {
       cards.forEach((card) => {
         const vocabularyWord: VocabularyWord = {
           id: card.id + 10000, // ガチャカード用のID範囲
+          word: card.word,
           english: card.word,
           japanese: "日本語訳",
           meaning: card.meaning,
@@ -619,7 +620,7 @@ export class DataManager {
       this.saveVocabularyProgress(currentVocab);
       logInfo("Successfully added gacha cards to vocabulary system");
     } catch (error) {
-      logError("Error in addGachaWordsToVocabulary", error);
+      logError("Error in addGachaWordsToVocabulary", error as Error);
       throw error; // エラーを再スローして上位でキャッチできるようにする
     }
   }
@@ -690,7 +691,7 @@ export class DataManager {
         completedContents: [],
       };
     } catch (error) {
-      logError("Error loading pre-study progress", error);
+      logError("Error loading pre-study progress", error as Error);
       return {
         totalContentsStudied: 0,
         contentsByCategory: {},
@@ -705,7 +706,7 @@ export class DataManager {
     try {
       localStorage.setItem("preStudyProgress", JSON.stringify(progress));
     } catch (error) {
-      logError("Error saving pre-study progress", error);
+      logError("Error saving pre-study progress", error as Error);
     }
   }
 
@@ -730,7 +731,7 @@ export class DataManager {
 
       this.savePreStudyProgress(progress);
     } catch (error) {
-      logError("Error recording pre-study completion", error);
+      logError("Error recording pre-study completion", error as Error);
     }
   }
 }

@@ -226,7 +226,7 @@ export class LearningAnalyzer {
   ): LearningPattern["preferredDifficulty"] {
     // 実際の選択履歴から判定（仮実装）
     const sessions = this.getStudySessions();
-    return this.analyzeDifficultyPreference(sessions);
+    return this.analyzeDifficultyPreference(sessions) as "beginner" | "intermediate" | "advanced";
   }
 
   /**
@@ -297,7 +297,7 @@ export class LearningAnalyzer {
     const sessions = this.getStudySessions();
 
     return {
-      totalStudySessions: userStats.totalQuestions || 0,
+      totalStudySessions: (userStats as any).totalQuestions || 0,
       totalStudyTime: this.calculateTotalStudyTime(sessions),
       averageAccuracy: this.calculateOverallAccuracy(userStats),
       strongestCategories: this.analyzeStrongestCategories(sessions),
@@ -363,7 +363,7 @@ export class LearningAnalyzer {
     }, {} as Record<string, number>);
 
     const mostUsed = Object.entries(difficultyCounts).sort(
-      ([, a], [, b]) => b - a
+      ([, a], [, b]) => (b as number) - (a as number)
     )[0];
 
     return mostUsed ? mostUsed[0] : "beginner";
@@ -382,7 +382,7 @@ export class LearningAnalyzer {
     }, {} as Record<string, number>);
 
     const mostUsed = Object.entries(contentCounts).sort(
-      ([, a], [, b]) => b - a
+      ([, a], [, b]) => (b as number) - (a as number)
     )[0];
 
     return mostUsed ? mostUsed[0] : "grammar";
@@ -410,7 +410,7 @@ export class LearningAnalyzer {
     let bestAverage = 0;
 
     Object.entries(hourPerformance).forEach(([hour, data]) => {
-      const average = data.totalScore / data.count;
+      const average = (data as any).totalScore / (data as any).count;
       if (average > bestAverage) {
         bestAverage = average;
         bestHour = parseInt(hour);
@@ -450,7 +450,7 @@ export class LearningAnalyzer {
     const averages = Object.entries(categoryPerformance)
       .map(([category, data]) => ({
         category,
-        average: data.totalScore / data.count,
+        average: (data as any).totalScore / (data as any).count,
       }))
       .sort((a, b) => b.average - a.average);
 

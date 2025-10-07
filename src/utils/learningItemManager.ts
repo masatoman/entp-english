@@ -72,7 +72,7 @@ export class LearningItemManager {
       examples,
       explanations,
       questions,
-      relations: this.generateRelationsForCard(card) as ItemRelation[],
+      relations: this.generateRelationsForCard(card) as unknown as ItemRelation[],
       rarity: card.rarity,
       source: "gacha",
       tags: [
@@ -459,7 +459,7 @@ export class LearningItemManager {
     // 類似の品詞から間違った選択肢を生成
     const similarMeanings = this.getSimilarMeanings(
       word.partOfSpeech,
-      word.meaning
+      word.meaning,
     );
     choices.push(...similarMeanings.slice(0, 3));
 
@@ -538,7 +538,7 @@ export class LearningItemManager {
         return JSON.parse(stored);
       }
     } catch (error) {
-      logError("Error loading learning items", error);
+      logError("Error loading learning items", error as Error);
     }
     return [];
   }
@@ -550,7 +550,7 @@ export class LearningItemManager {
     try {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(items));
     } catch (error) {
-      logError("Error saving learning items", error);
+      logError("Error saving learning items", error as Error);
     }
   }
 
@@ -590,7 +590,7 @@ export class LearningItemManager {
         return allProgress.find((p) => p.itemId === itemId) || null;
       }
     } catch (error) {
-      logError("Error loading learning progress", error);
+      logError("Error loading learning progress", error as Error);
     }
     return null;
   }
@@ -614,7 +614,7 @@ export class LearningItemManager {
 
       localStorage.setItem(this.PROGRESS_KEY, JSON.stringify(allProgress));
     } catch (error) {
-      logError("Error saving learning progress", error);
+      logError("Error saving learning progress", error as Error);
     }
   }
 }
