@@ -270,7 +270,7 @@ export class SynergyManager {
    * シナジー進捗を追跡
    */
   trackSynergyProgress(
-    userId: string,
+    _userId: string,
     completedContent: string[]
   ): SynergyProgress[] {
     const progress: SynergyProgress[] = [];

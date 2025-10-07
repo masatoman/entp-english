@@ -113,12 +113,14 @@ export class AudioManager {
           reject(new Error(`Failed to load audio: ${audioFile.url}`));
         };
 
-        this.audio.addEventListener('canplaythrough', handleLoad, { once: true });
-        this.audio.addEventListener('error', handleError, { once: true });
+        this.audio.addEventListener("canplaythrough", handleLoad, {
+          once: true,
+        });
+        this.audio.addEventListener("error", handleError, { once: true });
         this.audio.load();
       });
     } catch (error) {
-      console.error('Audio load error:', error);
+      console.error("Audio load error:", error);
       throw error;
     }
   }
@@ -127,23 +129,23 @@ export class AudioManager {
   private setupEventListeners(): void {
     if (!this.audio) return;
 
-    this.audio.addEventListener('play', () => {
+    this.audio.addEventListener("play", () => {
       this.state.isPlaying = true;
       this.state.isPaused = false;
     });
 
-    this.audio.addEventListener('pause', () => {
+    this.audio.addEventListener("pause", () => {
       this.state.isPaused = true;
       this.state.isPlaying = false;
     });
 
-    this.audio.addEventListener('ended', () => {
+    this.audio.addEventListener("ended", () => {
       this.state.isPlaying = false;
       this.state.isPaused = false;
       this.state.currentTime = 0;
     });
 
-    this.audio.addEventListener('timeupdate', () => {
+    this.audio.addEventListener("timeupdate", () => {
       if (this.audio) {
         this.state.currentTime = this.audio.currentTime;
       }
@@ -153,13 +155,13 @@ export class AudioManager {
   // 音声を再生する
   async start(): Promise<void> {
     if (!this.audio || !this.state.isLoaded) {
-      throw new Error('Audio not loaded');
+      throw new Error("Audio not loaded");
     }
 
     try {
       await this.audio.play();
     } catch (error) {
-      console.error('Audio play error:', error);
+      console.error("Audio play error:", error);
       throw error;
     }
   }
@@ -220,38 +222,38 @@ export class AudioManager {
 // 音声ファイルの定義
 export const AUDIO_FILES: Record<string, AudioFileInfo> = {
   // 語彙学習用音声
-  'vocab-basic-001': {
-    id: 'vocab-basic-001',
-    url: '/audio/vocabulary/basic/001.mp3',
-    title: 'Basic Vocabulary 001',
-    category: 'vocabulary',
-    difficulty: 'easy',
+  "vocab-basic-001": {
+    id: "vocab-basic-001",
+    url: "/audio/vocabulary/basic/001.mp3",
+    title: "Basic Vocabulary 001",
+    category: "vocabulary",
+    difficulty: "easy",
   },
-  'vocab-basic-002': {
-    id: 'vocab-basic-002',
-    url: '/audio/vocabulary/basic/002.mp3',
-    title: 'Basic Vocabulary 002',
-    category: 'vocabulary',
-    difficulty: 'easy',
+  "vocab-basic-002": {
+    id: "vocab-basic-002",
+    url: "/audio/vocabulary/basic/002.mp3",
+    title: "Basic Vocabulary 002",
+    category: "vocabulary",
+    difficulty: "easy",
   },
   // 効果音
-  'correct': {
-    id: 'correct',
-    url: '/audio/effects/correct.mp3',
-    title: 'Correct Answer',
-    category: 'effect',
+  correct: {
+    id: "correct",
+    url: "/audio/effects/correct.mp3",
+    title: "Correct Answer",
+    category: "effect",
   },
-  'incorrect': {
-    id: 'incorrect',
-    url: '/audio/effects/incorrect.mp3',
-    title: 'Incorrect Answer',
-    category: 'effect',
+  incorrect: {
+    id: "incorrect",
+    url: "/audio/effects/incorrect.mp3",
+    title: "Incorrect Answer",
+    category: "effect",
   },
-  'level-up': {
-    id: 'level-up',
-    url: '/audio/effects/level-up.mp3',
-    title: 'Level Up',
-    category: 'effect',
+  "level-up": {
+    id: "level-up",
+    url: "/audio/effects/level-up.mp3",
+    title: "Level Up",
+    category: "effect",
   },
 };
 

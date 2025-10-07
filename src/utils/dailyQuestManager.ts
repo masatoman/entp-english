@@ -262,7 +262,7 @@ class DailyQuestManager {
     const selectedQuests = shuffled.slice(0, dailyCount);
     const today = new Date().toISOString().split("T")[0];
 
-    return selectedQuests.map((template, index) => ({
+    return selectedQuests.map((template, _index) => ({
       ...template,
       id: `daily_${today}_${template.id}`,
       currentProgress: 0,

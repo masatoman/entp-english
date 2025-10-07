@@ -12,7 +12,7 @@ export class DailyChallengeManager {
    * 今日のチャレンジを取得（存在しない場合は生成）
    */
   static getTodayChallenge(): DailyChallenge {
-    const today = this.getTodayString();
+    const _today = this.getTodayString();
     const progress = this.getProgress();
 
     // 今日のチャレンジが既に存在する場合
@@ -318,7 +318,7 @@ export class DailyChallengeManager {
     questionsAnswered?: number;
   }): void {
     const progress = this.getProgress();
-    const today = this.getTodayString();
+    const _today = this.getTodayString();
 
     if (progress.currentChallenge && progress.currentChallenge.date === today) {
       // チャレンジを完了状態に
@@ -365,7 +365,7 @@ export class DailyChallengeManager {
     favoriteType: string;
   } {
     const progress = this.getProgress();
-    const today = this.getTodayString();
+    const _today = this.getTodayString();
 
     // ユーザー統計を取得
     const userStats = DataManager.getUserStats();

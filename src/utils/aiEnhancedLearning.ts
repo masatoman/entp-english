@@ -447,7 +447,7 @@ export class AIEnhancedLearning {
     return recommendations;
   }
 
-  private static identifyRiskFactors(outcomes: any, data: any[]): string[] {
+  private static identifyRiskFactors(outcomes: any, _data: any[]): string[] {
     const risks = [];
     
     if (outcomes.retentionRate < 60) {
@@ -461,7 +461,7 @@ export class AIEnhancedLearning {
     return risks;
   }
 
-  private static identifyOpportunities(outcomes: any, performance: any): string[] {
+  private static identifyOpportunities(outcomes: any, _performance: any): string[] {
     const opportunities = [];
     
     if (outcomes.nextWeekAccuracy > 80) {
@@ -487,7 +487,7 @@ export class AIEnhancedLearning {
     return Math.min(95, confidence);
   }
 
-  private static generateQuestions(profile: any, weaknesses: string[], count: number): any[] {
+  private static generateQuestions(_profile: any, _weaknesses: string[], count: number): any[] {
     // AI生成問題（簡略化）
     return Array(count).fill(null).map((_, i) => ({
       question: `AI生成問題 ${i + 1}`,
@@ -498,7 +498,7 @@ export class AIEnhancedLearning {
     }));
   }
 
-  private static generateExamples(profile: any, goals: string[], count: number): any[] {
+  private static generateExamples(_profile: any, _goals: string[], count: number): any[] {
     // AI生成例文（簡略化）
     return Array(count).fill(null).map((_, i) => ({
       sentence: `AI generated example sentence ${i + 1}`,
@@ -508,7 +508,7 @@ export class AIEnhancedLearning {
     }));
   }
 
-  private static explainAdaptation(profile: any, weaknesses: string[], goals: string[]): string {
+  private static explainAdaptation(_profile: any, _weaknesses: string[], _goals: string[]): string {
     return `あなたの学習履歴と弱点（${weaknesses.join('、')}）に基づいて、最適化されたコンテンツを生成しました。`;
   }
 
@@ -520,12 +520,12 @@ export class AIEnhancedLearning {
     return (commonWords.length * 2) / (words1.length + words2.length);
   }
 
-  private static analyzeGrammar(text: string): number {
+  private static analyzeGrammar(_text: string): number {
     // 文法分析（簡略化）
     return 80; // 80%の文法正確性
   }
 
-  private static assessNaturalness(text: string, context: string): number {
+  private static assessNaturalness(_text: string, _context: string): number {
     // 自然性評価（簡略化）
     return 75; // 75%の自然性
   }

@@ -86,13 +86,10 @@ export class IntelligentLearningService {
 
       // 1. 個人化プロファイルを更新
       const personalizedProfile =
-        PersonalizedLearningSystem.updatePersonalizationProfile(
-          userId,
-          [],
-        );
+        PersonalizedLearningSystem.updatePersonalizationProfile(userId, []);
 
       // 2. 個人化コンテンツを推奨
-      const personalizedContent =         PersonalizedLearningSystem.recommendContent(
+      const personalizedContent = PersonalizedLearningSystem.recommendContent(
         userId,
         availableItems,
         10
@@ -105,9 +102,8 @@ export class IntelligentLearningService {
       );
 
       // 4. 包括的な弱点分析を実行
-      const weaknessAnalysis = WeaknessAnalyzer.performComprehensiveAnalysis(
-        userId
-      );
+      const weaknessAnalysis =
+        WeaknessAnalyzer.performComprehensiveAnalysis(userId);
 
       // 5. パフォーマンス最適化を実行
       const performanceResult = PerformanceOptimizer.optimizeRendering();
@@ -683,9 +679,7 @@ export class IntelligentLearningService {
         expectedAccuracy: 70,
       },
       adaptiveDifficulty: 50,
-      weaknessAnalysis: WeaknessAnalyzer.performComprehensiveAnalysis(
-        userId
-      ),
+      weaknessAnalysis: WeaknessAnalyzer.performComprehensiveAnalysis(userId),
       performanceInsights: {
         optimizationsApplied: [],
         currentMetrics: {},

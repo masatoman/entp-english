@@ -32,7 +32,7 @@ export class DetailedLearningAnalyzer {
     userId: string = "default-user"
   ): Promise<DetailedLearningAnalytics> {
     const userStats = DataManager.getUserStats();
-    const basicAnalytics = LearningAnalyzer.getAnalytics();
+    const _basicAnalytics = LearningAnalyzer.getAnalytics();
     const sessions = this.getDetailedSessions();
 
     const analytics: DetailedLearningAnalytics = {
@@ -105,7 +105,7 @@ export class DetailedLearningAnalyzer {
    * 個別スキルの詳細分析
    */
   private static analyzeSkillDetail(
-    skill: string,
+    _skill: string,
     sessions: any[]
   ): SkillDetail {
     const totalProblems = sessions.reduce(
@@ -557,7 +557,7 @@ export class DetailedLearningAnalyzer {
   }
 
   private static identifySkillStrengths(
-    skill: string,
+    _skill: string,
     sessions: any[]
   ): string[] {
     const strengths: string[] = [];
@@ -572,7 +572,7 @@ export class DetailedLearningAnalyzer {
   }
 
   private static identifySkillWeaknesses(
-    skill: string,
+    _skill: string,
     sessions: any[]
   ): string[] {
     const weaknesses: string[] = [];
@@ -632,7 +632,7 @@ export class DetailedLearningAnalyzer {
   private static calculateOptimalStudyDuration(sessions: any[]): number {
     if (sessions.length === 0) return 20;
 
-    const durations = sessions.map((s) => s.duration || 0);
+    const _durations = sessions.map((s) => s.duration || 0);
     const accuracyByDuration: Record<number, { total: number; count: number }> =
       {};
 
@@ -702,7 +702,7 @@ export class DetailedLearningAnalyzer {
     return Array.from(skills);
   }
 
-  private static identifyUnlockedAchievements(sessions: any[]): string[] {
+  private static identifyUnlockedAchievements(_sessions: any[]): string[] {
     // 実装簡略化
     return [];
   }
@@ -789,7 +789,7 @@ export class DetailedLearningAnalyzer {
 
   // その他のヘルパーメソッド（簡略化）
 
-  private static identifyMotivationFactors(sessions: any[]): any[] {
+  private static identifyMotivationFactors(_sessions: any[]): any[] {
     return [
       {
         factor: "達成感",
@@ -806,7 +806,7 @@ export class DetailedLearningAnalyzer {
     ];
   }
 
-  private static analyzeEngagementPatterns(sessions: any[]): any[] {
+  private static analyzeEngagementPatterns(_sessions: any[]): any[] {
     return [
       {
         pattern: "集中学習",
@@ -823,7 +823,7 @@ export class DetailedLearningAnalyzer {
     ];
   }
 
-  private static analyzeRetention(sessions: any[]): RetentionAnalysis {
+  private static analyzeRetention(_sessions: any[]): RetentionAnalysis {
     return {
       shortTermRetention: 75,
       longTermRetention: 60,
@@ -834,8 +834,8 @@ export class DetailedLearningAnalyzer {
   }
 
   private static generatePersonalizedRecommendations(
-    sessions: any[],
-    userStats: any
+    _sessions: any[],
+    _userStats: any
   ): any[] {
     return [
       {
@@ -851,7 +851,7 @@ export class DetailedLearningAnalyzer {
   }
 
   private static generateSkillImprovementSuggestions(
-    skill: string,
+    _skill: string,
     accuracy: number
   ): string[] {
     const suggestions: string[] = [];
@@ -894,7 +894,7 @@ export class DetailedLearningAnalyzer {
   }
 
   private static describeExpectedOutcome(
-    skill: string,
+    _skill: string,
     current: number
   ): string {
     const improvement = Math.min(15, 95 - current);
@@ -903,7 +903,7 @@ export class DetailedLearningAnalyzer {
     }%に向上し、より自信を持って問題に取り組めるようになります`;
   }
 
-  private static projectSkillLevels(sessions: any[]): any[] {
+  private static projectSkillLevels(_sessions: any[]): any[] {
     return [
       {
         skill: "grammar",
@@ -934,7 +934,7 @@ export class DetailedLearningAnalyzer {
     };
   }
 
-  private static forecastAchievements(userStats: any): any[] {
+  private static forecastAchievements(_userStats: any): any[] {
     return [
       {
         achievementId: "streak_7",
@@ -947,7 +947,7 @@ export class DetailedLearningAnalyzer {
     ];
   }
 
-  private static identifyRiskFactors(sessions: any[]): any[] {
+  private static identifyRiskFactors(_sessions: any[]): any[] {
     return [
       {
         risk: "学習中断",
@@ -959,7 +959,7 @@ export class DetailedLearningAnalyzer {
     ];
   }
 
-  private static identifyOpportunities(sessions: any[]): any[] {
+  private static identifyOpportunities(_sessions: any[]): any[] {
     return [
       {
         area: "リスニング強化",
@@ -1063,7 +1063,7 @@ export class DetailedLearningAnalyzer {
     return "easy";
   }
 
-  private static identifyStudyPreferences(sessions: any[]): string[] {
+  private static identifyStudyPreferences(_sessions: any[]): string[] {
     return ["集中学習", "反復練習", "段階的レベルアップ"];
   }
 }
