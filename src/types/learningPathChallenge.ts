@@ -28,7 +28,9 @@ export interface LearningStep {
     | "vocabulary"
     | "grammar"
     | "toeic"
-    | "synergy";
+    | "synergy"
+    | "listening"
+    | "reading";
   targetValue: number;
   currentValue: number;
   isCompleted: boolean;

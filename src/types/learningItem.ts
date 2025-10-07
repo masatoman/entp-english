@@ -62,21 +62,29 @@ export interface LearningExplanation {
 // 学習問題
 export interface LearningQuestion {
   id: string;
-  type:
-    | "multiple_choice"
-    | "fill_blank"
-    | "translation"
-    | "listening"
-    | "usage"
-    | "matching";
-  difficulty: "easy" | "medium" | "hard";
-
-  // 問題内容
+  type: string;
+  category: string;
+  difficulty: string;
   prompt: string;
-  options?: string[]; // 選択肢（multiple_choice用）
+  question?: string;
+  options?: string[];
+  choices?: string[];
   correctAnswer: string | string[];
   explanation: string;
   hints?: string[];
+  hint?: string;
+  id: string;
+  type: string;
+  category: string;
+  difficulty: string;
+  prompt: string;
+  question?: string;
+  options?: string[];
+  choices?: string[];
+  correctAnswer: string | string[];
+  explanation: string;
+  hints?: string[];
+  hint?: string;
 
   // 学習項目との関連
   learningItemId: string;

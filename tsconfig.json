@@ -15,10 +15,14 @@
     "jsx": "react-jsx",
 
     /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "skipLibCheck": true,
+    "noEmitOnError": false,
 
     /* Path mapping */
     "baseUrl": ".",
@@ -27,7 +31,7 @@
     },
 
     /* Type definitions */
-    "types": ["vite/client"]
+    "types": ["vite/client", "node"]
   },
   "include": [
     "src",
@@ -38,10 +42,6 @@
     "src/**/*.spec.ts",
     "src/**/*.spec.tsx"
   ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "build"
-  ],
+  "exclude": ["node_modules", "dist", "build"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

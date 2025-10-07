@@ -1,0 +1,579 @@
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  LearningItem,
+  LearningProgress,
+  LearningQuestion,
+} from "../types/learningItem";
+import { KnownWordsManager } from "../utils/knownWordsManager";
+import { LearningItemManager } from "../utils/learningItemManager";
+import { getLevelManager, saveLevelManager } from "../utils/levelManager";
+// import { SpeechSynthesisManager } from "../utils/speechSynthesis";
+import { calculateVocabularyXP } from "../utils/xpCalculator";
+import QuizInterface, { QuizQuestion } from "./QuizInterface";
+
+/**
+ * 統合学習コンポーネント
+ * 単語学習と問題演習を統合的に提供
+ */
+
+interface LearningSession {
+  items: LearningItem[];
+  currentIndex: number;
+  mode: "card" | "question" | "mixed";
+  progress: Map<string, LearningProgress>;
+}
+
+export default function IntegratedLearning() {
+  const navigate = useNavigate();
+  const { level, category, mode } = useParams();
+
+  const [session, setSession] = useState<LearningSession | null>(null);
+  const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>([]);
+  const [isQuizMode, setIsQuizMode] = useState(false);
+  const [sessionStats, setSessionStats] = useState({
+    correct: 0,
+    total: 0,
+    startTime: Date.now(),
+    xpEarned: 0,
+  });
+
+  useEffect(() => {
+    initializeSession();
+  }, [level, category, mode]);
+
+  const initializeSession = () => {
+    // ハートを消費して学習を開始
+    const levelManager = getLevelManager();
+    if (!levelManager.consumeHeart()) {
+      alert("体力が不足しています。回復を待ってから再試行してください。");
+      navigate("/");
+      return;
+    }
+    saveLevelManager();
+
+    const actualLevel = level as "beginner" | "intermediate" | "advanced";
+    const actualMode = (mode as "card" | "question" | "mixed") || "mixed";
+
+    // 学習項目を取得
+    const allItems = LearningItemManager.getFilteredLearningItems(
+      actualLevel,
+      category,
+      "vocabulary"
+    );
+
+    // 既知単語を除外（単語の内容ベースで判定）
+    const filteredItems = allItems.filter((item) => {
+      // 既知単語データを取得
+      const knownWordsData = KnownWordsManager.getKnownWordsData();
+
+      // 単語の内容（content）で既知単語かどうかを判定
+      const isKnownByContent = knownWordsData.knownWords.some(
+        (knownWord) => knownWord.word === item.content
+      );
+
+      // IDベースでの判定も併用（後方互換性）
+      let wordId: string;
+      if (item.id.startsWith("gacha-")) {
+        wordId = item.id.replace("gacha-", "");
+      } else if (item.id.startsWith("vocab-")) {
+        wordId = item.id.replace("vocab-", "");
+      } else {
+        wordId = item.id;
+      }
+
+      const isKnownById =
+        KnownWordsManager.isWordKnown(wordId) ||
+        KnownWordsManager.isWordKnown(wordId.toString());
+
+      // どちらかの方法で既知と判定された場合は除外
+      const isKnown = isKnownByContent || isKnownById;
+
+      if (isKnown) {
+        console.log(`🚫 既知単語「${item.content}」を統合学習から除外`);
+      }
+
+      return !isKnown;
+    });
+
+    console.log("IntegratedLearning - 既知単語除外結果:", {
+      allItems: allItems.length,
+      filteredItems: filteredItems.length,
+      excludedCount: allItems.length - filteredItems.length,
+    });
+
+    if (filteredItems.length === 0) {
+      console.warn("No learning items found after filtering known words");
+      return;
+    }
+
+    // 学習進捗を取得
+    const progressMap = new Map<string, LearningProgress>();
+    filteredItems.forEach((item) => {
+      const progress = LearningItemManager.getLearningProgress(item.id);
+      if (progress) {
+        progressMap.set(item.id, progress);
+      }
+    });
+
+    const newSession: LearningSession = {
+      items: filteredItems.slice(0, 10), // 最初は10項目に制限
+      currentIndex: 0,
+      mode: actualMode,
+      progress: progressMap,
+    };
+
+    setSession(newSession);
+
+    // クイズモードの場合は問題を準備
+    if (actualMode === "question" || actualMode === "mixed") {
+      const questions = filteredItems.slice(0, 10).map((item, index) => {
+        const question = selectQuestionForItem(item);
+        if (!question) {
+          return {
+            id: index + 1,
+            question: "問題が見つかりません",
+            correctAnswer: "",
+            explanation: "",
+            hint: "",
+            choices: [],
+          };
+        }
+        return {
+          id: index + 1,
+          question: question.question || "",
+          correctAnswer: question.correctAnswer.toString(),
+          explanation: question.explanation,
+          hint: question.hint || "",
+          choices: question.choices || [],
+        };
+      });
+      setQuizQuestions(questions);
+      setIsQuizMode(true);
+    }
+  };
+
+  const selectQuestionForItem = (
+    item: LearningItem
+  ): LearningQuestion | null => {
+    if (item.questions.length === 0) {
+      // 問題がない場合はデフォルトの問題を生成
+      return {
+        id: `default-${item.id}`,
+        type: "multiple_choice" as const,
+        category: item.category,
+        prompt: `${item.content}の意味を答えてください。`,
+        question: `${item.content}の意味を答えてください。`,
+        correctAnswer: item.meaning,
+        explanation: `${item.content}は「${item.meaning}」という意味です。`,
+        hints: [item.examples[0]?.sentence || ""],
+        hint: item.examples[0]?.sentence || "",
+        difficulty: "easy",
+        choices: [item.meaning, "選択肢1", "選択肢2", "選択肢3"],
+        options: [item.meaning, "選択肢1", "選択肢2", "選択肢3"],
+        learningItemId: item.id,
+        complexity: 1,
+        timeLimit: 30,
+      } as LearningQuestion;
+    }
+
+    // 簡単な問題から始める
+    const easyQuestions = item.questions.filter((q) => q.difficulty === "easy");
+    if (easyQuestions.length > 0) {
+      return easyQuestions[0];
+    }
+
+    return item.questions[0];
+  };
+
+  const handleCardResponse = (known: boolean) => {
+    if (!session) return;
+    const item = session.items[currentIndex];
+    if (!item) return;
+
+    // 「覚えている」を選択した場合、既知単語としてマーク
+    if (known) {
+      // LearningItemから語彙ワード形式に変換して既知単語としてマーク
+      const vocabularyWord = {
+        id: item.id.startsWith("gacha-")
+          ? item.id.replace("gacha-", "")
+          : item.id.replace("vocab-", ""),
+        word: item.content,
+        meaning: item.meaning,
+        category: item.category,
+        level: item.level,
+        partOfSpeech: item.partOfSpeech || "名詞",
+        example: item.examples[0]?.sentence || "",
+        exampleTranslation: item.examples[0]?.translation || "",
+        english: item.content,
+        japanese: item.meaning,
+        examples: item.examples.map((ex) => ex.sentence),
+        content: item.content,
+      };
+
+      KnownWordsManager.markWordAsKnown(vocabularyWord);
+      console.log(
+        `🎯 統合学習: 「${item.content}」を既知単語にマークしました`
+      );
+    }
+
+    // XP計算
+    const xpGained = known ? calculateVocabularyXP(1, item.level) : 5;
+    setSessionStats((prev) => ({
+      ...prev,
+      xpEarned: prev.xpEarned + xpGained,
+    }));
+
+    // 進捗を更新
+    updateProgress(item.id, known);
+
+    // 次の項目に進む
+    moveToNext();
+  };
+
+  // const handlePlayAudio = async (text: string) => {
+  //   if (isSpeaking) return;
+
+  //   try {
+  //     setIsSpeaking(true);
+  //     await SpeechSynthesisManager.speak(text);
+  //   } catch (error) {
+  //     console.error("音声再生エラー:", error);
+  //   } finally {
+  //     setIsSpeaking(false);
+  //   }
+  // };
+
+  const handleQuestionSubmit = () => {
+    if (!session) return;
+    const item = session.items[currentIndex];
+    const question = quizQuestions[quizIndex];
+    if (!question || !item) return;
+
+    const isCorrect =
+      (selectedAnswer || "").toLowerCase().trim() ===
+      question.correctAnswer.toString().toLowerCase().trim();
+
+    // XP計算
+    const baseXP = calculateVocabularyXP(1, item.level);
+    const difficultyMultiplier = 1; // 難易度による倍率
+    const xpGained = isCorrect ? Math.round(baseXP * difficultyMultiplier) : 2;
+
+    setSessionStats((prev) => ({
+      ...prev,
+      correct: prev.correct + (isCorrect ? 1 : 0),
+      total: prev.total + 1,
+      xpEarned: prev.xpEarned + xpGained,
+    }));
+
+    setShowAnswer(true);
+
+    // 進捗を更新
+    updateProgress(currentItem.id, isCorrect);
+  };
+
+  const updateProgress = (itemId: string, success: boolean) => {
+    if (!session) return;
+
+    let progress = session.progress.get(itemId);
+
+    if (!progress) {
+      // 新しい進捗を作成
+      progress = {
+        itemId,
+        userId: "default", // TODO: 実際のユーザーIDを使用
+        masteryLevel: 0,
+        confidence: 0,
+        lastStudied: new Date(),
+        studyCount: 0,
+        totalStudyTime: 0,
+        aspects: {
+          meaning: 0,
+          usage: 0,
+          grammar: 0,
+          pronunciation: 0,
+          context: 0,
+        },
+        questionResults: [],
+        studyHistory: [],
+        nextReviewDate: new Date(),
+        reviewInterval: 1,
+        reviewCount: 0,
+      };
+    }
+
+    // 進捗を更新
+    progress.studyCount++;
+    progress.lastStudied = new Date();
+
+    if (success) {
+      progress.masteryLevel = Math.min(100, progress.masteryLevel + 10);
+      progress.confidence = Math.min(100, progress.confidence + 15);
+    } else {
+      progress.confidence = Math.max(0, progress.confidence - 5);
+    }
+
+    // 保存
+    LearningItemManager.saveLearningProgress(progress);
+    session.progress.set(itemId, progress);
+  };
+
+  const moveToNext = () => {
+    if (!session) return;
+
+    const nextIndex = session.currentIndex + 1;
+
+    if (nextIndex >= session.items.length) {
+      // セッション完了
+      showSessionResults();
+      return;
+    }
+
+    const nextItem = session.items[nextIndex];
+    setCurrentItem(nextItem);
+    setSession((prev) => (prev ? { ...prev, currentIndex: nextIndex } : null));
+
+    // 次のコンテンツを設定
+    if (session.mode === "question" || session.mode === "mixed") {
+      setCurrentQuestion(selectQuestionForItem(nextItem));
+    }
+
+    // リセット
+    setShowAnswer(false);
+    setUserAnswer("");
+  };
+
+  const handleQuizComplete = (score: number, totalQuestions: number) => {
+    // XP計算
+    const levelManager = getLevelManager();
+    const baseXP = Math.round(score * 10 + totalQuestions * 2);
+    levelManager.addXP(baseXP);
+    saveLevelManager();
+
+    console.log("統合学習完了:", { score, totalQuestions, xpEarned: baseXP });
+
+    // 結果を表示
+    setSessionStats((prev) => ({
+      ...prev,
+      correct: score,
+      total: totalQuestions,
+      xpEarned: baseXP,
+    }));
+  };
+
+  const handleBack = () => {
+    navigate("/");
+  };
+
+  if (!session) {
+    return (
+      <div className="min-h-screen p-4 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p>学習セッションを準備中...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // クイズモードの場合はQuizInterfaceを使用
+  if (isQuizMode && quizQuestions.length > 0) {
+    return (
+      <QuizInterface
+        title="統合学習"
+        subtitle={`${level} • ${category} • ${mode}モード`}
+        questions={quizQuestions}
+        onComplete={handleQuizComplete}
+        onBack={handleBack}
+      />
+    );
+  }
+
+  const progressPercentage =
+    (session.currentIndex / session.items.length) * 100;
+
+  return (
+    <div className="min-h-screen p-4 bg-gradient-to-br from-blue-50 to-indigo-50">
+      <div className="max-w-2xl mx-auto">
+        {/* ヘッダー */}
+        <div className="flex items-center justify-between mb-6">
+          <Button variant="ghost" size="sm" onClick={() => navigate(-1)}>
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            戻る
+          </Button>
+
+          <div className="text-center">
+            <h1 className="text-2xl font-bold">統合学習</h1>
+            <p className="text-sm text-gray-600">
+              {level} • {category} • {mode}モード
+            </p>
+          </div>
+
+          <div className="text-right text-sm text-gray-600">
+            {session.currentIndex + 1} / {session.items.length}
+          </div>
+        </div>
+
+        {/* 進捗バー */}
+        <Card className="mb-6">
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium">学習進捗</span>
+              <span className="text-sm text-gray-600">
+                {Math.round(progressPercentage)}%
+              </span>
+            </div>
+            <Progress value={progressPercentage} className="mb-4" />
+
+            <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center">
+                <CheckCircle className="w-4 h-4 text-green-600 mr-1" />
+                正解: {sessionStats.correct}
+              </div>
+              <div className="flex items-center">
+                <Target className="w-4 h-4 text-blue-600 mr-1" />
+                総問題: {sessionStats.total}
+              </div>
+              <div className="flex items-center">
+                <Clock className="w-4 h-4 text-orange-600 mr-1" />
+                {Math.round((Date.now() - sessionStats.startTime) / 1000)}s
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* 学習コンテンツ */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Brain className="w-5 h-5 mr-2" />
+              {currentItem.content}
+            </CardTitle>
+            <p className="text-sm text-gray-600">
+              {currentItem.partOfSpeech} • {currentItem.category}
+            </p>
+          </CardHeader>
+
+          <CardContent>
+            {/* 単語学習モード: 意味と例文を表示 */}
+            {(session.mode === "card" ||
+              (session.mode === "mixed" && !currentQuestion)) && (
+              <div className="space-y-4">
+                <div className="text-center p-6 bg-gray-50 rounded-lg">
+                  <h3 className="text-2xl font-bold mb-2">
+                    {currentItem.content}
+                  </h3>
+                  <p className="text-lg text-gray-700">{currentItem.meaning}</p>
+                </div>
+
+                {currentItem.examples.length > 0 && (
+                  <div className="bg-blue-50 p-4 rounded-lg">
+                    <h4 className="font-semibold mb-2">例文</h4>
+                    <p className="italic">
+                      "{currentItem.examples[0].sentence}"
+                    </p>
+                    <p className="text-sm text-gray-600 mt-1">
+                      {currentItem.examples[0].translation}
+                    </p>
+                  </div>
+                )}
+
+                <div className="flex gap-4 justify-center">
+                  <Button
+                    variant="outline"
+                    onClick={() => handleCardResponse(false)}
+                    className="flex-1"
+                  >
+                    まだ覚えていない
+                  </Button>
+                  <Button
+                    onClick={() => handleCardResponse(true)}
+                    className="flex-1"
+                  >
+                    覚えている
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* 問題モード: 意味・例文を隠して問題のみ表示 */}
+            {(session.mode === "question" ||
+              (session.mode === "mixed" && currentQuestion)) &&
+              currentQuestion && (
+                <div className="space-y-4">
+                  <div className="p-4 bg-yellow-50 rounded-lg">
+                    <h4 className="font-semibold mb-2">問題</h4>
+                    <p>{currentQuestion.prompt}</p>
+                  </div>
+
+                  {currentQuestion.type === "multiple_choice" &&
+                    currentQuestion.options && (
+                      <div className="space-y-2">
+                        {currentQuestion.options.map((option, index) => (
+                          <Button
+                            key={index}
+                            variant={
+                              userAnswer === option ? "default" : "outline"
+                            }
+                            onClick={() => setUserAnswer(option)}
+                            className="w-full text-left justify-start"
+                          >
+                            {String.fromCharCode(65 + index)}. {option}
+                          </Button>
+                        ))}
+                      </div>
+                    )}
+
+                  {currentQuestion.type === "fill_blank" && (
+                    <div>
+                      <input
+                        type="text"
+                        value={userAnswer}
+                        onChange={(e) => setUserAnswer(e.target.value)}
+                        className="w-full p-3 border rounded-lg"
+                        placeholder="回答を入力してください"
+                      />
+                    </div>
+                  )}
+
+                  {showAnswer && (
+                    <div className="p-4 bg-green-50 rounded-lg">
+                      <h4 className="font-semibold mb-2">解説</h4>
+                      <p>
+                        "{currentItem.content}"は「{currentItem.meaning}
+                        」という意味です。
+                      </p>
+                      {currentItem.examples.length > 0 && (
+                        <div className="mt-3">
+                          <p className="font-medium">例文:</p>
+                          <p className="italic">
+                            "{currentItem.examples[0].sentence}"
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            {currentItem.examples[0].translation}
+                          </p>
+                        </div>
+                      )}
+                      <Button onClick={moveToNext} className="mt-4 w-full">
+                        次へ
+                      </Button>
+                    </div>
+                  )}
+
+                  {!showAnswer && (
+                    <Button
+                      onClick={handleQuestionSubmit}
+                      disabled={!userAnswer}
+                      className="w-full"
+                    >
+                      回答する
+                    </Button>
+                  )}
+                </div>
+              )}
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}

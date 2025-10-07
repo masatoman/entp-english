@@ -38,6 +38,33 @@ export interface UserAnswer {
   isCorrect: boolean;
 }
 
+// ガチャカード関連の型定義
+export interface GachaCard {
+  id: string;
+  name: string;
+  rarity: "common" | "rare" | "epic" | "legendary";
+  category?: string;
+  boostType: string;
+  boostValue: number;
+  isActive: boolean;
+  synergyActive?: boolean;
+}
+
+// 語彙単語の型定義
+export interface VocabularyWord {
+  id: number;
+  english: string;
+  japanese: string;
+  meaning: string;
+  partOfSpeech: string;
+  example: string;
+  exampleTranslation: string;
+  level: "beginner" | "intermediate" | "advanced";
+  category: string;
+  examples?: string[];
+  content?: string;
+}
+
 // リスニング学習進捗関連の型定義
 export interface ListeningProgress {
   id: string;
@@ -109,24 +136,44 @@ export interface UserLevel {
   level: number;
   chapter: Chapter;
   xp: number;
+  totalXP: number;
   xpToNext: number;
   progress: number;
 }
 
 export interface HeartSystem {
   current: number;
+  currentHearts: number;
   max: number;
   lastRecovery: number;
   nextRecovery: number;
+  nextRecoveryTime: number;
+  lastUsedTime: number;
 }
 
 export interface UserStats {
   totalXP: number;
   currentStreak: number;
+  longestStreak: number;
+  vocabularyStudied: number;
+  grammarStudied: number;
+  listeningStudied: number;
+  writingStudied: number;
+  readingStudied: number;
+  speakingStudied: number;
   unlockedAchievements: string[];
   totalProblemsAnswered: number;
+  totalQuestions: number;
   correctAnswers: number;
   level: number;
+  lastStudyDate?: string;
+  vocabulary?:
+    | number
+    | {
+        studiedToday?: string[];
+        totalStudied?: number;
+      };
+  creativeChallengesCompleted?: number;
   // ⭐️スターシステム用の追加プロパティ
   stars?: {
     current: number;
