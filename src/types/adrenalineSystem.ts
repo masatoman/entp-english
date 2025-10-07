@@ -70,12 +70,19 @@ export interface PressureGauge {
 export interface AdrenalineStats {
   totalCombos: number;
   maxComboAchieved: number;
+  maxCombo: number;
   totalCriticals: number;
+  totalCriticalHits: number;
   treasureBoxesOpened: number;
   feverTimesTriggered: number;
+  totalFeverTime: number;
   pressureBurstsUsed: number;
   totalBonusXP: number;
   averageMultiplier: number;
+  adrenalineLevel: number;
+  currentCombo: number;
+  criticalRate: number;
+  feverTimeActive: boolean;
 }
 
 export interface AdrenalineSystem {

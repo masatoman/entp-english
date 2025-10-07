@@ -42,12 +42,14 @@ export class KnownWordsManager {
     const data = this.getKnownWordsData();
 
     // 既に既知としてマークされているかチェック
-    const existingIndex = data.knownWords.findIndex((kw) => kw.id === word.id.toString());
+    const existingIndex = data.knownWords.findIndex(
+      (kw) => kw.id === word.id
+    );
 
     if (existingIndex === -1) {
       // 新しい既知単語として追加
       const knownWord: KnownWord = {
-        id: word.id.toString(),
+        id: word.id,
         word: word.word,
         meaning: word.meaning,
         category: word.category || "unknown",
@@ -61,8 +63,7 @@ export class KnownWordsManager {
 
       // カテゴリ別統計更新
       const category = word.category || "unknown";
-      data.categoryStats[category] =
-        (data.categoryStats[category] || 0) + 1;
+      data.categoryStats[category] = (data.categoryStats[category] || 0) + 1;
       data.levelStats[word.level] = (data.levelStats[word.level] || 0) + 1;
 
       this.saveKnownWordsData(data);
@@ -78,7 +79,7 @@ export class KnownWordsManager {
    */
   static isWordKnown(wordId: string): boolean {
     const data = this.getKnownWordsData();
-    return data.knownWords.some((kw) => kw.id === wordId);
+    return data.knownWords.some((kw) => kw.id === Number(wordId));
   }
 
   /**
@@ -93,8 +94,7 @@ export class KnownWordsManager {
 
     const filteredWords = words.filter((word) => {
       // IDベースでの除外判定
-      const isKnownById =
-        knownWordIds.has(word.id.toString());
+      const isKnownById = knownWordIds.has(word.id);
 
       // 単語内容ベースでの除外判定
       const isKnownByContent = knownWordContents.has(word.word);
@@ -165,7 +165,7 @@ export class KnownWordsManager {
    */
   static unmarkWordAsKnown(wordId: string): boolean {
     const data = this.getKnownWordsData();
-    const wordIndex = data.knownWords.findIndex((kw) => kw.id === wordId);
+    const wordIndex = data.knownWords.findIndex((kw) => kw.id === Number(wordId));
 
     if (wordIndex !== -1) {
       const removedWord = data.knownWords[wordIndex];

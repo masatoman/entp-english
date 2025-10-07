@@ -61,6 +61,8 @@ export function createInitialGameState(): GameState {
     money: GAME_CONFIG.initialGold,
     projectiles: [],
     xpEarned: 0,
+    isGameOver: false,
+    isPaused: false,
   };
 }
 
@@ -592,7 +594,7 @@ export function updateGameState(
 
   // 敵の特殊能力処理
   updatedEnemies = updatedEnemies.map((enemy) =>
-    processEnemyAbilities(enemy, acceleratedDeltaTime)
+    processEnemyAbilities(enemy)
   );
 
   // 終点に到達した敵の処理

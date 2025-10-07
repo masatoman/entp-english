@@ -5,10 +5,10 @@
 
 import {
   dbManager,
-  STORES,
-  VocabularyItem,
-  UserProgress,
   GameData,
+  STORES,
+  UserProgress,
+  VocabularyItem,
 } from "./IndexedDBManager";
 
 // 移行ステータス
@@ -160,7 +160,7 @@ export class DataMigrationService {
     try {
       // 既存の文法データを取得
       const questionsModule = await import("../data/questions");
-      const questions = questionsModule.questions || questionsModule.default?.questions || [];
+      const questions = questionsModule.getQuestions ? questionsModule.getQuestions() : [];
 
       // IndexedDBに保存
       await dbManager.batchPut(STORES.GRAMMAR, questions);

@@ -6,6 +6,7 @@ import {
   LearningItem,
   LearningProgress,
   LearningQuestion,
+  ItemRelation,
 } from "../types/learningItem";
 import { logError } from "./logger";
 
@@ -458,8 +459,7 @@ export class LearningItemManager {
     // 類似の品詞から間違った選択肢を生成
     const similarMeanings = this.getSimilarMeanings(
       word.partOfSpeech,
-      word.meaning,
-      "example"
+      word.meaning
     );
     choices.push(...similarMeanings.slice(0, 3));
 

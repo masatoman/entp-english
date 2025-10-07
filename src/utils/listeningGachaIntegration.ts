@@ -256,7 +256,11 @@ class ListeningGachaIntegration {
         const toeicWords = (allVocabulary as VocabularyWord[]).filter(
           (word: VocabularyWord) => {
             if (usedWords.has(word.english)) return false;
-            return word.category === "business" || word.category === "academic" || word.category === "toeic";
+            return (
+              word.category === "business" ||
+              word.category === "academic" ||
+              word.category === "toeic"
+            );
           }
         );
 

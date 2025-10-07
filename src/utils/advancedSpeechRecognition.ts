@@ -57,7 +57,7 @@ export interface SentenceAnalysis {
 }
 
 export class AdvancedSpeechRecognition {
-  private static recognition: SpeechRecognition | null = null;
+  private static recognition: any = null;
   private static isListening = false;
   private static readonly CONFIDENCE_THRESHOLD = 0.7;
 

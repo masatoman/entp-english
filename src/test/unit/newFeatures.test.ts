@@ -26,14 +26,15 @@ describe("New Features Tests", () => {
 
     it("単語の既知マークが正常に動作", () => {
       const testWord = {
-        id: "test-1",
-        word: "test",
+        id: 1,
+        english: "test",
+        japanese: "テスト",
         meaning: "テスト",
-        category: "daily",
-        level: "beginner" as const,
         partOfSpeech: "noun",
         example: "This is a test.",
         exampleTranslation: "これはテストです。",
+        level: "beginner" as const,
+        category: "daily",
       };
 
       KnownWordsManager.markWordAsKnown(testWord);
@@ -47,8 +48,8 @@ describe("New Features Tests", () => {
 
     it("既知単語のフィルタリングが正常", () => {
       const words = [
-        { id: "1", word: "known", meaning: "既知", category: "daily", level: "beginner" as const, partOfSpeech: "adj", example: "", exampleTranslation: "" },
-        { id: "2", word: "unknown", meaning: "未知", category: "daily", level: "beginner" as const, partOfSpeech: "adj", example: "", exampleTranslation: "" },
+        { id: 1, english: "known", japanese: "既知", meaning: "既知", category: "daily", level: "beginner" as const, partOfSpeech: "adj", example: "", exampleTranslation: "" },
+        { id: 2, english: "unknown", japanese: "未知", meaning: "未知", category: "daily", level: "beginner" as const, partOfSpeech: "adj", example: "", exampleTranslation: "" },
       ];
 
       // 1つ目を既知としてマーク

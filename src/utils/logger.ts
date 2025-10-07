@@ -9,6 +9,21 @@ interface LogOptions {
   level?: LogLevel;
   component?: string;
   data?: any;
+  userId?: string;
+  overallScore?: number;
+  enhancementsApplied?: number;
+  supportedLanguages?: number;
+  issueCount?: number;
+  debtCount?: number;
+  milestonesCount?: number;
+  topOpportunity?: string;
+  error?: any;
+  category?: string;
+  targetText?: string;
+  difficulty?: string;
+  questionsCount?: number;
+  listeningScore?: number;
+  lastStudyDate?: string;
 }
 
 class Logger {

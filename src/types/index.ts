@@ -249,7 +249,7 @@ export interface Achievement {
 
 // 既知単語管理システム
 export interface KnownWord {
-  id: string;
+  id: number;
   word: string;
   meaning: string;
   category: string;

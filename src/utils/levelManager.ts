@@ -280,13 +280,13 @@ export class LevelManager {
   }) {
     const xp = data.userLevel?.xp || 0;
     const manager = new LevelManager(xp);
-    manager.userLevel = data.userLevel || { 
-      level: 1, 
-      xp: 0, 
-      totalXP: 0, 
-      chapter: 1, 
-      xpToNext: 100, 
-      progress: 0 
+    manager.userLevel = data.userLevel || {
+      level: 1,
+      xp: 0,
+      totalXP: 0,
+      chapter: 1,
+      xpToNext: 100,
+      progress: 0,
     };
     manager.heartSystem = data.heartSystem || {
       current: 5,

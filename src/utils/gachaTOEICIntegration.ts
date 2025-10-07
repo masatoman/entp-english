@@ -236,7 +236,7 @@ export class GachaTOEICIntegrationManager {
   /**
    * 所持カードを取得
    */
-  private static getOwnedCards(userId: string): WordCard[] {
+  private static getOwnedCards(_userId: string): WordCard[] {
     const userData = GachaSystem.getUserGachaData();
     return userData.ownedCards.map((card) => {
       // 実際の実装では、カードIDからカード情報を取得
@@ -300,7 +300,7 @@ export class GachaTOEICIntegrationManager {
    * アクティブなカードパワーアップを取得
    */
   private static getActiveCardPowerUps(
-    userId: string,
+    _userId: string,
     ownedCards: WordCard[]
   ): CardPowerUp[] {
     const powerUps: CardPowerUp[] = [];
@@ -327,7 +327,7 @@ export class GachaTOEICIntegrationManager {
    * アクティブなカードシナジーを取得
    */
   private static getActiveCardSynergies(
-    userId: string,
+    _userId: string,
     ownedCards: WordCard[]
   ): CardSynergy[] {
     const synergies: CardSynergy[] = [];
@@ -371,7 +371,8 @@ export class GachaTOEICIntegrationManager {
       const bestCard = relatedCards[0]; // 最初の関連カードを使用
       const synergyActive = integration.cardSynergies.some(
         (synergy) =>
-          synergy.requiredCards.includes(bestCard.id.toString()) && synergy.isActive
+          synergy.requiredCards.includes(bestCard.id.toString()) &&
+          synergy.isActive
       );
 
       questionWithBoost.cardBoost = {
@@ -457,7 +458,7 @@ export class GachaTOEICIntegrationManager {
    */
   static generateCardRecommendations(
     userId: string,
-    partNumber?: number
+    _partNumber?: number
   ): CardRecommendation[] {
     const integration = this.getGachaTOEICIntegration(userId);
     const recommendations: CardRecommendation[] = [];
@@ -664,7 +665,7 @@ export class GachaTOEICIntegrationManager {
     }
   }
 
-  private static getWeakCategories(userId: string): string[] {
+  private static getWeakCategories(_userId: string): string[] {
     // 実際の実装では、学習履歴から弱点カテゴリーを分析
     return ["business", "grammar", "listening"]; // モックデータ
   }
@@ -700,7 +701,7 @@ export class GachaTOEICIntegrationManager {
     return totalMap[rarity] || 0;
   }
 
-  private static getMissingCards(ownedCards: WordCard[]): string[] {
+  private static getMissingCards(_ownedCards: WordCard[]): string[] {
     // 実際の実装では、全カードから所持カードを除外
     return ["missing-card-1", "missing-card-2", "missing-card-3"]; // モックデータ
   }

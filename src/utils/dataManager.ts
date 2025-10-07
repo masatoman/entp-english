@@ -598,6 +598,8 @@ export class DataManager {
           exampleTranslation: card.examples[0]?.translation || "",
           level: this.mapRarityToLevel(card.rarity),
           category: "toeic",
+          examples: card.examples?.map(ex => ex.sentence) || [],
+          content: card.word,
         };
 
         // 語彙進捗に追加（重複チェック）
@@ -731,5 +733,4 @@ export class DataManager {
       logError("Error recording pre-study completion", error);
     }
   }
-
 }
