@@ -191,7 +191,6 @@ export class PerformanceBenchmark {
       WeaknessAnalyzer.performComprehensiveAnalysis(
         "test-user",
         DataManager.getUserStats(),
-        [],
         testSessions
       );
     });
@@ -496,7 +495,7 @@ export class PerformanceBenchmark {
         const improvement =
           ((previousResult.averageTime - currentResult.averageTime) /
             previousResult.averageTime) *
-          100;
+0;
 
         if (improvement > 10) {
           improvements.push(

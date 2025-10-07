@@ -134,8 +134,8 @@ export class SynergyExplosionSystem {
   static getSynergyExplosionData(
     userId: string = "default"
   ): SynergyExplosionData {
-    const grammarProgress = this.getGrammarProgress(userId);
-    const vocabularyProgress = this.getVocabularyProgress(userId);
+    const grammarProgress = this.getGrammarProgress();
+    const vocabularyProgress = this.getVocabularyProgress();
     const preStudyProgress = this.getPreStudyProgress(userId);
     const skillTreeProgress = this.getSkillTreeProgress(userId);
 

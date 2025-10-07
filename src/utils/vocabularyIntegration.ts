@@ -7,7 +7,7 @@ export class VocabularyIntegration {
   /**
    * 獲得語彙カードを分析して統計を取得
    */
-  static analyzeUserVocabulary(ownedCards: GachaCard[]) {
+  static analyzeUserVocabulary(ownedCards: any[]) {
     const words = ownedCards.map((card) => card.word.toLowerCase());
     const categories = [...new Set(ownedCards.map((card) => card.category))];
     const difficulties = [...new Set(ownedCards.map((card) => card.rarity))];
@@ -65,7 +65,7 @@ export class VocabularyIntegration {
    */
   static analyzeCategoryCompatibility(
     prompts: EssayPrompt[],
-    ownedCards: GachaCard[]
+    ownedCards: any[]
   ) {
     const categories = [
       "business",
@@ -103,9 +103,9 @@ export class VocabularyIntegration {
    * 未使用語彙を特定（英作文履歴から）
    */
   static getUnusedVocabulary(
-    ownedCards: GachaCard[],
+    ownedCards: any[],
     essayHistory: Array<{ text: string }>
-  ): GachaCard[] {
+  ): any[] {
     const allEssayText = essayHistory
       .map((entry) => entry.text.toLowerCase())
       .join(" ");
@@ -119,7 +119,7 @@ export class VocabularyIntegration {
    * 語彙活用度スコアを計算
    */
   static calculateVocabularyUtilizationScore(
-    ownedCards: GachaCard[],
+    ownedCards: any[],
     essayHistory: Array<{ text: string }>
   ): {
     totalWords: number;
@@ -167,7 +167,7 @@ export class VocabularyIntegration {
    * 語彙チャレンジ課題を生成
    */
   static generateVocabularyChallenges(
-    unusedCards: GachaCard[],
+    unusedCards: any[],
     basePrompts: EssayPrompt[]
   ): Array<{
     type: "vocabulary-challenge";

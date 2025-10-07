@@ -281,7 +281,7 @@ export class SkillTreeTOEICIntegrationManager {
     userId: string = "default"
   ): SkillTreeProgressForTOEIC {
     // スキルツリーの進捗を取得（モックデータ）
-    const unlockedSkills = this.getUnlockedSkills(userId);
+    const unlockedSkills = this.getUnlockedSkills();
 
     const skillProgress = unlockedSkills.map((skillId) => {
       return {

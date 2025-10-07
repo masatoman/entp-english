@@ -423,7 +423,7 @@ export class TimeAttackGenerator {
    * 習熟度を計算
    */
   private static calculateMasteryLevel(
-    userStats: UserStats,
+    userStats: any,
     type: "vocabulary" | "grammar"
   ): number {
     if (!userStats) return 1;

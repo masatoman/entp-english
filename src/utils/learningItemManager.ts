@@ -72,7 +72,9 @@ export class LearningItemManager {
       examples,
       explanations,
       questions,
-      relations: this.generateRelationsForCard(card) as unknown as ItemRelation[],
+      relations: this.generateRelationsForCard(
+        card
+      ) as unknown as ItemRelation[],
       rarity: card.rarity,
       source: "gacha",
       tags: [
@@ -459,7 +461,7 @@ export class LearningItemManager {
     // 類似の品詞から間違った選択肢を生成
     const similarMeanings = this.getSimilarMeanings(
       word.partOfSpeech,
-      word.meaning,
+      word.meaning
     );
     choices.push(...similarMeanings.slice(0, 3));
 

@@ -24,6 +24,9 @@ interface LogOptions {
   questionsCount?: number;
   listeningScore?: number;
   lastStudyDate?: string;
+  criticalCount?: number;
+  totalEstimatedHours?: number;
+  entriesCount?: number;
 }
 
 class Logger {

@@ -162,7 +162,7 @@ export class PreStudyProgressManager {
       case "vocabulary":
         return "basic-sentence-patterns";
       case "reading":
-        return "relative";
+        return "relative-clauses";
       default:
         return "tenses";
     }

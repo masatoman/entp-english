@@ -175,8 +175,8 @@ export class LongTermImprovementSystem {
 
       const goals = this.defineRoadmapGoals(timeframe);
       const milestones = this.createMilestones(goals, timeframe);
-      const dependencies = this.identifyDependencies(goals);
-      const risks = this.assessRisks(goals, timeframe);
+      const dependencies = this.identifyDependencies();
+      const risks = this.assessRisks();
       const estimatedResources = this.estimateResources(
         goals,
         availableResources

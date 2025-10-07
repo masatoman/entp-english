@@ -709,7 +709,7 @@ export class SkillTreeManager {
     const saved = this.loadProgress();
     const unlockedNodes = this.calculateUnlockedNodes();
     const completedNodes = this.calculateCompletedNodes();
-    const availableNodes = this.calculateAvailableNodes(saved, unlockedNodes);
+    const availableNodes = this.calculateAvailableNodes(unlockedNodes);
 
     return {
       progress: saved,
