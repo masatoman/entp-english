@@ -36,14 +36,27 @@ const createInitialGameState = (): GameState => ({
   money: 100,
   gold: 50,
   score: 0,
+  xp: 0,
   xpEarned: 0,
   gameSpeed: 1,
   selectedTowerType: null,
   towers: [],
   enemies: [],
+  projectiles: [],
   dropItems: [],
   isGameOver: false,
   isPaused: false,
+  currentWave: 1,
+  waveStartTime: 0,
+  enemiesSpawnedInWave: 0,
+  timeElapsed: 0,
+  activeBoosts: {
+    damageBoost: 0,
+    rangeBoost: 0,
+    speedBoost: 0,
+    goldMultiplier: 1,
+    xpMultiplier: 1,
+  },
 });
 
 const updateGameState = (state: GameState, _deltaTime: number): GameState =>
@@ -62,21 +75,25 @@ const placeTower = (
     type: towerType,
     damage: 10,
     range: 50,
-    fireRate: 1000,
-    lastFireTime: 0,
-    level: 1,
+    attackSpeed: 1000,
+    lastAttackTime: 0,
     cost: 50,
+    tempBoosts: {
+      damageBoost: 0,
+      rangeBoost: 0,
+      speedBoost: 0,
+    },
   }],
   gold: state.gold - 20,
 });
-const selectTowerType = (
+const _selectTowerType = (
   state: GameState,
   towerType: TowerType
 ): GameState => ({
   ...state,
   selectedTowerType: towerType,
 });
-const setGameSpeed = (state: GameState, speed: number): GameState => ({
+const setGameSpeed = (state: GameState, speed: 1 | 2 | 3): GameState => ({
   ...state,
   gameSpeed: speed,
 });
@@ -84,17 +101,17 @@ const collectDropItem = (state: GameState, itemId: string): GameState => ({
   ...state,
   dropItems: state.dropItems.filter((item) => item.id !== itemId),
 });
-const endGame = (state: GameState): void => {};
-const resetProfile = (): TowerDefenseProfile => ({
+const _endGame = (state: GameState): void => {};
+const _resetProfile = (): any => ({
   totalXP: 0,
   towerUpgrades: {},
 });
-const loadProfile = (): TowerDefenseProfile => ({
+const _loadProfile = (): any => ({
   totalXP: 100,
   towerUpgrades: {},
 });
-const addXP = (amount: number): void => {};
-const applyShopItemEffect = (item: any, state: GameState): GameState => state;
+const _addXP = (_amount: number): void => {};
+const _applyShopItemEffect = (_item: any, state: GameState): GameState => state;
 
 export default function SimpleTowerDefense() {
   const navigate = useNavigate();
@@ -422,7 +439,7 @@ export default function SimpleTowerDefense() {
                   {Array.from({ length: 48 }, (_, index) => {
                     const row = Math.floor(index / 8);
                     const col = index % 8;
-                    const position: Position = { row, col };
+                    const position: Position = { x: col * 40, y: row * 40, row, col };
 
                     // パス判定（簡単な例）
                     const isPath =

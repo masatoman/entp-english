@@ -5,14 +5,15 @@ import { Switch } from './ui/switch';
 import { Label } from './ui/label';
 import { Input } from './ui/input';
 import { Bell, BellOff, Clock, TestTube, CheckCircle } from 'lucide-react';
-import { notificationManager, NotificationSettings as NotificationSettingsType } from '../utils/notificationManager';
+import { notificationManager } from '../utils/notificationManager';
+import type { NotificationSettings as NotificationSettingsType } from '../utils/notificationManager';
 
 interface NotificationSettingsProps {
   onBack: () => void;
 }
 
 export function NotificationSettings({ onBack }: NotificationSettingsProps) {
-  const [settings, setSettings] = useState<typeof NotificationSettingsType>(notificationManager.getSettings());
+  const [settings, setSettings] = useState<NotificationSettingsType>(notificationManager.getSettings());
   const [permission, setPermission] = useState<NotificationPermission>(notificationManager.getPermissionStatus());
   const [isSupported, setIsSupported] = useState(false);
   const [isTesting, setIsTesting] = useState(false);
