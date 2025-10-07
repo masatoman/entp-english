@@ -22,15 +22,18 @@ import { useScrollToTop } from "../hooks/useScrollToTop";
 import type {
   GameState,
   Position,
-  TowerDefenseProfile,
   TowerType,
 } from "@/types/simple-game";
 
 // モック関数
 const createInitialGameState = (): GameState => ({
+  gameId: "tower-defense-1",
+  level: 1,
   isRunning: false,
   health: 100,
   maxHealth: 100,
+  lives: 3,
+  money: 100,
   gold: 50,
   score: 0,
   xpEarned: 0,
@@ -39,9 +42,11 @@ const createInitialGameState = (): GameState => ({
   towers: [],
   enemies: [],
   dropItems: [],
+  isGameOver: false,
+  isPaused: false,
 });
 
-const updateGameState = (state: GameState, deltaTime: number): GameState =>
+const updateGameState = (state: GameState, _deltaTime: number): GameState =>
   state;
 const spawnEnemy = (state: GameState): GameState => state;
 const placeTower = (
@@ -50,7 +55,18 @@ const placeTower = (
   towerType: TowerType
 ): GameState => ({
   ...state,
-  towers: [...state.towers, { position, type: towerType }],
+  towers: [...state.towers, {
+    id: Date.now().toString(),
+    name: `${towerType} Tower`,
+    position,
+    type: towerType,
+    damage: 10,
+    range: 50,
+    fireRate: 1000,
+    lastFireTime: 0,
+    level: 1,
+    cost: 50,
+  }],
   gold: state.gold - 20,
 });
 const selectTowerType = (

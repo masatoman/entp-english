@@ -73,14 +73,14 @@ export default function Question() {
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  const [currentAnswer: _currentAnswer, setCurrentAnswer] = useState<string>("");
+  const [_currentAnswer, setCurrentAnswer] = useState<string>("");
 
   // アドレナリンシステム
-  const [adrenalineEvents: _adrenalineEvents, setAdrenalineEvents] = useState<
+  const [_adrenalineEvents, setAdrenalineEvents] = useState<
     AdrenalineEventData[]
   >([]);
   const [showTreasureBoxModal, setShowTreasureBoxModal] = useState(false);
-  const [earnedXP: _earnedXP, setEarnedXP] = useState(0);
+  const [_earnedXP, setEarnedXP] = useState(0);
   const [userAnswers, setUserAnswers] = useState<
     Array<{ questionId: number; answer: string; isCorrect: boolean }>
   >([]);

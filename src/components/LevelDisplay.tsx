@@ -271,7 +271,7 @@ interface LevelProgressProps {
 export const LevelProgress: React.FC<LevelProgressProps> = ({
   showAllChapters: _showAllChapters = false,
 }) => {
-  const [userLevel, setUserLevel: _setUserLevel] = useState<UserLevel>(() => {
+  const [userLevel, _setUserLevel] = useState<UserLevel>(() => {
     const manager = getLevelManager();
     return manager.getLevel();
   });

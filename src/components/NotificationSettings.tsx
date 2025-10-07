@@ -12,7 +12,7 @@ interface NotificationSettingsProps {
 }
 
 export function NotificationSettings({ onBack }: NotificationSettingsProps) {
-  const [settings, setSettings] = useState<NotificationSettingsType>(notificationManager.getSettings());
+  const [settings, setSettings] = useState<typeof NotificationSettingsType>(notificationManager.getSettings());
   const [permission, setPermission] = useState<NotificationPermission>(notificationManager.getPermissionStatus());
   const [isSupported, setIsSupported] = useState(false);
   const [isTesting, setIsTesting] = useState(false);
