@@ -18,7 +18,7 @@ import { SynergyExplosionSystem } from "./synergyExplosionSystem";
  */
 export class IntelligentQuestionSystem {
   private static readonly SYSTEM_KEY = "entp-intelligent-question-system";
-  private static readonly PATTERN_KEY = "entp-learning-pattern";
+  private static readonly _PATTERN_KEY = "entp-learning-pattern";
   private static readonly DIFFICULTY_KEY = "entp-adaptive-difficulty";
 
   /**
@@ -54,7 +54,7 @@ export class IntelligentQuestionSystem {
   /**
    * 弱点分析
    */
-  private static analyzeWeakPoints(userId: string): WeakPoint[] {
+  private static analyzeWeakPoints(_userId: string): WeakPoint[] {
     // 実際の実装では、学習履歴データベースから分析
     return [
       {
@@ -93,7 +93,7 @@ export class IntelligentQuestionSystem {
   /**
    * 強み分析
    */
-  private static analyzeStrongPoints(userId: string): StrongPoint[] {
+  private static analyzeStrongPoints(_userId: string): StrongPoint[] {
     // 実際の実装では、学習履歴データベースから分析
     return [
       {
@@ -208,7 +208,7 @@ export class IntelligentQuestionSystem {
   private static generatePersonalizedQuestions(
     weakPoints: WeakPoint[],
     strongPoints: StrongPoint[],
-    adaptiveDifficulty: "easy" | "medium" | "hard"
+    _adaptiveDifficulty: "easy" | "medium" | "hard"
   ): PersonalizedQuestion[] {
     const personalizedQuestions: PersonalizedQuestion[] = [];
 
@@ -324,7 +324,7 @@ export class IntelligentQuestionSystem {
    */
   private static generateRecommendationReason(
     question: PersonalizedQuestion,
-    selection: IntelligentQuestionSelection
+    _selection: IntelligentQuestionSelection
   ): string {
     if (question.personalizationFactors.weaknessTargeting) {
       const weakPoint = selection.weakPoints.find(
@@ -350,7 +350,7 @@ export class IntelligentQuestionSystem {
    */
   private static calculateExpectedBenefit(
     question: PersonalizedQuestion,
-    selection: IntelligentQuestionSelection
+    _selection: IntelligentQuestionSelection
   ): string {
     const learningValue = question.learningValue;
 
@@ -368,7 +368,7 @@ export class IntelligentQuestionSystem {
    */
   private static generateAlternatives(
     question: PersonalizedQuestion,
-    selection: IntelligentQuestionSelection
+    _selection: IntelligentQuestionSelection
   ): string[] {
     const alternatives: string[] = [];
 

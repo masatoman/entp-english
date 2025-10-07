@@ -71,11 +71,11 @@ export class IntelligentLearningService {
    */
   static async generateIntelligentRecommendation(
     userId: string,
-    userStats: UserStats,
+    _userStats: UserStats,
     availableItems: LearningItem[],
     learningProgress: LearningProgress[],
     recentSessions: any[],
-    requestedType?: "vocabulary" | "grammar" | "mixed"
+    _requestedType?: "vocabulary" | "grammar" | "mixed"
   ): Promise<IntelligentRecommendation> {
     try {
       logLearning(`インテリジェント推奨生成開始: ${userId}`, {
@@ -440,7 +440,7 @@ export class IntelligentLearningService {
   // プライベートヘルパーメソッド
 
   private static calculateAdaptiveDifficulty(
-    userId: string,
+    _userId: string,
     recentSessions: any[]
   ): number {
     if (recentSessions.length === 0) return 50;
@@ -567,7 +567,7 @@ export class IntelligentLearningService {
   }
 
   private static generateNextSessionPreview(
-    session: LearningSession
+    _session: LearningSession
   ): string[] {
     return [
       "前回の成果を基に最適化されたコンテンツ",

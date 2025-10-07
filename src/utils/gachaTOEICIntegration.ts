@@ -21,8 +21,8 @@ import { GachaSystem } from "./gachaSystem";
 export class GachaTOEICIntegrationManager {
   private static readonly INTEGRATION_KEY = "entp-gacha-toeic-integration";
   private static readonly POWERUPS_KEY = "entp-card-powerups";
-  private static readonly SYNERGIES_KEY = "entp-card-synergies";
-  private static readonly CHALLENGES_KEY = "entp-card-challenges";
+  private static readonly _SYNERGIES_KEY = "entp-card-synergies";
+  private static readonly _CHALLENGES_KEY = "entp-card-challenges";
 
   /**
    * カードパワーアップ定義
@@ -159,7 +159,7 @@ export class GachaTOEICIntegrationManager {
   /**
    * カードチャレンジ定義
    */
-  private static readonly CARD_CHALLENGES: Omit<
+  private static readonly _CARD_CHALLENGES: Omit<
     TOEICCardChallenge,
     "currentValue" | "isCompleted" | "completedAt"
   >[] = [
@@ -602,7 +602,7 @@ export class GachaTOEICIntegrationManager {
   }
 
   private static canActivatePowerUp(
-    userId: string,
+    _userId: string,
     powerUp: CardPowerUp
   ): boolean {
     // クールダウンと使用回数制限をチェック

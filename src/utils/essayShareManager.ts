@@ -29,7 +29,7 @@ export class EssayShareManager {
     entry: EssayHistoryEntry,
     options: ShareOptions
   ): ShareContent {
-    const { prompt, submission, wordCount, createdAt } = entry;
+    const { prompt, submission, wordCount, _createdAt } = entry;
 
     let shareText = "";
     const hashtags = ["ENTP英語学習", "英作文", "英語学習"];
@@ -194,7 +194,7 @@ export class EssayShareManager {
    */
   private static async downloadAsImage(
     entry: EssayHistoryEntry,
-    content: ShareContent
+    _content: ShareContent
   ): Promise<void> {
     // Canvas APIを使用して英作文を画像化
     const canvas = document.createElement("canvas");
@@ -302,7 +302,7 @@ export class EssayShareManager {
   /**
    * 画像データ生成（将来の拡張用）
    */
-  private static generateImageData(entry: EssayHistoryEntry): string {
+  private static generateImageData(_entry: EssayHistoryEntry): string {
     // 将来的にOGP画像生成などに使用
     return "";
   }

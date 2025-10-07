@@ -14,7 +14,7 @@ import { TOEICQuestion } from "../types/mockTest";
 export class HeartTOEICIntegrationManager {
   private static readonly INTEGRATION_KEY = "entp-heart-toeic-integration";
   private static readonly CONSUMPTIONS_KEY = "entp-heart-consumptions";
-  private static readonly _CHALLENGES_KEY = "entp-heart-challenges";
+  private static readonly __CHALLENGES_KEY = "entp-heart-challenges";
 
   /**
    * 特別TOEICモード定義
@@ -277,7 +277,7 @@ export class HeartTOEICIntegrationManager {
    * ハート倍率を取得
    */
   private static getHeartMultiplier(userId: string): number {
-    const integration = this.getHeartTOEICIntegration(userId);
+    const _integration = this.getHeartTOEICIntegration(userId);
     const streak = this.getLearningStreak(userId);
     const achievements = this.getAchievementCount(userId);
 
