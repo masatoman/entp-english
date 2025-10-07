@@ -82,7 +82,7 @@ export const StatusAllocationComponent: React.FC<StatusAllocationProps> = ({
     return (allocation[field] / 30) * 100;
   };
 
-  const getProgressVariant = (field: SkillField) => {
+  const _getProgressVariant = (field: SkillField) => {
     const percentage = getFieldPercentage(field);
     if (percentage >= 30) return "bg-blue-500";
     if (percentage >= 20) return "bg-green-500";

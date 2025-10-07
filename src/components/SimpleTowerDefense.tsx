@@ -101,7 +101,7 @@ const collectDropItem = (state: GameState, itemId: string): GameState => ({
   ...state,
   dropItems: state.dropItems.filter((item) => item.id !== itemId),
 });
-const endGame = (state: GameState): void => {};
+const endGame = (_state: GameState): void => {};
 const resetProfile = (): any => ({
   totalXP: 0,
   towerUpgrades: {},
@@ -110,8 +110,8 @@ const loadProfile = (): any => ({
   totalXP: 100,
   towerUpgrades: {},
 });
-const addXP = (amount: number): void => {};
-const applyShopItemEffect = (item: any, state: GameState): GameState => state;
+const addXP = (_amount: number): void => {};
+const applyShopItemEffect = (_item: any, state: GameState): GameState => state;
 
 export default function SimpleTowerDefense() {
   const navigate = useNavigate();
@@ -120,7 +120,7 @@ export default function SimpleTowerDefense() {
     createInitialGameState()
   );
   const [lastUpdateTime, setLastUpdateTime] = useState<number>(Date.now());
-  const [profile, setProfile] = useState<TowerDefenseProfile>(loadProfile());
+  const [profile, setProfile] = useState<any>(loadProfile());
   const [itemEffect, setItemEffect] = useState<{
     type:
       | "damage-boost"

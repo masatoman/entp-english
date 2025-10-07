@@ -3,7 +3,7 @@ import { ArrowLeft, BookOpen, Star, TrendingUp } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import { Category } from "../types";
-import { questionStatsManager } from "../utils/questionStatsManager";
+// import { questionStatsManager } from "../utils/questionStatsManager";
 import { Badge } from "./ui/badge";
 import { baseColors } from "../styles/colors";
 import { Button } from "./ui/button";

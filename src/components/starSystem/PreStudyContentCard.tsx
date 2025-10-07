@@ -44,7 +44,7 @@ export const PreStudyContentCard: React.FC<PreStudyContentCardProps> = ({
       keyPoints={content.keyPoints}
       isLocked={isLocked}
       isCompleted={isCompleted}
-      onClick={onSelect}
+      onClick={() => onSelect(content.id)}
     />
   );
 };

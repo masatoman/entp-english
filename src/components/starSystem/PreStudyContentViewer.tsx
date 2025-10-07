@@ -60,7 +60,7 @@ function PreStudyContentViewer() {
     setShowCompletion(true);
   };
 
-  const handleFinalComplete = () => {
+  const _handleFinalComplete = () => {
     if (comprehensionRating > 0) {
       // 事前学習完了をマーク
       if (contentId) {
@@ -78,7 +78,7 @@ function PreStudyContentViewer() {
 
   const handleNavigateToPractice = () => {
     // 理解度評価が0の場合は3（普通）として扱う
-    const finalRating = comprehensionRating > 0 ? comprehensionRating : 3;
+    const _finalRating = comprehensionRating > 0 ? comprehensionRating : 3;
     
     // 学習進捗保存処理
     if (contentId) {
