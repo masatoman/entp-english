@@ -189,7 +189,7 @@ export const ListeningRecommendations: React.FC<
             推奨語彙 ({recommendations.length}個)
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-96 overflow-y-auto">
-            {recommendations.map((rec, index) => (
+            {recommendations.map((rec, _index) => (
               <div
                 key={rec.word.id}
                 className={`p-3 border rounded-lg cursor-pointer transition-all hover:shadow-md ${

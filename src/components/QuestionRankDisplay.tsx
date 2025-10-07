@@ -72,7 +72,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
     }
   };
 
-  const isCorrect = selectedAnswer === question.correctAnswer;
+  const isCorrect: _isCorrect = selectedAnswer === question.correctAnswer;
   const showResult = selectedAnswer !== undefined;
 
   return (

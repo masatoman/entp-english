@@ -166,6 +166,7 @@ export default function ListeningSelection() {
         {listeningOptions.map((option) => (
           <SelectionCard
             key={option.id}
+            id={option.id}
             title={option.title}
             description={option.description}
             icon={option.icon}

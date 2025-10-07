@@ -363,7 +363,7 @@ export function SimpleGameField({ gameState, onFieldClick, onDropItemClick }: Si
       return; // アイテムをクリックした場合は通常のフィールドクリックは発生させない
     }
 
-    onFieldClick({ x, y });
+    onFieldClick({ x, y, row: Math.floor(y / 40), col: Math.floor(x / 40) });
   }, [onFieldClick, onDropItemClick, gameState.dropItems]);
 
   // 描画の更新

@@ -119,7 +119,7 @@ export default function QuestionSetSelection() {
 
   // 問題集の統計を取得
   const getSetStats = (setId: string) => {
-    const stats = questionStatsManager.getCategoryStats(category, difficulty);
+    const stats: _stats = questionStatsManager.getCategoryStats(category, difficulty);
     // 問題集ごとの統計は将来実装予定
     return {
       completed: 0,

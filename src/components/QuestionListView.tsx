@@ -22,8 +22,8 @@ function QuestionListItem({
   questionId,
   japanese,
   index,
-  category,
-  difficulty,
+  category: _category,
+  difficulty: _difficulty,
   onQuestionSelect,
 }: QuestionListItemProps) {
   const stats = questionStatsManager.getQuestionStats(questionId);

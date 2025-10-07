@@ -3,7 +3,7 @@
  * 音声の再生、一時停止、リピート機能
  */
 
-import { AudioFile, dbManager } from "./IndexedDBManager";
+// import { AudioFile, dbManager } from "./IndexedDBManager";
 
 // 音声プレイヤーの状態
 export interface AudioPlayerState {

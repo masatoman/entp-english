@@ -39,7 +39,7 @@ export default function QuizInterface({
   showGameHeader = false,
   showAdrenalineEffects = false,
   showTreasureBoxModal = false,
-  onTreasureBoxModalClose,
+  onTreasureBoxModalClose: _onTreasureBoxModalClose,
   children,
 }: QuizInterfaceProps) {
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ export default function QuizInterface({
   const [userInput, setUserInput] = useState<string>("");
   const [showExplanation, setShowExplanation] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  const [currentAnswer, setCurrentAnswer] = useState<string>("");
+  const [currentAnswer: _currentAnswer, setCurrentAnswer] = useState<string>("");
 
   const currentQuestion = questions[currentQuestionIndex];
   const questionNumber = currentQuestionIndex + 1;

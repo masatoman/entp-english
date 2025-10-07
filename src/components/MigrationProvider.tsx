@@ -32,7 +32,7 @@ interface MigrationProviderProps {
 export function MigrationProvider({ children }: MigrationProviderProps) {
   const [isMigrated, setIsMigrated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [migrationStats, setMigrationStats] = useState(null);
+  const [migrationStats, setMigrationStats] = useState<{ totalItems: number; migratedItems: number; pendingItems: number } | null>(null);
   const [migrationResult, setMigrationResult] = useState<{
     success: boolean;
     itemsCreated: number;
