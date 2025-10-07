@@ -133,8 +133,8 @@ export default function SkillTree() {
     const toNode = GRAMMAR_SKILL_TREE.find((n) => n.id === toNodeId);
     if (!toNode) return null;
 
-    const _dx = toNode.position.x - fromNode.position.x;
-    const _dy = toNode.position.y - fromNode.position.y;
+    // const _dx = toNode.position.x - fromNode.position.x;
+    // const _dy = toNode.position.y - fromNode.position.y;
 
     return (
       <line

@@ -33,7 +33,7 @@ export function NotificationSettings({ onBack }: NotificationSettingsProps) {
     }
   };
 
-  const handleSettingChange = (key: keyof NotificationSettings, value: boolean | string) => {
+  const handleSettingChange = (key: keyof NotificationSettingsType, value: boolean | string) => {
     const newSettings = { ...settings, [key]: value };
     setSettings(newSettings);
     notificationManager.updateSettings(newSettings);

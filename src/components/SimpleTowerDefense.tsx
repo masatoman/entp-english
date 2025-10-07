@@ -86,13 +86,13 @@ const placeTower = (
   }],
   gold: state.gold - 20,
 });
-const _selectTowerType = (
-  state: GameState,
-  towerType: TowerType
-): GameState => ({
-  ...state,
-  selectedTowerType: towerType,
-});
+// const _selectTowerType = (
+//   state: GameState,
+//   towerType: TowerType
+// ): GameState => ({
+//   ...state,
+//   selectedTowerType: towerType,
+// });
 const setGameSpeed = (state: GameState, speed: 1 | 2 | 3): GameState => ({
   ...state,
   gameSpeed: speed,
@@ -101,17 +101,17 @@ const collectDropItem = (state: GameState, itemId: string): GameState => ({
   ...state,
   dropItems: state.dropItems.filter((item) => item.id !== itemId),
 });
-const _endGame = (state: GameState): void => {};
-const _resetProfile = (): any => ({
+const endGame = (state: GameState): void => {};
+const resetProfile = (): any => ({
   totalXP: 0,
   towerUpgrades: {},
 });
-const _loadProfile = (): any => ({
+const loadProfile = (): any => ({
   totalXP: 100,
   towerUpgrades: {},
 });
-const _addXP = (_amount: number): void => {};
-const _applyShopItemEffect = (_item: any, state: GameState): GameState => state;
+const addXP = (amount: number): void => {};
+const applyShopItemEffect = (item: any, state: GameState): GameState => state;
 
 export default function SimpleTowerDefense() {
   const navigate = useNavigate();
