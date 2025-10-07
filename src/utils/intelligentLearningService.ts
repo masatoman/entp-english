@@ -88,15 +88,13 @@ export class IntelligentLearningService {
       const personalizedProfile =
         PersonalizedLearningSystem.updatePersonalizationProfile(
           userId,
-          userStats,
-          recentSessions
+          [],
         );
 
       // 2. 個人化コンテンツを推奨
-      const personalizedContent = PersonalizedLearningSystem.recommendContent(
+      const personalizedContent =         PersonalizedLearningSystem.recommendContent(
         userId,
         availableItems,
-        requestedType,
         10
       );
 
@@ -108,10 +106,7 @@ export class IntelligentLearningService {
 
       // 4. 包括的な弱点分析を実行
       const weaknessAnalysis = WeaknessAnalyzer.performComprehensiveAnalysis(
-        userId,
-        userStats,
-        learningProgress,
-        recentSessions
+        userId
       );
 
       // 5. パフォーマンス最適化を実行
@@ -516,8 +511,8 @@ export class IntelligentLearningService {
     timeToAnswer: number,
     confidence: number
   ): void {
-    if (!session.performanceMetrics.totalQuestions) {
-      session.performanceMetrics = {
+    if (!_session.performanceMetrics.totalQuestions) {
+      _session.performanceMetrics = {
         totalQuestions: 0,
         correctAnswers: 0,
         totalTime: 0,
@@ -525,14 +520,14 @@ export class IntelligentLearningService {
       };
     }
 
-    session.performanceMetrics.totalQuestions++;
-    if (isCorrect) session.performanceMetrics.correctAnswers++;
-    session.performanceMetrics.totalTime += timeToAnswer;
+    _session.performanceMetrics.totalQuestions++;
+    if (isCorrect) _session.performanceMetrics.correctAnswers++;
+    _session.performanceMetrics.totalTime += timeToAnswer;
 
     // 平均自信度を更新
-    const prevAvg = session.performanceMetrics.avgConfidence;
-    const count = session.performanceMetrics.totalQuestions;
-    session.performanceMetrics.avgConfidence =
+    const prevAvg = _session.performanceMetrics.avgConfidence;
+    const count = _session.performanceMetrics.totalQuestions;
+    _session.performanceMetrics.avgConfidence =
       (prevAvg * (count - 1) + confidence) / count;
   }
 
@@ -566,7 +561,7 @@ export class IntelligentLearningService {
       achievements.push("学習中に大幅な改善を示しました！");
     }
 
-    if (session.performanceMetrics.avgConfidence > 70) {
+    if (_session.performanceMetrics.avgConfidence > 70) {
       achievements.push("高い自信度を維持して学習できました！");
     }
 
@@ -689,10 +684,7 @@ export class IntelligentLearningService {
       },
       adaptiveDifficulty: 50,
       weaknessAnalysis: WeaknessAnalyzer.performComprehensiveAnalysis(
-        userId,
-        {} as UserStats,
-        [],
-        []
+        userId
       ),
       performanceInsights: {
         optimizationsApplied: [],

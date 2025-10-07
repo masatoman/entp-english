@@ -34,13 +34,13 @@ export class IntegratedAchievementsManager {
   static getIntegratedAchievements(
     _userId: string = "default"
   ): IntegratedAchievements {
-    const toeicSpecific = this.getTOEICSpecificAchievements(userId);
-    const crossFunctional = this.getCrossFunctionalAchievements(userId);
-    const synergyBased = this.getSynergyBasedAchievements(userId);
-    const progressionBased = this.getProgressionBasedAchievements(userId);
+    const toeicSpecific = this.getTOEICSpecificAchievements(_userId);
+    const crossFunctional = this.getCrossFunctionalAchievements(_userId);
+    const synergyBased = this.getSynergyBasedAchievements(_userId);
+    const progressionBased = this.getProgressionBasedAchievements(_userId);
 
     return {
-      userId,
+      userId: _userId,
       toeicSpecific,
       crossFunctional,
       synergyBased,
@@ -56,11 +56,11 @@ export class IntegratedAchievementsManager {
     _userId: string
   ): TOEICSpecificAchievements {
     return {
-      partMaster: this.getPartMasterAchievements(userId),
-      scoreMilestones: this.getScoreMilestones(userId),
-      perfectRuns: this.getPerfectRunAchievements(userId),
-      timeRecords: this.getTimeRecordAchievements(userId),
-      categoryExpert: this.getCategoryExpertAchievements(userId),
+      partMaster: this.getPartMasterAchievements(_userId),
+      scoreMilestones: this.getScoreMilestones(_userId),
+      perfectRuns: this.getPerfectRunAchievements(_userId),
+      timeRecords: this.getTimeRecordAchievements(_userId),
+      categoryExpert: this.getCategoryExpertAchievements(_userId),
     };
   }
 
@@ -74,7 +74,7 @@ export class IntegratedAchievementsManager {
 
     for (let part = 1; part <= 7; part++) {
       const partName = this.getPartName(part);
-      const isCompleted = this.checkPartMasterCompletion(userId, part);
+      const isCompleted = this.checkPartMasterCompletion(_userId, part);
 
       achievements.push({
         partNumber: part,
@@ -140,9 +140,9 @@ export class IntegratedAchievementsManager {
     ];
 
     return testTypes.map((testType) => {
-      const isCompleted = this.checkPerfectRun(userId, testType);
-      const streakCount = this.getPerfectRunStreak(userId, testType);
-      const maxStreak = this.getMaxPerfectRunStreak(userId, testType);
+      const isCompleted = this.checkPerfectRun(_userId, testType);
+      const streakCount = this.getPerfectRunStreak(_userId, testType);
+      const maxStreak = this.getMaxPerfectRunStreak(_userId, testType);
 
       return {
         testType,
@@ -204,10 +204,10 @@ export class IntegratedAchievementsManager {
     const categories = ["時制", "関係詞", "語彙", "リスニング", "読解"];
 
     return categories.map((category) => {
-      const expertiseLevel = this.getCategoryExpertiseLevel(userId, category);
-      const accuracy = this.getCategoryAccuracy(userId, category);
+      const expertiseLevel = this.getCategoryExpertiseLevel(_userId, category);
+      const accuracy = this.getCategoryAccuracy(_userId, category);
       const questionsCompleted = this.getCategoryQuestionsCompleted(
-        userId,
+        _userId,
         category
       );
       const isCompleted = expertiseLevel === "master";
@@ -236,11 +236,11 @@ export class IntegratedAchievementsManager {
     _userId: string
   ): CrossFunctionalAchievements {
     return {
-      synergyMaster: this.getSynergyMasterAchievement(userId),
-      skillTreeCompletion: this.getSkillTreeCompletionAchievement(userId),
-      allModeMaster: this.getAllModeMasterAchievement(userId),
-      learningStreak: this.getLearningStreakAchievement(userId),
-      adaptiveLearner: this.getAdaptiveLearnerAchievement(userId),
+      synergyMaster: this.getSynergyMasterAchievement(_userId),
+      skillTreeCompletion: this.getSkillTreeCompletionAchievement(_userId),
+      allModeMaster: this.getAllModeMasterAchievement(_userId),
+      learningStreak: this.getLearningStreakAchievement(_userId),
+      adaptiveLearner: this.getAdaptiveLearnerAchievement(_userId),
     };
   }
 
@@ -250,7 +250,7 @@ export class IntegratedAchievementsManager {
   private static getSynergyMasterAchievement(
     _userId: string
   ): SynergyMasterAchievement {
-    const synergyData = SynergyExplosionSystem.getSynergyExplosionData(userId);
+    const synergyData = SynergyExplosionSystem.getSynergyExplosionData(_userId);
     const isCompleted = synergyData.combinedMultiplier >= 2.0;
 
     return {
@@ -275,7 +275,7 @@ export class IntegratedAchievementsManager {
     _userId: string
   ): SkillTreeCompletionAchievement {
     const skillTreeData =
-      SkillTreeTOEICIntegrationManager.getSkillTreeProgressForTOEIC(userId);
+      SkillTreeTOEICIntegrationManager.getSkillTreeProgressForTOEIC(_userId);
     const completionRate = skillTreeData.unlockedSkills.length / 50; // 仮の総数
     const isCompleted = completionRate >= 0.9;
 
@@ -300,7 +300,7 @@ export class IntegratedAchievementsManager {
   private static getAllModeMasterAchievement(
     _userId: string
   ): AllModeMasterAchievement {
-    const synergyData = SynergyExplosionSystem.getSynergyExplosionData(userId);
+    const synergyData = SynergyExplosionSystem.getSynergyExplosionData(_userId);
     const modeProgress = {
       grammarQuiz:
         synergyData.grammarQuizProgress.completedCategories /
@@ -383,7 +383,7 @@ export class IntegratedAchievementsManager {
     _userId: string
   ): SynergyBasedAchievements {
     return {
-      combinationMaster: this.getCombinationMasterAchievements(userId),
+      combinationMaster: this.getCombinationMasterAchievements(_userId),
       crossPollination: [], // TODO: 実装
       systemIntegration: [], // TODO: 実装
     };
@@ -403,7 +403,7 @@ export class IntegratedAchievementsManager {
 
     return combinations.map((combo) => {
       const synergyData =
-        SynergyExplosionSystem.getSynergyExplosionData(userId);
+        SynergyExplosionSystem.getSynergyExplosionData(_userId);
       const isCompleted =
         synergyData.combinedMultiplier >= combo.requiredSynergy;
 
@@ -483,7 +483,7 @@ export class IntegratedAchievementsManager {
       achievedAt: new Date(),
     };
 
-    this.saveAchievementNotification(userId, notification);
+    this.saveAchievementNotification(_userId, notification);
     return notification;
   }
 
@@ -634,7 +634,7 @@ export class IntegratedAchievementsManager {
     notification: AchievementNotification
   ): void {
     try {
-      const notifications = this.getAchievementNotifications(userId);
+      const notifications = this.getAchievementNotifications(_userId);
       notifications.unshift(notification);
 
       // 最新50件のみ保持
@@ -643,7 +643,7 @@ export class IntegratedAchievementsManager {
       }
 
       localStorage.setItem(
-        `${this.NOTIFICATIONS_KEY}-${userId}`,
+        `${this.NOTIFICATIONS_KEY}-${_userId}`,
         JSON.stringify(notifications)
       );
     } catch (error) {
@@ -656,7 +656,7 @@ export class IntegratedAchievementsManager {
   ): AchievementNotification[] {
     try {
       const stored = localStorage.getItem(
-        `${this.NOTIFICATIONS_KEY}-${userId}`
+        `${this.NOTIFICATIONS_KEY}-${_userId}`
       );
       return stored ? JSON.parse(stored) : [];
     } catch (error) {
@@ -673,8 +673,8 @@ export class IntegratedAchievementsManager {
     _achievements: IntegratedAchievements
   ): void {
     localStorage.setItem(
-      `${this.ACHIEVEMENTS_KEY}-${userId}`,
-      JSON.stringify(achievements)
+      `${this.ACHIEVEMENTS_KEY}-${_userId}`,
+      JSON.stringify(_achievements)
     );
   }
 
@@ -685,7 +685,9 @@ export class IntegratedAchievementsManager {
     _userId: string = "default"
   ): IntegratedAchievements | null {
     try {
-      const stored = localStorage.getItem(`${this.ACHIEVEMENTS_KEY}-${userId}`);
+      const stored = localStorage.getItem(
+        `${this.ACHIEVEMENTS_KEY}-${_userId}`
+      );
       return stored ? JSON.parse(stored) : null;
     } catch (error) {
       console.error("実績データの読み込みエラー:", error);

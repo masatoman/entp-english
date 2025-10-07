@@ -707,14 +707,14 @@ export class SkillTreeManager {
    */
   getSkillTreeState(): SkillTreeState {
     const saved = this.loadProgress();
-    const unlockedNodes = this.calculateUnlockedNodes(saved);
-    const completedNodes = this.calculateCompletedNodes(saved);
+    const unlockedNodes = this.calculateUnlockedNodes();
+    const completedNodes = this.calculateCompletedNodes();
     const availableNodes = this.calculateAvailableNodes(saved, unlockedNodes);
 
     return {
       progress: saved,
       currentLevel: this.calculateCurrentLevel(completedNodes),
-      totalXP: this.calculateTotalXP(saved),
+      totalXP: this.calculateTotalXP(),
       unlockedNodes,
       completedNodes,
       availableNodes,
@@ -745,7 +745,7 @@ export class SkillTreeManager {
     };
 
     this.saveProgress(progress);
-    this.checkUnlockConditions(nodeId, progress);
+    this.checkUnlockConditions(nodeId);
   }
 
   /**
@@ -806,6 +806,7 @@ export class SkillTreeManager {
 
   private calculateUnlockedNodes(): string[] {
     const unlocked = ["parts-of-speech"]; // 最初のノードは品詞から開始
+    const progress = this.loadProgress();
 
     GRAMMAR_SKILL_TREE.forEach((node) => {
       if (
@@ -825,12 +826,14 @@ export class SkillTreeManager {
   }
 
   private calculateCompletedNodes(): string[] {
+    const progress = this.loadProgress();
     return Object.values(progress)
-      .filter((p) => p.masteryLevel >= 90)
-      .map((p) => p.nodeId);
+      .filter((p: any) => p.masteryLevel >= 90)
+      .map((p: any) => p.nodeId);
   }
 
   private calculateAvailableNodes(unlockedNodes: string[]): string[] {
+    const progress = this.loadProgress();
     return unlockedNodes.filter((nodeId) => {
       const nodeProgress = progress[nodeId];
       return !nodeProgress || nodeProgress.masteryLevel < 90;
@@ -851,7 +854,8 @@ export class SkillTreeManager {
   }
 
   private calculateTotalXP(): number {
-    return Object.values(progress).reduce((total, nodeProgress) => {
+    const progress = this.loadProgress();
+    return Object.values(progress).reduce((total: number, nodeProgress: any) => {
       const node = GRAMMAR_SKILL_TREE.find((n) => n.id === nodeProgress.nodeId);
       if (node && nodeProgress.masteryLevel >= 90) {
         return total + node.rewards.xp;

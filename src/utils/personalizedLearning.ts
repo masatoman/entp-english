@@ -72,7 +72,6 @@ export class PersonalizedLearningSystem {
     try {
       const profile = this.analyzeUserBehavior(
         userId,
-        userStats,
         recentSessions
       );
 
@@ -263,7 +262,7 @@ export class PersonalizedLearningSystem {
 
     // 難易度選好の分析
     const preferredDifficulty =
-      this.analyzeDifficultyPreference(recentSessions);
+      this.analyzeDifficultyPreference();
 
     // カテゴリー選好の分析
     const preferredCategories = this.analyzeCategoryPreference(recentSessions);

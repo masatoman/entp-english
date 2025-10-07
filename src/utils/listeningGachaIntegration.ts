@@ -73,8 +73,7 @@ class ListeningGachaIntegration {
       // 推奨語彙を生成
       const recommendedWords = await this.generateRecommendedWords(
         weakVocabulary,
-        partAnalysis,
-        userId
+        partAnalysis
       );
 
       const analysis: ListeningAnalysis = {
