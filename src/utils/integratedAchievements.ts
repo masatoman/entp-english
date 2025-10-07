@@ -32,7 +32,7 @@ export class IntegratedAchievementsManager {
    * 統合実績データを取得
    */
   static getIntegratedAchievements(
-    userId: string = "default"
+    _userId: string = "default"
   ): IntegratedAchievements {
     const toeicSpecific = this.getTOEICSpecificAchievements(userId);
     const crossFunctional = this.getCrossFunctionalAchievements(userId);
@@ -53,7 +53,7 @@ export class IntegratedAchievementsManager {
    * TOEIC固有実績を取得
    */
   private static getTOEICSpecificAchievements(
-    userId: string
+    _userId: string
   ): TOEICSpecificAchievements {
     return {
       partMaster: this.getPartMasterAchievements(userId),
@@ -68,7 +68,7 @@ export class IntegratedAchievementsManager {
    * パートマスター実績を取得
    */
   private static getPartMasterAchievements(
-    userId: string
+    _userId: string
   ): PartMasterAchievement[] {
     const achievements: PartMasterAchievement[] = [];
 
@@ -131,7 +131,7 @@ export class IntegratedAchievementsManager {
    * 完璧なテスト実績を取得
    */
   private static getPerfectRunAchievements(
-    userId: string
+    _userId: string
   ): PerfectRunAchievement[] {
     const testTypes: ("listening" | "reading" | "full")[] = [
       "listening",
@@ -164,7 +164,7 @@ export class IntegratedAchievementsManager {
    * 時間記録実績を取得
    */
   private static getTimeRecordAchievements(
-    userId: string
+    _userId: string
   ): TimeRecordAchievement[] {
     // モック実装
     return [
@@ -199,7 +199,7 @@ export class IntegratedAchievementsManager {
    * カテゴリーエキスパート実績を取得
    */
   private static getCategoryExpertAchievements(
-    userId: string
+    _userId: string
   ): CategoryExpertAchievement[] {
     const categories = ["時制", "関係詞", "語彙", "リスニング", "読解"];
 
@@ -233,7 +233,7 @@ export class IntegratedAchievementsManager {
    * クロス機能実績を取得
    */
   private static getCrossFunctionalAchievements(
-    userId: string
+    _userId: string
   ): CrossFunctionalAchievements {
     return {
       synergyMaster: this.getSynergyMasterAchievement(userId),
@@ -248,7 +248,7 @@ export class IntegratedAchievementsManager {
    * シナジーマスター実績を取得
    */
   private static getSynergyMasterAchievement(
-    userId: string
+    _userId: string
   ): SynergyMasterAchievement {
     const synergyData = SynergyExplosionSystem.getSynergyExplosionData(userId);
     const isCompleted = synergyData.combinedMultiplier >= 2.0;
@@ -272,7 +272,7 @@ export class IntegratedAchievementsManager {
    * スキルツリー完了実績を取得
    */
   private static getSkillTreeCompletionAchievement(
-    userId: string
+    _userId: string
   ): SkillTreeCompletionAchievement {
     const skillTreeData =
       SkillTreeTOEICIntegrationManager.getSkillTreeProgressForTOEIC(userId);
@@ -298,7 +298,7 @@ export class IntegratedAchievementsManager {
    * 全モードマスター実績を取得
    */
   private static getAllModeMasterAchievement(
-    userId: string
+    _userId: string
   ): AllModeMasterAchievement {
     const synergyData = SynergyExplosionSystem.getSynergyExplosionData(userId);
     const modeProgress = {
@@ -338,7 +338,7 @@ export class IntegratedAchievementsManager {
    * 学習ストリーク実績を取得
    */
   private static getLearningStreakAchievement(
-    userId: string
+    _userId: string
   ): LearningStreakAchievement {
     // モック実装
     return {
@@ -359,7 +359,7 @@ export class IntegratedAchievementsManager {
   /**
    * 適応学習者実績を取得
    */
-  private static getAdaptiveLearnerAchievement(userId: string): any {
+  private static getAdaptiveLearnerAchievement(_userId: string): any {
     // モック実装
     return {
       isCompleted: true,
@@ -380,7 +380,7 @@ export class IntegratedAchievementsManager {
    * シナジーベース実績を取得
    */
   private static getSynergyBasedAchievements(
-    userId: string
+    _userId: string
   ): SynergyBasedAchievements {
     return {
       combinationMaster: this.getCombinationMasterAchievements(userId),
@@ -393,7 +393,7 @@ export class IntegratedAchievementsManager {
    * 組み合わせマスター実績を取得
    */
   private static getCombinationMasterAchievements(
-    userId: string
+    _userId: string
   ): CombinationMasterAchievement[] {
     const combinations = [
       { type: "grammar-vocabulary", requiredSynergy: 1.3 },
@@ -427,7 +427,7 @@ export class IntegratedAchievementsManager {
    * 進捗ベース実績を取得
    */
   private static getProgressionBasedAchievements(
-    userId: string
+    _userId: string
   ): ProgressionBasedAchievements {
     return {
       levelMaster: [], // TODO: 実装
@@ -465,7 +465,7 @@ export class IntegratedAchievementsManager {
    * 実績通知を生成
    */
   static generateAchievementNotification(
-    userId: string,
+    _userId: string,
     achievementId: string,
     achievementType: "toeic" | "cross_functional" | "synergy" | "progression",
     title: string,
@@ -502,8 +502,8 @@ export class IntegratedAchievementsManager {
   }
 
   private static checkPartMasterCompletion(
-    userId: string,
-    part: number
+    _userId: string,
+    _part: number
   ): boolean {
     // 実際の実装では、学習データベースから確認
     return Math.random() > 0.7; // モック実装
@@ -575,50 +575,50 @@ export class IntegratedAchievementsManager {
   }
 
   private static getCategoryQuestionsCompleted(
-    userId: string,
-    category: string
+    _userId: string,
+    _category: string
   ): number {
     // 実際の実装では、カテゴリー別完了問題数を取得
     return Math.floor(Math.random() * 100) + 50; // モック実装
   }
 
   private static countTotalAchievements(
-    achievements: IntegratedAchievements
+    _achievements: IntegratedAchievements
   ): number {
     // 実際の実装では、全実績数をカウント
     return 50; // モック実装
   }
 
   private static countCompletedAchievements(
-    achievements: IntegratedAchievements
+    _achievements: IntegratedAchievements
   ): number {
     // 実際の実装では、完了実績数をカウント
     return 25; // モック実装
   }
 
   private static calculateTotalXPEarned(
-    achievements: IntegratedAchievements
+    _achievements: IntegratedAchievements
   ): number {
     // 実際の実装では、獲得XPを計算
     return 5000; // モック実装
   }
 
   private static getRecentAchievements(
-    userId: string
+    _userId: string
   ): AchievementNotification[] {
     // 実際の実装では、最近の実績通知を取得
     return []; // モック実装
   }
 
   private static getNextAchievements(
-    achievements: IntegratedAchievements
+    _achievements: IntegratedAchievements
   ): string[] {
     // 実際の実装では、次の実績候補を取得
     return ["Part 3マスター", "600点達成", "シナジーマスター"]; // モック実装
   }
 
   private static getCategoryBreakdown(
-    achievements: IntegratedAchievements
+    _achievements: IntegratedAchievements
   ): any[] {
     // 実際の実装では、カテゴリー別実績数を取得
     return [
@@ -630,7 +630,7 @@ export class IntegratedAchievementsManager {
   }
 
   private static saveAchievementNotification(
-    userId: string,
+    _userId: string,
     notification: AchievementNotification
   ): void {
     try {
@@ -652,7 +652,7 @@ export class IntegratedAchievementsManager {
   }
 
   private static getAchievementNotifications(
-    userId: string
+    _userId: string
   ): AchievementNotification[] {
     try {
       const stored = localStorage.getItem(
@@ -669,8 +669,8 @@ export class IntegratedAchievementsManager {
    * 実績データを保存
    */
   static saveAchievements(
-    userId: string,
-    achievements: IntegratedAchievements
+    _userId: string,
+    _achievements: IntegratedAchievements
   ): void {
     localStorage.setItem(
       `${this.ACHIEVEMENTS_KEY}-${userId}`,
@@ -682,7 +682,7 @@ export class IntegratedAchievementsManager {
    * 実績データを読み込み
    */
   static loadAchievements(
-    userId: string = "default"
+    _userId: string = "default"
   ): IntegratedAchievements | null {
     try {
       const stored = localStorage.getItem(`${this.ACHIEVEMENTS_KEY}-${userId}`);

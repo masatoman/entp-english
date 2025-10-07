@@ -14,7 +14,7 @@ import { TOEICQuestion } from "../types/mockTest";
 export class HeartTOEICIntegrationManager {
   private static readonly INTEGRATION_KEY = "entp-heart-toeic-integration";
   private static readonly CONSUMPTIONS_KEY = "entp-heart-consumptions";
-  private static readonly CHALLENGES_KEY = "entp-heart-challenges";
+  private static readonly _CHALLENGES_KEY = "entp-heart-challenges";
 
   /**
    * 特別TOEICモード定義
@@ -521,12 +521,12 @@ export class HeartTOEICIntegrationManager {
   }
 
   // ヘルパーメソッド群
-  private static calculateHeartCost(userId: string): number {
+  private static calculateHeartCost(_userId: string): number {
     // ユーザーのレベルや実績に基づいてハートコストを計算
     return 1; // 基本コスト
   }
 
-  private static getCurrentHearts(userId: string): number {
+  private static getCurrentHearts(_userId: string): number {
     // 実際の実装では、ハートシステムから取得
     return 5; // モックデータ
   }
@@ -568,12 +568,12 @@ export class HeartTOEICIntegrationManager {
     return mode ? mode.duration : 30;
   }
 
-  private static getLearningStreak(userId: string): number {
+  private static getLearningStreak(_userId: string): number {
     // 実際の実装では、学習ストリークを取得
     return 7; // モックデータ
   }
 
-  private static getAchievementCount(userId: string): number {
+  private static getAchievementCount(_userId: string): number {
     // 実際の実装では、実績数を取得
     return 15; // モックデータ
   }

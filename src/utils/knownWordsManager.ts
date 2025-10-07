@@ -42,9 +42,7 @@ export class KnownWordsManager {
     const data = this.getKnownWordsData();
 
     // 既に既知としてマークされているかチェック
-    const existingIndex = data.knownWords.findIndex(
-      (kw) => kw.id === word.id
-    );
+    const existingIndex = data.knownWords.findIndex((kw) => kw.id === word.id);
 
     if (existingIndex === -1) {
       // 新しい既知単語として追加
@@ -165,7 +163,9 @@ export class KnownWordsManager {
    */
   static unmarkWordAsKnown(wordId: string): boolean {
     const data = this.getKnownWordsData();
-    const wordIndex = data.knownWords.findIndex((kw) => kw.id === Number(wordId));
+    const wordIndex = data.knownWords.findIndex(
+      (kw) => kw.id === Number(wordId)
+    );
 
     if (wordIndex !== -1) {
       const removedWord = data.knownWords[wordIndex];

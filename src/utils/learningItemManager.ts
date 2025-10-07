@@ -1,12 +1,12 @@
 import { VocabularyWord } from "../data/vocabulary";
 import { WordCard } from "../types/gacha";
 import {
+  ItemRelation,
   LearningExample,
   LearningExplanation,
   LearningItem,
   LearningProgress,
   LearningQuestion,
-  ItemRelation,
 } from "../types/learningItem";
 import { logError } from "./logger";
 

@@ -598,7 +598,7 @@ export class DataManager {
           exampleTranslation: card.examples[0]?.translation || "",
           level: this.mapRarityToLevel(card.rarity),
           category: "toeic",
-          examples: card.examples?.map(ex => ex.sentence) || [],
+          examples: card.examples?.map((ex) => ex.sentence) || [],
           content: card.word,
         };
 

@@ -436,12 +436,12 @@ export class PersonalizedLearningSystem {
     return "normal";
   }
 
-  private static analyzeCategoryPreference(sessions: any[]): string[] {
+  private static analyzeCategoryPreference(_sessions: any[]): string[] {
     // カテゴリー選好を分析
     return ["grammar", "vocabulary"];
   }
 
-  private static analyzePerformanceAreas(sessions: any[]): {
+  private static analyzePerformanceAreas(_sessions: any[]): {
     strongAreas: string[];
     weakAreas: string[];
   } {
@@ -449,11 +449,11 @@ export class PersonalizedLearningSystem {
     return { strongAreas: ["grammar"], weakAreas: ["vocabulary"] };
   }
 
-  private static analyzeOptimalStudyTime(sessions: any[]): number {
+  private static analyzeOptimalStudyTime(_sessions: any[]): number {
     return 15; // 分
   }
 
-  private static analyzeBestPerformanceHours(sessions: any[]): number[] {
+  private static analyzeBestPerformanceHours(_sessions: any[]): number[] {
     return [9, 14, 19];
   }
 
@@ -461,15 +461,15 @@ export class PersonalizedLearningSystem {
     return "normal";
   }
 
-  private static calculateAverageAccuracy(sessions: any[]): number {
+  private static calculateAverageAccuracy(_sessions: any[]): number {
     return 75;
   }
 
-  private static calculateImprovementRate(sessions: any[]): number {
+  private static calculateImprovementRate(_sessions: any[]): number {
     return 5;
   }
 
-  private static calculateConsistencyScore(sessions: any[]): number {
+  private static calculateConsistencyScore(_sessions: any[]): number {
     return 70;
   }
 

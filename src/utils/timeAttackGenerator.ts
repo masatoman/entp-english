@@ -130,7 +130,7 @@ export class TimeAttackGenerator {
     );
 
     // 最近獲得した語彙から問題生成
-    recentVocab.forEach((vocab, index) => {
+    recentVocab.forEach((vocab, _index) => {
       if (questions.length >= count) return;
 
       const otherVocab = synergyData.availableVocabulary
@@ -306,7 +306,7 @@ export class TimeAttackGenerator {
    * 文法中心の問題生成
    */
   private static generateGrammarQuestions(
-    synergyData: TimeAttackSynergyData,
+    _synergyData: TimeAttackSynergyData,
     count: number
   ): TimeAttackQuestion[] {
     const questions: TimeAttackQuestion[] = [];

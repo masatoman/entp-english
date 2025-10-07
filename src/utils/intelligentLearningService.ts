@@ -511,7 +511,7 @@ export class IntelligentLearningService {
   }
 
   private static updateSessionMetrics(
-    session: LearningSession,
+    _session: LearningSession,
     isCorrect: boolean,
     timeToAnswer: number,
     confidence: number
@@ -537,7 +537,7 @@ export class IntelligentLearningService {
   }
 
   private static generateRealTimeFeedback(
-    session: LearningSession,
+    _session: LearningSession,
     isCorrect: boolean,
     adjustment: any
   ): string {
@@ -553,7 +553,7 @@ export class IntelligentLearningService {
   }
 
   private static generateAchievements(
-    session: LearningSession,
+    _session: LearningSession,
     evaluation: any
   ): string[] {
     const achievements = [];
@@ -633,7 +633,7 @@ export class IntelligentLearningService {
 
   private static identifyMilestones(adaptationAnalysis: any): string[] {
     const milestones = [];
-    const [minDifficulty, maxDifficulty] =
+    const [_minDifficulty, maxDifficulty] =
       adaptationAnalysis.preferredDifficultyRange;
 
     if (maxDifficulty > 70) {

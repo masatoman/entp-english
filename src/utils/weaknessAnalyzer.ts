@@ -619,12 +619,12 @@ export class WeaknessAnalyzer {
     return secondAvg - firstAvg;
   }
 
-  private static identifySpecificIssues(): string[] {
+  private static _identifySpecificIssues(): string[] {
     // カテゴリー別の具体的問題特定（簡略化）
     return ["詳細な問題分析が必要"];
   }
 
-  private static generateRecommendations(): string[] {
+  private static _generateRecommendations(): string[] {
     // カテゴリー別推奨事項生成（簡略化）
     return ["基礎練習を強化する", "定期的な復習を行う"];
   }
@@ -652,7 +652,7 @@ export class WeaknessAnalyzer {
     return timePerformance;
   }
 
-  private static analyzeOptimalSessionLength(sessions: any[]): number {
+  private static analyzeOptimalSessionLength(_sessions: any[]): number {
     // セッション長分析（簡略化）
     return 15; // 分
   }
@@ -662,7 +662,7 @@ export class WeaknessAnalyzer {
     return "normal";
   }
 
-  private static analyzeRetentionRate(sessions: any[]): number {
+  private static analyzeRetentionRate(_sessions: any[]): number {
     // 記憶保持率分析（簡略化）
     return 75;
   }
@@ -675,7 +675,7 @@ export class WeaknessAnalyzer {
     return "normal";
   }
 
-  private static analyzeMotivationalFactors(sessions: any[]): string[] {
+  private static analyzeMotivationalFactors(_sessions: any[]): string[] {
     // モチベーション要因分析（簡略化）
     return ["即座のフィードバック", "達成感", "進捗の可視化"];
   }

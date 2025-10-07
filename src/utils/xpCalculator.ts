@@ -56,7 +56,7 @@ export function calculateXP(
   let maxStreak = 0;
 
   // 各回答のXPを計算
-  userAnswers.forEach((answer, index) => {
+  userAnswers.forEach((answer, _index) => {
     if (answer.isCorrect) {
       correctCount++;
       streakCount++;

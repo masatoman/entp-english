@@ -222,7 +222,7 @@ export class LearningAnalyzer {
    * 好みの難易度を分析
    */
   private static getPreferredDifficulty(
-    userStats: any
+    _userStats: any
   ): LearningPattern["preferredDifficulty"] {
     // 実際の選択履歴から判定（仮実装）
     const sessions = this.getStudySessions();

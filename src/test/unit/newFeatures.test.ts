@@ -1,6 +1,6 @@
-import { describe, expect, it, beforeEach, vi } from "vitest";
-import { KnownWordsManager } from "../../utils/knownWordsManager";
+import { beforeEach, describe, expect, it } from "vitest";
 import { DailyChallengeManager } from "../../utils/dailyChallengeManager";
+import { KnownWordsManager } from "../../utils/knownWordsManager";
 import { LearningAnalyzer } from "../../utils/learningAnalyzer";
 
 /**
@@ -16,7 +16,7 @@ describe("New Features Tests", () => {
   describe("既知単語管理システム", () => {
     it("既知単語データの初期化が正常", () => {
       const data = KnownWordsManager.getKnownWordsData();
-      
+
       expect(data).toBeDefined();
       expect(data.knownWords).toEqual([]);
       expect(data.totalKnownCount).toBe(0);
@@ -38,7 +38,7 @@ describe("New Features Tests", () => {
       };
 
       KnownWordsManager.markWordAsKnown(testWord);
-      
+
       const data = KnownWordsManager.getKnownWordsData();
       expect(data.totalKnownCount).toBe(1);
       expect(data.knownWords[0].word).toBe("test");
@@ -48,13 +48,33 @@ describe("New Features Tests", () => {
 
     it("既知単語のフィルタリングが正常", () => {
       const words = [
-        { id: 1, english: "known", japanese: "既知", meaning: "既知", category: "daily", level: "beginner" as const, partOfSpeech: "adj", example: "", exampleTranslation: "" },
-        { id: 2, english: "unknown", japanese: "未知", meaning: "未知", category: "daily", level: "beginner" as const, partOfSpeech: "adj", example: "", exampleTranslation: "" },
+        {
+          id: 1,
+          english: "known",
+          japanese: "既知",
+          meaning: "既知",
+          category: "daily",
+          level: "beginner" as const,
+          partOfSpeech: "adj",
+          example: "",
+          exampleTranslation: "",
+        },
+        {
+          id: 2,
+          english: "unknown",
+          japanese: "未知",
+          meaning: "未知",
+          category: "daily",
+          level: "beginner" as const,
+          partOfSpeech: "adj",
+          example: "",
+          exampleTranslation: "",
+        },
       ];
 
       // 1つ目を既知としてマーク
       KnownWordsManager.markWordAsKnown(words[0]);
-      
+
       const filtered = KnownWordsManager.filterUnknownWords(words);
       expect(filtered.length).toBe(1);
       expect(filtered[0].word).toBe("unknown");
@@ -64,7 +84,7 @@ describe("New Features Tests", () => {
   describe("デイリーチャレンジシステム", () => {
     it("今日のチャレンジが生成される", () => {
       const challenge = DailyChallengeManager.getTodayChallenge();
-      
+
       expect(challenge).toBeDefined();
       expect(challenge.name).toBeTruthy();
       expect(challenge.description).toBeTruthy();
@@ -75,7 +95,7 @@ describe("New Features Tests", () => {
 
     it("チャレンジ統計が正常に取得される", () => {
       const stats = DailyChallengeManager.getStats();
-      
+
       expect(stats).toBeDefined();
       expect(stats.currentStreak).toBeGreaterThanOrEqual(0);
       expect(stats.totalCompleted).toBeGreaterThanOrEqual(0);
@@ -87,7 +107,7 @@ describe("New Features Tests", () => {
   describe("学習分析システム", () => {
     it("学習インサイトが生成される", () => {
       const insight = LearningAnalyzer.generateLearningInsight();
-      
+
       expect(insight).toBeDefined();
       expect(insight.learnerType).toBeTruthy();
       expect(insight.primaryStrengths).toBeInstanceOf(Array);
@@ -100,7 +120,7 @@ describe("New Features Tests", () => {
 
     it("学習パターン分析が正常", () => {
       const pattern = LearningAnalyzer.analyzeLearningPattern();
-      
+
       expect(pattern).toBeDefined();
       expect(pattern.preferredDifficulty).toBeTruthy();
       expect(pattern.preferredCategory).toBeTruthy();
