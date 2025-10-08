@@ -108,7 +108,7 @@ export const preStudyContents: PreStudyContent[] = [
     toeicExamples: [
       {
         part: 5,
-        type: "語順問題",
+        type: "grammar",
         question: "The company _____ its employees excellent benefits.",
         choices: ["provides", "providing", "provided", "to provide"],
         correctAnswer: 0,
@@ -117,7 +117,7 @@ export const preStudyContents: PreStudyContent[] = [
       },
       {
         part: 5,
-        type: "文型判定",
+        type: "grammar",
         question: "The presentation was _____ by all attendees.",
         choices: ["impressed", "impressive", "impress", "impressing"],
         correctAnswer: 1,
@@ -126,7 +126,7 @@ export const preStudyContents: PreStudyContent[] = [
       },
       {
         part: 6,
-        type: "語順・文型",
+        type: "grammar",
         question: "Our manager _____ the project successful.",
         choices: ["considered", "considering", "considers", "consideration"],
         correctAnswer: 0,
@@ -135,7 +135,7 @@ export const preStudyContents: PreStudyContent[] = [
       },
       {
         part: 5,
-        type: "基本文型",
+        type: "grammar",
         question: "The meeting _____ at 3 PM yesterday.",
         choices: ["started", "starting", "starts", "to start"],
         correctAnswer: 0,
@@ -211,7 +211,7 @@ export const preStudyContents: PreStudyContent[] = [
     toeicExamples: [
       {
         part: 5,
-        type: "助動詞選択",
+        type: "grammar",
         question: "Employees _____ submit their reports by 5 PM today.",
         choices: ["can", "must", "might", "would"],
         correctAnswer: 1,
@@ -220,7 +220,7 @@ export const preStudyContents: PreStudyContent[] = [
       },
       {
         part: 5,
-        type: "丁寧表現",
+        type: "grammar",
         question: "_____ you please review this document?",
         choices: ["Can", "Could", "May", "Might"],
         correctAnswer: 1,
@@ -228,7 +228,7 @@ export const preStudyContents: PreStudyContent[] = [
       },
       {
         part: 6,
-        type: "助動詞の意味",
+        type: "grammar",
         question: "The system _____ be updated to improve security.",
         choices: ["should", "could", "would", "might"],
         correctAnswer: 0,
@@ -412,36 +412,7 @@ export const preStudyContents: PreStudyContent[] = [
       "時間表現が時制選択の重要な手がかり",
       "ビジネス英語での実践的活用",
     ],
-    practiceQuestions: [
-      {
-        question: "She _____ to work by train every day.",
-        options: ["go", "goes", "went", "will go"],
-        correct: 1,
-        explanation:
-          "every dayという習慣を表す表現があり、三人称単数なのでgoesが正解",
-      },
-      {
-        question: "I _____ him at the conference last week.",
-        options: ["meet", "met", "will meet", "am meeting"],
-        correct: 1,
-        explanation: "last weekという過去の時間表現があるため過去形metが正解",
-      },
-      {
-        question: "Look at those clouds! It _____ rain soon.",
-        options: ["will", "is going to", "rains", "rained"],
-        correct: 1,
-        explanation: "根拠のある予測なのでbe going toが適切",
-      },
-    ],
-    tips: [
-      "時間表現（yesterday, every day, tomorrowなど）に注目",
-      "三人称単数の現在形では動詞にs/esを付ける",
-      "willとbe going toの使い分けを意識する",
-      "不規則動詞の過去形は暗記が必要",
-    ],
-    relatedTopics: ["tenses-theory-part2"],
-    estimatedTime: 8,
-    prerequisites: ["basic-grammar-theory"],
+    examples: [],
   },
 
   // 時制 (tenses) - 後編
@@ -644,35 +615,7 @@ had done      did       now
       "未来完了：未来の時点での完了予測",
       "時制の一致：主節が過去形の場合の規則",
     ],
-    practiceQuestions: [
-      {
-        question: "I _____ English for three years.",
-        options: ["study", "studied", "have studied", "will study"],
-        correct: 2,
-        explanation: "継続を表すfor three yearsがあるため現在完了形が正解",
-      },
-      {
-        question: "When I arrived, they _____ already left.",
-        options: ["have", "had", "will have", "would have"],
-        correct: 1,
-        explanation: "過去のある時点より前の完了を表すため過去完了形",
-      },
-      {
-        question: "By next week, we _____ the project.",
-        options: ["finish", "finished", "will finish", "will have finished"],
-        correct: 3,
-        explanation: "未来のある時点での完了を表すため未来完了形",
-      },
-    ],
-    tips: [
-      "for/sinceは継続、ever/neverは経験の手がかり",
-      "現在完了形は「過去と現在のつながり」を意識",
-      "時制の一致では主節の時制に注意",
-      "完了形は「時間の前後関係」が重要",
-    ],
-    relatedTopics: ["conditionals", "passive-voice", "reported-speech"],
-    estimatedTime: 10,
-    prerequisites: ["tenses-theory-part1"],
+    examples: [],
   },
 
   // 受動態 (passive)
@@ -755,7 +698,7 @@ had done      did       now
     toeicExamples: [
       {
         part: 5,
-        type: "受動態の時制",
+        type: "grammar",
         question: "The new software _____ by the IT department last week.",
         choices: [
           "installed",
@@ -769,7 +712,7 @@ had done      did       now
       },
       {
         part: 6,
-        type: "受動態の形",
+        type: "grammar",
         question: "All documents must _____ before the deadline.",
         choices: ["submit", "be submitted", "submitting", "to submit"],
         correctAnswer: 1,
@@ -778,7 +721,7 @@ had done      did       now
       },
       {
         part: 5,
-        type: "現在完了受動態",
+        type: "grammar",
         question: "The project _____ successfully completed.",
         choices: ["has", "has been", "have", "have been"],
         correctAnswer: 1,
@@ -871,7 +814,7 @@ had done      did       now
     toeicExamples: [
       {
         part: 5,
-        type: "関係代名詞選択",
+        type: "grammar",
         question:
           "The manager _____ is responsible for sales will attend the meeting.",
         choices: ["who", "which", "whose", "where"],
@@ -881,7 +824,7 @@ had done      did       now
       },
       {
         part: 6,
-        type: "関係詞の省略",
+        type: "grammar",
         question:
           "The project _____ we completed last month was very successful.",
         choices: ["that", "what", "who", "where"],
@@ -891,7 +834,7 @@ had done      did       now
       },
       {
         part: 5,
-        type: "関係副詞",
+        type: "grammar",
         question:
           "This is the conference room _____ we hold our weekly meetings.",
         choices: ["that", "which", "where", "when"],
@@ -984,7 +927,7 @@ had done      did       now
     toeicExamples: [
       {
         part: 5,
-        type: "仮定法の時制",
+        type: "grammar",
         question: "If I _____ more time, I would review the proposal again.",
         choices: ["have", "had", "will have", "would have"],
         correctAnswer: 1,
@@ -993,7 +936,7 @@ had done      did       now
       },
       {
         part: 6,
-        type: "wish構文",
+        type: "grammar",
         question: "I wish the meeting _____ shorter.",
         choices: ["is", "was", "were", "will be"],
         correctAnswer: 2,
@@ -1002,7 +945,7 @@ had done      did       now
       },
       {
         part: 5,
-        type: "丁寧な依頼",
+        type: "grammar",
         question: "I would appreciate it if you _____ send me the data.",
         choices: ["can", "could", "will", "would"],
         correctAnswer: 1,
@@ -1094,7 +1037,7 @@ had done      did       now
     toeicExamples: [
       {
         part: 5,
-        type: "比較級選択",
+        type: "grammar",
         question: "Our new product is _____ than our competitors'.",
         choices: ["more popular", "most popular", "popular", "popularity"],
         correctAnswer: 0,
@@ -1103,7 +1046,7 @@ had done      did       now
       },
       {
         part: 6,
-        type: "最上級",
+        type: "grammar",
         question: "This is _____ important project of the year.",
         choices: ["more", "most", "the more", "the most"],
         correctAnswer: 3,
@@ -1112,7 +1055,7 @@ had done      did       now
       },
       {
         part: 5,
-        type: "同等比較",
+        type: "grammar",
         question: "The new office is _____ spacious _____ the old one.",
         choices: ["as...as", "more...than", "so...as", "too...to"],
         correctAnswer: 0,
@@ -1211,7 +1154,7 @@ had done      did       now
     toeicExamples: [
       {
         part: 5,
-        type: "分詞の選択",
+        type: "grammar",
         question: "The _____ presentation impressed all the clients.",
         choices: ["prepared", "preparing", "preparation", "preparatory"],
         correctAnswer: 0,
@@ -1220,7 +1163,7 @@ had done      did       now
       },
       {
         part: 6,
-        type: "動名詞vs不定詞",
+        type: "grammar",
         question: "Thank you for _____ us with this project.",
         choices: ["help", "helping", "to help", "helped"],
         correctAnswer: 1,
@@ -1229,7 +1172,7 @@ had done      did       now
       },
       {
         part: 5,
-        type: "分詞構文",
+        type: "grammar",
         question:
           "_____ the meeting early, I had time to review the documents.",
         choices: ["Finish", "Finished", "Finishing", "To finish"],
@@ -1325,7 +1268,7 @@ had done      did       now
     toeicExamples: [
       {
         part: 5,
-        type: "不定詞の用法",
+        type: "grammar",
         question: "The company decided _____ a new branch office.",
         choices: ["open", "to open", "opening", "opened"],
         correctAnswer: 1,
@@ -1334,7 +1277,7 @@ had done      did       now
       },
       {
         part: 6,
-        type: "目的の不定詞",
+        type: "grammar",
         question: "We hired a consultant _____ improve our marketing strategy.",
         choices: ["for", "to", "so", "in order"],
         correctAnswer: 1,
@@ -1343,7 +1286,7 @@ had done      did       now
       },
       {
         part: 5,
-        type: "It is...to構文",
+        type: "grammar",
         question: "It is essential _____ the instructions carefully.",
         choices: ["follow", "to follow", "following", "followed"],
         correctAnswer: 1,
@@ -1434,7 +1377,7 @@ had done      did       now
     toeicExamples: [
       {
         part: 5,
-        type: "語彙選択",
+        type: "vocabulary",
         question: "The new software will _____ our efficiency significantly.",
         choices: ["enhance", "increase", "improve", "develop"],
         correctAnswer: 0,
@@ -1443,7 +1386,7 @@ had done      did       now
       },
       {
         part: 6,
-        type: "ビジネス語彙",
+        type: "vocabulary",
         question: "The company's _____ of the new technology was successful.",
         choices: ["implementation", "implement", "implementing", "implemented"],
         correctAnswer: 0,
@@ -1452,7 +1395,7 @@ had done      did       now
       },
       {
         part: 5,
-        type: "類義語選択",
+        type: "vocabulary",
         question:
           "The _____ report provided detailed analysis of market trends.",
         choices: ["comprehensive", "complete", "total", "whole"],
@@ -1550,7 +1493,7 @@ had done      did       now
     toeicExamples: [
       {
         part: 1,
-        type: "英作文基礎",
+        type: "grammar",
         question:
           "Write a sentence describing a business meeting using past tense.",
         choices: [
@@ -1565,7 +1508,7 @@ had done      did       now
       },
       {
         part: 2,
-        type: "文章構成",
+        type: "reading",
         question:
           "Choose the best way to combine these ideas: 'The project was successful.' 'We completed it on time.'",
         choices: [
@@ -1580,7 +1523,7 @@ had done      did       now
       },
       {
         part: 3,
-        type: "語彙活用",
+        type: "vocabulary",
         question:
           "Write a sentence using 'implement' and 'strategy' in a business context.",
         choices: [

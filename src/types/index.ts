@@ -238,13 +238,15 @@ export interface Achievement {
   name: string;
   description: string;
   category: string;
+  level: string;
   xpReward: number;
-  isUnlocked: boolean;
-  unlockedAt?: Date;
-  requirements: {
+  condition: {
     type: string;
-    value: number;
+    value: string;
   };
+  unlockedAt?: Date;
+  icon: string;
+  requirements: string[];
 }
 
 // 既知単語管理システム
@@ -295,6 +297,13 @@ export interface LearningAnalytics {
   improvementTrend: "上昇中" | "安定" | "要改善";
   weeklyProgress: number[];
   monthlyXpGain: number;
+}
+
+export interface Performance {
+  accuracy: number;
+  consistency: number;
+  sampleSize: number;
+  recentTrend: number;
 }
 
 // 今日のスペシャルチャレンジシステム

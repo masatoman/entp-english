@@ -121,10 +121,10 @@ export default function VocabularyCategorySelection() {
                 `例: ${category.examples.join(", ")}`,
                 category.wordCount,
               ]}
-              onClick={(id) => {
-                const category = id as "all" | "toeic" | "daily";
+              onClick={() => {
+                const categoryId = category.id as "all" | "toeic" | "daily";
                 navigate(
-                  `/learning/vocabulary/study/${difficulty}/${category}`
+                  `/learning/vocabulary/study/${difficulty}/${categoryId}`
                 );
               }}
             />

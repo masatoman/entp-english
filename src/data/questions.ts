@@ -1289,6 +1289,56 @@ export const questionsByCategory: Record<
       },
     ],
   },
+  "parts-of-speech": {
+    easy: [],
+    normal: [],
+    hard: [],
+  },
+  "word-order": {
+    easy: [],
+    normal: [],
+    hard: [],
+  },
+  pronouns: {
+    easy: [],
+    normal: [],
+    hard: [],
+  },
+  articles: {
+    easy: [],
+    normal: [],
+    hard: [],
+  },
+  plurals: {
+    easy: [],
+    normal: [],
+    hard: [],
+  },
+  "questions-negations": {
+    easy: [],
+    normal: [],
+    hard: [],
+  },
+  prepositions: {
+    easy: [],
+    normal: [],
+    hard: [],
+  },
+  conjunctions: {
+    easy: [],
+    normal: [],
+    hard: [],
+  },
+  "vocabulary-mastery": {
+    easy: [],
+    normal: [],
+    hard: [],
+  },
+  pronunciation: {
+    easy: [],
+    normal: [],
+    hard: [],
+  },
 };
 
 // Helper function to get questions by category and difficulty

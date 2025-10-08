@@ -102,8 +102,10 @@ export class IntelligentLearningService {
       );
 
       // 4. 包括的な弱点分析を実行
-      const weaknessAnalysis =
-        WeaknessAnalyzer.performComprehensiveAnalysis(userId);
+      const weaknessAnalysis = WeaknessAnalyzer.performComprehensiveAnalysis(
+        userId,
+        {} as any
+      );
 
       // 5. パフォーマンス最適化を実行
       const performanceResult = PerformanceOptimizer.optimizeRendering();
@@ -679,7 +681,10 @@ export class IntelligentLearningService {
         expectedAccuracy: 70,
       },
       adaptiveDifficulty: 50,
-      weaknessAnalysis: WeaknessAnalyzer.performComprehensiveAnalysis(userId),
+      weaknessAnalysis: WeaknessAnalyzer.performComprehensiveAnalysis(
+        userId,
+        {} as any
+      ),
       performanceInsights: {
         optimizationsApplied: [],
         currentMetrics: {},

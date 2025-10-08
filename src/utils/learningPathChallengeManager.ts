@@ -328,17 +328,17 @@ export class LearningPathChallengeManager {
   static getUserChallengeProgress(
     _userId: string = "default"
   ): LearningPathChallenge[] {
-    const stored = localStorage.getItem(`${this.CHALLENGE_KEY}-${userId}`);
+    const stored = localStorage.getItem(`${this.CHALLENGE_KEY}-${_userId}`);
     let challenges: LearningPathChallenge[] = stored
       ? JSON.parse(stored)
       : [...this.PREDEFINED_CHALLENGES];
 
     // 進捗を更新
     challenges = challenges.map((challenge) =>
-      this.updateChallengeProgress(challenge, userId)
+      this.updateChallengeProgress(challenge, _userId)
     );
 
-    this.saveUserChallengeProgress(userId, challenges);
+    this.saveUserChallengeProgress(_userId, challenges);
     return challenges;
   }
 
@@ -460,7 +460,7 @@ export class LearningPathChallengeManager {
     if (userLevel < challenge.requirements.minimumLevel) return false;
 
     // 前提チャレンジチェック
-    const challenges = this.getUserChallengeProgress(userId);
+    const challenges = this.getUserChallengeProgress(_userId);
     for (const prereqId of challenge.requirements.prerequisiteChallenges) {
       const prereqChallenge = challenges.find(
         (c) => c.challengeId === prereqId
@@ -485,7 +485,7 @@ export class LearningPathChallengeManager {
     challengeId: string,
     finalScore: number
   ): ChallengeCompletion | null {
-    const challenges = this.getUserChallengeProgress(userId);
+    const challenges = this.getUserChallengeProgress(_userId);
     const challenge = challenges.find((c) => c.challengeId === challengeId);
 
     if (!challenge || !challenge.isActive || !challenge.isCompleted)
@@ -504,17 +504,17 @@ export class LearningPathChallengeManager {
         improvement: challenge.progress.improvementRate,
       },
       feedback: this.generateChallengeFeedback(challenge, finalScore),
-      nextRecommendations: this.generateNextRecommendations(challenge, userId),
+      nextRecommendations: this.generateNextRecommendations(challenge, _userId),
     };
 
     // 報酬を付与
-    this.grantChallengeRewards(userId, challenge.rewards);
+    this.grantChallengeRewards(_userId, challenge.rewards);
 
     // チャレンジを非アクティブ化
     challenge.isActive = false;
     challenge.completedAt = new Date();
 
-    this.saveUserChallengeProgress(userId, challenges);
+    this.saveUserChallengeProgress(_userId, challenges);
     return completion;
   }
 
@@ -537,7 +537,7 @@ export class LearningPathChallengeManager {
     // 特別効果を適用
     if (rewards.specialEffects) {
       for (const _effect of rewards.specialEffects) {
-        this.applySpecialEffect(userId);
+        this.applySpecialEffect(_userId);
       }
     }
   }
@@ -597,7 +597,7 @@ export class LearningPathChallengeManager {
     _userId: string
   ): LearningPathRecommendation {
     // const userLevel = 1; // DataManager.getUserLevel(userId);
-    const challenges = this.getUserChallengeProgress(userId);
+    const challenges = this.getUserChallengeProgress(_userId);
     const completedChallenges = challenges.filter((c) => c.isCompleted);
 
     let recommendedPath = "grammar-mastery-path";
@@ -625,7 +625,7 @@ export class LearningPathChallengeManager {
     }
 
     return {
-      userId,
+      userId: _userId,
       recommendedPath,
       reason,
       expectedBenefit: "学習効率の向上と包括的なスキル習得",
@@ -645,7 +645,7 @@ export class LearningPathChallengeManager {
     challenges: LearningPathChallenge[]
   ): void {
     localStorage.setItem(
-      `${this.CHALLENGE_KEY}-${userId}`,
+      `${this.CHALLENGE_KEY}-${_userId}`,
       JSON.stringify(challenges)
     );
   }

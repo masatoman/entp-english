@@ -1,4 +1,5 @@
-import { vi } from 'vitest';
+// @ts-ignore
+import { vi } from "vitest";
 
 // LocalStorageのモック（実際の動作をシミュレート）
 const storage: Record<string, string> = {};
@@ -12,24 +13,25 @@ const localStorageMock = {
     delete storage[key];
   }),
   clear: vi.fn(() => {
-    Object.keys(storage).forEach(key => delete storage[key]);
+    Object.keys(storage).forEach((key) => delete storage[key]);
   }),
   length: 0,
   key: vi.fn(),
 };
 
-Object.defineProperty(window, 'localStorage', {
+Object.defineProperty(window, "localStorage", {
   value: localStorageMock,
   writable: true,
 });
 
 // window.scrollToのモック
-Object.defineProperty(window, 'scrollTo', {
+Object.defineProperty(window, "scrollTo", {
   value: vi.fn(),
   writable: true,
 });
 
 // 各テスト前にLocalStorageをクリア
+// @ts-ignore
 beforeEach(() => {
   localStorageMock.clear();
   localStorageMock.getItem.mockClear();

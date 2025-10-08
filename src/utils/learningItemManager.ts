@@ -459,10 +459,7 @@ export class LearningItemManager {
     const choices = [word.meaning];
 
     // 類似の品詞から間違った選択肢を生成
-    const similarMeanings = this.getSimilarMeanings(
-      word.partOfSpeech,
-      word.meaning
-    );
+    const similarMeanings = this.getSimilarMeanings(word.partOfSpeech);
     choices.push(...similarMeanings.slice(0, 3));
 
     // 4つに満たない場合は汎用的な選択肢を追加

@@ -51,7 +51,7 @@ export default function XPShopPage() {
     // アイテム効果を適用（簡単な実装）
     applyItemEffect(item);
 
-    alert(`${item.name}を購入しました！\n効果時間: ${item.duration}分`);
+    alert(`${item.name}を購入しました！\n効果時間: ${item.duration || "無制限"}分`);
   };
 
   const applyItemEffect = (item: XPShopItem) => {
@@ -60,7 +60,7 @@ export default function XPShopPage() {
       itemId: item.id,
       type: item.type,
       startTime: Date.now(),
-      duration: item.duration * 60 * 1000, // 分をミリ秒に変換
+      duration: (item.duration || 0) * 60 * 1000, // 分をミリ秒に変換
       multiplier: getItemMultiplier(item.type),
     };
 
@@ -171,7 +171,7 @@ export default function XPShopPage() {
 
                   <div className="flex items-center justify-between">
                     <div className="text-sm text-gray-500">
-                      効果時間: {item.duration}分
+                      効果時間: {item.duration || "無制限"}分
                     </div>
                     <Badge
                       variant={canAfford(item) ? "default" : "secondary"}
@@ -220,7 +220,7 @@ export default function XPShopPage() {
 
                   <div className="flex items-center justify-between">
                     <div className="text-sm text-gray-500">
-                      効果時間: {item.duration}秒
+                      効果時間: {item.duration || "無制限"}秒
                     </div>
                     <Badge
                       variant="secondary"

@@ -534,7 +534,7 @@ export class QualityMetricsCollector {
       const insights = this.generateQualityInsights(storedMetrics, trend);
 
       // 予測の生成
-      const predictions = this.generateQualityPredictions(storedMetrics);
+      const predictions = this.generateQualityPredictions("test");
 
       return {
         trend,

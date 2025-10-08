@@ -49,18 +49,18 @@ export default function TimeAttackMode() {
   const [showExplanations, setShowExplanations] = useState(false);
 
   // 相乗効果データ取得
-  const [synergyStats, setSynergyStats] = useState({
-    gachaVocabCount: 0,
-    grammarCategoriesStudied: 0,
-  });
+  // const [synergyStats, setSynergyStats] = useState({
+  //   gachaVocabCount: 0,
+  //   grammarCategoriesStudied: 0,
+  // });
 
   useEffect(() => {
     try {
-      const userGachaData = GachaSystem.getUserGachaData();
-      setSynergyStats({
-        gachaVocabCount: userGachaData.ownedCards.length,
-        grammarCategoriesStudied: 3, // TODO: 実際の文法学習進捗と連携
-      });
+      // const userGachaData = GachaSystem.getUserGachaData();
+      // setSynergyStats({
+      //   gachaVocabCount: userGachaData.ownedCards.length,
+      //   grammarCategoriesStudied: 3, // TODO: 実際の文法学習進捗と連携
+      // });
     } catch (error) {
       console.log("相乗効果データの取得に失敗:", error);
     }
@@ -76,7 +76,7 @@ export default function TimeAttackMode() {
       const ownedVocabulary = userGachaData.ownedCards.slice(0, 6); // 最大6問
 
       if (ownedVocabulary.length > 0) {
-        ownedVocabulary.forEach((card, index) => {
+        ownedVocabulary.forEach((card, _index) => {
           // 他の語彙からダミー選択肢を作成
           const otherCards = userGachaData.ownedCards
             .filter((c) => c.id !== card.id)
@@ -269,12 +269,14 @@ export default function TimeAttackMode() {
     const xpEarned = Math.floor(score / 10); // スコアの1/10をXPに
     const sessionData = {
       date: new Date().toISOString().split("T")[0],
-      type: "time-attack",
+      type: "vocabulary" as const,
       score: score,
       maxCombo: maxCombo,
       questionsAnswered: currentQuestionIndex + 1,
       xpEarned: xpEarned,
       duration: 0, // タイムアタックは時間制限なので0
+      totalQuestions: currentQuestionIndex + 1,
+      correctAnswers: Math.floor((currentQuestionIndex + 1) * (score / 100)),
     };
 
     DataManager.recordLearningSession(sessionData);

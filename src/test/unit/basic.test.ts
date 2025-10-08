@@ -1,3 +1,4 @@
+// @ts-ignore
 import { describe, expect, it } from "vitest";
 
 /**
@@ -12,7 +13,7 @@ describe("Basic Functionality Tests", () => {
   it("配列操作が正常", () => {
     const arr = [1, 2, 3];
     expect(arr.length).toBe(3);
-    expect(arr.filter(x => x > 1)).toEqual([2, 3]);
+    expect(arr.filter((x) => x > 1)).toEqual([2, 3]);
   });
 
   it("オブジェクト操作が正常", () => {
@@ -25,10 +26,10 @@ describe("Basic Functionality Tests", () => {
     // LocalStorageの基本動作テスト
     const testData = { test: "value" };
     localStorage.setItem("test-key", JSON.stringify(testData));
-    
+
     const retrieved = localStorage.getItem("test-key");
     expect(retrieved).toBeTruthy();
-    
+
     if (retrieved) {
       const parsed = JSON.parse(retrieved);
       expect(parsed.test).toBe("value");

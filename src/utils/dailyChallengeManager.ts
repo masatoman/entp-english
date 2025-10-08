@@ -16,12 +16,15 @@ export class DailyChallengeManager {
     const progress = this.getProgress();
 
     // 今日のチャレンジが既に存在する場合
-    if (progress.currentChallenge && progress.currentChallenge.date === today) {
+    if (
+      progress.currentChallenge &&
+      progress.currentChallenge.date === _today
+    ) {
       return progress.currentChallenge;
     }
 
     // 新しいチャレンジを生成
-    const newChallenge = this.generateDailyChallenge(today);
+    const newChallenge = this.generateDailyChallenge(_today);
     this.saveProgress({
       ...progress,
       currentChallenge: newChallenge,
@@ -309,7 +312,7 @@ export class DailyChallengeManager {
   /**
    * チャレンジを完了
    */
-  static completeChallenge(sessionData: {
+  static completeChallenge(_sessionData: {
     xpEarned: number;
     timeSpent: number;
     wordsUsed?: number;
@@ -318,20 +321,19 @@ export class DailyChallengeManager {
     questionsAnswered?: number;
   }): void {
     const progress = this.getProgress();
-    const _today = this.getTodayString();
+    // const _today = this.getTodayString();
 
-    if (progress.currentChallenge && progress.currentChallenge.date === today) {
+    if (
+      progress.currentChallenge &&
+      progress.currentChallenge.date === this.getTodayString()
+    ) {
       // チャレンジを完了状態に
       progress.currentChallenge.isCompleted = true;
-      progress.completedChallenges.push({
-        ...progress.currentChallenge,
-        completedAt: new Date().toISOString(),
-        sessionData,
-      });
+      progress.completedChallenges.push(progress.currentChallenge.id);
 
       // 統計更新
       progress.totalCompleted += 1;
-      progress.lastCompletedDate = today;
+      progress.lastCompletedDate = this.getTodayString();
 
       // 連続日数計算
       if (progress.lastCompletedDate === this.getYesterdayString()) {
@@ -365,7 +367,7 @@ export class DailyChallengeManager {
     favoriteType: string;
   } {
     const progress = this.getProgress();
-    const _today = this.getTodayString();
+    // const _today = this.getTodayString();
 
     // ユーザー統計を取得
     const userStats = DataManager.getUserStats();
@@ -381,7 +383,7 @@ export class DailyChallengeManager {
         if (typeof challenge === "string") {
           challengeDate = challenge.split("-")[1] || challenge;
         } else {
-          challengeDate = challenge.date || "";
+          challengeDate = (challenge as any).date || "";
         }
         return challengeDate >= thirtyDaysAgo.toISOString().split("T")[0];
       }

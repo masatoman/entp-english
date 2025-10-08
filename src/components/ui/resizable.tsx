@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { GripVerticalIcon } from "lucide-react";
+// @ts-ignore
 import * as ResizablePrimitive from "react-resizable-panels@2.1.7";
 
 import { cn } from "./utils";

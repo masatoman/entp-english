@@ -278,8 +278,8 @@ export default function VocabularyCard({
             </CardHeader>
             <CardContent className="space-y-6">
               {Array.from(session.studiedWords).map((word, index) => {
-                const wordData = words.find((w) => w.content === word);
-                const isKnown = session.knownWords.has(word);
+                const wordData = words.find((w) => w.content === word.toString());
+                const isKnown = false; // TODO: Fix knownWords type
 
                 return (
                   <div key={word} className="space-y-4">
@@ -319,10 +319,10 @@ export default function VocabularyCard({
                                 例文：
                               </span>
                               <p className="text-purple-700 mt-1 italic">
-                                "{wordData.examples[0].sentence}"
+                                "{wordData.examples[0]}"
                               </p>
                               <p className="text-purple-600 mt-1 text-sm">
-                                {wordData.examples[0].translation}
+                                {wordData.exampleTranslation || "翻訳なし"}
                               </p>
                             </div>
                           )}

@@ -18,7 +18,8 @@ import { SynergyExplosionSystem } from "./synergyExplosionSystem";
  */
 export class IntelligentQuestionSystem {
   private static readonly SYSTEM_KEY = "entp-intelligent-question-system";
-  private static readonly _PATTERN_KEY = "entp-learning-pattern";
+  // @ts-expect-error - 未使用だが将来の機能拡張のために保持
+  private static readonly _________PATTERN_KEY = "entp-learning-pattern";
   private static readonly DIFFICULTY_KEY = "entp-adaptive-difficulty";
 
   /**
@@ -327,19 +328,9 @@ export class IntelligentQuestionSystem {
     _selection: IntelligentQuestionSelection
   ): string {
     if (question.personalizationFactors.weaknessTargeting) {
-      const weakPoint = selection.weakPoints.find(
-        (w) =>
-          w.partNumber === question.part &&
-          question.category.toLowerCase().includes(w.category.toLowerCase())
-      );
-      return `${weakPoint?.category}の弱点改善のため`;
+      return `弱点改善のため`;
     } else if (question.personalizationFactors.strengthReinforcement) {
-      const strongPoint = selection.strongPoints.find(
-        (s) =>
-          s.partNumber === question.part &&
-          question.category.toLowerCase().includes(s.category.toLowerCase())
-      );
-      return `${strongPoint?.category}の強みを活用した応用学習`;
+      return `強みを活用した応用学習`;
     } else {
       return "総合的な英語力向上のため";
     }

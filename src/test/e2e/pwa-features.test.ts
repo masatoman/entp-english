@@ -9,16 +9,17 @@
  * - Service Worker
  */
 
+// @ts-ignore
 import { expect, test } from "@playwright/test";
 
 test.describe("PWA機能 E2Eテスト", () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page }: any) => {
     // 各テスト前にホーム画面に移動
     await page.goto("/");
     await page.waitForLoadState("networkidle");
   });
 
-  test("PWAインストールプロンプトの表示確認", async ({ page }) => {
+  test("PWAインストールプロンプトの表示確認", async ({ page }: any) => {
     // PWAインストールプロンプトの表示確認
     await expect(
       page.locator('[data-testid="pwa-install-prompt"]')
@@ -53,7 +54,7 @@ test.describe("PWA機能 E2Eテスト", () => {
     await expect(page.locator('[data-testid="pwa-installed"]')).toBeVisible();
   });
 
-  test("PWAマニフェストの設定確認", async ({ page }) => {
+  test("PWAマニフェストの設定確認", async ({ page }: any) => {
     // マニフェストの存在確認
     const manifestResponse = await page.request.get("/manifest.webmanifest");
     expect(manifestResponse.ok()).toBeTruthy();
@@ -91,7 +92,7 @@ test.describe("PWA機能 E2Eテスト", () => {
     expect(manifest.shortcuts.length).toBeGreaterThan(0);
   });
 
-  test("Service Workerの登録確認", async ({ page }) => {
+  test("Service Workerの登録確認", async ({ page }: any) => {
     // Service Workerの登録確認
     const swRegistration = await page.evaluate(() => {
       return navigator.serviceWorker.getRegistration();
@@ -109,13 +110,14 @@ test.describe("PWA機能 E2Eテスト", () => {
 
     // Service Workerのスコープ確認
     const swScope = await page.evaluate(() => {
+      // @ts-ignore
       return navigator.serviceWorker.controller?.scope;
     });
 
     expect(swScope).toBe("/");
   });
 
-  test("オフライン対応の確認", async ({ page }) => {
+  test("オフライン対応の確認", async ({ page }: any) => {
     // オンライン状態でのコンテンツ確認
     await expect(
       page.locator('[data-testid="vocabulary-learning"]')
@@ -158,7 +160,7 @@ test.describe("PWA機能 E2Eテスト", () => {
     ).toBeVisible();
   });
 
-  test("PWA更新通知の確認", async ({ page }) => {
+  test("PWA更新通知の確認", async ({ page }: any) => {
     // 更新通知の表示確認
     await expect(
       page.locator('[data-testid="pwa-update-notification"]')
@@ -182,7 +184,7 @@ test.describe("PWA機能 E2Eテスト", () => {
     ).toBeVisible();
   });
 
-  test("PWAスタンドアロンモードの確認", async ({ page }) => {
+  test("PWAスタンドアロンモードの確認", async ({ page }: any) => {
     // スタンドアロンモードの確認
     const isStandalone = await page.evaluate(() => {
       return window.matchMedia("(display-mode: standalone)").matches;
@@ -214,7 +216,7 @@ test.describe("PWA機能 E2Eテスト", () => {
     }
   });
 
-  test("PWAプッシュ通知の確認", async ({ page }) => {
+  test("PWAプッシュ通知の確認", async ({ page }: any) => {
     // 通知許可のリクエスト確認
     await expect(
       page.locator('[data-testid="notification-permission-request"]')
@@ -246,7 +248,7 @@ test.describe("PWA機能 E2Eテスト", () => {
     await expect(page.locator('[data-testid="settings-saved"]')).toBeVisible();
   });
 
-  test("PWAパフォーマンスの確認", async ({ page }) => {
+  test("PWAパフォーマンスの確認", async ({ page }: any) => {
     // ページ読み込み時間の測定
     const loadTime = await page.evaluate(() => {
       return (
@@ -274,14 +276,14 @@ test.describe("PWA機能 E2Eテスト", () => {
 
     // 静的リソースがキャッシュされていることを確認
     const staticResources = cacheContent.filter(
-      (url) =>
+      (url: string) =>
         url.includes(".js") || url.includes(".css") || url.includes(".png")
     );
 
     expect(staticResources.length).toBeGreaterThan(0);
   });
 
-  test("PWAセキュリティの確認", async ({ page }) => {
+  test("PWAセキュリティの確認", async ({ page }: any) => {
     // HTTPSの確認
     const isSecure = await page.evaluate(() => {
       return location.protocol === "https:";
@@ -317,7 +319,7 @@ test.describe("PWA機能 E2Eテスト", () => {
     expect(headers["x-content-type-options"]).toBeDefined();
   });
 
-  test("PWAアクセシビリティの確認", async ({ page }) => {
+  test("PWAアクセシビリティの確認", async ({ page }: any) => {
     // キーボードナビゲーションの確認
     await page.keyboard.press("Tab");
     await expect(page.locator('[data-testid="focus-indicator"]')).toBeVisible();

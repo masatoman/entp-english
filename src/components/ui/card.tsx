@@ -90,3 +90,4 @@ export {
   CardHeader,
   CardTitle,
 };
+export type CardProps = React.ComponentProps<"div">;

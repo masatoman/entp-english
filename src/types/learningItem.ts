@@ -73,18 +73,6 @@ export interface LearningQuestion {
   explanation: string;
   hints?: string[];
   hint?: string;
-  id: string;
-  type: string;
-  category: string;
-  difficulty: string;
-  prompt: string;
-  question?: string;
-  options?: string[];
-  choices?: string[];
-  correctAnswer: string | string[];
-  explanation: string;
-  hints?: string[];
-  hint?: string;
 
   // 学習項目との関連
   learningItemId: string;

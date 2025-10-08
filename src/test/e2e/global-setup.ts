@@ -7,9 +7,10 @@
  * - ブラウザ設定
  */
 
+// @ts-ignore
 import { chromium, FullConfig } from "@playwright/test";
 
-async function globalSetup(config: FullConfig) {
+async function globalSetup(_config: FullConfig) {
   console.log("🚀 E2Eテスト グローバルセットアップ開始");
 
   // ブラウザを起動してテスト環境を準備
@@ -67,12 +68,15 @@ async function globalSetup(config: FullConfig) {
     // テスト環境の設定
     await page.addInitScript(() => {
       // テスト環境フラグを設定
+      // @ts-ignore
       window.__TEST_ENV__ = true;
 
       // デバッグログを有効化
+      // @ts-ignore
       window.__DEBUG__ = true;
 
       // テスト用の設定を適用
+      // @ts-ignore
       window.__TEST_CONFIG__ = {
         skipAnimations: true,
         fastMode: true,

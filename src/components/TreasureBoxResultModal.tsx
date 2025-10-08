@@ -41,8 +41,8 @@ export default function TreasureBoxResultModal({
     // 報酬を適用
     const levelManager = getLevelManager();
     let totalXPGained = 0;
-    let heartsRecovered = 0;
-    let starsRecovered = 0;
+    // let heartsRecovered = 0;
+    // let starsRecovered = 0;
 
     rewards.forEach((reward) => {
       switch (reward.type) {
@@ -51,16 +51,16 @@ export default function TreasureBoxResultModal({
           totalXPGained += reward.amount;
           break;
         case "hearts":
-          const beforeHearts = levelManager.getHeartSystem().current;
+          // const beforeHearts = levelManager.getHeartSystem().current;
           levelManager.recoverAllHearts();
-          const afterHearts = levelManager.getHeartSystem().current;
-          heartsRecovered = afterHearts - beforeHearts;
+          // const afterHearts = levelManager.getHeartSystem().current;
+          // heartsRecovered = afterHearts - beforeHearts;
           break;
         case "stars":
-          const beforeStars = levelManager.getStarSystem().current;
+          // const beforeStars = levelManager.getStarSystem().current;
           levelManager.recoverAllStars();
-          const afterStars = levelManager.getStarSystem().current;
-          starsRecovered = afterStars - beforeStars;
+          // const afterStars = levelManager.getStarSystem().current;
+          // starsRecovered = afterStars - beforeStars;
           break;
         case "gacha_ticket":
           console.log(`🎫 ガチャチケット×${reward.amount}を獲得！`);

@@ -7,9 +7,10 @@
  * - リソースの解放
  */
 
+// @ts-ignore
 import { chromium, FullConfig } from "@playwright/test";
 
-async function globalTeardown(config: FullConfig) {
+async function globalTeardown(_config: FullConfig) {
   console.log("🧹 E2Eテスト グローバルティアダウン開始");
 
   // ブラウザを起動してクリーンアップ
@@ -37,8 +38,11 @@ async function globalTeardown(config: FullConfig) {
       sessionStorage.clear();
 
       // テスト環境フラグをリセット
+      // @ts-ignore
       delete window.__TEST_ENV__;
+      // @ts-ignore
       delete window.__DEBUG__;
+      // @ts-ignore
       delete window.__TEST_CONFIG__;
     });
 

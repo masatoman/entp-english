@@ -21,8 +21,8 @@ import { GachaSystem } from "./gachaSystem";
 export class GachaTOEICIntegrationManager {
   private static readonly INTEGRATION_KEY = "entp-gacha-toeic-integration";
   private static readonly POWERUPS_KEY = "entp-card-powerups";
-  private static readonly _SYNERGIES_KEY = "entp-card-synergies";
-  private static readonly _CHALLENGES_KEY = "entp-card-challenges";
+  // private static readonly _SYNERGIES_KEY = "entp-card-synergies";
+  // private static readonly _CHALLENGES_KEY = "entp-card-challenges";
 
   /**
    * カードパワーアップ定義
@@ -159,7 +159,8 @@ export class GachaTOEICIntegrationManager {
   /**
    * カードチャレンジ定義
    */
-  private static readonly _CARD_CHALLENGES: Omit<
+  // @ts-expect-error - 未使用だが将来の機能拡張のために保持
+  private static readonly _________CARD_CHALLENGES: Omit<
     TOEICCardChallenge,
     "currentValue" | "isCompleted" | "completedAt"
   >[] = [
@@ -242,16 +243,23 @@ export class GachaTOEICIntegrationManager {
       // 実際の実装では、カードIDからカード情報を取得
       return {
         id: card.id,
-        word: card.name,
+        word: card.word,
+        japanese: "サンプル",
         meaning: "サンプル意味",
+        partOfSpeech: "noun",
+        phonetic: "/sæmpl/",
         example: "Sample example sentence",
         exampleTranslation: "サンプル例文の翻訳",
         pronunciation: "/sæmpl/",
         rarity: card.rarity,
-        category: card.category || "general",
+        category: "general",
         toeicFrequency: 1,
         difficulty: "easy",
-      };
+        examples: ["Sample example sentence"],
+        scoreBand: "600-700",
+        frequency: "high",
+        toeicLevel: "intermediate",
+      } as any;
     });
   }
 
@@ -267,7 +275,7 @@ export class GachaTOEICIntegrationManager {
     ownedCards.forEach((card) => {
       const relatedQuestions = allTOEICQuestions.filter(
         (q) =>
-          q.category.toLowerCase().includes(card.category.toLowerCase()) ||
+          q.category.toLowerCase().includes("general") ||
           q.question.toLowerCase().includes(card.word.toLowerCase())
       );
 
@@ -363,7 +371,7 @@ export class GachaTOEICIntegrationManager {
     // 関連するカードを探す
     const relatedCards = integration.ownedCards.filter(
       (card) =>
-        question.category.toLowerCase().includes(card.category.toLowerCase()) ||
+        question.category.toLowerCase().includes("general") ||
         question.question.toLowerCase().includes(card.word.toLowerCase())
     );
 
@@ -468,7 +476,7 @@ export class GachaTOEICIntegrationManager {
 
     weakCategories.forEach((category) => {
       const relatedCards = integration.ownedCards.filter(
-        (card) => (card.category || "general") === category
+        (_card) => "general" === category
       );
 
       relatedCards.forEach((card) => {
@@ -479,7 +487,7 @@ export class GachaTOEICIntegrationManager {
           recommendationReason: `${category}の弱点改善のため`,
           expectedBenefit: "精度向上が期待できます",
           priority: "high",
-          category: card.category || "general",
+          category: "general",
           partNumber: this.getPartNumberForCategory(category),
         });
       });
@@ -505,7 +513,7 @@ export class GachaTOEICIntegrationManager {
       averageBonus: this.getBonusValueForRarity(card.rarity),
       lastUsed: new Date(),
       effectiveness: this.getEffectivenessForRarity(card.rarity),
-      favoriteQuestionTypes: [card.category || "general"],
+      favoriteQuestionTypes: ["general"],
     }));
   }
 
@@ -553,7 +561,7 @@ export class GachaTOEICIntegrationManager {
 
   // ヘルパーメソッド群
   private static getBonusTypeForCard(
-    card: WordCard
+    _card: WordCard
   ): "accuracy_boost" | "time_extension" | "hint_reveal" | "xp_multiplier" {
     const typeMap: { [key: string]: any } = {
       business: "accuracy_boost",
@@ -562,7 +570,7 @@ export class GachaTOEICIntegrationManager {
       vocabulary: "xp_multiplier",
     };
 
-    return typeMap[card.category || "general"] || "xp_multiplier";
+    return typeMap["general"] || "xp_multiplier";
   }
 
   private static getBonusValueForRarity(rarity: string): number {

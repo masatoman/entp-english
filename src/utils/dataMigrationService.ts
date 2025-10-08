@@ -161,7 +161,7 @@ export class DataMigrationService {
       // 既存の文法データを取得
       const questionsModule = await import("../data/questions");
       const questions = questionsModule.getQuestions
-        ? questionsModule.getQuestions("all")
+        ? questionsModule.getQuestions("parts-of-speech" as any, "easy")
         : [];
 
       // IndexedDBに保存

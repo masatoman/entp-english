@@ -10,16 +10,17 @@
  * - 日替わりクエスト
  */
 
+// @ts-ignore
 import { expect, test } from "@playwright/test";
 
 test.describe("ゲーミフィケーション機能 E2Eテスト", () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page }: any) => {
     // 各テスト前にホーム画面に移動
     await page.goto("/");
     await page.waitForLoadState("networkidle");
   });
 
-  test("ガチャシステムの動作確認", async ({ page }) => {
+  test("ガチャシステムの動作確認", async ({ page }: any) => {
     // ガチャページにアクセス
     await page.click('[data-testid="gacha-system"]');
     await page.waitForLoadState("networkidle");
@@ -60,7 +61,7 @@ test.describe("ゲーミフィケーション機能 E2Eテスト", () => {
     }
   });
 
-  test("アドレナリンシステムの動作確認", async ({ page }) => {
+  test("アドレナリンシステムの動作確認", async ({ page }: any) => {
     // 文法クイズでアドレナリンシステムをテスト
     await page.click('[data-testid="grammar-quiz"]');
     await page.waitForLoadState("networkidle");
@@ -95,7 +96,7 @@ test.describe("ゲーミフィケーション機能 E2Eテスト", () => {
     await expect(page.locator('[data-testid="fever-time"]')).toBeVisible();
   });
 
-  test("宝箱システムの動作確認", async ({ page }) => {
+  test("宝箱システムの動作確認", async ({ page }: any) => {
     // 語彙学習で宝箱を獲得
     await page.click('[data-testid="vocabulary-learning"]');
     await page.waitForLoadState("networkidle");
@@ -139,7 +140,7 @@ test.describe("ゲーミフィケーション機能 E2Eテスト", () => {
     await expect(page.locator('[data-testid="reward-amount"]')).toBeVisible();
   });
 
-  test("ハートシステムの動作確認", async ({ page }) => {
+  test("ハートシステムの動作確認", async ({ page }: any) => {
     // ハート表示の確認
     await expect(page.locator('[data-testid="heart-display"]')).toBeVisible();
 
@@ -187,7 +188,7 @@ test.describe("ゲーミフィケーション機能 E2Eテスト", () => {
     }
   });
 
-  test("XP・レベルシステムの動作確認", async ({ page }) => {
+  test("XP・レベルシステムの動作確認", async ({ page }: any) => {
     // XP・レベル表示の確認
     await expect(page.locator('[data-testid="xp-display"]')).toBeVisible();
     await expect(page.locator('[data-testid="level-display"]')).toBeVisible();
@@ -196,9 +197,9 @@ test.describe("ゲーミフィケーション機能 E2Eテスト", () => {
     const initialXP = await page
       .locator('[data-testid="xp-amount"]')
       .textContent();
-    const initialLevel = await page
-      .locator('[data-testid="current-level"]')
-      .textContent();
+    // const _initialLevel = await page
+    //   .locator('[data-testid="current-level"]')
+    //   .textContent();
 
     // 文法クイズでXPを獲得
     await page.click('[data-testid="grammar-quiz"]');
@@ -223,9 +224,9 @@ test.describe("ゲーミフィケーション機能 E2Eテスト", () => {
     const xpAfterQuiz = await page
       .locator('[data-testid="xp-amount"]')
       .textContent();
-    const levelAfterQuiz = await page
-      .locator('[data-testid="current-level"]')
-      .textContent();
+    // const _levelAfterQuiz = await page
+    //   .locator('[data-testid="current-level"]')
+    //   .textContent();
 
     if (parseInt(xpAfterQuiz || "0") > parseInt(initialXP || "0")) {
       await expect(
@@ -234,7 +235,7 @@ test.describe("ゲーミフィケーション機能 E2Eテスト", () => {
     }
   });
 
-  test("日替わりクエストの動作確認", async ({ page }) => {
+  test("日替わりクエストの動作確認", async ({ page }: any) => {
     // 日替わりクエストページにアクセス
     await page.click('[data-testid="daily-quest"]');
     await page.waitForLoadState("networkidle");
@@ -282,7 +283,7 @@ test.describe("ゲーミフィケーション機能 E2Eテスト", () => {
     ).toBeVisible();
   });
 
-  test("XPショップの動作確認", async ({ page }) => {
+  test("XPショップの動作確認", async ({ page }: any) => {
     // XPショップページにアクセス
     await page.click('[data-testid="xp-shop"]');
     await page.waitForLoadState("networkidle");
@@ -337,7 +338,7 @@ test.describe("ゲーミフィケーション機能 E2Eテスト", () => {
     }
   });
 
-  test("スターシステムの動作確認", async ({ page }) => {
+  test("スターシステムの動作確認", async ({ page }: any) => {
     // スター表示の確認
     await expect(page.locator('[data-testid="star-display"]')).toBeVisible();
 

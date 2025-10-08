@@ -387,7 +387,8 @@ export function towerAttack(
     tower.damage +
     tower.tempBoosts.damageBoost +
     (activeBoosts?.damageBoost || 0);
-  const __speedBoostMultiplier =
+  // @ts-expect-error - 未使用だが将来の機能拡張のために保持
+  const _________speedBoostMultiplier =
     1 + tower.tempBoosts.speedBoost / 100 + (activeBoosts?.speedBoost || 0);
 
   // 射程内の生きている敵を探す（ステルス敵は見えない場合がある）
@@ -593,9 +594,7 @@ export function updateGameState(
   );
 
   // 敵の特殊能力処理
-  updatedEnemies = updatedEnemies.map((enemy) =>
-    processEnemyAbilities(enemy)
-  );
+  updatedEnemies = updatedEnemies.map((enemy) => processEnemyAbilities(enemy));
 
   // 終点に到達した敵の処理
   const enemiesReachedEnd = updatedEnemies.filter(

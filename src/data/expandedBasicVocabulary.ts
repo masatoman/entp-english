@@ -8,6 +8,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 116,
     word: "desk",
+    japanese: "",
     meaning: "机、デスク",
     partOfSpeech: "名詞",
     phonetic: "/desk/",
@@ -46,6 +47,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 117,
     word: "chair",
+    japanese: "",
     meaning: "椅子、チェア",
     partOfSpeech: "名詞",
     phonetic: "/tʃer/",
@@ -84,6 +86,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 118,
     word: "computer",
+    japanese: "",
     meaning: "コンピューター、パソコン",
     partOfSpeech: "名詞",
     phonetic: "/kəmˈpjutər/",
@@ -123,6 +126,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 119,
     word: "phone",
+    japanese: "",
     meaning: "電話、フォン",
     partOfSpeech: "名詞",
     phonetic: "/foʊn/",
@@ -161,6 +165,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 120,
     word: "email",
+    japanese: "",
     meaning: "メール、電子メール",
     partOfSpeech: "名詞",
     phonetic: "/ˈimeɪl/",
@@ -201,6 +206,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 121,
     word: "time",
+    japanese: "",
     meaning: "時間、時刻",
     partOfSpeech: "名詞",
     phonetic: "/taɪm/",
@@ -239,6 +245,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 122,
     word: "hour",
+    japanese: "",
     meaning: "時間、1時間",
     partOfSpeech: "名詞",
     phonetic: "/aʊər/",
@@ -277,6 +284,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 123,
     word: "minute",
+    japanese: "",
     meaning: "分、1分",
     partOfSpeech: "名詞",
     phonetic: "/ˈmɪnət/",
@@ -315,6 +323,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 124,
     word: "day",
+    japanese: "",
     meaning: "日、1日",
     partOfSpeech: "名詞",
     phonetic: "/deɪ/",
@@ -353,6 +362,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 125,
     word: "week",
+    japanese: "",
     meaning: "週、1週間",
     partOfSpeech: "名詞",
     phonetic: "/wik/",
@@ -393,6 +403,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 126,
     word: "discussion",
+    japanese: "",
     meaning: "議論、話し合い",
     partOfSpeech: "名詞",
     phonetic: "/dɪˈskʌʃən/",
@@ -431,6 +442,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 127,
     word: "presentation",
+    japanese: "",
     meaning: "プレゼンテーション、発表",
     partOfSpeech: "名詞",
     phonetic: "/ˌprezənˈteɪʃən/",
@@ -469,6 +481,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 128,
     word: "agenda",
+    japanese: "",
     meaning: "議題、アジェンダ",
     partOfSpeech: "名詞",
     phonetic: "/əˈdʒendə/",
@@ -507,6 +520,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 129,
     word: "decision",
+    japanese: "",
     meaning: "決定、判断",
     partOfSpeech: "名詞",
     phonetic: "/dɪˈsɪʒən/",
@@ -545,6 +559,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 130,
     word: "opinion",
+    japanese: "",
     meaning: "意見、見解",
     partOfSpeech: "名詞",
     phonetic: "/əˈpɪnjən/",
@@ -585,6 +600,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 131,
     word: "document",
+    japanese: "",
     meaning: "文書、ドキュメント",
     partOfSpeech: "名詞",
     phonetic: "/ˈdɑkjəmənt/",
@@ -623,6 +639,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 132,
     word: "file",
+    japanese: "",
     meaning: "ファイル、書類",
     partOfSpeech: "名詞",
     phonetic: "/faɪl/",
@@ -661,6 +678,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 133,
     word: "copy",
+    japanese: "",
     meaning: "コピー、複写",
     partOfSpeech: "名詞・動詞",
     phonetic: "/ˈkɑpi/",
@@ -699,6 +717,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 134,
     word: "print",
+    japanese: "",
     meaning: "印刷する、プリント",
     partOfSpeech: "動詞・名詞",
     phonetic: "/prɪnt/",
@@ -737,6 +756,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 135,
     word: "fax",
+    japanese: "",
     meaning: "ファックス、送信する",
     partOfSpeech: "名詞・動詞",
     phonetic: "/fæks/",
@@ -777,6 +797,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 136,
     word: "car",
+    japanese: "",
     meaning: "車、自動車",
     partOfSpeech: "名詞",
     phonetic: "/kɑr/",
@@ -815,6 +836,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 137,
     word: "train",
+    japanese: "",
     meaning: "電車、列車",
     partOfSpeech: "名詞",
     phonetic: "/treɪn/",
@@ -853,6 +875,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 138,
     word: "bus",
+    japanese: "",
     meaning: "バス",
     partOfSpeech: "名詞",
     phonetic: "/bʌs/",
@@ -891,6 +914,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 139,
     word: "plane",
+    japanese: "",
     meaning: "飛行機、プレーン",
     partOfSpeech: "名詞",
     phonetic: "/pleɪn/",
@@ -929,6 +953,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 140,
     word: "taxi",
+    japanese: "",
     meaning: "タクシー",
     partOfSpeech: "名詞",
     phonetic: "/ˈtæksi/",
@@ -969,6 +994,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 141,
     word: "restaurant",
+    japanese: "",
     meaning: "レストラン、料理店",
     partOfSpeech: "名詞",
     phonetic: "/ˈrestərɑnt/",
@@ -1007,6 +1033,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 142,
     word: "menu",
+    japanese: "",
     meaning: "メニュー、献立",
     partOfSpeech: "名詞",
     phonetic: "/ˈmenju/",
@@ -1045,6 +1072,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 143,
     word: "order",
+    japanese: "",
     meaning: "注文する、命令",
     partOfSpeech: "動詞・名詞",
     phonetic: "/ˈɔrdər/",
@@ -1083,6 +1111,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 144,
     word: "bill",
+    japanese: "",
     meaning: "請求書、勘定",
     partOfSpeech: "名詞",
     phonetic: "/bɪl/",
@@ -1121,6 +1150,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 145,
     word: "lunch",
+    japanese: "",
     meaning: "昼食、ランチ",
     partOfSpeech: "名詞",
     phonetic: "/lʌntʃ/",
@@ -1161,6 +1191,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 146,
     word: "store",
+    japanese: "",
     meaning: "店、ストア",
     partOfSpeech: "名詞",
     phonetic: "/stɔr/",
@@ -1199,6 +1230,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 147,
     word: "shop",
+    japanese: "",
     meaning: "店、買い物する",
     partOfSpeech: "名詞・動詞",
     phonetic: "/ʃɑp/",
@@ -1237,6 +1269,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 148,
     word: "price",
+    japanese: "",
     meaning: "価格、値段",
     partOfSpeech: "名詞",
     phonetic: "/praɪs/",
@@ -1275,6 +1308,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 149,
     word: "cost",
+    japanese: "",
     meaning: "費用、コスト",
     partOfSpeech: "名詞・動詞",
     phonetic: "/kɔst/",
@@ -1313,6 +1347,7 @@ export const expandedBasicVocabulary: WordCard[] = [
   {
     id: 150,
     word: "money",
+    japanese: "",
     meaning: "お金、金銭",
     partOfSpeech: "名詞",
     phonetic: "/ˈmʌni/",

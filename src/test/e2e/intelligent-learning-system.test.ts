@@ -10,16 +10,17 @@
  * - シナジーシステム
  */
 
+// @ts-ignore
 import { expect, test } from "@playwright/test";
 
 test.describe("インテリジェント学習システム E2Eテスト", () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page }: any) => {
     // 各テスト前にホーム画面に移動
     await page.goto("/");
     await page.waitForLoadState("networkidle");
   });
 
-  test("個人化学習システムの動作確認", async ({ page }) => {
+  test("個人化学習システムの動作確認", async ({ page }: any) => {
     // 個人化学習ページにアクセス
     await page.click('[data-testid="personalized-learning"]');
     await page.waitForLoadState("networkidle");
@@ -62,7 +63,7 @@ test.describe("インテリジェント学習システム E2Eテスト", () => {
     ).toBeVisible();
   });
 
-  test("統合学習システムの動作確認", async ({ page }) => {
+  test("統合学習システムの動作確認", async ({ page }: any) => {
     // 統合学習ページにアクセス
     await page.click('[data-testid="integrated-learning"]');
     await page.waitForLoadState("networkidle");
@@ -112,7 +113,7 @@ test.describe("インテリジェント学習システム E2Eテスト", () => {
     ).toBeVisible();
   });
 
-  test("適応的難易度調整の動作確認", async ({ page }) => {
+  test("適応的難易度調整の動作確認", async ({ page }: any) => {
     // 文法クイズで適応的難易度調整をテスト
     await page.click('[data-testid="grammar-quiz"]');
     await page.waitForLoadState("networkidle");
@@ -177,7 +178,7 @@ test.describe("インテリジェント学習システム E2Eテスト", () => {
     expect(adjustedDifficultyLevel).not.toBe(newDifficultyLevel);
   });
 
-  test("弱点分析システムの動作確認", async ({ page }) => {
+  test("弱点分析システムの動作確認", async ({ page }: any) => {
     // 弱点分析ページにアクセス
     await page.click('[data-testid="weakness-analysis"]');
     await page.waitForLoadState("networkidle");
@@ -228,7 +229,7 @@ test.describe("インテリジェント学習システム E2Eテスト", () => {
     ).toBeVisible();
   });
 
-  test("学習分析・インサイトの動作確認", async ({ page }) => {
+  test("学習分析・インサイトの動作確認", async ({ page }: any) => {
     // 学習分析ページにアクセス
     await page.click('[data-testid="learning-analytics"]');
     await page.waitForLoadState("networkidle");
@@ -289,7 +290,7 @@ test.describe("インテリジェント学習システム E2Eテスト", () => {
     ).toBeVisible();
   });
 
-  test("シナジーシステムの動作確認", async ({ page }) => {
+  test("シナジーシステムの動作確認", async ({ page }: any) => {
     // シナジーダッシュボードにアクセス
     await page.click('[data-testid="synergy-dashboard"]');
     await page.waitForLoadState("networkidle");
@@ -344,7 +345,7 @@ test.describe("インテリジェント学習システム E2Eテスト", () => {
     ).toBeVisible();
   });
 
-  test("事前学習コンテンツの動作確認", async ({ page }) => {
+  test("事前学習コンテンツの動作確認", async ({ page }: any) => {
     // 事前学習ページにアクセス
     await page.click('[data-testid="pre-learning"]');
     await page.waitForLoadState("networkidle");
@@ -403,7 +404,7 @@ test.describe("インテリジェント学習システム E2Eテスト", () => {
     ).toBeVisible();
   });
 
-  test("統合学習効果の測定確認", async ({ page }) => {
+  test("統合学習効果の測定確認", async ({ page }: any) => {
     // 複数の学習モードを連続実行
     await page.click('[data-testid="vocabulary-learning"]');
     await page.waitForLoadState("networkidle");

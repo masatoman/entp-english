@@ -7,6 +7,7 @@ export const expandedBasicVocabulary2: WordCard[] = [
   {
     id: 151,
     word: "doctor",
+    japanese: "",
     meaning: "医者、ドクター",
     partOfSpeech: "名詞",
     phonetic: "/ˈdɑktər/",
@@ -45,6 +46,7 @@ export const expandedBasicVocabulary2: WordCard[] = [
   {
     id: 152,
     word: "hospital",
+    japanese: "",
     meaning: "病院、ホスピタル",
     partOfSpeech: "名詞",
     phonetic: "/ˈhɑspɪtəl/",
@@ -83,6 +85,7 @@ export const expandedBasicVocabulary2: WordCard[] = [
   {
     id: 153,
     word: "medicine",
+    japanese: "",
     meaning: "薬、医学",
     partOfSpeech: "名詞",
     phonetic: "/ˈmedəsən/",
@@ -121,6 +124,7 @@ export const expandedBasicVocabulary2: WordCard[] = [
   {
     id: 154,
     word: "health",
+    japanese: "",
     meaning: "健康、ヘルス",
     partOfSpeech: "名詞",
     phonetic: "/helθ/",
@@ -159,6 +163,7 @@ export const expandedBasicVocabulary2: WordCard[] = [
   {
     id: 155,
     word: "exercise",
+    japanese: "",
     meaning: "運動、エクササイズ",
     partOfSpeech: "名詞・動詞",
     phonetic: "/ˈeksərsaɪz/",
@@ -199,6 +204,7 @@ export const expandedBasicVocabulary2: WordCard[] = [
   {
     id: 156,
     word: "weather",
+    japanese: "",
     meaning: "天気、ウェザー",
     partOfSpeech: "名詞",
     phonetic: "/ˈweθər/",
@@ -237,6 +243,7 @@ export const expandedBasicVocabulary2: WordCard[] = [
   {
     id: 157,
     word: "rain",
+    japanese: "",
     meaning: "雨、雨が降る",
     partOfSpeech: "名詞・動詞",
     phonetic: "/reɪn/",
@@ -275,6 +282,7 @@ export const expandedBasicVocabulary2: WordCard[] = [
   {
     id: 158,
     word: "sun",
+    japanese: "",
     meaning: "太陽、サン",
     partOfSpeech: "名詞",
     phonetic: "/sʌn/",
@@ -313,6 +321,7 @@ export const expandedBasicVocabulary2: WordCard[] = [
   {
     id: 159,
     word: "wind",
+    japanese: "",
     meaning: "風、ウィンド",
     partOfSpeech: "名詞",
     phonetic: "/wɪnd/",
@@ -351,6 +360,7 @@ export const expandedBasicVocabulary2: WordCard[] = [
   {
     id: 160,
     word: "temperature",
+    japanese: "",
     meaning: "温度、気温",
     partOfSpeech: "名詞",
     phonetic: "/ˈtemprətʃər/",
@@ -391,6 +401,7 @@ export const expandedBasicVocabulary2: WordCard[] = [
   {
     id: 161,
     word: "family",
+    japanese: "",
     meaning: "家族、ファミリー",
     partOfSpeech: "名詞",
     phonetic: "/ˈfæməli/",
@@ -429,6 +440,7 @@ export const expandedBasicVocabulary2: WordCard[] = [
   {
     id: 162,
     word: "friend",
+    japanese: "",
     meaning: "友達、フレンド",
     partOfSpeech: "名詞",
     phonetic: "/frend/",
@@ -467,6 +479,7 @@ export const expandedBasicVocabulary2: WordCard[] = [
   {
     id: 163,
     word: "person",
+    japanese: "",
     meaning: "人、パーソン",
     partOfSpeech: "名詞",
     phonetic: "/ˈpɜrsən/",
@@ -505,6 +518,7 @@ export const expandedBasicVocabulary2: WordCard[] = [
   {
     id: 164,
     word: "people",
+    japanese: "",
     meaning: "人々、ピープル",
     partOfSpeech: "名詞",
     phonetic: "/ˈpipəl/",
@@ -543,6 +557,7 @@ export const expandedBasicVocabulary2: WordCard[] = [
   {
     id: 165,
     word: "child",
+    japanese: "",
     meaning: "子供、チャイルド",
     partOfSpeech: "名詞",
     phonetic: "/tʃaɪld/",
@@ -583,6 +598,7 @@ export const expandedBasicVocabulary2: WordCard[] = [
   {
     id: 166,
     word: "building",
+    japanese: "",
     meaning: "建物、ビルディング",
     partOfSpeech: "名詞",
     phonetic: "/ˈbɪldɪŋ/",
@@ -621,6 +637,7 @@ export const expandedBasicVocabulary2: WordCard[] = [
   {
     id: 167,
     word: "room",
+    japanese: "",
     meaning: "部屋、ルーム",
     partOfSpeech: "名詞",
     phonetic: "/rum/",
@@ -659,6 +676,7 @@ export const expandedBasicVocabulary2: WordCard[] = [
   {
     id: 168,
     word: "floor",
+    japanese: "",
     meaning: "床、階",
     partOfSpeech: "名詞",
     phonetic: "/flɔr/",
@@ -697,6 +715,7 @@ export const expandedBasicVocabulary2: WordCard[] = [
   {
     id: 169,
     word: "door",
+    japanese: "",
     meaning: "ドア、扉",
     partOfSpeech: "名詞",
     phonetic: "/dɔr/",
@@ -735,6 +754,7 @@ export const expandedBasicVocabulary2: WordCard[] = [
   {
     id: 170,
     word: "window",
+    japanese: "",
     meaning: "窓、ウィンドウ",
     partOfSpeech: "名詞",
     phonetic: "/ˈwɪndoʊ/",

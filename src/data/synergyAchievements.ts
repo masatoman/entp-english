@@ -16,7 +16,7 @@ export const synergyAchievements: Achievement[] = [
       type: "custom",
       value: "complete-learning-flow",
     },
-    unlockedAt: null,
+    unlockedAt: undefined,
     icon: "🎓",
     requirements: [
       "事前学習で理論を学ぶ",
@@ -36,7 +36,7 @@ export const synergyAchievements: Achievement[] = [
       type: "custom",
       value: "gacha-vocab-synergy",
     },
-    unlockedAt: null,
+    unlockedAt: undefined,
     icon: "🎯",
     requirements: [
       "ガチャで語彙カードを獲得",
@@ -56,7 +56,7 @@ export const synergyAchievements: Achievement[] = [
       type: "custom",
       value: "time-attack-vocab-high-score",
     },
-    unlockedAt: null,
+    unlockedAt: undefined,
     icon: "⚡",
     requirements: [
       "ガチャ語彙20枚以上獲得",
@@ -76,7 +76,7 @@ export const synergyAchievements: Achievement[] = [
       type: "custom",
       value: "use-all-features",
     },
-    unlockedAt: null,
+    unlockedAt: undefined,
     icon: "💎",
     requirements: [
       "事前学習を3件以上完了",
@@ -99,7 +99,7 @@ export const synergyAchievements: Achievement[] = [
       type: "custom",
       value: "maximize-synergy",
     },
-    unlockedAt: null,
+    unlockedAt: undefined,
     icon: "🔗",
     requirements: [
       "同じ文法カテゴリーで事前学習→クイズ→英作文を完了",
@@ -119,7 +119,7 @@ export const synergyAchievements: Achievement[] = [
       type: "custom",
       value: "multi-feature-streak",
     },
-    unlockedAt: null,
+    unlockedAt: undefined,
     icon: "👑",
     requirements: [
       "7日連続でログイン",
@@ -139,7 +139,7 @@ export const synergyAchievements: Achievement[] = [
       type: "custom",
       value: "vocabulary-collection-usage",
     },
-    unlockedAt: null,
+    unlockedAt: undefined,
     icon: "📚",
     requirements: [
       "ガチャで50枚以上のカードを獲得",
@@ -159,7 +159,7 @@ export const synergyAchievements: Achievement[] = [
       type: "custom",
       value: "grammar-perfect-flow",
     },
-    unlockedAt: null,
+    unlockedAt: undefined,
     icon: "📖",
     requirements: [
       "5つ以上の文法カテゴリーで事前学習完了",
@@ -179,7 +179,7 @@ export const synergyAchievements: Achievement[] = [
       type: "custom",
       value: "adaptive-improvement",
     },
-    unlockedAt: null,
+    unlockedAt: undefined,
     icon: "🧠",
     requirements: [
       "弱点分野を特定",
@@ -199,7 +199,7 @@ export const synergyAchievements: Achievement[] = [
       type: "custom",
       value: "optimize-learning-efficiency",
     },
-    unlockedAt: null,
+    unlockedAt: undefined,
     icon: "⚙️",
     requirements: [
       "事前学習→クイズ→英作文のフローを5回以上実行",
@@ -233,7 +233,7 @@ export function checkSynergyAchievements(): {
 /**
  * 実績解除条件の詳細説明
  */
-export function getAchievementRequirementDetails(achievementId: string): {
+export function getAchievementRequirementDetails(_achievementId: string): {
   currentProgress: any;
   nextSteps: string[];
   estimatedCompletion: string;

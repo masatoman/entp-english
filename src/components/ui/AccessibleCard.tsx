@@ -113,7 +113,7 @@ export const AccessibleCard = React.forwardRef<
       return descriptions.join(". ");
     };
 
-    const HeadingComponent = `h${headingLevel}` as keyof JSX.IntrinsicElements;
+    // const HeadingComponent = `h${headingLevel}` as keyof JSX.IntrinsicElements;
 
     return (
       <Card

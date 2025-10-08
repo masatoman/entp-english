@@ -8,16 +8,17 @@
  * - 総合テスト
  */
 
+// @ts-ignore
 import { expect, test } from "@playwright/test";
 
 test.describe("基本学習フロー E2Eテスト", () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page }: any) => {
     // 各テスト前にホーム画面に移動
     await page.goto("/");
     await page.waitForLoadState("networkidle");
   });
 
-  test("ホーム画面の表示確認", async ({ page }) => {
+  test("ホーム画面の表示確認", async ({ page }: any) => {
     // ページタイトルの確認
     await expect(page).toHaveTitle(/ENTP英語学習アプリ/);
 
@@ -37,7 +38,7 @@ test.describe("基本学習フロー E2Eテスト", () => {
     await expect(page.locator('[data-testid="heart-system"]')).toBeVisible();
   });
 
-  test("語彙学習フロー", async ({ page }) => {
+  test("語彙学習フロー", async ({ page }: any) => {
     // 語彙学習ボタンをクリック
     await page.click('[data-testid="vocabulary-learning"]');
     await page.waitForLoadState("networkidle");
@@ -79,7 +80,7 @@ test.describe("基本学習フロー E2Eテスト", () => {
     await expect(page.locator('[data-testid="vocabulary-card"]')).toBeVisible();
   });
 
-  test("文法クイズフロー", async ({ page }) => {
+  test("文法クイズフロー", async ({ page }: any) => {
     // 文法クイズボタンをクリック
     await page.click('[data-testid="grammar-quiz"]');
     await page.waitForLoadState("networkidle");
@@ -138,7 +139,7 @@ test.describe("基本学習フロー E2Eテスト", () => {
     ).toBeVisible();
   });
 
-  test("英作文フロー", async ({ page }) => {
+  test("英作文フロー", async ({ page }: any) => {
     // 英作文ボタンをクリック
     await page.click('[data-testid="essay-writing"]');
     await page.waitForLoadState("networkidle");
@@ -171,7 +172,7 @@ test.describe("基本学習フロー E2Eテスト", () => {
     await expect(page.locator('[data-testid="save-success"]')).toBeVisible();
   });
 
-  test("総合テストフロー", async ({ page }) => {
+  test("総合テストフロー", async ({ page }: any) => {
     // 総合テストボタンをクリック
     await page.click('[data-testid="combined-test"]');
     await page.waitForLoadState("networkidle");
@@ -225,7 +226,7 @@ test.describe("基本学習フロー E2Eテスト", () => {
     ).toBeVisible();
   });
 
-  test("データ永続化の確認", async ({ page }) => {
+  test("データ永続化の確認", async ({ page }: any) => {
     // 語彙学習でXPを獲得
     await page.click('[data-testid="vocabulary-learning"]');
     await page.waitForLoadState("networkidle");
@@ -257,7 +258,7 @@ test.describe("基本学習フロー E2Eテスト", () => {
     expect(xpAfterReload).toBe(xpBeforeReload);
   });
 
-  test("エラーハンドリングの確認", async ({ page }) => {
+  test("エラーハンドリングの確認", async ({ page }: any) => {
     // 存在しないページにアクセス
     await page.goto("/non-existent-page");
 

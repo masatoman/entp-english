@@ -256,8 +256,8 @@ class ListeningGachaIntegration {
           (word: VocabularyWord) => {
             if (usedWords.has(word.english)) return false;
             return (
-              word.category === "business" ||
-              word.category === "academic" ||
+              word.category === "toeic" ||
+              word.category === "daily" ||
               word.category === "toeic"
             );
           }

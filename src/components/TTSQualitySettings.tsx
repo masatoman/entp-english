@@ -28,8 +28,8 @@ export const TTSQualitySettings: React.FC<TTSQualitySettingsProps> = ({
   );
 
   const testSettings = async () => {
-    const testText =
-      "Hello, this is a test of the current voice settings. How does it sound?";
+    // const testText =
+    //   "Hello, this is a test of the current voice settings. How does it sound?";
     console.log("🎤 音声設定テスト:", {
       rate,
       pitch,

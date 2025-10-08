@@ -70,7 +70,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     options: ["lying", "laying", "is", "are", "was", "were", "lying", "is"],
     explanation: "「lying」（横たわっている）と単数形の「is」が正解です。",
     level: "intermediate",
-    category: "basic-grammar",
+    category: "basic-sentence-patterns",
   },
   {
     id: 5,
@@ -91,7 +91,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     ],
     explanation: "過去進行形「were playing」と過去形「started」が正解です。",
     level: "beginner",
-    category: "basic-grammar",
+    category: "basic-sentence-patterns",
   },
   {
     id: 6,
@@ -100,7 +100,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     options: ["had", "have", "has", "will have"],
     explanation: "願望を表す「I wish」の後は仮定法過去「had」を使います。",
     level: "advanced",
-    category: "advanced-grammar",
+    category: "tenses",
   },
   {
     id: 7,
@@ -121,7 +121,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     options: ["will have", "will", "have", "had", "would have"],
     explanation: "未来完了形「will have finished」が正解です。",
     level: "advanced",
-    category: "advanced-grammar",
+    category: "tenses",
   },
   {
     id: 9,
@@ -164,7 +164,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     ],
     explanation: "過去の順序を表すため過去形「finished」と「went」が正解です。",
     level: "beginner",
-    category: "basic-grammar",
+    category: "basic-sentence-patterns",
   },
   {
     id: 12,
@@ -186,7 +186,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     explanation:
       "過去完了進行形「had been studying」と時を表す「when」が正解です。",
     level: "advanced",
-    category: "advanced-grammar",
+    category: "tenses",
   },
   {
     id: 13,
@@ -207,7 +207,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     ],
     explanation: "過去進行形「were playing」と時を表す「when」が正解です。",
     level: "beginner",
-    category: "basic-grammar",
+    category: "basic-sentence-patterns",
   },
   {
     id: 14,
@@ -261,7 +261,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     ],
     explanation: "過去形「went」と目的を表す不定詞「to buy」が正解です。",
     level: "beginner",
-    category: "basic-grammar",
+    category: "basic-sentence-patterns",
   },
   {
     id: 17,
@@ -282,7 +282,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     ],
     explanation: "仮定法過去「If I were you, I would study」が正解です。",
     level: "advanced",
-    category: "advanced-grammar",
+    category: "tenses",
   },
   {
     id: 18,
@@ -303,7 +303,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     ],
     explanation: "過去完了形「had finished」と時を表す「when」が正解です。",
     level: "advanced",
-    category: "advanced-grammar",
+    category: "tenses",
   },
   {
     id: 19,
@@ -324,7 +324,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     ],
     explanation: "過去形「forgot」と時を表す「when」が正解です。",
     level: "beginner",
-    category: "basic-grammar",
+    category: "basic-sentence-patterns",
   },
   {
     id: 20,

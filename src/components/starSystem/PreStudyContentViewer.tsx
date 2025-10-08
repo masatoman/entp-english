@@ -13,13 +13,13 @@ import ReactMarkdown from "react-markdown";
 import { useNavigate, useParams } from "react-router-dom";
 import remarkGfm from "remark-gfm";
 import { preStudyContents } from "../../data/preStudyContents";
+import { contentTagManager } from "../../utils/contentTagManager";
 import { getLevelManager, saveLevelManager } from "../../utils/levelManager";
 import { PreStudyProgressManager } from "../../utils/preStudyProgressManager";
-import { contentTagManager } from "../../utils/contentTagManager";
+import RecommendedContentSelector from "../RecommendedContentSelector";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import RecommendedContentSelector from "../RecommendedContentSelector";
 
 // Router対応のため、PropsInterfaceは不要
 
@@ -60,48 +60,48 @@ function PreStudyContentViewer() {
     setShowCompletion(true);
   };
 
-  const _handleFinalComplete = () => {
-    if (comprehensionRating > 0) {
-      // 事前学習完了をマーク
-      if (contentId) {
-        PreStudyProgressManager.markContentAsCompleted(contentId);
+  // const _handleFinalComplete = () => {
+  //   if (comprehensionRating > 0) {
+  //     // 事前学習完了をマーク
+  //     if (contentId) {
+  //       PreStudyProgressManager.markContentAsCompleted(contentId);
 
-        // TOEIC解答結果も保存
-        if (Object.keys(toeicAnswers).length > 0) {
-          PreStudyProgressManager.saveToeicAnswers(contentId, toeicAnswers);
-        }
-      }
+  //       // TOEIC解答結果も保存
+  //       if (Object.keys(toeicAnswers).length > 0) {
+  //         PreStudyProgressManager.saveToeicAnswers(contentId, toeicAnswers);
+  //       }
+  //     }
 
-      navigate("/learning/pre-study/menu");
-    }
-  };
+  //     navigate("/learning/pre-study/menu");
+  //   }
+  // };
 
   const handleNavigateToPractice = () => {
     // 理解度評価が0の場合は3（普通）として扱う
-    const _finalRating = comprehensionRating > 0 ? comprehensionRating : 3;
-    
+    // const _finalRating = comprehensionRating > 0 ? comprehensionRating : 3;
+
     // 学習進捗保存処理
     if (contentId) {
       PreStudyProgressManager.markContentAsCompleted(contentId);
     }
-    
+
     // タグベースで最適な次のコンテンツを決定
     if (contentId) {
       const optimalNext = contentTagManager.getOptimalNextContent(contentId);
       if (optimalNext) {
-        console.log('推奨学習コンテンツ:', optimalNext);
+        console.log("推奨学習コンテンツ:", optimalNext);
         navigate(optimalNext.url);
         return;
       }
     }
-    
+
     // フォールバック: カテゴリに基づく従来の遷移（正しいルートを使用）
-    if (content?.category === 'vocabulary') {
-      navigate('/learning/vocabulary/difficulty');
-    } else if (content?.category === 'writing') {
-      navigate('/learning/essay-writing');
+    if (content?.category === "vocabulary") {
+      navigate("/learning/vocabulary/difficulty");
+    } else if (content?.category === "writing") {
+      navigate("/learning/essay-writing");
     } else {
-      navigate('/learning/grammar/category');
+      navigate("/learning/grammar/category");
     }
   };
 

@@ -221,8 +221,7 @@ export class DataManager {
     // ストリークの更新
     logDebug("Streak calculation:", {
       lastStudyDate: stats.lastStudyDate || new Date().toISOString(),
-      today: today,
-      yesterday,
+      yesterday: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
       currentStreak: stats.currentStreak,
     });
 

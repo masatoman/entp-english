@@ -46,7 +46,7 @@ export function convertQuestionsToEnhanced(
 // レベルに応じた問題フィルタリング
 export function filterQuestionsByLevel(
   questions: QuestionWithRank[],
-  level: number,
+  _level: number,
   skillField?: SkillField
 ): QuestionWithRank[] {
   return questions.filter((question) => {
@@ -56,7 +56,7 @@ export function filterQuestionsByLevel(
     }
 
     // レベルに応じたランクのフィルタリング
-    const _levelRank = determineQuestionRank(level);
+    // const _levelRank = determineQuestionRank(level);
     const rankOrder = ["normal", "rare", "epic", "legendary"];
     const questionRankIndex = rankOrder.indexOf(question.rank);
 

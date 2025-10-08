@@ -17,7 +17,7 @@ import { AdrenalineManager } from "./adrenalineManager";
 export class AdrenalineTOEICIntegrationManager {
   private static readonly INTEGRATION_KEY = "entp-adrenaline-toeic-integration";
   private static readonly TRIGGERS_KEY = "entp-adrenaline-triggers";
-  private static readonly PROGRESSION_KEY = "entp-adrenaline-progression";
+  // private static readonly _PROGRESSION_KEY = "entp-adrenaline-progression";
 
   /**
    * アドレナリントリガー定義

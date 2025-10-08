@@ -293,9 +293,9 @@ export class AdaptiveDifficultySystem {
       }
 
       // 好みの難易度範囲を分析
-      const allDifficulties = sessions.flatMap((s) =>
-        s.questions.map((q) => q.difficulty)
-      );
+      // const _allDifficulties = sessions.flatMap((s) =>
+      //   s.questions.map((q) => q.difficulty)
+      // );
       const successfulDifficulties = sessions.flatMap((s) =>
         s.questions.filter((q) => q.isCorrect).map((q) => q.difficulty)
       );
@@ -489,7 +489,7 @@ export class AdaptiveDifficultySystem {
    * 推奨事項を生成
    */
   private static generateRecommendations(
-    session: AdaptiveSession,
+    _session: AdaptiveSession,
     metrics: PerformanceMetrics
   ): string[] {
     const recommendations = [];

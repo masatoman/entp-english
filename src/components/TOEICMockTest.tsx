@@ -1,6 +1,6 @@
 import { ArrowLeft, Clock, Pause, Play } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { allTOEICQuestions } from "../data/toeicMockTestQuestions";
 import {
   TOEICQuestion,
@@ -28,7 +28,7 @@ export const TOEICMockTest: React.FC<TOEICMockTestProps> = ({
   onComplete,
   onExit,
 }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [session, setSession] = useState<TOEICTestSession | null>(null);
   const [questions, setQuestions] = useState<TOEICQuestion[]>([]);
   const [preStudyBoosts, setPreStudyBoosts] = useState<any>(null);
@@ -115,14 +115,14 @@ export const TOEICMockTest: React.FC<TOEICMockTestProps> = ({
     }
   };
 
-  const handleNext = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex((prev) => prev + 1);
-      setSelectedAnswer(null);
-    } else {
-      handleComplete();
-    }
-  };
+  // const handleNext = () => {
+  //   if (currentQuestionIndex < questions.length - 1) {
+  //     setCurrentQuestionIndex((prev) => prev + 1);
+  //     setSelectedAnswer(null);
+  //   } else {
+  //     handleComplete();
+  //   }
+  // };
 
   const handlePrevious = () => {
     if (currentQuestionIndex > 0) {

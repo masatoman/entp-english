@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { StatusAllocation, STATUS_TEMPLATES } from '../types';
-import { getLevelManager, saveLevelManager } from '../utils/levelManager';
+import { useState } from "react";
+import { StatusAllocation } from "../types";
+import { getLevelManager, saveLevelManager } from "../utils/levelManager";
 
 // ステータス配分の管理フック
 export const useStatusAllocation = () => {
@@ -9,14 +9,14 @@ export const useStatusAllocation = () => {
       const manager = getLevelManager();
       return manager.getStatusAllocation();
     } catch (error) {
-      console.error('Failed to get status allocation:', error);
+      console.error("Failed to get status allocation:", error);
       return {
         listening: 5,
         reading: 5,
         writing: 5,
         grammar: 5,
         idioms: 5,
-        vocabulary: 5
+        vocabulary: 5,
       };
     }
   });
@@ -24,42 +24,38 @@ export const useStatusAllocation = () => {
   const updateAllocation = (newAllocation: StatusAllocation): boolean => {
     const manager = getLevelManager();
     const success = manager.updateStatusAllocation(newAllocation);
-    
+
     if (success) {
       setAllocation(newAllocation);
       saveLevelManager();
       return true;
     }
-    
+
     return false;
   };
 
-  const applyTemplate = (templateName: keyof typeof STATUS_TEMPLATES): boolean => {
+  const applyTemplate = (templateName: string): boolean => {
     const manager = getLevelManager();
-    const success = manager.applyStatusTemplate(templateName);
-    
+    const success = manager.applyStatusTemplate(templateName as any);
+
     if (success) {
       const newAllocation = manager.getStatusAllocation();
       setAllocation(newAllocation);
       saveLevelManager();
       return true;
     }
-    
+
     return false;
   };
 
   const resetAllocation = (): boolean => {
     const manager = getLevelManager();
-    const success = manager.resetStatusAllocation();
-    
-    if (success) {
-      const newAllocation = manager.getStatusAllocation();
-      setAllocation(newAllocation);
-      saveLevelManager();
-      return true;
-    }
-    
-    return false;
+    manager.resetStatusAllocation();
+
+    const newAllocation = manager.getStatusAllocation();
+    setAllocation(newAllocation);
+    saveLevelManager();
+    return true;
   };
 
   const getTotalPoints = (): number => {

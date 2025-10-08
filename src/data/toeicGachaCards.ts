@@ -10,6 +10,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 1,
     word: "meeting",
+    japanese: "",
     meaning: "会議、打ち合わせ",
     partOfSpeech: "名詞",
     phonetic: "/ˈmiːtɪŋ/",
@@ -48,6 +49,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 2,
     word: "schedule",
+    japanese: "",
     meaning: "スケジュール、予定表",
     partOfSpeech: "名詞",
     phonetic: "/ˈʃedjuːl/",
@@ -86,6 +88,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 3,
     word: "deadline",
+    japanese: "",
     meaning: "締切、期限",
     partOfSpeech: "名詞",
     phonetic: "/ˈdedlaɪn/",
@@ -125,6 +128,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 4,
     word: "negotiate",
+    japanese: "",
     meaning: "交渉する、協議する",
     partOfSpeech: "動詞",
     phonetic: "/nɪˈɡoʊʃieɪt/",
@@ -163,6 +167,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 5,
     word: "implement",
+    japanese: "",
     meaning: "実施する、実行する",
     partOfSpeech: "動詞",
     phonetic: "/ˈɪmplɪment/",
@@ -202,6 +207,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 6,
     word: "acquisition",
+    japanese: "",
     meaning: "買収、取得",
     partOfSpeech: "名詞",
     phonetic: "/ˌækwɪˈzɪʃən/",
@@ -240,6 +246,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 7,
     word: "sustainable",
+    japanese: "",
     meaning: "持続可能な、継続可能な",
     partOfSpeech: "形容詞",
     phonetic: "/səˈsteɪnəbəl/",
@@ -279,6 +286,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 8,
     word: "leverage",
+    japanese: "",
     meaning: "活用する、レバレッジをかける",
     partOfSpeech: "動詞",
     phonetic: "/ˈlevərɪdʒ/",
@@ -319,6 +327,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 9,
     word: "paradigm",
+    japanese: "",
     meaning: "パラダイム、思考の枠組み",
     partOfSpeech: "名詞",
     phonetic: "/ˈpærədaɪm/",
@@ -359,6 +368,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 10,
     word: "project",
+    japanese: "",
     meaning: "プロジェクト、計画",
     partOfSpeech: "名詞",
     phonetic: "/ˈprɑːdʒekt/",
@@ -397,6 +407,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 11,
     word: "budget",
+    japanese: "",
     meaning: "予算、経費",
     partOfSpeech: "名詞",
     phonetic: "/ˈbʌdʒɪt/",
@@ -435,6 +446,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 12,
     word: "client",
+    japanese: "",
     meaning: "顧客、クライアント",
     partOfSpeech: "名詞",
     phonetic: "/ˈklaɪənt/",
@@ -473,6 +485,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 13,
     word: "report",
+    japanese: "",
     meaning: "報告書、レポート",
     partOfSpeech: "名詞",
     phonetic: "/rɪˈpɔːrt/",
@@ -511,6 +524,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 14,
     word: "office",
+    japanese: "",
     meaning: "オフィス、事務所",
     partOfSpeech: "名詞",
     phonetic: "/ˈɔːfɪs/",
@@ -550,6 +564,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 15,
     word: "strategy",
+    japanese: "",
     meaning: "戦略、方針",
     partOfSpeech: "名詞",
     phonetic: "/ˈstrætədʒi/",
@@ -588,6 +603,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 16,
     word: "evaluate",
+    japanese: "",
     meaning: "評価する、査定する",
     partOfSpeech: "動詞",
     phonetic: "/ɪˈvæljueɪt/",
@@ -626,6 +642,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 17,
     word: "efficient",
+    japanese: "",
     meaning: "効率的な、能率的な",
     partOfSpeech: "形容詞",
     phonetic: "/ɪˈfɪʃənt/",
@@ -664,6 +681,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 18,
     word: "analyze",
+    japanese: "",
     meaning: "分析する、検討する",
     partOfSpeech: "動詞",
     phonetic: "/ˈænəlaɪz/",
@@ -702,6 +720,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 19,
     word: "collaborate",
+    japanese: "",
     meaning: "協力する、共同作業する",
     partOfSpeech: "動詞",
     phonetic: "/kəˈlæbəreɪt/",
@@ -741,6 +760,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 20,
     word: "innovative",
+    japanese: "",
     meaning: "革新的な、独創的な",
     partOfSpeech: "形容詞",
     phonetic: "/ˈɪnəveɪtɪv/",
@@ -779,6 +799,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 21,
     word: "comprehensive",
+    japanese: "",
     meaning: "包括的な、総合的な",
     partOfSpeech: "形容詞",
     phonetic: "/ˌkɑːmprɪˈhensɪv/",
@@ -817,6 +838,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 22,
     word: "sophisticated",
+    japanese: "",
     meaning: "洗練された、高度な",
     partOfSpeech: "形容詞",
     phonetic: "/səˈfɪstɪkeɪtɪd/",
@@ -855,6 +877,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 23,
     word: "substantial",
+    japanese: "",
     meaning: "相当な、重要な",
     partOfSpeech: "形容詞",
     phonetic: "/səbˈstænʃəl/",
@@ -893,6 +916,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 24,
     word: "optimize",
+    japanese: "",
     meaning: "最適化する、効率化する",
     partOfSpeech: "動詞",
     phonetic: "/ˈɑːptɪmaɪz/",
@@ -932,6 +956,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 25,
     word: "infrastructure",
+    japanese: "",
     meaning: "インフラ、基盤",
     partOfSpeech: "名詞",
     phonetic: "/ˈɪnfrəstrʌktʃər/",
@@ -970,6 +995,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 26,
     word: "methodology",
+    japanese: "",
     meaning: "方法論、手法",
     partOfSpeech: "名詞",
     phonetic: "/ˌmeθəˈdɑːlədʒi/",
@@ -1009,6 +1035,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 27,
     word: "entrepreneurship",
+    japanese: "",
     meaning: "起業家精神、アントレプレナーシップ",
     partOfSpeech: "名詞",
     phonetic: "/ˌɑːntrəprəˈnɜːrʃɪp/",
@@ -1047,6 +1074,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 28,
     word: "sustainability",
+    japanese: "",
     meaning: "持続可能性、サステナビリティ",
     partOfSpeech: "名詞",
     phonetic: "/səˌsteɪnəˈbɪləti/",
@@ -1087,6 +1115,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 51,
     word: "deadline",
+    japanese: "",
     meaning: "締切、期限",
     partOfSpeech: "名詞",
     phonetic: "/ˈdedlaɪn/",
@@ -1125,6 +1154,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 52,
     word: "budget",
+    japanese: "",
     meaning: "予算、予算案",
     partOfSpeech: "名詞",
     phonetic: "/ˈbʌdʒɪt/",
@@ -1163,6 +1193,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 53,
     word: "revenue",
+    japanese: "",
     meaning: "収益、売上",
     partOfSpeech: "名詞",
     phonetic: "/ˈrevənjuː/",
@@ -1201,6 +1232,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 54,
     word: "efficient",
+    japanese: "",
     meaning: "効率的な、能率的な",
     partOfSpeech: "形容詞",
     phonetic: "/ɪˈfɪʃənt/",
@@ -1239,6 +1271,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 55,
     word: "collaborate",
+    japanese: "",
     meaning: "協力する、共同作業する",
     partOfSpeech: "動詞",
     phonetic: "/kəˈlæbəreɪt/",
@@ -1279,6 +1312,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 56,
     word: "executive",
+    japanese: "",
     meaning: "役員、経営幹部",
     partOfSpeech: "名詞",
     phonetic: "/ɪɡˈzekjətɪv/",
@@ -1317,6 +1351,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 57,
     word: "customer",
+    japanese: "",
     meaning: "顧客、お客様",
     partOfSpeech: "名詞",
     phonetic: "/ˈkʌstəmər/",
@@ -1355,6 +1390,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 58,
     word: "employee",
+    japanese: "",
     meaning: "従業員、社員",
     partOfSpeech: "名詞",
     phonetic: "/ɪmˈplɔɪi/",
@@ -1393,6 +1429,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 59,
     word: "department",
+    japanese: "",
     meaning: "部門、部署",
     partOfSpeech: "名詞",
     phonetic: "/dɪˈpɑrtmənt/",
@@ -1432,6 +1469,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 60,
     word: "equipment",
+    japanese: "",
     meaning: "設備、機器",
     partOfSpeech: "名詞",
     phonetic: "/ɪˈkwɪpmənt/",
@@ -1470,6 +1508,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 61,
     word: "facility",
+    japanese: "",
     meaning: "施設、設備",
     partOfSpeech: "名詞",
     phonetic: "/fəˈsɪləti/",
@@ -1510,6 +1549,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 62,
     word: "inventory",
+    japanese: "",
     meaning: "在庫、棚卸し",
     partOfSpeech: "名詞",
     phonetic: "/ˈɪnvəntɔri/",
@@ -1548,6 +1588,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 63,
     word: "manufacture",
+    japanese: "",
     meaning: "製造する、生産する",
     partOfSpeech: "動詞",
     phonetic: "/ˌmænjəˈfæktʃər/",
@@ -1586,6 +1627,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 64,
     word: "supplier",
+    japanese: "",
     meaning: "供給業者、サプライヤー",
     partOfSpeech: "名詞",
     phonetic: "/səˈplaɪər/",
@@ -1624,6 +1666,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 65,
     word: "competitor",
+    japanese: "",
     meaning: "競合他社、競争相手",
     partOfSpeech: "名詞",
     phonetic: "/kəmˈpetətər/",
@@ -1664,6 +1707,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 66,
     word: "acquisition",
+    japanese: "",
     meaning: "買収、取得",
     partOfSpeech: "名詞",
     phonetic: "/ˌækwɪˈzɪʃən/",
@@ -1702,6 +1746,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 67,
     word: "innovation",
+    japanese: "",
     meaning: "革新、イノベーション",
     partOfSpeech: "名詞",
     phonetic: "/ˌɪnəˈveɪʃən/",
@@ -1740,6 +1785,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 68,
     word: "entrepreneur",
+    japanese: "",
     meaning: "起業家、企業家",
     partOfSpeech: "名詞",
     phonetic: "/ˌɑntrəprəˈnɜr/",
@@ -1780,6 +1826,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 69,
     word: "merger",
+    japanese: "",
     meaning: "合併、統合",
     partOfSpeech: "名詞",
     phonetic: "/ˈmɜrdʒər/",
@@ -1819,6 +1866,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 70,
     word: "stakeholder",
+    japanese: "",
     meaning: "利害関係者、ステークホルダー",
     partOfSpeech: "名詞",
     phonetic: "/ˈsteɪkhoʊldər/",
@@ -1859,6 +1907,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 71,
     word: "paradigm",
+    japanese: "",
     meaning: "パラダイム、概念的枠組み",
     partOfSpeech: "名詞",
     phonetic: "/ˈpærədaɪm/",
@@ -1899,6 +1948,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 72,
     word: "synergy",
+    japanese: "",
     meaning: "相乗効果、シナジー",
     partOfSpeech: "名詞",
     phonetic: "/ˈsɪnərdʒi/",
@@ -1940,6 +1990,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 73,
     word: "productivity",
+    japanese: "",
     meaning: "生産性、効率性",
     partOfSpeech: "名詞",
     phonetic: "/ˌproʊdʌkˈtɪvəti/",
@@ -1978,6 +2029,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 74,
     word: "consultant",
+    japanese: "",
     meaning: "コンサルタント、顧問",
     partOfSpeech: "名詞",
     phonetic: "/kənˈsʌltənt/",
@@ -2016,6 +2068,7 @@ export const toeicWordCards: WordCard[] = [
   {
     id: 75,
     word: "regulation",
+    japanese: "",
     meaning: "規制、規則",
     partOfSpeech: "名詞",
     phonetic: "/ˌreɡjəˈleɪʃən/",

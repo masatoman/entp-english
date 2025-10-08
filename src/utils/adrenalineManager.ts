@@ -93,12 +93,24 @@ export class AdrenalineManager {
       stats: {
         totalCombos: 0,
         maxComboAchieved: 0,
+        maxCombo: 0,
         totalCriticals: 0,
+        totalCriticalHits: 0,
         treasureBoxesOpened: 0,
         feverTimesTriggered: 0,
+        totalFeverTime: 0,
         pressureBurstsUsed: 0,
         totalBonusXP: 0,
         averageMultiplier: 1.0,
+        adrenalineLevel: 0,
+        currentCombo: 0,
+        criticalRate: 0,
+        feverTimeActive: false,
+        experiencePoints: 0,
+        perfectRuns: 0,
+        averageComboLength: 0,
+        criticalHitRate: 0,
+        feverTimeEfficiency: 0,
       },
       isEnabled: true,
     };
@@ -278,7 +290,7 @@ export class AdrenalineManager {
   // 宝箱システム
   earnTreasureBox(
     difficulty: "easy" | "normal" | "hard",
-    forceEarn: boolean = false
+    _forceEarn: boolean = false
   ): TreasureBox {
     const box = this.generateTreasureBox(difficulty);
     this.system.treasureBoxes.push(box);

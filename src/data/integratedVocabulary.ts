@@ -41,7 +41,7 @@ export const integratedVocabulary: WordCard[] = [
 export const vocabularyDatabaseStats = {
   // 基本統計
   total: integratedVocabulary.length,
-  original: toeicWordCards.length + additionalToeicCards.length,
+  original: originalToeicWordCards.length + additionalToeicCards.length,
   newlyAdded:
     expandedBasicVocabulary.length +
     expandedBasicVocabulary2.length +
@@ -160,7 +160,9 @@ export class VocabularyDatabase {
   /**
    * TOEICパートでフィルタリング
    */
-  filterByPart(part: string): WordCard[] {
+  filterByPart(
+    part: "Part1" | "Part2" | "Part3" | "Part4" | "Part5" | "Part6" | "Part7"
+  ): WordCard[] {
     return this.vocabulary.filter((card) =>
       card.toeicSpecific?.parts?.includes(part)
     );

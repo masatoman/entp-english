@@ -70,10 +70,7 @@ export class PersonalizedLearningSystem {
     recentSessions: any[]
   ): PersonalizationProfile {
     try {
-      const profile = this.analyzeUserBehavior(
-        userId,
-        recentSessions
-      );
+      const profile = this.analyzeUserBehavior(userId, recentSessions);
 
       // 既存プロファイルと統合
       const existingProfile = this.getPersonalizationProfile(userId);
@@ -261,8 +258,7 @@ export class PersonalizedLearningSystem {
     const now = new Date().toISOString();
 
     // 難易度選好の分析
-    const preferredDifficulty =
-      this.analyzeDifficultyPreference();
+    const preferredDifficulty = this.analyzeDifficultyPreference();
 
     // カテゴリー選好の分析
     const preferredCategories = this.analyzeCategoryPreference(recentSessions);
@@ -275,7 +271,7 @@ export class PersonalizedLearningSystem {
     const optimalStudyTime = this.analyzeOptimalStudyTime(recentSessions);
     const bestPerformanceHours =
       this.analyzeBestPerformanceHours(recentSessions);
-    const learningSpeed = this.analyzeLearningSpeed(recentSessions);
+    const learningSpeed = this.analyzeLearningSpeed();
 
     // 成績統計の計算
     const averageAccuracy = this.calculateAverageAccuracy(recentSessions);

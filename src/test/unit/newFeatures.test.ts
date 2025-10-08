@@ -1,3 +1,4 @@
+// @ts-ignore
 import { beforeEach, describe, expect, it } from "vitest";
 import { DailyChallengeManager } from "../../utils/dailyChallengeManager";
 import { KnownWordsManager } from "../../utils/knownWordsManager";
@@ -27,6 +28,7 @@ describe("New Features Tests", () => {
     it("単語の既知マークが正常に動作", () => {
       const testWord = {
         id: 1,
+        word: "test",
         english: "test",
         japanese: "テスト",
         meaning: "テスト",
@@ -34,7 +36,9 @@ describe("New Features Tests", () => {
         example: "This is a test.",
         exampleTranslation: "これはテストです。",
         level: "beginner" as const,
-        category: "daily",
+        category: "daily" as const,
+        examples: ["This is a test."],
+        content: "test",
       };
 
       KnownWordsManager.markWordAsKnown(testWord);
@@ -50,25 +54,31 @@ describe("New Features Tests", () => {
       const words = [
         {
           id: 1,
+          word: "known",
           english: "known",
           japanese: "既知",
           meaning: "既知",
-          category: "daily",
+          category: "daily" as const,
           level: "beginner" as const,
           partOfSpeech: "adj",
           example: "",
           exampleTranslation: "",
+          examples: [],
+          content: "known",
         },
         {
           id: 2,
+          word: "unknown",
           english: "unknown",
           japanese: "未知",
           meaning: "未知",
-          category: "daily",
+          category: "daily" as const,
           level: "beginner" as const,
           partOfSpeech: "adj",
           example: "",
           exampleTranslation: "",
+          examples: [],
+          content: "unknown",
         },
       ];
 

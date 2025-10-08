@@ -82,13 +82,13 @@ export const StatusAllocationComponent: React.FC<StatusAllocationProps> = ({
     return (allocation[field] / 30) * 100;
   };
 
-  const _getProgressVariant = (field: SkillField) => {
-    const percentage = getFieldPercentage(field);
-    if (percentage >= 30) return "bg-blue-500";
-    if (percentage >= 20) return "bg-green-500";
-    if (percentage >= 10) return "bg-yellow-500";
-    return "bg-gray-300";
-  };
+  // const _getProgressVariant = (field: SkillField) => {
+  //   const percentage = getFieldPercentage(field);
+  //   if (percentage >= 30) return "bg-blue-500";
+  //   if (percentage >= 20) return "bg-green-500";
+  //   if (percentage >= 10) return "bg-yellow-500";
+  //   return "bg-gray-300";
+  // };
 
   const skillFields: SkillField[] = [
     "listening",
@@ -247,7 +247,7 @@ export const StatusAllocationComponent: React.FC<StatusAllocationProps> = ({
               </Button>
             </div>
             <div className="grid grid-cols-2 gap-2">
-              {Object.entries(STATUS_TEMPLATES).map(([name, template]) => (
+              {Object.entries(STATUS_TEMPLATES).map(([name, _template]) => (
                 <Button
                   key={name}
                   onClick={() =>

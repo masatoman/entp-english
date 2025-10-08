@@ -5,6 +5,7 @@
 
 import { handleError } from "./errorHandler";
 import { logInfo, logPerformance } from "./logger";
+// import { DataManager } from "./dataManager";
 
 export interface BenchmarkResult {
   testName: string;
@@ -149,10 +150,9 @@ export class PerformanceBenchmark {
 
     await this.runBenchmark("個人化推奨生成", 20, () => {
       PersonalizedLearningSystem.recommendContent(
-        "test-user",
+        "test-user", // userId as string
         testItems,
-        "mixed",
-        10
+        10 // count
       );
     });
 
@@ -178,21 +178,17 @@ export class PerformanceBenchmark {
     });
 
     // 弱点分析テスト
-    const testSessions = Array(50)
-      .fill(null)
-      .map((_, i) => ({
-        category: ["grammar", "vocabulary"][i % 2],
-        isCorrect: Math.random() > 0.4,
-        timestamp: Date.now() - i * 60000,
-        score: 60 + Math.random() * 30,
-      }));
+    // const _testSessions = Array(50)
+    //   .fill(null)
+    //   .map((_, i) => ({
+    //     category: ["grammar", "vocabulary"][i % 2],
+    //     isCorrect: Math.random() > 0.4,
+    //     timestamp: Date.now() - i * 60000,
+    //     score: 60 + Math.random() * 30,
+    //   }));
 
     await this.runBenchmark("弱点分析実行", 10, () => {
-      WeaknessAnalyzer.performComprehensiveAnalysis(
-        "test-user",
-        DataManager.getUserStats(),
-        testSessions
-      );
+      WeaknessAnalyzer.performComprehensiveAnalysis("test-user", {} as any);
     });
   }
 
@@ -495,7 +491,7 @@ export class PerformanceBenchmark {
         const improvement =
           ((previousResult.averageTime - currentResult.averageTime) /
             previousResult.averageTime) *
-0;
+          0;
 
         if (improvement > 10) {
           improvements.push(

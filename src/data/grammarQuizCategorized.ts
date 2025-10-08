@@ -21,7 +21,7 @@ export interface GrammarQuizQuestion {
     | "comparison"
     | "participles-gerunds"
     | "infinitives";
-  source?: "prestudy" | "standard";
+  source: "prestudy" | "standard";
   preStudyContentId?: string;
   toeicPart?: number;
 }
@@ -31,6 +31,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 1,
     sentence: "I ___ to the store yesterday.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "went" }],
     options: ["go", "went", "going", "goes"],
     explanation: "過去の時点での行動を表すため、過去形「went」が正解です。",
@@ -40,6 +41,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 2,
     sentence: "The book ___ on the table ___ mine.",
+    source: "prestudy",
     blanks: [
       { id: "blank1", position: 3, correctAnswer: "lying" },
       { id: "blank2", position: 7, correctAnswer: "is" },
@@ -52,6 +54,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 3,
     sentence: "They ___ playing soccer when it ___ to rain.",
+    source: "prestudy",
     blanks: [
       { id: "blank1", position: 2, correctAnswer: "were" },
       { id: "blank2", position: 7, correctAnswer: "started" },
@@ -73,6 +76,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 4,
     sentence: "I ___ my homework before I ___ to bed.",
+    source: "prestudy",
     blanks: [
       { id: "blank1", position: 1, correctAnswer: "finished" },
       { id: "blank2", position: 5, correctAnswer: "went" },
@@ -94,6 +98,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 5,
     sentence: "He ___ to the store ___ some milk.",
+    source: "prestudy",
     blanks: [
       { id: "blank1", position: 2, correctAnswer: "went" },
       { id: "blank2", position: 5, correctAnswer: "to buy" },
@@ -115,6 +120,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 6,
     sentence: "She ___ her keys ___ she left the house.",
+    source: "prestudy",
     blanks: [
       { id: "blank1", position: 2, correctAnswer: "forgot" },
       { id: "blank2", position: 5, correctAnswer: "when" },
@@ -136,6 +142,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 7,
     sentence: "The students ___ their homework ___ the teacher arrived.",
+    source: "prestudy",
     blanks: [
       { id: "blank1", position: 3, correctAnswer: "had finished" },
       { id: "blank2", position: 6, correctAnswer: "when" },
@@ -157,6 +164,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 8,
     sentence: "I ___ you ___ come to the party tomorrow.",
+    source: "prestudy",
     blanks: [
       { id: "blank1", position: 2, correctAnswer: "hope" },
       { id: "blank2", position: 4, correctAnswer: "will" },
@@ -171,6 +179,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 9,
     sentence: "She ___ been studying English ___ three years.",
+    source: "prestudy",
     blanks: [
       { id: "blank1", position: 2, correctAnswer: "has" },
       { id: "blank2", position: 6, correctAnswer: "for" },
@@ -184,6 +193,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 10,
     sentence: "By the time you arrive, I ___ finished my homework.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 7, correctAnswer: "will have" }],
     options: ["will have", "will", "have", "had", "would have"],
     explanation: "未来完了形「will have finished」が正解です。",
@@ -193,6 +203,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 11,
     sentence: "She ___ English for five years ___ she started working.",
+    source: "prestudy",
     blanks: [
       { id: "blank1", position: 2, correctAnswer: "had been studying" },
       { id: "blank2", position: 7, correctAnswer: "when" },
@@ -216,6 +227,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 12,
     sentence: "I ___ to work by train ___ day.",
+    source: "prestudy",
     blanks: [
       { id: "blank1", position: 2, correctAnswer: "go" },
       { id: "blank2", position: 6, correctAnswer: "every" },
@@ -225,7 +237,6 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
       "【事前学習連携】習慣を表すevery dayと一人称の現在形goが正解。事前学習前編の基本時制で学習した内容です。",
     level: "beginner",
     category: "tenses",
-    source: "prestudy",
     preStudyContentId: "tenses-theory-part1",
   },
   {
@@ -391,10 +402,13 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
     explanation: "過去進行形「were playing」と時を表す「when」が正解です。",
     level: "beginner",
     category: "tenses",
+    source: "prestudy",
+    preStudyContentId: "tenses-theory-part2",
   },
   {
     id: 22,
     sentence: "I ___ this book three times already.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "have read" }],
     options: ["have read", "read", "am reading", "will read"],
     explanation: "現在完了形「have read」が正解です。",
@@ -404,6 +418,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 23,
     sentence: "He ___ to Japan next month.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "will go" }],
     options: ["will go", "goes", "is going", "went"],
     explanation: "未来形「will go」が正解です。",
@@ -413,6 +428,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 15,
     sentence: "I ___ my homework when you called.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "was doing" }],
     options: ["was doing", "did", "am doing", "have done"],
     explanation: "過去進行形「was doing」が正解です。",
@@ -422,6 +438,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 16,
     sentence: "She ___ here since 2020.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "has lived" }],
     options: ["has lived", "lived", "is living", "will live"],
     explanation: "現在完了形「has lived」が正解です。",
@@ -433,6 +450,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 17,
     sentence: "You ___ study harder if you want to pass the exam.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "should" }],
     options: ["should", "can", "must", "will"],
     explanation: "助動詞「should」が正解です。",
@@ -442,6 +460,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 18,
     sentence: "I ___ speak three languages fluently.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "can" }],
     options: ["can", "should", "must", "will"],
     explanation: "助動詞「can」が正解です。",
@@ -451,6 +470,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 19,
     sentence: "You ___ not smoke in this building.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "must" }],
     options: ["must", "can", "should", "will"],
     explanation: "助動詞「must」が正解です。",
@@ -460,6 +480,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 20,
     sentence: "I ___ you ___ call me if you need help.",
+    source: "prestudy",
     blanks: [
       { id: "blank1", position: 2, correctAnswer: "suggest" },
       { id: "blank2", position: 4, correctAnswer: "should" },
@@ -481,6 +502,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 21,
     sentence: "You ___ have told me earlier.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "should" }],
     options: ["should", "can", "must", "will"],
     explanation: "助動詞「should」が正解です。",
@@ -490,6 +512,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 22,
     sentence: "I ___ not believe what I'm seeing.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "can" }],
     options: ["can", "should", "must", "will"],
     explanation: "助動詞「can」が正解です。",
@@ -499,6 +522,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 23,
     sentence: "You ___ be more careful next time.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "should" }],
     options: ["should", "can", "must", "will"],
     explanation: "助動詞「should」が正解です。",
@@ -508,6 +532,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 24,
     sentence: "I ___ have finished this by tomorrow.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "will" }],
     options: ["will", "can", "should", "must"],
     explanation: "助動詞「will」が正解です。",
@@ -519,6 +544,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 25,
     sentence: "The house ___ by a famous architect.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "was designed" }],
     options: ["was designed", "designed", "is designing", "will design"],
     explanation: "受動態「was designed」が正解です。",
@@ -528,6 +554,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 26,
     sentence: "The book ___ in many countries.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "is read" }],
     options: ["is read", "reads", "was reading", "will read"],
     explanation: "受動態「is read」が正解です。",
@@ -537,6 +564,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 27,
     sentence: "The door ___ by someone.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "was opened" }],
     options: ["was opened", "opened", "is opening", "will open"],
     explanation: "受動態「was opened」が正解です。",
@@ -546,6 +574,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 28,
     sentence: "The project ___ by the team last month.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "was completed" }],
     options: ["was completed", "completed", "is completing", "will complete"],
     explanation: "受動態「was completed」が正解です。",
@@ -555,6 +584,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 29,
     sentence: "The letter ___ yesterday.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "was sent" }],
     options: ["was sent", "sent", "is sending", "will send"],
     explanation: "受動態「was sent」が正解です。",
@@ -564,6 +594,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 30,
     sentence: "The problem ___ by the engineers.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "is being solved" }],
     options: ["is being solved", "solves", "solved", "will solve"],
     explanation: "受動態進行形「is being solved」が正解です。",
@@ -573,6 +604,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 31,
     sentence: "The meeting ___ at 3 PM tomorrow.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "will be held" }],
     options: ["will be held", "holds", "held", "is holding"],
     explanation: "受動態未来形「will be held」が正解です。",
@@ -582,6 +614,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 32,
     sentence: "The car ___ by my father.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "was bought" }],
     options: ["was bought", "bought", "is buying", "will buy"],
     explanation: "受動態「was bought」が正解です。",
@@ -593,6 +626,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 33,
     sentence: "The movie ___ we watched last night ___ very exciting.",
+    source: "prestudy",
     blanks: [
       { id: "blank1", position: 2, correctAnswer: "that" },
       { id: "blank2", position: 7, correctAnswer: "was" },
@@ -605,6 +639,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 34,
     sentence: "The book ___ I read yesterday ___ very interesting.",
+    source: "prestudy",
     blanks: [
       { id: "blank1", position: 2, correctAnswer: "which" },
       { id: "blank2", position: 6, correctAnswer: "was" },
@@ -617,6 +652,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 35,
     sentence: "The man ___ is standing there is my teacher.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "who" }],
     options: ["who", "which", "that", "whom"],
     explanation: "関係代名詞「who」が正解です。",
@@ -626,6 +662,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 36,
     sentence: "This is the house ___ I was born.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 4, correctAnswer: "where" }],
     options: ["where", "which", "that", "who"],
     explanation: "関係副詞「where」が正解です。",
@@ -635,6 +672,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 37,
     sentence: "The reason ___ he left is unknown.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "why" }],
     options: ["why", "which", "that", "who"],
     explanation: "関係副詞「why」が正解です。",
@@ -644,6 +682,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 38,
     sentence: "The day ___ I met you was wonderful.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "when" }],
     options: ["when", "which", "that", "who"],
     explanation: "関係副詞「when」が正解です。",
@@ -653,6 +692,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 39,
     sentence: "The woman ___ you saw is my sister.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "whom" }],
     options: ["whom", "who", "which", "that"],
     explanation: "関係代名詞「whom」が正解です。",
@@ -662,6 +702,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 40,
     sentence: "The car ___ color is red belongs to me.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "whose" }],
     options: ["whose", "which", "that", "who"],
     explanation: "関係代名詞「whose」が正解です。",
@@ -673,6 +714,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 41,
     sentence: "If I ___ rich, I ___ travel around the world.",
+    source: "prestudy",
     blanks: [
       { id: "blank1", position: 2, correctAnswer: "were" },
       { id: "blank2", position: 5, correctAnswer: "would" },
@@ -685,6 +727,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 42,
     sentence: "I wish I ___ more time to finish this project.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "had" }],
     options: ["had", "have", "has", "will have"],
     explanation: "願望を表す「I wish」の後は仮定法過去「had」を使います。",
@@ -694,6 +737,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 43,
     sentence: "If I ___ you, I ___ study harder.",
+    source: "prestudy",
     blanks: [
       { id: "blank1", position: 2, correctAnswer: "were" },
       { id: "blank2", position: 5, correctAnswer: "would" },
@@ -715,6 +759,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 44,
     sentence: "I wish I ___ speak French fluently.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "could" }],
     options: ["could", "can", "will", "would"],
     explanation: "願望を表す「I wish」の後は仮定法過去「could」を使います。",
@@ -724,6 +769,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 45,
     sentence: "If I ___ known earlier, I ___ have come.",
+    source: "prestudy",
     blanks: [
       { id: "blank1", position: 2, correctAnswer: "had" },
       { id: "blank2", position: 5, correctAnswer: "would" },
@@ -746,6 +792,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 46,
     sentence: "I wish I ___ not made that mistake.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "had" }],
     options: ["had", "have", "has", "will have"],
     explanation: "願望を表す「I wish」の後は仮定法過去完了「had」を使います。",
@@ -755,6 +802,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 47,
     sentence: "If I ___ you, I ___ not do that.",
+    source: "prestudy",
     blanks: [
       { id: "blank1", position: 2, correctAnswer: "were" },
       { id: "blank2", position: 5, correctAnswer: "would" },
@@ -776,6 +824,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 48,
     sentence: "I wish it ___ stop raining.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "would" }],
     options: ["would", "will", "can", "could"],
     explanation: "願望を表す「I wish」の後は仮定法過去「would」を使います。",
@@ -787,6 +836,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 49,
     sentence: "She is ___ intelligent ___ her sister.",
+    source: "prestudy",
     blanks: [
       { id: "blank1", position: 2, correctAnswer: "as" },
       { id: "blank2", position: 4, correctAnswer: "as" },
@@ -799,6 +849,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 50,
     sentence: "This book is ___ than that one.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "more interesting" }],
     options: [
       "more interesting",
@@ -813,6 +864,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 51,
     sentence: "He is the ___ student in the class.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 4, correctAnswer: "tallest" }],
     options: ["tallest", "taller", "tall", "as tall"],
     explanation: "最上級「tallest」が正解です。",
@@ -822,6 +874,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 52,
     sentence: "This is ___ expensive ___ that.",
+    source: "prestudy",
     blanks: [
       { id: "blank1", position: 2, correctAnswer: "as" },
       { id: "blank2", position: 4, correctAnswer: "as" },
@@ -834,6 +887,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 53,
     sentence: "She runs ___ than her brother.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "faster" }],
     options: ["faster", "fast", "fastest", "as fast"],
     explanation: "比較級「faster」が正解です。",
@@ -843,6 +897,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 54,
     sentence: "This is the ___ beautiful place I've ever seen.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 4, correctAnswer: "most" }],
     options: ["most", "more", "very", "as"],
     explanation: "最上級「most」が正解です。",
@@ -852,6 +907,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 55,
     sentence: "He is ___ than I expected.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "taller" }],
     options: ["taller", "tall", "tallest", "as tall"],
     explanation: "比較級「taller」が正解です。",
@@ -861,6 +917,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 56,
     sentence: "This problem is ___ difficult ___ the previous one.",
+    source: "prestudy",
     blanks: [
       { id: "blank1", position: 3, correctAnswer: "as" },
       { id: "blank2", position: 5, correctAnswer: "as" },
@@ -875,6 +932,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 57,
     sentence: "___ English is not easy for me.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 1, correctAnswer: "Learning" }],
     options: ["Learning", "Learn", "Learned", "To learn"],
     explanation: "動名詞「Learning」が正解です。",
@@ -884,6 +942,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 58,
     sentence: "I enjoy ___ books in my free time.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "reading" }],
     options: ["reading", "read", "to read", "reads"],
     explanation: "動名詞「reading」が正解です。",
@@ -893,6 +952,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 59,
     sentence: "The ___ child was crying loudly.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "crying" }],
     options: ["crying", "cry", "cried", "cries"],
     explanation: "現在分詞「crying」が正解です。",
@@ -902,6 +962,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 60,
     sentence: "I saw a ___ bird in the tree.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "singing" }],
     options: ["singing", "sing", "sang", "sings"],
     explanation: "現在分詞「singing」が正解です。",
@@ -911,6 +972,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 61,
     sentence: "___ tired, I went to bed early.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 1, correctAnswer: "Feeling" }],
     options: ["Feeling", "Feel", "Felt", "To feel"],
     explanation: "現在分詞「Feeling」が正解です。",
@@ -920,6 +982,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 62,
     sentence: "The ___ book is on the table.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "opened" }],
     options: ["opened", "opening", "open", "opens"],
     explanation: "過去分詞「opened」が正解です。",
@@ -929,6 +992,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 63,
     sentence: "I'm looking forward to ___ you again.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 4, correctAnswer: "seeing" }],
     options: ["seeing", "see", "saw", "sees"],
     explanation: "動名詞「seeing」が正解です。",
@@ -938,6 +1002,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 64,
     sentence: "The ___ door was difficult to open.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "broken" }],
     options: ["broken", "breaking", "break", "breaks"],
     explanation: "過去分詞「broken」が正解です。",
@@ -949,6 +1014,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 65,
     sentence: "I want ___ a doctor when I grow up.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "to become" }],
     options: ["to become", "become", "becoming", "became"],
     explanation: "不定詞「to become」が正解です。",
@@ -958,6 +1024,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 66,
     sentence: "It's important ___ English every day.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "to practice" }],
     options: ["to practice", "practice", "practicing", "practiced"],
     explanation: "不定詞「to practice」が正解です。",
@@ -967,6 +1034,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 67,
     sentence: "I need ___ some money from the bank.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "to withdraw" }],
     options: ["to withdraw", "withdraw", "withdrawing", "withdrew"],
     explanation: "不定詞「to withdraw」が正解です。",
@@ -976,6 +1044,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 68,
     sentence: "She decided ___ her job.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "to quit" }],
     options: ["to quit", "quit", "quitting", "quits"],
     explanation: "不定詞「to quit」が正解です。",
@@ -985,6 +1054,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 69,
     sentence: "It's difficult ___ this problem.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "to solve" }],
     options: ["to solve", "solve", "solving", "solved"],
     explanation: "不定詞「to solve」が正解です。",
@@ -994,6 +1064,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 70,
     sentence: "I hope ___ you soon.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 2, correctAnswer: "to see" }],
     options: ["to see", "see", "seeing", "saw"],
     explanation: "不定詞「to see」が正解です。",
@@ -1003,6 +1074,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 71,
     sentence: "She asked me ___ her with the homework.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "to help" }],
     options: ["to help", "help", "helping", "helped"],
     explanation: "不定詞「to help」が正解です。",
@@ -1012,6 +1084,7 @@ export const grammarQuizQuestions: GrammarQuizQuestion[] = [
   {
     id: 72,
     sentence: "It's nice ___ you again.",
+    source: "prestudy",
     blanks: [{ id: "blank1", position: 3, correctAnswer: "to meet" }],
     options: ["to meet", "meet", "meeting", "met"],
     explanation: "不定詞「to meet」が正解です。",
@@ -1027,7 +1100,7 @@ export function getGrammarQuizQuestions(
   // 標準問題を取得
   let filteredQuestions = grammarQuizQuestions.map((q) => ({
     ...q,
-    source: "standard" as const,
+    source: (q.source || "standard") as "standard" | "prestudy",
   }));
 
   // 事前学習由来の問題を追加

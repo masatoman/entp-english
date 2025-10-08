@@ -273,7 +273,7 @@ const AreaCard: React.FC<{
 
 // メインコンポーネント
 const WorldMapMock: React.FC = () => {
-  const [selectedArea, setSelectedArea] = useState<GameArea | null>(null);
+  const [_selectedArea, setSelectedArea] = useState<GameArea | null>(null);
 
   const handleAreaClick = (area: GameArea) => {
     if (area.isLocked) {

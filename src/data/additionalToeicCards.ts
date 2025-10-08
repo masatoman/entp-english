@@ -6,6 +6,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 76,
     word: "software",
+    japanese: "",
     meaning: "ソフトウェア、プログラム",
     partOfSpeech: "名詞",
     phonetic: "/ˈsɔftˌwɛr/",
@@ -36,7 +37,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part1", "Part3", "Part4", "Part7"],
       frequency: "very_high",
-      scoreBand: "400-600",
+      scoreBand: "400-500",
       synonyms: ["program", "application"],
       businessContext: "IT・技術",
     },
@@ -44,6 +45,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 77,
     word: "database",
+    japanese: "",
     meaning: "データベース、データ集合",
     partOfSpeech: "名詞",
     phonetic: "/ˈdeɪtəˌbeɪs/",
@@ -74,7 +76,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "medium",
-      scoreBand: "600-800",
+      scoreBand: "600-700",
       synonyms: ["data storage", "information system"],
       businessContext: "IT・データ管理",
     },
@@ -82,6 +84,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 78,
     word: "network",
+    japanese: "",
     meaning: "ネットワーク、網",
     partOfSpeech: "名詞",
     phonetic: "/ˈnɛtˌwɜrk/",
@@ -112,7 +115,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part1", "Part3", "Part4", "Part7"],
       frequency: "high",
-      scoreBand: "500-700",
+      scoreBand: "500-600",
       synonyms: ["system", "connection"],
       businessContext: "IT・ネットワーク",
     },
@@ -122,6 +125,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 79,
     word: "expenditure",
+    japanese: "",
     meaning: "支出、経費",
     partOfSpeech: "名詞",
     phonetic: "/ɪkˈspɛndətʃər/",
@@ -152,7 +156,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part4", "Part7"],
       frequency: "medium",
-      scoreBand: "600-800",
+      scoreBand: "600-700",
       synonyms: ["expense", "cost"],
       businessContext: "財務・会計",
     },
@@ -160,6 +164,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 80,
     word: "profit",
+    japanese: "",
     meaning: "利益、収益",
     partOfSpeech: "名詞",
     phonetic: "/ˈprɑfət/",
@@ -190,7 +195,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "very_high",
-      scoreBand: "500-700",
+      scoreBand: "500-600",
       synonyms: ["earnings", "income"],
       businessContext: "財務・業績",
     },
@@ -200,6 +205,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 81,
     word: "campaign",
+    japanese: "",
     meaning: "キャンペーン、活動",
     partOfSpeech: "名詞",
     phonetic: "/kæmˈpeɪn/",
@@ -230,7 +236,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "high",
-      scoreBand: "500-700",
+      scoreBand: "500-600",
       synonyms: ["promotion", "initiative"],
       businessContext: "マーケティング・広告",
     },
@@ -238,6 +244,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 82,
     word: "advertisement",
+    japanese: "",
     meaning: "広告、宣伝",
     partOfSpeech: "名詞",
     phonetic: "/ˌædvərˈtaɪzmənt/",
@@ -268,7 +275,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part1", "Part3", "Part4", "Part7"],
       frequency: "high",
-      scoreBand: "400-600",
+      scoreBand: "400-500",
       synonyms: ["commercial", "promotion"],
       businessContext: "広告・マーケティング",
     },
@@ -278,6 +285,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 83,
     word: "supervisor",
+    japanese: "",
     meaning: "監督者、上司",
     partOfSpeech: "名詞",
     phonetic: "/ˈsupərˌvaɪzər/",
@@ -308,7 +316,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "high",
-      scoreBand: "500-700",
+      scoreBand: "500-600",
       synonyms: ["manager", "boss"],
       businessContext: "人事・管理",
     },
@@ -316,6 +324,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 84,
     word: "colleague",
+    japanese: "",
     meaning: "同僚、仕事仲間",
     partOfSpeech: "名詞",
     phonetic: "/ˈkɑliɡ/",
@@ -346,7 +355,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4"],
       frequency: "very_high",
-      scoreBand: "400-600",
+      scoreBand: "400-500",
       synonyms: ["coworker", "teammate"],
       businessContext: "職場・チームワーク",
     },
@@ -356,6 +365,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 85,
     word: "international",
+    japanese: "",
     meaning: "国際的な、国際の",
     partOfSpeech: "形容詞",
     phonetic: "/ˌɪntərˈnæʃənəl/",
@@ -386,7 +396,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "high",
-      scoreBand: "500-700",
+      scoreBand: "500-600",
       synonyms: ["global", "worldwide"],
       businessContext: "国際ビジネス・グローバル",
     },
@@ -394,6 +404,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 86,
     word: "export",
+    japanese: "",
     meaning: "輸出する、輸出",
     partOfSpeech: "動詞・名詞",
     phonetic: "/ɪkˈspɔrt/",
@@ -424,7 +435,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part4", "Part7"],
       frequency: "medium",
-      scoreBand: "600-800",
+      scoreBand: "600-700",
       synonyms: ["ship overseas", "send abroad"],
       businessContext: "貿易・国際取引",
     },
@@ -432,6 +443,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 87,
     word: "import",
+    japanese: "",
     meaning: "輸入する、輸入",
     partOfSpeech: "動詞・名詞",
     phonetic: "/ɪmˈpɔrt/",
@@ -462,7 +474,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part4", "Part7"],
       frequency: "medium",
-      scoreBand: "600-800",
+      scoreBand: "600-700",
       synonyms: ["bring in", "purchase abroad"],
       businessContext: "貿易・国際取引",
     },
@@ -472,6 +484,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 88,
     word: "quality",
+    japanese: "",
     meaning: "品質、質",
     partOfSpeech: "名詞",
     phonetic: "/ˈkwɑləti/",
@@ -502,7 +515,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part1", "Part3", "Part4", "Part7"],
       frequency: "very_high",
-      scoreBand: "400-600",
+      scoreBand: "400-500",
       synonyms: ["standard", "grade"],
       businessContext: "品質管理・製造",
     },
@@ -510,6 +523,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 89,
     word: "improvement",
+    japanese: "",
     meaning: "改善、向上",
     partOfSpeech: "名詞",
     phonetic: "/ɪmˈpruvmənt/",
@@ -540,7 +554,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "high",
-      scoreBand: "500-700",
+      scoreBand: "500-600",
       synonyms: ["enhancement", "betterment"],
       businessContext: "改善・品質向上",
     },
@@ -548,6 +562,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 90,
     word: "standard",
+    japanese: "",
     meaning: "基準、標準",
     partOfSpeech: "名詞",
     phonetic: "/ˈstændərd/",
@@ -578,7 +593,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "high",
-      scoreBand: "500-700",
+      scoreBand: "500-600",
       synonyms: ["criterion", "benchmark"],
       businessContext: "品質・基準",
     },
@@ -588,6 +603,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 91,
     word: "procedure",
+    japanese: "",
     meaning: "手順、手続き",
     partOfSpeech: "名詞",
     phonetic: "/prəˈsidʒər/",
@@ -618,7 +634,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "high",
-      scoreBand: "500-700",
+      scoreBand: "500-600",
       synonyms: ["process", "method"],
       businessContext: "業務手順・プロセス",
     },
@@ -626,6 +642,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 92,
     word: "requirement",
+    japanese: "",
     meaning: "要件、必要条件",
     partOfSpeech: "名詞",
     phonetic: "/rɪˈkwaɪərmənt/",
@@ -656,7 +673,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "high",
-      scoreBand: "500-700",
+      scoreBand: "500-600",
       synonyms: ["condition", "specification"],
       businessContext: "要件・条件",
     },
@@ -664,6 +681,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 93,
     word: "technology",
+    japanese: "",
     meaning: "技術、テクノロジー",
     partOfSpeech: "名詞",
     phonetic: "/tɛkˈnɑlədʒi/",
@@ -694,7 +712,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "very_high",
-      scoreBand: "500-700",
+      scoreBand: "500-600",
       synonyms: ["innovation", "advancement"],
       businessContext: "技術・IT",
     },
@@ -702,6 +720,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 94,
     word: "solution",
+    japanese: "",
     meaning: "解決策、ソリューション",
     partOfSpeech: "名詞",
     phonetic: "/səˈluʃən/",
@@ -732,7 +751,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "very_high",
-      scoreBand: "500-700",
+      scoreBand: "500-600",
       synonyms: ["answer", "resolution"],
       businessContext: "問題解決・サービス",
     },
@@ -740,6 +759,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 95,
     word: "opportunity",
+    japanese: "",
     meaning: "機会、チャンス",
     partOfSpeech: "名詞",
     phonetic: "/ˌɑpərˈtunəti/",
@@ -770,7 +790,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "very_high",
-      scoreBand: "500-700",
+      scoreBand: "500-600",
       synonyms: ["chance", "possibility"],
       businessContext: "機会・ビジネス戦略",
     },
@@ -780,6 +800,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 96,
     word: "sustainability",
+    japanese: "",
     meaning: "持続可能性、継続性",
     partOfSpeech: "名詞",
     phonetic: "/səˌsteɪnəˈbɪləti/",
@@ -818,6 +839,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 97,
     word: "optimization",
+    japanese: "",
     meaning: "最適化、最適化プロセス",
     partOfSpeech: "名詞",
     phonetic: "/ˌɑptəməˈzeɪʃən/",
@@ -856,6 +878,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 98,
     word: "diversification",
+    japanese: "",
     meaning: "多様化、多角化",
     partOfSpeech: "名詞",
     phonetic: "/daɪˌvɜrsəfəˈkeɪʃən/",
@@ -885,8 +908,8 @@ export const additionalToeicCards: WordCard[] = [
     ],
     toeicSpecific: {
       parts: ["Part7"],
-      frequency: "very_low",
-      scoreBand: "900+",
+      frequency: "low",
+      scoreBand: "800+",
       synonyms: ["variety", "expansion"],
       businessContext: "戦略・投資",
     },
@@ -894,6 +917,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 99,
     word: "consolidation",
+    japanese: "",
     meaning: "統合、集約",
     partOfSpeech: "名詞",
     phonetic: "/kənˌsɑləˈdeɪʃən/",
@@ -923,8 +947,8 @@ export const additionalToeicCards: WordCard[] = [
     ],
     toeicSpecific: {
       parts: ["Part7"],
-      frequency: "very_low",
-      scoreBand: "900+",
+      frequency: "low",
+      scoreBand: "800+",
       synonyms: ["merger", "integration"],
       businessContext: "企業統合・再編",
     },
@@ -932,6 +956,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 100,
     word: "transformation",
+    japanese: "",
     meaning: "変革、変換",
     partOfSpeech: "名詞",
     phonetic: "/ˌtrænsfərˈmeɪʃən/",
@@ -961,8 +986,8 @@ export const additionalToeicCards: WordCard[] = [
     ],
     toeicSpecific: {
       parts: ["Part7"],
-      frequency: "very_low",
-      scoreBand: "900+",
+      frequency: "low",
+      scoreBand: "800+",
       synonyms: ["change", "revolution"],
       businessContext: "変革・デジタル化",
     },
@@ -972,6 +997,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 101,
     word: "strategy",
+    japanese: "",
     meaning: "戦略、方針",
     partOfSpeech: "名詞",
     phonetic: "/ˈstrætədʒi/",
@@ -1002,7 +1028,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "high",
-      scoreBand: "600-800",
+      scoreBand: "600-700",
       synonyms: ["plan", "approach"],
       businessContext: "戦略・計画",
     },
@@ -1010,6 +1036,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 102,
     word: "analysis",
+    japanese: "",
     meaning: "分析、解析",
     partOfSpeech: "名詞",
     phonetic: "/əˈnæləsəs/",
@@ -1040,7 +1067,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part4", "Part7"],
       frequency: "medium",
-      scoreBand: "600-800",
+      scoreBand: "600-700",
       synonyms: ["examination", "study"],
       businessContext: "分析・調査",
     },
@@ -1048,6 +1075,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 103,
     word: "proposal",
+    japanese: "",
     meaning: "提案、企画書",
     partOfSpeech: "名詞",
     phonetic: "/prəˈpoʊzəl/",
@@ -1078,7 +1106,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "high",
-      scoreBand: "500-700",
+      scoreBand: "500-600",
       synonyms: ["suggestion", "plan"],
       businessContext: "企画・提案",
     },
@@ -1086,6 +1114,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 104,
     word: "conference",
+    japanese: "",
     meaning: "会議、カンファレンス",
     partOfSpeech: "名詞",
     phonetic: "/ˈkɑnfərəns/",
@@ -1116,7 +1145,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part1", "Part3", "Part4"],
       frequency: "high",
-      scoreBand: "500-700",
+      scoreBand: "500-600",
       synonyms: ["meeting", "symposium"],
       businessContext: "会議・イベント",
     },
@@ -1124,6 +1153,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 105,
     word: "development",
+    japanese: "",
     meaning: "開発、発展",
     partOfSpeech: "名詞",
     phonetic: "/dɪˈveləpmənt/",
@@ -1154,7 +1184,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "very_high",
-      scoreBand: "500-700",
+      scoreBand: "500-600",
       synonyms: ["creation", "advancement"],
       businessContext: "開発・研究",
     },
@@ -1164,6 +1194,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 106,
     word: "intellectual",
+    japanese: "",
     meaning: "知的な、知識人",
     partOfSpeech: "形容詞・名詞",
     phonetic: "/ˌɪntəˈlektʃuəl/",
@@ -1194,7 +1225,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part7"],
       frequency: "low",
-      scoreBand: "700-900",
+      scoreBand: "700-800",
       synonyms: ["mental", "cognitive"],
       businessContext: "知的財産・法務",
     },
@@ -1202,6 +1233,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 107,
     word: "infrastructure",
+    japanese: "",
     meaning: "インフラ、基盤設備",
     partOfSpeech: "名詞",
     phonetic: "/ˈɪnfrəˌstrʌktʃər/",
@@ -1232,7 +1264,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part4", "Part7"],
       frequency: "low",
-      scoreBand: "700-900",
+      scoreBand: "700-800",
       synonyms: ["foundation", "framework"],
       businessContext: "インフラ・IT",
     },
@@ -1242,6 +1274,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 108,
     word: "governance",
+    japanese: "",
     meaning: "統治、ガバナンス",
     partOfSpeech: "名詞",
     phonetic: "/ˈɡʌvərnəns/",
@@ -1271,7 +1304,7 @@ export const additionalToeicCards: WordCard[] = [
     ],
     toeicSpecific: {
       parts: ["Part7"],
-      frequency: "very_low",
+      frequency: "low",
       scoreBand: "800+",
       synonyms: ["management", "administration"],
       businessContext: "企業統治・経営",
@@ -1280,6 +1313,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 109,
     word: "compliance",
+    japanese: "",
     meaning: "コンプライアンス、法令遵守",
     partOfSpeech: "名詞",
     phonetic: "/kəmˈplaɪəns/",
@@ -1309,7 +1343,7 @@ export const additionalToeicCards: WordCard[] = [
     ],
     toeicSpecific: {
       parts: ["Part4", "Part7"],
-      frequency: "very_low",
+      frequency: "low",
       scoreBand: "800+",
       synonyms: ["adherence", "conformity"],
       businessContext: "法務・コンプライアンス",
@@ -1320,6 +1354,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 110,
     word: "methodology",
+    japanese: "",
     meaning: "方法論、手法",
     partOfSpeech: "名詞",
     phonetic: "/ˌmeθəˈdɑlədʒi/",
@@ -1349,8 +1384,8 @@ export const additionalToeicCards: WordCard[] = [
     ],
     toeicSpecific: {
       parts: ["Part7"],
-      frequency: "very_low",
-      scoreBand: "900+",
+      frequency: "low",
+      scoreBand: "800+",
       synonyms: ["approach", "system"],
       businessContext: "研究・学術",
     },
@@ -1358,6 +1393,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 111,
     word: "sophistication",
+    japanese: "",
     meaning: "洗練、高度化",
     partOfSpeech: "名詞",
     phonetic: "/səˌfɪstəˈkeɪʃən/",
@@ -1387,8 +1423,8 @@ export const additionalToeicCards: WordCard[] = [
     ],
     toeicSpecific: {
       parts: ["Part7"],
-      frequency: "very_low",
-      scoreBand: "900+",
+      frequency: "low",
+      scoreBand: "800+",
       synonyms: ["refinement", "complexity"],
       businessContext: "技術・高度化",
     },
@@ -1396,6 +1432,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 112,
     word: "implementation",
+    japanese: "",
     meaning: "実装、実施",
     partOfSpeech: "名詞",
     phonetic: "/ˌɪmpləmənˈteɪʃən/",
@@ -1426,7 +1463,7 @@ export const additionalToeicCards: WordCard[] = [
     toeicSpecific: {
       parts: ["Part3", "Part4", "Part7"],
       frequency: "medium",
-      scoreBand: "600-800",
+      scoreBand: "600-700",
       synonyms: ["execution", "deployment"],
       businessContext: "プロジェクト・システム",
     },
@@ -1434,6 +1471,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 113,
     word: "sustainability",
+    japanese: "",
     meaning: "持続可能性、継続性",
     partOfSpeech: "名詞",
     phonetic: "/səˌsteɪnəˈbɪləti/",
@@ -1472,6 +1510,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 114,
     word: "digitalization",
+    japanese: "",
     meaning: "デジタル化、デジタル変革",
     partOfSpeech: "名詞",
     phonetic: "/ˌdɪdʒətəlaɪˈzeɪʃən/",
@@ -1510,6 +1549,7 @@ export const additionalToeicCards: WordCard[] = [
   {
     id: 115,
     word: "globalization",
+    japanese: "",
     meaning: "グローバル化、国際化",
     partOfSpeech: "名詞",
     phonetic: "/ˌɡloʊbələˈzeɪʃən/",
@@ -1539,8 +1579,8 @@ export const additionalToeicCards: WordCard[] = [
     ],
     toeicSpecific: {
       parts: ["Part7"],
-      frequency: "very_low",
-      scoreBand: "900+",
+      frequency: "low",
+      scoreBand: "800+",
       synonyms: ["internationalization", "worldwide expansion"],
       businessContext: "国際ビジネス・戦略",
     },

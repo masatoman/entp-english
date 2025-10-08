@@ -10,7 +10,7 @@ import {
 export interface SelectionCardProps {
   children?: React.ReactNode;
   className?: string;
-  id: string;
+  id?: string;
   title: string;
   description: string;
   difficulty?: string;
@@ -23,12 +23,17 @@ export interface SelectionCardProps {
   key?: string;
   color?: string;
   keyPoints?: string[];
+  level?: number;
+  duration?: string;
+  category?: string;
+  isLocked?: boolean;
+  isCompleted?: boolean;
 }
 
 export function SelectionCard({
   children,
   className,
-  id,
+  id: _id,
   title,
   description,
   difficulty,
@@ -37,8 +42,8 @@ export function SelectionCard({
   icon,
   badge,
   disabled = false,
-  key,
-  color,
+  key: _key,
+  color: _color,
   keyPoints,
 }: SelectionCardProps) {
   return (

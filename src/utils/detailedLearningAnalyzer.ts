@@ -16,7 +16,6 @@ import {
   WeeklyTrend,
 } from "../types/detailedAnalytics";
 import { DataManager } from "./dataManager";
-import { LearningAnalyzer } from "./learningAnalyzer";
 
 const DETAILED_ANALYTICS_KEY = "entp-detailed-analytics";
 
@@ -32,7 +31,7 @@ export class DetailedLearningAnalyzer {
     userId: string = "default-user"
   ): Promise<DetailedLearningAnalytics> {
     const userStats = DataManager.getUserStats();
-    const _basicAnalytics = LearningAnalyzer.getAnalytics();
+    // const _basicAnalytics = LearningAnalyzer.getAnalytics();
     const sessions = this.getDetailedSessions();
 
     const analytics: DetailedLearningAnalytics = {
@@ -129,8 +128,8 @@ export class DetailedLearningAnalyzer {
       accuracy,
       averageTimePerProblem: averageTime * 60, // 分を秒に変換
       improvementTrend: this.calculateImprovementTrend(sessions),
-      strengths: this.identifySkillStrengths(skill, sessions),
-      weaknesses: this.identifySkillWeaknesses(skill, sessions),
+      strengths: this.identifySkillStrengths("vocabulary", sessions),
+      weaknesses: this.identifySkillWeaknesses("vocabulary", sessions),
       recommendedFocus: this.calculateRecommendedFocus(accuracy, totalProblems),
     };
   }
@@ -632,7 +631,7 @@ export class DetailedLearningAnalyzer {
   private static calculateOptimalStudyDuration(sessions: any[]): number {
     if (sessions.length === 0) return 20;
 
-    const _durations = sessions.map((s) => s.duration || 0);
+    // const _durations = sessions.map((s) => s.duration || 0);
     const accuracyByDuration: Record<number, { total: number; count: number }> =
       {};
 
@@ -857,13 +856,13 @@ export class DetailedLearningAnalyzer {
     const suggestions: string[] = [];
 
     if (accuracy < 70) {
-      suggestions.push(`${skill}の基礎を復習する`);
+      suggestions.push(`基礎を復習する`);
       suggestions.push("簡単な問題から始める");
     } else if (accuracy < 85) {
-      suggestions.push(`${skill}の練習量を増やす`);
+      suggestions.push(`練習量を増やす`);
       suggestions.push("間違えた問題を復習する");
     } else {
-      suggestions.push(`${skill}の応用問題に挑戦する`);
+      suggestions.push(`応用問題に挑戦する`);
       suggestions.push("より高度な内容を学習する");
     }
 
@@ -898,7 +897,7 @@ export class DetailedLearningAnalyzer {
     current: number
   ): string {
     const improvement = Math.min(15, 95 - current);
-    return `${skill}の正解率が${current}%から${
+    return `正解率が${current}%から${
       current + improvement
     }%に向上し、より自信を持って問題に取り組めるようになります`;
   }

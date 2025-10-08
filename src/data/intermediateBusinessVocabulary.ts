@@ -8,6 +8,7 @@ export const intermediateBusinessVocabulary: WordCard[] = [
   {
     id: 171,
     word: "marketing",
+    japanese: "マーケティング、市場戦略",
     meaning: "マーケティング、市場戦略",
     partOfSpeech: "名詞",
     phonetic: "/ˈmɑrkətɪŋ/",
@@ -47,6 +48,7 @@ export const intermediateBusinessVocabulary: WordCard[] = [
   {
     id: 172,
     word: "promotion",
+    japanese: "昇進、プロモーション",
     meaning: "昇進、プロモーション",
     partOfSpeech: "名詞",
     phonetic: "/prəˈmoʊʃən/",
@@ -85,6 +87,7 @@ export const intermediateBusinessVocabulary: WordCard[] = [
   {
     id: 173,
     word: "sales",
+    japanese: "売上、営業",
     meaning: "売上、営業",
     partOfSpeech: "名詞",
     phonetic: "/seɪlz/",
@@ -123,6 +126,7 @@ export const intermediateBusinessVocabulary: WordCard[] = [
   {
     id: 174,
     word: "customer",
+    japanese: "顧客、お客様",
     meaning: "顧客、お客様",
     partOfSpeech: "名詞",
     phonetic: "/ˈkʌstəmər/",
@@ -161,6 +165,7 @@ export const intermediateBusinessVocabulary: WordCard[] = [
   {
     id: 175,
     word: "product",
+    japanese: "製品、プロダクト",
     meaning: "製品、プロダクト",
     partOfSpeech: "名詞",
     phonetic: "/ˈprɑdəkt/",
@@ -201,6 +206,7 @@ export const intermediateBusinessVocabulary: WordCard[] = [
   {
     id: 176,
     word: "finance",
+    japanese: "財務、金融",
     meaning: "財務、金融",
     partOfSpeech: "名詞",
     phonetic: "/ˈfaɪnæns/",
@@ -239,6 +245,7 @@ export const intermediateBusinessVocabulary: WordCard[] = [
   {
     id: 177,
     word: "investment",
+    japanese: "投資、インベストメント",
     meaning: "投資、インベストメント",
     partOfSpeech: "名詞",
     phonetic: "/ɪnˈvestmənt/",
@@ -277,6 +284,7 @@ export const intermediateBusinessVocabulary: WordCard[] = [
   {
     id: 178,
     word: "accounting",
+    japanese: "会計、アカウンティング",
     meaning: "会計、アカウンティング",
     partOfSpeech: "名詞",
     phonetic: "/əˈkaʊntɪŋ/",
@@ -315,6 +323,7 @@ export const intermediateBusinessVocabulary: WordCard[] = [
   {
     id: 179,
     word: "budget",
+    japanese: "予算、バジェット",
     meaning: "予算、バジェット",
     partOfSpeech: "名詞",
     phonetic: "/ˈbʌdʒət/",
@@ -353,6 +362,7 @@ export const intermediateBusinessVocabulary: WordCard[] = [
   {
     id: 180,
     word: "expense",
+    japanese: "費用、支出",
     meaning: "費用、支出",
     partOfSpeech: "名詞",
     phonetic: "/ɪkˈspens/",
@@ -393,6 +403,7 @@ export const intermediateBusinessVocabulary: WordCard[] = [
   {
     id: 181,
     word: "international",
+    japanese: "国際的な、インターナショナル",
     meaning: "国際的な、インターナショナル",
     partOfSpeech: "形容詞",
     phonetic: "/ˌɪntərˈnæʃənəl/",
@@ -431,6 +442,7 @@ export const intermediateBusinessVocabulary: WordCard[] = [
   {
     id: 182,
     word: "global",
+    japanese: "グローバルな、世界的な",
     meaning: "グローバルな、世界的な",
     partOfSpeech: "形容詞",
     phonetic: "/ˈgloʊbəl/",
@@ -469,6 +481,7 @@ export const intermediateBusinessVocabulary: WordCard[] = [
   {
     id: 183,
     word: "export",
+    japanese: "輸出する、輸出",
     meaning: "輸出する、輸出",
     partOfSpeech: "動詞・名詞",
     phonetic: "/ɪkˈspɔrt/",
@@ -507,6 +520,7 @@ export const intermediateBusinessVocabulary: WordCard[] = [
   {
     id: 184,
     word: "import",
+    japanese: "輸入する、輸入",
     meaning: "輸入する、輸入",
     partOfSpeech: "動詞・名詞",
     phonetic: "/ɪmˈpɔrt/",
@@ -545,6 +559,7 @@ export const intermediateBusinessVocabulary: WordCard[] = [
   {
     id: 185,
     word: "trade",
+    japanese: "貿易、取引",
     meaning: "貿易、取引",
     partOfSpeech: "名詞・動詞",
     phonetic: "/treɪd/",
@@ -585,6 +600,7 @@ export const intermediateBusinessVocabulary: WordCard[] = [
   {
     id: 186,
     word: "technology",
+    japanese: "技術、テクノロジー",
     meaning: "技術、テクノロジー",
     partOfSpeech: "名詞",
     phonetic: "/tekˈnɑlədʒi/",
@@ -623,6 +639,7 @@ export const intermediateBusinessVocabulary: WordCard[] = [
   {
     id: 187,
     word: "innovation",
+    japanese: "革新、イノベーション",
     meaning: "革新、イノベーション",
     partOfSpeech: "名詞",
     phonetic: "/ˌɪnəˈveɪʃən/",
@@ -661,6 +678,7 @@ export const intermediateBusinessVocabulary: WordCard[] = [
   {
     id: 188,
     word: "digital",
+    japanese: "デジタルの、デジタル",
     meaning: "デジタルの、デジタル",
     partOfSpeech: "形容詞",
     phonetic: "/ˈdɪdʒətəl/",
@@ -699,6 +717,7 @@ export const intermediateBusinessVocabulary: WordCard[] = [
   {
     id: 189,
     word: "system",
+    japanese: "システム、制度",
     meaning: "システム、制度",
     partOfSpeech: "名詞",
     phonetic: "/ˈsɪstəm/",
@@ -737,6 +756,7 @@ export const intermediateBusinessVocabulary: WordCard[] = [
   {
     id: 190,
     word: "application",
+    japanese: "アプリケーション、応用",
     meaning: "アプリケーション、応用",
     partOfSpeech: "名詞",
     phonetic: "/ˌæplɪˈkeɪʃən/",

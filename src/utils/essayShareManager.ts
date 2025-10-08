@@ -29,7 +29,7 @@ export class EssayShareManager {
     entry: EssayHistoryEntry,
     options: ShareOptions
   ): ShareContent {
-    const { prompt, submission, wordCount, _createdAt } = entry;
+    const { prompt, submission, wordCount } = entry;
 
     let shareText = "";
     const hashtags = ["ENTP英語学習", "英作文", "英語学習"];
@@ -76,11 +76,8 @@ export class EssayShareManager {
       case "vocabulary":
         hashtags.push("英単語", "Vocabulary");
         break;
-      case "business":
-        hashtags.push("ビジネス英語", "BusinessEnglish");
-        break;
-      case "toeic":
-        hashtags.push("TOEIC", "TOEIC対策");
+      case "mixed":
+        hashtags.push("総合英語", "MixedSkills");
         break;
     }
 

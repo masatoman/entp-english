@@ -278,7 +278,7 @@ export class SkillTreeTOEICIntegrationManager {
    * ユーザーのスキルツリー進捗をTOEIC用に取得
    */
   static getSkillTreeProgressForTOEIC(
-    userId: string = "default"
+    _userId: string = "default"
   ): SkillTreeProgressForTOEIC {
     // スキルツリーの進捗を取得（モックデータ）
     const unlockedSkills = this.getUnlockedSkills();
@@ -451,11 +451,11 @@ export class SkillTreeTOEICIntegrationManager {
    * 統合データを保存
    */
   static saveIntegrationData(
-    userId: string,
+    _userId: string,
     data: SkillTreeTOEICIntegration
   ): void {
     localStorage.setItem(
-      `${this.INTEGRATION_KEY}-${userId}`,
+      `${this.INTEGRATION_KEY}-${_userId}`,
       JSON.stringify(data)
     );
   }

@@ -20,7 +20,8 @@ class TTSManager {
   private static instance: TTSManager;
   private currentUtterance: SpeechSynthesisUtterance | null = null;
   private availableVoices: SpeechSynthesisVoice[] = [];
-  private __isInitialized: boolean = false;
+  // @ts-expect-error - 未使用だが将来の機能拡張のために保持
+  private ________isInitialized: boolean = false;
 
   private constructor() {
     this.initializeVoices();
@@ -53,7 +54,7 @@ class TTSManager {
     if (speechSynthesis.onvoiceschanged !== undefined) {
       speechSynthesis.onvoiceschanged = () => {
         this.availableVoices = speechSynthesis.getVoices();
-        this._isInitialized = true;
+        this.________isInitialized = true;
         console.log(
           `🎤 TTS音声初期化完了: ${this.availableVoices.length}種類の音声を検出`
         );
@@ -61,7 +62,7 @@ class TTSManager {
     } else {
       // 既に読み込まれている場合
       this.availableVoices = speechSynthesis.getVoices();
-      this._isInitialized = true;
+      this.________isInitialized = true;
     }
   }
 

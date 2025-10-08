@@ -4,7 +4,7 @@
  */
 
 import { useCallback, useEffect, useState } from "react";
-import { AudioFileInfo, audioManager } from "../utils/AudioManager";
+import { audioManager } from "../utils/AudioManager";
 import { dataSyncManager, SyncStatus } from "../utils/DataSyncManager";
 import {
   dbManager,
@@ -293,7 +293,7 @@ export function useDataManager() {
   }, []);
 
   // 音声ファイルの読み込み
-  const loadAudio = useCallback(async (audioInfo: AudioFileInfo) => {
+  const loadAudio = useCallback(async (audioInfo: string) => {
     try {
       await audioManager.loadAudio(audioInfo);
     } catch (error) {
@@ -426,7 +426,7 @@ export function useDataManager() {
     try {
       console.log("📖 ユーザーフィードバック取得開始:", userId);
 
-      const targetUserId = userId || getCurrentUserId();
+      // const _targetUserId = userId || getCurrentUserId();
       const feedback = await dbManager.getAll(STORES.FEEDBACK);
 
       console.log("✅ ユーザーフィードバック取得完了:", feedback.length, "件");

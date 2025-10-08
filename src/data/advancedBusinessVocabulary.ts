@@ -5,6 +5,7 @@ export const advancedBusinessVocabulary: WordCard[] = [
   {
     id: 191,
     word: "strategic",
+    japanese: "戦略的な、戦略上の",
     meaning: "戦略的な、戦略上の",
     partOfSpeech: "形容詞",
     phonetic: "/strəˈtiːdʒɪk/",
@@ -43,6 +44,8 @@ export const advancedBusinessVocabulary: WordCard[] = [
   {
     id: 192,
     word: "implement",
+
+    japanese: "実装する、実行する",
     meaning: "実装する、実行する",
     partOfSpeech: "動詞",
     phonetic: "/ˈɪmplɪment/",
@@ -81,6 +84,8 @@ export const advancedBusinessVocabulary: WordCard[] = [
   {
     id: 193,
     word: "comprehensive",
+
+    japanese: "包括的な、総合的な",
     meaning: "包括的な、総合的な",
     partOfSpeech: "形容詞",
     phonetic: "/ˌkɒmprɪˈhensɪv/",
@@ -119,6 +124,8 @@ export const advancedBusinessVocabulary: WordCard[] = [
   {
     id: 194,
     word: "sophisticated",
+
+    japanese: "洗練された、高度な",
     meaning: "洗練された、高度な",
     partOfSpeech: "形容詞",
     phonetic: "/səˈfɪstɪkeɪtɪd/",
@@ -157,6 +164,8 @@ export const advancedBusinessVocabulary: WordCard[] = [
   {
     id: 195,
     word: "methodology",
+
+    japanese: "方法論、手法",
     meaning: "方法論、手法",
     partOfSpeech: "名詞",
     phonetic: "/ˌmeθəˈdɒlədʒi/",
@@ -195,6 +204,8 @@ export const advancedBusinessVocabulary: WordCard[] = [
   {
     id: 196,
     word: "leverage",
+
+    japanese: "活用する、利用する",
     meaning: "活用する、利用する",
     partOfSpeech: "動詞",
     phonetic: "/ˈliːvərɪdʒ/",
@@ -233,6 +244,8 @@ export const advancedBusinessVocabulary: WordCard[] = [
   {
     id: 197,
     word: "optimize",
+
+    japanese: "最適化する、効率化する",
     meaning: "最適化する、効率化する",
     partOfSpeech: "動詞",
     phonetic: "/ˈɒptɪmaɪz/",
@@ -271,6 +284,8 @@ export const advancedBusinessVocabulary: WordCard[] = [
   {
     id: 198,
     word: "substantial",
+
+    japanese: "相当な、大幅な",
     meaning: "相当な、大幅な",
     partOfSpeech: "形容詞",
     phonetic: "/səbˈstænʃəl/",
@@ -309,6 +324,8 @@ export const advancedBusinessVocabulary: WordCard[] = [
   {
     id: 199,
     word: "collaborate",
+
+    japanese: "協力する、共同作業する",
     meaning: "協力する、共同作業する",
     partOfSpeech: "動詞",
     phonetic: "/kəˈlæbəreɪt/",
@@ -347,6 +364,8 @@ export const advancedBusinessVocabulary: WordCard[] = [
   {
     id: 200,
     word: "innovation",
+
+    japanese: "革新、イノベーション",
     meaning: "革新、イノベーション",
     partOfSpeech: "名詞",
     phonetic: "/ˌɪnəˈveɪʃən/",

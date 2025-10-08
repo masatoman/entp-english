@@ -58,7 +58,6 @@ class DailyQuestManager {
         achievements: 0,
         dailyBonus: 0,
         special: 0,
-        challenges: 0,
       },
     };
   }

@@ -2,6 +2,7 @@
 export interface WordCard {
   id: number;
   word: string;
+  japanese: string;
   meaning: string;
   partOfSpeech: string;
   phonetic: string;

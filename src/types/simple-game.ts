@@ -132,7 +132,12 @@ export type XPShopItemType =
   | "gold-multiplier" // ゴールド獲得+100% (60秒)
   | "xp-multiplier" // XP獲得+100% (60秒)
   | "health-regen" // 体力+20
-  | "wave-skip"; // 現在のウェーブをスキップ
+  | "wave-skip" // 現在のウェーブをスキップ
+  | "learning-boost" // 学習効率ブースト
+  | "vocabulary-boost" // 語彙習得ブースト
+  | "grammar-boost" // 文法習得ブースト
+  | "synergy-boost" // シナジー効果ブースト
+  | "focus-boost"; // 集中力ブースト
 
 // XPショップアイテム
 export interface XPShopItem {

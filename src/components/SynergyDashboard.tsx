@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { baseColors } from "../styles/colors";
 import { Category } from "../types";
 import {
-  ContentMetadata,
+  // ContentMetadata,
   LearningPath,
   synergyManager,
   SynergyProgress,
@@ -41,7 +41,7 @@ export default function SynergyDashboard({
   const navigate = useNavigate();
   const [synergyProgress, setSynergyProgress] = useState<SynergyProgress[]>([]);
   const [optimalPath, setOptimalPath] = useState<LearningPath | null>(null);
-  const [relatedContent, setRelatedContent] = useState<ContentMetadata[]>([]);
+  // const [relatedContent, setRelatedContent] = useState<ContentMetadata[]>([]);
   const [completedContent, setCompletedContent] = useState<string[]>([]);
 
   useEffect(() => {
@@ -84,11 +84,11 @@ export default function SynergyDashboard({
       navigate(`/learning/pre-study/content/${contentId}`);
     } else if (contentId.includes("quiz")) {
       const category = contentId.split("-")[0] as Category;
-      const difficulty = contentId.includes("easy")
-        ? "easy"
-        : contentId.includes("normal")
-        ? "normal"
-        : "hard";
+      // const difficulty = contentId.includes("easy")
+      // ? "easy"
+      // : contentId.includes("normal")
+      // ? "normal"
+      // : "hard";
 
       if (category === "basic-grammar") {
         navigate(`/learning/grammar/pattern/${category}`);
@@ -98,15 +98,15 @@ export default function SynergyDashboard({
     }
   };
 
-  const markContentCompleted = (contentId: string) => {
-    const updated = [...completedContent, contentId];
-    setCompletedContent(updated);
-    localStorage.setItem(`synergy-progress-${userId}`, JSON.stringify(updated));
+  // const markContentCompleted = (contentId: string) => {
+  //   const updated = [...completedContent, contentId];
+  //   setCompletedContent(updated);
+  //   localStorage.setItem(`synergy-progress-${userId}`, JSON.stringify(updated));
 
-    // 進捗を再計算
-    const progress = synergyManager.trackSynergyProgress(userId, updated);
-    setSynergyProgress(progress);
-  };
+  //   // 進捗を再計算
+  //   const progress = synergyManager.trackSynergyProgress(userId, updated);
+  //   setSynergyProgress(progress);
+  // };
 
   const getSynergyLevelColor = (bonus: number): string => {
     if (bonus >= 1.5) return "text-green-600 bg-green-50";

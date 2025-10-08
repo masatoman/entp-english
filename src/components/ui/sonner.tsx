@@ -1,6 +1,8 @@
 "use client";
 
+// @ts-ignore
 import { useTheme } from "next-themes@0.4.6";
+// @ts-ignore
 import { Toaster as Sonner, ToasterProps } from "sonner@2.0.3";
 
 const Toaster = ({ ...props }: ToasterProps) => {

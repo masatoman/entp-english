@@ -83,6 +83,11 @@ export interface AdrenalineStats {
   currentCombo: number;
   criticalRate: number;
   feverTimeActive: boolean;
+  experiencePoints: number;
+  perfectRuns: number;
+  averageComboLength: number;
+  criticalHitRate: number;
+  feverTimeEfficiency: number;
 }
 
 export interface AdrenalineSystem {
