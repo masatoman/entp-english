@@ -93,7 +93,6 @@ export default function DiagnosticTest() {
   const [userAnswer, setUserAnswer] = useState("");
   const [score, setScore] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
-  const [startTime] = useState(Date.now());
 
   const question = diagnosticQuestions[currentQuestion];
   const isLastQuestion = currentQuestion === diagnosticQuestions.length - 1;
@@ -132,23 +131,11 @@ export default function DiagnosticTest() {
   };
 
   const completeTest = () => {
-    const endTime = Date.now();
-    const timeSpent = Math.floor((endTime - startTime) / 1000 / 60); // 分
-
-    // スコアに基づいてTOEIC予測スコアを計算
-    const maxScore = diagnosticQuestions.reduce(
-      (sum, q) => sum + q.difficulty,
-      0
-    );
-    const percentage = (score / maxScore) * 100;
-    const predictedTOEIC = Math.round(300 + percentage * 2); // 300-500点の範囲
-
     // ユーザーデータに保存
     const stats = DataManager.getUserStats();
     const updatedStats = {
       ...stats,
       diagnosticCompleted: true,
-      predictedTOEIC,
       diagnosticScore: score,
       diagnosticDate: Date.now(),
     };
@@ -158,8 +145,13 @@ export default function DiagnosticTest() {
   };
 
   if (isCompleted) {
-    const stats = DataManager.getUserStats();
-    const predictedTOEIC = stats.predictedTOEIC || 320;
+    // スコアから予測TOEICを計算
+    const maxScore = diagnosticQuestions.reduce(
+      (sum, q) => sum + q.difficulty,
+      0
+    );
+    const percentage = (score / maxScore) * 100;
+    const predictedTOEIC = Math.round(300 + percentage * 2); // 300-500点の範囲
     const target = 450;
     const improvement = target - predictedTOEIC;
 
@@ -391,4 +383,3 @@ export default function DiagnosticTest() {
     </div>
   );
 }
-
