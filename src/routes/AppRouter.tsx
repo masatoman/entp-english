@@ -7,6 +7,7 @@ import { ScrollToTop } from "../components/ScrollToTop";
 
 // 直接importに変更（lazy loadingの問題を回避）
 import Achievements from "../components/Achievements";
+import AllMenu from "../components/AllMenu";
 import { AppSettings } from "../components/AppSettings";
 import BasicVocabularyLearning from "../components/BasicVocabularyLearning";
 import CardDetailContent from "../components/CardDetailContent";
@@ -15,6 +16,7 @@ import CombinedTest from "../components/CombinedTest";
 import CreativeWritingChallenge from "../components/CreativeWritingChallenge";
 import { DataManagerProvider } from "../components/DataManagerProvider";
 import DetailedAnalyticsDashboard from "../components/DetailedAnalyticsDashboard";
+import DiagnosticTest from "../components/DiagnosticTest";
 import DifficultySelection from "../components/DifficultySelection";
 import EnhancedGrammarQuiz from "../components/EnhancedGrammarQuiz";
 import EssayHistory from "../components/EssayHistory";
@@ -66,6 +68,12 @@ export function AppRouter() {
               <Routes>
                 {/* ホーム */}
                 <Route path="/" element={<Home />} />
+
+                {/* 診断テスト */}
+                <Route path="/diagnostic-test" element={<DiagnosticTest />} />
+
+                {/* 全機能メニュー */}
+                <Route path="/menu/all" element={<AllMenu />} />
 
                 {/* 学習機能 */}
                 <Route
