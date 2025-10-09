@@ -1,179 +1,146 @@
-# 開発ガイド
+# 開発ガイド（超シンプル版）
 
 ## 🚀 開発環境
 
 ```bash
-# 依存関係インストール
 npm install
-
-# 開発サーバー起動
 npm run dev
-
-# ビルド
-npm run build
-
-# テスト
-npm run test:core
 ```
 
-## 📋 実装時の基本ルール
+## 📋 実装の基本ルール
 
-### 1. Router対応コンポーネント
+### 1. シンプル第一
+
+- 迷ったら削る
+- 機能追加は後から
+- 3ヶ月継続が最優先
+
+### 2. Router対応
+
 ```typescript
-// ✅ 正しい（Router対応）
+// ✅ 正しい
 export default function Component() {
   const { id } = useParams();
-  const navigate = useNavigate();
-  // ...
-}
-
-// ❌ 間違い（props形式）
-export default function Component({ id }: Props) {
-  // ...
+  return <div>...</div>;
 }
 ```
 
-### 2. デザインシステム
-- **shadcn/ui**を優先的に使用
-- カスタムコンポーネントが必要な場合はRadix UIをベースに
-- Tailwind v4のユーティリティクラスで実装
+### 3. デザインシステム
 
-### 3. 型安全性
-- `any`型の使用禁止
-- すべてのコンポーネントにPropsの型定義
-- データ構造はすべて`types/`で定義
+- shadcn/ui優先
+- Tailwind v4のユーティリティクラス
+- レスポンシブ必須
 
-## 🧪 テスト戦略
+## 🎨 コンポーネント構成（超シンプル版）
 
-### 優先順位
-1. **E2Eテスト（Playwright MCP）** - 最優先
-2. **主要機能の単体テスト** - 重要
-3. **統合テスト** - 必要に応じて
+### ホーム画面
 
-### 実行コマンド
+```typescript
+interface SimpleHome {
+  header: {
+    streak: "🔥 15日連続";
+    toeicPrediction: "420点 (↗️ +100)";
+  };
+
+  todayMission: {
+    morning: { task: "朝の3分"; status: "完了" };
+    lunch: { task: "昼の1問"; status: "未完了" };
+    evening: { task: "夜の復習"; status: "未完了" };
+  };
+
+  quickActions: ["🎰 ガチャ", "📈 成長"];
+}
+```
+
+### クイズ画面
+
+```typescript
+interface SimpleQuiz {
+  types: ["おまかせ3分（推奨）", "文法だけ", "単語だけ"];
+  // カテゴリー選択なし
+  // 難易度選択なし
+  // 自動で最適な問題
+}
+```
+
+### ガチャ画面
+
+```typescript
+interface SimpleGacha {
+  action: "1回引く";
+  result: { word; meaning; example };
+  collection: "152/500 単語";
+}
+```
+
+### 成長画面
+
+```typescript
+interface SimpleGrowth {
+  mainMetric: "予測TOEICスコア";
+  weeklyComparison: "先週との比較";
+  milestones: ["15日連続", "100問", "50単語"];
+}
+```
+
+## 📦 データ構造（最小限）
+
+```typescript
+interface UserData {
+  basic: {
+    xp: number;
+    level: number;
+    streak: number;
+    lastStudyDate: string;
+  };
+  study: {
+    totalQuestions: number;
+    correctAnswers: number;
+    studyMinutes: number;
+    knownWords: string[];
+  };
+  progress: {
+    weeklyHistory: DailyStats[]; // 直近7日
+    toeicPrediction: number;
+  };
+  gacha: {
+    tickets: number;
+    collection: string[];
+  };
+}
+```
+
+## 🚨 用語ルール
+
+### 使用禁止ワード
+
+- ❌ 復習 → ✅ チャレンジ
+- ❌ 暗記 → ✅ 身につける
+- ❌ テスト → ✅ クイズ
+- ❌ 間違い → ✅ 成長のチャンス
+
+## 🧪 テスト
+
 ```bash
-# コアテスト（推奨）
+# コアテスト
 npm run test:core
 
-# E2Eテスト
+# E2E
 npm run test:e2e:mcp
-
-# 全テスト
-npm run test
 ```
 
-## 📦 データ構造
+## 🔧 よくあるエラー
 
-### 問題データ
-```typescript
-// src/data/questions.ts
-export interface QuestionData {
-  id: number;
-  japanese: string;
-  correctAnswer: string;
-  explanation: string;
-  choices?: string[];  // easy モードのみ
-}
-```
-
-### 語彙データ
-```typescript
-// src/data/vocabulary.ts
-export interface VocabularyWord {
-  id: number;
-  word: string;
-  meaning: string;
-  partOfSpeech: string;
-  example: string;
-  exampleTranslation: string;
-  level: "beginner" | "intermediate" | "advanced";
-  category: "all" | "toeic" | "business" | "daily" | "academic";
-}
-```
-
-### ユーザーデータ
-```typescript
-// localStorage: "userData"
-interface UserData {
-  xp: number;
-  level: number;
-  streak: number;
-  studyHistory: StudySession[];
-  unlockedFeatures: string[];  // 追加予定
-  currentGoal?: Goal;  // 追加予定
-}
-```
-
-## 🎨 デザイン原則
-
-### コア機能の絞り込み（実装予定）
-初期画面で表示する機能を**5つ**に制限：
-1. 語彙学習（ガチャ連携）
-2. 文法クイズ（基礎のみ）
-3. 日替わりクエスト
-4. 学習進捗ダッシュボード
-5. 週次チェックポイント
-
-その他の機能は「もっと見る」または段階的にアンロック。
-
-### 用語の注意点
-**使用禁止ワード：**
-- 「復習」→「ラッキー問題」「成長加速チャレンジ」
-- 「暗記」→「覚える」「身につける」
-- 「テスト」→「チャレンジ」「クイズ」
-- 「間違い」→「成長のチャンス」
-
-## 🔧 よくあるエラーと対処法
-
-### ビルドエラー
 ```bash
-# キャッシュクリア
-npm run clean:all
+# ビルドエラー
+npm run clean:all && npm install
 
-# 依存関係再インストール
-rm -rf node_modules package-lock.json
-npm install
-```
-
-### TypeScriptエラー
-```bash
-# 型チェック
+# 型エラー
 npm run type-check
 ```
 
-### テスト失敗
-```bash
-# テスト環境リセット
-npm run clean
-npm run test
-```
-
-## 📊 パフォーマンス指標
+## 📊 パフォーマンス目標
 
 - **初回読み込み**: 3秒以内
-- **ページ遷移**: 1秒以内
-- **バンドルサイズ**: 1MB以下
-- **メモリ使用**: 20MB以下
-
-## 🚨 緊急時の対応
-
-### Git Pushエラー
-1. エラー内容を確認
-2. 重大度を判定（重大/警告/軽微）
-3. 段階的に修正
-4. `--no-verify`は**使用禁止**
-
-### 真っ白ページ
-1. Playwright MCPで該当ページをテスト
-2. コンソールエラーを確認
-3. Router対応を確認
-4. default exportを確認
-
-## 📚 参考資料
-
-- [React公式](https://react.dev/)
-- [TypeScript公式](https://www.typescriptlang.org/)
-- [Tailwind CSS公式](https://tailwindcss.com/)
-- [shadcn/ui公式](https://ui.shadcn.com/)
-- [Vite公式](https://vitejs.dev/)
-
+- **バンドルサイズ**: 500KB以下（大幅削減）
+- **メモリ使用**: 10MB以下（半減）
