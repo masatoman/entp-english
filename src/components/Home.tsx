@@ -88,7 +88,10 @@ export default function Home() {
               <div
                 className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-500"
                 style={{
-                  width: `${Math.min(((toeicPrediction - 320) / (450 - 320)) * 100, 100)}%`,
+                  width: `${Math.min(
+                    ((toeicPrediction - 320) / (450 - 320)) * 100,
+                    100
+                  )}%`,
                 }}
               />
             </div>

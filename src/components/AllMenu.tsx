@@ -35,9 +35,7 @@ export default function AllMenu() {
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
             すべての機能
           </h1>
-          <p className="text-gray-600">
-            詳細な学習機能・設定・分析ツール
-          </p>
+          <p className="text-gray-600">詳細な学習機能・設定・分析ツール</p>
         </div>
 
         {/* 文法学習 */}
@@ -180,9 +178,7 @@ export default function AllMenu() {
 
         {/* 高度な機能 */}
         <div>
-          <h2 className="text-lg font-bold text-gray-800 mb-3">
-            高度な機能
-          </h2>
+          <h2 className="text-lg font-bold text-gray-800 mb-3">高度な機能</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <SelectionCard
               id="integrated"
@@ -230,9 +226,7 @@ export default function AllMenu() {
 
         {/* 分析・進捗 */}
         <div>
-          <h2 className="text-lg font-bold text-gray-800 mb-3">
-            分析・進捗
-          </h2>
+          <h2 className="text-lg font-bold text-gray-800 mb-3">分析・進捗</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <SelectionCard
               id="growth-dashboard"
@@ -314,7 +308,8 @@ export default function AllMenu() {
           <Card className="border-yellow-200 bg-yellow-50">
             <CardContent className="p-4">
               <p className="text-center text-sm text-yellow-800">
-                💡 体力が不足している場合、体力不要の機能（ガチャ・分析・設定等）をご利用ください
+                💡
+                体力が不足している場合、体力不要の機能（ガチャ・分析・設定等）をご利用ください
               </p>
             </CardContent>
           </Card>
@@ -323,4 +318,3 @@ export default function AllMenu() {
     </div>
   );
 }
-
